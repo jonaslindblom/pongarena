@@ -37,7 +37,7 @@ def main():
                   architecture=[6, 64, 64, 3], activation='Tanh', rules='pong-v2', max_ball_vx=13, gamma=.99, gae_lambda=.95,
                   clip=.2, epochs=4, minibatch=2048, entropy=.01, return_reward=.02,
                   seed_ranges={'train': [0, 999999999], 'validation': [1000000000, 1000000023],
-                               'test': [2000000000, 2000000099]})
+                               'test': [2100000000, 2100000099]})
     (args.out / 'config.json').write_text(json.dumps(config, indent=2) + '\n')
     actor = Actor()
     optimizer = torch.optim.Adam(actor.parameters(), lr=1e-3)

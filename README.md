@@ -11,7 +11,7 @@ npm ci
 npm run dev
 ```
 
-Open the localhost URL printed by Vite. The default match pairs the evolved Challenger with the hand-written Tracker.
+Open the localhost URL printed by Vite. The default match pairs the retrained Selfplay and Apprentice policies under Pong v2 rules.
 
 ## Play and inspect
 
@@ -44,6 +44,8 @@ The tests cover the game rules, perspective symmetry, finite output and tie hand
 
 ## Train your own weights
 
-The standalone [Pong v1 training contract](training/v1/README.md) includes the frozen engine, a headless TypeScript example, a dependency-free Python reference, and full deterministic match fixtures. Copy `training/v1/` to train independently of the app. Run `python3 training/v1/check.py` to verify the Python port.
+The standalone [Pong v2 training contract](training/v2/README.md) includes the frozen engine, a headless TypeScript example, a dependency-free Python reference, and full deterministic match fixtures. Copy `training/v2/` to train independently of the app. Run `python3 training/v2/check.py` to verify the Python port.
 
-[PyTorch training and results](training/README.md) includes runnable DAgger + PPO self-play scripts, learning curves, held-out tests, and standalone ONNX exports. **Apprentice** and **Selfplay** are available in the Model library. Cards show the actual network architecture and link to the local training report. The v1 rules are unchanged.
+[PyTorch training and results](training/README.md) includes runnable DAgger + PPO self-play scripts, learning curves, held-out tests, and standalone ONNX exports. **Apprentice** and **Selfplay** are available in the Model library. Cards show the actual network architecture and link to the local training report. Pong v2 reduces the maximum horizontal return speed from 15 to 13, with all other physics and the model interface unchanged. The frozen v1 package, weights and results remain available.
+
+The [balance study](training/results/balance-v2/README.md) explains the matched-serve comparison and why cap 13 was chosen. The report includes both scored-rally lengths and draw rates.

@@ -1,0 +1,37 @@
+{
+  "rules": "pong-v2",
+  "seed_start": 2100000000,
+  "seed_count": 100,
+  "opponents": {
+    "selfplay": {
+      "rallies": 1000,
+      "wins": 295,
+      "losses": 295,
+      "draws": 410,
+      "point_rate": 0.295,
+      "score_rate": 0.5,
+      "match_wins": 76,
+      "match_losses": 76,
+      "match_draws": 48,
+      "median_decisive_returns": 7.0,
+      "mean_returns": 12.13,
+      "mean_ticks": 509.268,
+      "early_finish_rate": 0.098
+    },
+    "apprentice": {
+      "rallies": 1000,
+      "wins": 594,
+      "losses": 166,
+      "draws": 240,
+      "point_rate": 0.594,
+      "score_rate": 0.714,
+      "match_wins": 163,
+      "match_losses": 16,
+      "match_draws": 21,
+      "median_decisive_returns": 5.0,
+      "mean_returns": 10.075,
+      "mean_ticks": 406.3,
+      "early_finish_rate": 0.233
+    }
+  }
+}

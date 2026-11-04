@@ -13,8 +13,8 @@ from reference import serve, advance, observation, ended_match, ended_rally
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument('--run', type=Path, default=Path('training/results/seed7'))
-    p.add_argument('--out', type=Path, default=Path('training/results/seed7'))
+    p.add_argument('--run', type=Path, default=Path('training/results/v2'))
+    p.add_argument('--out', type=Path, default=Path('training/results/v2'))
     args = p.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     torch.set_num_threads(1)
@@ -23,7 +23,7 @@ def main():
     options.inter_op_num_threads = 1
     options.enable_cpu_mem_arena = False
     sessions = {name: ort.InferenceSession(str(ROOT / f'public/models/{name}.onnx'), sess_options=options)
-                for name in ['selfplay', 'apprentice', 'challenger']}
+                for name in ['selfplay-v2', 'apprentice-v2', 'challenger']}
     env = Arena(64, seed=721)
     observations = []
     for _ in range(64):
@@ -32,7 +32,7 @@ def main():
         env.reset(np.flatnonzero(outcome >= 0))
     obs = np.concatenate(observations)
     checks = {}
-    for stage, name in [('imitation', 'apprentice'), ('ppo', 'selfplay')]:
+    for stage, name in [('imitation', 'apprentice-v2'), ('ppo', 'selfplay-v2')]:
         actor = Actor()
         actor.load_state_dict(torch.load(args.run / f'{stage}.pt', weights_only=True))
         with torch.no_grad():
@@ -43,8 +43,8 @@ def main():
         checks[name] = dict(observations=len(obs), max_abs_error=float(np.abs(actual - expected).max()),
                             action_agreement=1., sha256=hashlib.sha256((ROOT / f'public/models/{name}.onnx').read_bytes()).hexdigest())
     matches = []
-    for names in [('selfplay', 'challenger'), ('challenger', 'selfplay'), ('selfplay', 'apprentice'), ('selfplay', 'selfplay')]:
-        for seed in [2_000_000_007, 2_000_000_043]:
+    for names in [('selfplay-v2', 'challenger'), ('challenger', 'selfplay-v2'), ('selfplay-v2', 'apprentice-v2'), ('selfplay-v2', 'selfplay-v2')]:
+        for seed in [2_100_000_007, 2_100_000_043]:
             frame = serve(seed)
             steps = []
             while not ended_match(frame):

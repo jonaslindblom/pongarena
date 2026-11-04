@@ -1,0 +1,83 @@
+{
+  "rules": "pong-v2",
+  "seed_start": 2100000000,
+  "seed_count": 100,
+  "model": "public/models/apprentice-v2.onnx",
+  "opponents": {
+    "tracker": {
+      "rallies": 1000,
+      "wins": 849,
+      "losses": 144,
+      "draws": 7,
+      "point_rate": 0.849,
+      "score_rate": 0.8525,
+      "match_wins": 197,
+      "match_losses": 3,
+      "match_draws": 0,
+      "median_decisive_returns": 2.0,
+      "mean_returns": 2.402,
+      "mean_ticks": 133.562,
+      "early_finish_rate": 0.451
+    },
+    "anticipator": {
+      "rallies": 1000,
+      "wins": 789,
+      "losses": 139,
+      "draws": 72,
+      "point_rate": 0.789,
+      "score_rate": 0.825,
+      "match_wins": 190,
+      "match_losses": 9,
+      "match_draws": 1,
+      "median_decisive_returns": 2.0,
+      "mean_returns": 4.202,
+      "mean_ticks": 188.103,
+      "early_finish_rate": 0.363
+    },
+    "challenger": {
+      "rallies": 1000,
+      "wins": 825,
+      "losses": 147,
+      "draws": 28,
+      "point_rate": 0.825,
+      "score_rate": 0.839,
+      "match_wins": 191,
+      "match_losses": 6,
+      "match_draws": 3,
+      "median_decisive_returns": 2.0,
+      "mean_returns": 3.357,
+      "mean_ticks": 158.688,
+      "early_finish_rate": 0.367
+    },
+    "interceptor": {
+      "rallies": 1000,
+      "wins": 317,
+      "losses": 227,
+      "draws": 456,
+      "point_rate": 0.317,
+      "score_rate": 0.545,
+      "match_wins": 102,
+      "match_losses": 55,
+      "match_draws": 43,
+      "median_decisive_returns": 4.0,
+      "mean_returns": 11.062,
+      "mean_ticks": 487.593,
+      "early_finish_rate": 0.157
+    },
+    "attacker": {
+      "rallies": 1000,
+      "wins": 65,
+      "losses": 752,
+      "draws": 183,
+      "point_rate": 0.065,
+      "score_rate": 0.1565,
+      "match_wins": 0,
+      "match_losses": 195,
+      "match_draws": 5,
+      "median_decisive_returns": 3.0,
+      "mean_returns": 7.801,
+      "mean_ticks": 273.8,
+      "early_finish_rate": 0.265
+    }
+  }
+}

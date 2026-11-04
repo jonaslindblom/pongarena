@@ -1,6 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
+import { createHash } from 'node:crypto'
 import pb from 'onnx-proto'
 import {
   advance,
@@ -34,7 +35,13 @@ test('v2 softens edge speed while preserving aiming, paddle motion and seeded se
   for (const seed of [0, 24, 902, 4294967295]) assert.deepEqual(serve(seed), serveV1(seed))
   for (const side of [0, 1] as const) {
     for (let offset = -15; offset <= 15; offset++) {
-      const before = { ...serve(24), x: side === 0 ? 20 : 340, y: 80 + offset, vx: side === 0 ? -5 : 5, vy: 0 }
+      const before = {
+        ...serve(24),
+        x: side === 0 ? 20 : 340,
+        y: 80 + offset,
+        vx: side === 0 ? -5 : 5,
+        vy: 0,
+      }
       const old = advanceV1(before, still)
       const next = advance(before, still)
       assert.deepEqual({ ...next, vx: old.vx }, old)
@@ -139,11 +146,20 @@ test('the published v2 training reference stays identical to the live rules', ()
   )
 })
 
+test('the archived v1 engine stays frozen for old submissions and training results', () => {
+  const bytes = readFileSync(new URL('../training/v1/game.ts', import.meta.url))
+  assert.equal(
+    createHash('sha256').update(bytes).digest('hex'),
+    '1404bea9c6a840cdb917c977cafc65fd830fa023dc599094bf4924aa39f7cb21',
+  )
+})
+
 test('trained exports reveal their actual widths and remain within the upload contract', () => {
-  for (const name of ['apprentice', 'selfplay']) {
-    const stats = validateModel(
-      readFileSync(new URL(`../public/models/${name}.onnx`, import.meta.url)),
-    )
+  for (const name of ['apprentice-v2', 'selfplay-v2']) {
+    const bytes = readFileSync(new URL(`../public/models/${name}.onnx`, import.meta.url))
+    const graph = pb.onnx.ModelProto.decode(bytes)
+    assert.equal(graph.metadataProps.find((p) => p.key === 'rules')?.value, 'pong-v2')
+    const stats = validateModel(bytes)
     assert.deepEqual(stats.architecture.widths, [6, 64, 64, 3])
     assert.equal(stats.params, 4803)
     assert.equal(stats.macs, 4672)

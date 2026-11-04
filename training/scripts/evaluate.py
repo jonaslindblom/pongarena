@@ -63,7 +63,7 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument('model', type=Path)
     p.add_argument('--seeds', type=int, default=100)
-    p.add_argument('--seed-start', type=int, default=2_000_000_000)
+    p.add_argument('--seed-start', type=int, default=2_100_000_000)
     p.add_argument('--output', type=Path)
     args = p.parse_args()
     torch.set_num_threads(1)

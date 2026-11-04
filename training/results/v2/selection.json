@@ -1,0 +1,30 @@
+{
+  "rules": "pong-v2",
+  "selected_seed": 17,
+  "selection": "Highest validation mean (wins + 0.5 draws) over the five reference opponents; test results excluded.",
+  "runs": [
+    {
+      "seed": 7,
+      "run": "training/runs/v2-seed7",
+      "validation_score": 0.77625,
+      "selected_update": 125,
+      "total_steps": 8847360
+    },
+    {
+      "seed": 17,
+      "run": "training/runs/v2-seed17",
+      "validation_score": 0.8012499999999999,
+      "selected_update": 250,
+      "total_steps": 8847360
+    },
+    {
+      "seed": 29,
+      "run": "training/runs/v2-seed29",
+      "validation_score": 0.7779166666666667,
+      "selected_update": 175,
+      "total_steps": 8847360
+    }
+  ],
+  "test_seed_start": 2100000000,
+  "test_seed_count": 100
+}

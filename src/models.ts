@@ -30,16 +30,16 @@ export const keyboard: Controller = {
 }
 export const presets = [
   {
-    id: 'selfplay',
+    id: 'selfplay-v2',
     name: 'Selfplay',
-    kind: 'PyTorch · PPO',
+    kind: 'PyTorch · PPO · v2',
     description: 'Refined through league self-play after a predictive-controller warm start.',
     report: '/training/report.html',
   },
   {
-    id: 'apprentice',
+    id: 'apprentice-v2',
     name: 'Apprentice',
-    kind: 'PyTorch · Imitation',
+    kind: 'PyTorch · Imitation · v2',
     description: 'Learns a predictive attacker’s decisions from states it visits during play.',
     report: '/training/report.html',
   },
@@ -47,7 +47,7 @@ export const presets = [
     id: 'challenger',
     name: 'Challenger',
     kind: 'Evolved model',
-    description: 'Trained over 48 generations against a pool of opponents.',
+    description: 'Original v1 weights, evolved over 48 generations. Plays under the current rules.',
   },
   {
     id: 'tracker',

@@ -1,90 +1,113 @@
-# Train a Pong v1 paddle
+# Train a Pong v2 paddle
 
-The game is unchanged. Start with the self-contained [v1 rules and reference package](v1/README.md). It includes a headless example, a standard-library Python port, four full deterministic match traces, and eleven boundary cases. The downloadable copy is `public/training/pong-v1.zip` (also in the arena's Field guide).
+The current arena uses **Pong v2**, with maximum horizontal return speed 13 (previously 15). This is the only physics change. The six-input/three-score interface, paddle speed, aiming, serves, scoring and timeout are unchanged.
 
-This directory adds an actual PyTorch experiment: a DAgger imitation warm start followed by PPO with historical self-play. The scripts run on CPU; no GPU, service, account or browser is required for training. This is a contemporary, well-established RL pipeline, not a claim of state-of-the-art benchmark performance.
+Start with the self-contained [v2 rules and reference](v2/README.md). It includes a headless example, standard-library Python port, four complete match traces and eleven boundary cases. The downloadable copy is `public/training/pong-v2.zip`, also linked in the Field guide. [V1](v1/README.md) remains frozen, including its original weights, test results and report.
 
-## Setup and parity checks
+## Why cap 13
 
-Run commands from the repository root. The recorded run used Python 3.12 on Apple Silicon, one Torch CPU thread. Direct dependencies are pinned; `requirements-lock.txt` records the full environment used. A fresh compatible Python 3.12 environment is recommended.
+We tested caps 15, 14, 13, 12, 11, 10 with identical serves and scripts that know each candidate's physics. We then confirmed caps 15, 13, 12 on an independent set of 2,000 rallies per matchup.
+
+With two identical attackers, cap 13 changes median decisive returns from 1 to 5, first-receiver wins from 93.4% to 50.9%, and early finishes from 57.6% to 7.8%. All those v2 attacker-mirror rallies scored. Cap 12 instead drew 93.8%; caps 10 and 11 drew 100% in the initial scan. The attacker still scores 62.4% against the centering defender at cap 13.
+
+See [balance evidence and reproduction commands](results/balance-v2/README.md). The fastest crossing is now 26 ticks (~0.87s), versus 22 (~0.73s). Human comfort still requires playtesting; the delayed-controller benchmark is a sensitivity check, not a human win-rate estimate. No hidden difficulty state or human-only modifier exists.
+
+## Setup and parity
+
+Run from the repository root. The recorded training used Python 3.12 on Apple Silicon and one Torch CPU thread per run. Direct dependencies are pinned; `requirements-lock.txt` records the original full environment.
 
 ```sh
 python3.12 -m venv .venv
 .venv/bin/python -m pip install -r training/requirements.txt
 python3 training/v1/check.py
+python3 training/v2/check.py
 .venv/bin/python training/scripts/check_env.py
 ```
 
-The scalar reference must match all fixtures exactly, including float32 features. The batched simulator then verifies the same transition rules on 878 action-bearing fixture/boundary cases and 32,000 randomized transitions. Serves between rallies have no action. Do these checks before training a new port.
+V1 verifies 883 exact transitions; v2 verifies 980; each also checks 11 boundary cases and both float32 observations. The vector simulator checks 975 v2 action-bearing fixture/boundary cases plus 32,000 randomized transitions. Between-rally serve transitions contain no action. Check parity before training a port.
 
-## Reproduce the recorded run
+## Train and select
 
-Use a fresh output directory; the script refuses to append to an existing metrics file.
-
-```sh
-.venv/bin/python training/scripts/train.py \
-  --out training/runs/reproduction \
-  --seed 7 --dagger-rounds 10 --updates 150 --eval-every 15
-```
-
-Defaults are 256 parallel environments, 128 rollout steps, 64-wide Tanh layers. The recorded run took about 73 seconds for training and periodic validation on this machine; installation and final ONNX evaluations are additional. Speed and exact floating-point results vary by hardware and library versions. A quick smoke run can use `--envs 16 --horizon 16 --dagger-rounds 1 --updates 2 --eval-every 1`.
-
-Outputs include `imitation.pt`, `imitation.onnx`, `ppo.pt`, `ppo.onnx`, `last.pt`, `training-state.pt`, `metrics.jsonl`, `config.json`, and selection records. The two named models are selected on validation results, not simply the final iteration. `training-state.pt` retains actor, critic and optimizer for inspection; there is no exact-resume facility (RNG, environment and opponent-pool state are not checkpointed). Only load trusted PyTorch checkpoint files. ONNX actors are standalone browser submissions.
-
-## What training does
-
-- **DAgger** collects 65,536 decisions per round. A predictive attacker labels the learner's visited states. Teacher control falls from 75% to zero over the first four rounds. Six supervised epochs fit up/stay/down logits; a four-round replay window retains previous examples. Adam uses learning rate .001. The best of ten rounds becomes Apprentice.
-- **PPO** starts from that selected actor. A separate `6→64→64→1` critic is used only during training. The opponent pool contains the three original ONNX models, a centering interceptor, a placement-seeking attacker, and historical copies of the learner. Opponents are assigned per rally; the bounded pool rotates between updates after five snapshots have accumulated.
-- **Rewards** are +1 for scoring, −1 for conceding, and +.02 for a successful return. These are training choices. Arena scoring stays one point per miss and zero for a draw. No game speed, collisions, serve distribution or observation features change.
-- **Optimization** uses clipped PPO (.2), clipped value loss, GAE (gamma .99, lambda .95), four epochs, minibatches of 2,048, normalized advantages, gradient norm .5, Adam eps 1e−5, a learning rate declining from .00025 toward .00005, and entropy coefficient .01. An imitation anchor starts at .05 and decays to zero. A mean approximate-KL threshold .03 stops further epochs. PPO ends episodes at each scored/drawn rally, with no bootstrap through terminal states; all five openings in each seeded match are used.
-- **Selection** averages `wins + 0.5 * draws` per rally over the five fixed validation opponents. This diagnostic is separate from match points. The training policy samples categorical actions; all reported evaluations and browser matches use first-argmax.
-
-The predictive scripts see only the six policy inputs. They recover integer geometry, predict wall bounces and discrete collision ticks, and the attacker enumerates reachable contact positions to maximize a simple travel-margin heuristic. They are deliberately strong references, not proofs of optimal play. Imitation is imperfect, and the learned policies remain much weaker than the attacker.
-
-Training match seeds lie in [0,999,999,999]. Validation uses [1,000,000,000,1,000,000,023], both sides and five rallies (240 rallies/opponent/checkpoint). Final test seeds are [2,000,000,000,2,000,000,099] (1,000 rallies and 200 matches/opponent). These intervals do not overlap. Only one training seed was run; there are no multi-seed uncertainty estimates.
-
-## Evaluate your exported model
+Three independent seeds each ran 10 DAgger rounds and 250 PPO updates, for 8,847,360 decisions per run (26,542,080 total). They completed in about 120 seconds while running concurrently on this machine, excluding dependency setup and final evaluations. Hardware and library versions affect timings and floating-point results.
 
 ```sh
-.venv/bin/python training/scripts/evaluate.py \
-  training/runs/reproduction/ppo.onnx \
-  --seed-start 2000000000 --seeds 100 \
-  --output training/runs/reproduction/test.json
+for seed in 7 17 29; do
+  .venv/bin/python training/scripts/train.py \
+    --out training/runs/v2-seed$seed --seed $seed \
+    --dagger-rounds 10 --updates 250 --eval-every 25
+done
+.venv/bin/python training/scripts/release.py
 ```
 
-This executes the fixed `[1,6]` exported ONNX actor, paired on both sides against every reference. The output records rally wins/losses/draws, match wins/losses/draws, decisive-rally median returns, mean duration, and early finishes. Choose fresh test seeds for further model development rather than repeatedly tuning to the published test set.
+The loop above runs sequentially. The recorded jobs used the same commands concurrently. Always use fresh output directories; the trainer refuses to overwrite a metrics log. A smoke run can use `--envs 16 --horizon 16 --dagger-rounds 1 --updates 2 --eval-every 1` with a separate output directory. `release.py --runs path1 path2 path3 --out path` accepts custom run locations.
 
-Recorded test results:
+Training outputs include selected `imitation.pt/.onnx`, `ppo.pt/.onnx`, `last.pt`, `training-state.pt`, metrics, configuration and selection records. There is no exact-resume facility: the inspection checkpoint retains actor, critic and optimizer, but not the full RNG/environment/opponent-pool state. Load only trusted PyTorch checkpoints.
 
-| Opponent | Apprentice rally W / L / D | Selfplay rally W / L / D | Selfplay match W / L / D |
+Release selects the highest validation score across runs **before** testing, then publishes `public/models/selfplay-v2.onnx` and that same run's imitation warm start as `apprentice-v2.onnx`. It retains every run's logs, configuration and selected PyTorch checkpoints under `training/results/v2/seed*/`. It evaluates the actual exported ONNX actors and both learned matchups. The root `training/results/v2/` contains the selected run plus final tests and selection manifest.
+
+| Seed | Best PPO update | Validation score |
+| --- | ---: | ---: |
+| 7 | 125 | .77625 |
+| **17 · selected** | **250** | **.80125** |
+| 29 | 175 | .77792 |
+
+The score is the mean of `(rally wins + 0.5 * draws) / rallies` across five reference opponents. It is a training diagnostic; match scoring remains one point per miss and zero for a timed-out rally. These three runs show variation, but the selected run's test results are not a multi-seed average or confidence interval.
+
+## Training method
+
+Each actor is `6→64→64→3`, Tanh hidden layers, 4,803 parameters and 4,672 MACs/decision, approximately 20 KiB ONNX. It outputs raw up/stay/down scores. A separate `6→64→64→1` critic is training-only.
+
+- DAgger collects 65,536 decisions per round, labels states with a predictive attacker, and gradually removes teacher control over the first four rounds. Six supervised epochs fit each round; the replay window retains four rounds. Adam learning rate is .001.
+- PPO uses 256 environments × 128 steps, four optimization epochs, 2,048-item minibatches, clipping .2, clipped value loss, GAE (gamma .99, lambda .95), normalized advantages, gradient norm .5, Adam eps 1e−5, learning rate .00025 declining toward .00005, and entropy coefficient .01. A mean approximate-KL threshold .03 stops further epochs.
+- Rewards are +1 for scoring, −1 for conceding and +.02 per return. An imitation anchor starts at .05 and decays to zero. These are training choices outside the game rules.
+- Opponents include Tracker, Anticipator, Challenger, a predictive interceptor, a placement-seeking attacker and up to five historical learner snapshots. Opponents are assigned per rally; the bounded historical pool rotates between updates. Each scored/drawn rally terminates the RL episode, with no bootstrap through terminal states; all five openings of each seeded match are used.
+- The scripts use only the six policy inputs. They recover integer geometry, calculate wall reflections and discrete flight times; the attacker enumerates reachable contact positions using v2's actual shot formula. These are strong references, not optimal-play proofs.
+- Training samples actions. Validation, final evaluation and the arena use deterministic first-argmax. Export serializes Linear/Tanh weights directly into Gemm/Tanh ONNX opset18, IR10, avoiding auxiliary operators outside the small submission contract. Critics and optimizers stay outside the files.
+
+Training seeds are [0,999,999,999]. Validation uses [1,000,000,000,1,000,000,023], both sides and all five rallies (240 rallies/opponent/checkpoint). Balance studies use the 3,000,000,000 and 3,100,000,000 intervals. Final v2 evaluation uses [2,100,000,000,2,100,000,099]. The actual test range is recorded by `release.py` in the release manifest/configuration; it does not affect training. These sets are disjoint.
+
+## Final exported-model results
+
+Each row is 1,000 rallies / 200 five-rally matches, both sides, on the same unseen serves.
+
+| Opponent | Apprentice W / L / D | Selfplay W / L / D | Selfplay matches W / L / D |
 | --- | --- | --- | --- |
-| Tracker | 787 / 213 / 0 | 930 / 38 / 32 | 199 / 0 / 1 |
-| Anticipator | 779 / 221 / 0 | 931 / 47 / 22 | 199 / 0 / 1 |
-| Challenger | 780 / 215 / 5 | 943 / 51 / 6 | 199 / 1 / 0 |
-| Interceptor script | 848 / 141 / 11 | 864 / 23 / 113 | 200 / 0 / 0 |
-| Attacker script | 83 / 908 / 9 | 86 / 886 / 28 | 0 / 200 / 0 |
+| Tracker | 849 / 144 / 7 | 898 / 18 / 84 | 200 / 0 / 0 |
+| Anticipator | 789 / 139 / 72 | 912 / 39 / 49 | 199 / 0 / 1 |
+| Challenger | 825 / 147 / 28 | 893 / 52 / 55 | 199 / 0 / 1 |
+| Interceptor | 317 / 227 / 456 | 741 / 53 / 206 | 199 / 0 / 1 |
+| Attacker | 65 / 752 / 183 | 111 / 359 / 530 | 22 / 141 / 37 |
 
-The best PPO checkpoint occurred at update45 / 2,129,920 cumulative decisions, despite running to 5,570,560 decisions. More training did not reliably improve this run. Both actors have 4,803 parameters, 4,672 MACs per decision, two hidden Tanh layers, and a raw linear three-score output. They are approximately20KiB each. Graphs are explicitly serialized from PyTorch Linear/Tanh layers into Gemm/Tanh ONNX opset18, IR10, so export does not introduce unsupported operators. Training machinery is excluded.
+The attacker remains stronger. Survival improved, with many draws; those are not wins. Against itself, Selfplay has median 7 returns in scored rallies and 41% timeouts. Against Apprentice, Selfplay wins 59.4%, draws 24%, and decisive rallies have median 5 returns. Compared with a simple defensive policy, trained agents offer a useful challenge, but no claim of optimal or state-of-the-art play is made.
 
-## Inspect curves and reproduce the report
-
-Open the arena's Model library and follow **Learning curves & evaluation** on either trained card, or open `/training/report.html` on the local dev server. The report contains raw (unsmoothed) validation curves, imitation cross-entropy and PPO action entropy. Additional loss, approximate-KL and clipping diagnostics are in the JSONL log. Final-minibatch losses are diagnostics, not full-dataset averages. Original logs, selected PyTorch weights, source/config metadata, final tests and replay checks are committed in `training/results/seed7/`.
+To evaluate another submission:
 
 ```sh
-.venv/bin/python training/scripts/report.py
-python3 training/scripts/package.py
+.venv/bin/python training/scripts/evaluate.py path/to/model.onnx \
+  --seed-start 2100000000 --seeds 100 --output /tmp/model-test.json
+```
+
+Use fresh seeds for future model development rather than repeatedly tuning to the published test set.
+
+## Curves, export checks and the arena
+
+The Model library links to `/training/report.html`, containing the balance comparison, all three training curves, raw selected-run opponent win rates, imitation loss, PPO entropy and final test tables. Additional policy/value losses, KL and clipping diagnostics are in the JSONL records. Final-minibatch losses are diagnostics, not dataset averages.
+
+```sh
 .venv/bin/python training/scripts/verify_export.py
 node --import tsx training/scripts/check_replays.ts
+.venv/bin/python training/scripts/report.py
+python3 training/scripts/package.py
+npm test
+npm run build
 ```
 
-The export verifier compares 8,192 observations per policy with PyTorch (100% identical actions; maximum score error under 0.000007), then generates eight full native-ONNX match replays. The TypeScript checker reproduces all 7,210 frames against the actual unchanged browser engine. `npm test` also checks that the frozen `game.ts` remains byte-identical to the live rules.
+The export check compares 8,192 observations per policy with PyTorch (identical actions; maximum score error below .000008). Eight complete native-ONNX matches reproduce exactly in the live TypeScript engine: 13,975 frames. App tests verify that the frozen v2 engine matches the live source and that v2 changes only horizontal contact speed relative to v1.
 
-To bring a new run into the arena, click **Import model** and select its `.onnx`. The shipped Apprentice and Selfplay files are included as downloadable presets for easy comparison. Model cards infer layer widths, activations and operator graphs from the actual ONNX bytes, including imports.
+The arena starts with the new Selfplay vs Apprentice matchup. Import any compatible ONNX using **Import model**. Architecture cards derive widths, activations and operator graphs from the actual files. V1 inputs/outputs remain compatible, so existing imports still run; their performance must be re-evaluated under v2.
 
-## Method references
+## V1 archive
 
-- [Proximal Policy Optimization](https://arxiv.org/abs/1707.06347)
-- [DAgger: A Reduction of Imitation Learning and Structured Prediction](https://arxiv.org/abs/1011.0686)
-- [CleanRL's PPO implementation details](https://docs.cleanrl.dev/rl-algorithms/ppo/)
+`training/v1/`, `public/training/pong-v1.zip`, original `public/models/selfplay.onnx` / `apprentice.onnx`, and `training/results/seed7/` remain intact. The archived visual report is `/training/v1/report.html`. Original v1 training scripts and README are available at Git commit `a89c818`; use a separate checkout of that commit to reproduce the original experiment. Current scripts target v2.
 
-The implementation is specific to the small v1 arena and written here. No remote training service or external logging service is used.
+Methods: [PPO](https://arxiv.org/abs/1707.06347), [DAgger](https://arxiv.org/abs/1011.0686), [CleanRL PPO notes](https://docs.cleanrl.dev/rl-algorithms/ppo/). The implementation is local and purpose-built for this arena; no remote training or logging service is used.
