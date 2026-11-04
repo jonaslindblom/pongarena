@@ -1,0 +1,82 @@
+{
+  "seed_start": 2000000000,
+  "seed_count": 100,
+  "model": "public/models/apprentice.onnx",
+  "opponents": {
+    "tracker": {
+      "rallies": 1000,
+      "wins": 787,
+      "losses": 213,
+      "draws": 0,
+      "point_rate": 0.787,
+      "score_rate": 0.787,
+      "match_wins": 182,
+      "match_losses": 18,
+      "match_draws": 0,
+      "median_decisive_returns": 1.0,
+      "mean_returns": 1.623,
+      "mean_ticks": 93.842,
+      "early_finish_rate": 0.547
+    },
+    "anticipator": {
+      "rallies": 1000,
+      "wins": 779,
+      "losses": 221,
+      "draws": 0,
+      "point_rate": 0.779,
+      "score_rate": 0.779,
+      "match_wins": 188,
+      "match_losses": 12,
+      "match_draws": 0,
+      "median_decisive_returns": 2.0,
+      "mean_returns": 2.245,
+      "mean_ticks": 109.269,
+      "early_finish_rate": 0.436
+    },
+    "challenger": {
+      "rallies": 1000,
+      "wins": 780,
+      "losses": 215,
+      "draws": 5,
+      "point_rate": 0.78,
+      "score_rate": 0.7825,
+      "match_wins": 184,
+      "match_losses": 15,
+      "match_draws": 1,
+      "median_decisive_returns": 2.0,
+      "mean_returns": 2.442,
+      "mean_ticks": 115.937,
+      "early_finish_rate": 0.396
+    },
+    "interceptor": {
+      "rallies": 1000,
+      "wins": 848,
+      "losses": 141,
+      "draws": 11,
+      "point_rate": 0.848,
+      "score_rate": 0.8535,
+      "match_wins": 199,
+      "match_losses": 1,
+      "match_draws": 0,
+      "median_decisive_returns": 3.0,
+      "mean_returns": 4.47,
+      "mean_ticks": 206.288,
+      "early_finish_rate": 0.186
+    },
+    "attacker": {
+      "rallies": 1000,
+      "wins": 83,
+      "losses": 908,
+      "draws": 9,
+      "point_rate": 0.083,
+      "score_rate": 0.0875,
+      "match_wins": 0,
+      "match_losses": 200,
+      "match_draws": 0,
+      "median_decisive_returns": 2.0,
+      "mean_returns": 2.639,
+      "mean_ticks": 107.75,
+      "early_finish_rate": 0.459
+    }
+  }
+}

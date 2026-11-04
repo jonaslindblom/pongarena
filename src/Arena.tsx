@@ -36,6 +36,7 @@ import {
 } from './game'
 import { type Controller } from './models'
 import type { Match } from './useMatch'
+import { architectureLabel } from './Architecture'
 
 export const pad = (n: number) => String(n).padStart(2, '0')
 export function ModelIcon({ id, size = 20 }: { id: string; size?: number }) {
@@ -378,6 +379,11 @@ export function Arena({ m, models, ids, pick, swap, ready }: Props) {
                     ))}
                   </select>
                 </label>
+                {ids[i] !== 'keyboard' && (
+                  <div className="pick-architecture">
+                    {architectureLabel(models.find((x) => x.id === ids[i]))}
+                  </div>
+                )}
               </div>
             ))}
           </div>

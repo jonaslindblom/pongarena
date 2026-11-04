@@ -19,6 +19,7 @@ import type { Pair, Side } from './game'
 import { MAX_BYTES } from './validate'
 import { savedModels, saveModel } from './storage'
 import { useMatch } from './useMatch'
+import { Architecture } from './Architecture'
 type Page = 'Arena' | 'Model library' | 'Field guide'
 const tabs: { page: Page; icon: typeof Gamepad2 }[] = [
   { page: 'Arena', icon: Gamepad2 },
@@ -111,6 +112,14 @@ function Guide() {
         <a className="secondary-btn" href="/models/tracker.onnx" download>
           <ArrowDownToLine size={16} />
           Starter ONNX
+        </a>
+        <h3>Train independently</h3>
+        <p>
+          The v1 package includes exact rules, a headless example, a Python reference, and
+          deterministic test cases.
+        </p>
+        <a className="secondary-btn" href="/training/pong-v1.zip" download>
+          <ArrowDownToLine size={16} /> Training package
         </a>
         <h3>First weight edit</h3>
         <p>
@@ -328,12 +337,18 @@ export default function App() {
                   <small>{c.kind}</small>
                   <h2>{c.name}</h2>
                   <p>{c.description}</p>
+                  <Architecture model={c} />
                   <dl>
                     <dt>Parameters</dt>
                     <dd>{c.params.toLocaleString()}</dd>
                     <dt>MACs / tick</dt>
                     <dd>{c.macs.toLocaleString()}</dd>
                   </dl>
+                  {c.report && (
+                    <a className="training-link" href={c.report} target="_blank" rel="noreferrer">
+                      Learning curves & evaluation ↗
+                    </a>
+                  )}
                   <div className="library-actions">
                     <button
                       className="secondary-btn"

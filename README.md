@@ -45,3 +45,5 @@ The tests cover the game rules, perspective symmetry, finite output and tie hand
 ## Train your own weights
 
 The standalone [Pong v1 training contract](training/v1/README.md) includes the frozen engine, a headless TypeScript example, a dependency-free Python reference, and full deterministic match fixtures. Copy `training/v1/` to train independently of the app. Run `python3 training/v1/check.py` to verify the Python port.
+
+[PyTorch training and results](training/README.md) includes runnable DAgger + PPO self-play scripts, learning curves, held-out tests, and standalone ONNX exports. **Apprentice** and **Selfplay** are available in the Model library. Cards show the actual network architecture and link to the local training report. The v1 rules are unchanged.

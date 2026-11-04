@@ -16,6 +16,8 @@ export interface Controller {
   description: string
   params: number
   macs: number
+  architecture?: ReturnType<typeof validateModel>['architecture']
+  report?: string
   session?: ort.InferenceSession
 }
 export const keyboard: Controller = {
@@ -27,6 +29,20 @@ export const keyboard: Controller = {
   macs: 0,
 }
 export const presets = [
+  {
+    id: 'selfplay',
+    name: 'Selfplay',
+    kind: 'PyTorch · PPO',
+    description: 'Refined through league self-play after a predictive-controller warm start.',
+    report: '/training/report.html',
+  },
+  {
+    id: 'apprentice',
+    name: 'Apprentice',
+    kind: 'PyTorch · Imitation',
+    description: 'Learns a predictive attacker’s decisions from states it visits during play.',
+    report: '/training/report.html',
+  },
   {
     id: 'challenger',
     name: 'Challenger',

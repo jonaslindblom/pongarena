@@ -73,7 +73,13 @@ test('ties go to the first action and unusable output fails explicitly', () => {
 })
 const starter = readFileSync(new URL('../public/models/tracker.onnx', import.meta.url))
 test('the starter fits the documented contract and compute budget', () => {
-  assert.deepEqual(validateModel(starter), { params: 163, macs: 144, nodes: 3 })
+  const stats = validateModel(starter)
+  assert.deepEqual([stats.params, stats.macs, stats.nodes], [163, 144, 3])
+  assert.deepEqual(stats.architecture.widths, [6, 16, 3])
+  assert.deepEqual(
+    stats.architecture.operations.map((n) => n.op),
+    ['Gemm', 'Relu', 'Gemm'],
+  )
 })
 test('uploads may change hidden architecture but must respect graph and file limits', () => {
   const model = pb.onnx.ModelProto.decode(starter)
@@ -115,4 +121,32 @@ test('the published v1 training reference stays identical to the live rules', ()
     readFileSync(new URL('../training/v1/game.ts', import.meta.url), 'utf8'),
     readFileSync(new URL('../src/game.ts', import.meta.url), 'utf8'),
   )
+})
+
+test('trained exports reveal their actual widths and remain within the upload contract', () => {
+  for (const name of ['apprentice', 'selfplay']) {
+    const stats = validateModel(
+      readFileSync(new URL(`../public/models/${name}.onnx`, import.meta.url)),
+    )
+    assert.deepEqual(stats.architecture.widths, [6, 64, 64, 3])
+    assert.equal(stats.params, 4803)
+    assert.equal(stats.macs, 4672)
+    assert.deepEqual(
+      stats.architecture.operations.map((n) => n.op),
+      ['Gemm', 'Tanh', 'Gemm', 'Tanh', 'Gemm'],
+    )
+  }
+})
+
+test('a branched upload is shown as a graph rather than an invented sequential architecture', () => {
+  const model = pb.onnx.ModelProto.decode(starter)
+  const nodes = model.graph!.node!
+  const hidden = nodes[0].output![0]
+  const activated = nodes[1].output![0]
+  nodes[2].input![0] = 'residual'
+  nodes.splice(2, 0, { opType: 'Add', input: [hidden, activated], output: ['residual'] })
+  const stats = validateModel(pb.onnx.ModelProto.encode(model).finish())
+  assert.equal(stats.architecture.widths, null)
+  assert.deepEqual(stats.architecture.operations[2].inputs, [hidden, activated])
+  assert.deepEqual(stats.architecture.operations[2].shape, [1, 16])
 })

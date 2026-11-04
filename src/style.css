@@ -1262,3 +1262,90 @@ legend {
     display: none;
   }
 }
+
+.architecture {
+  width: 100%;
+  margin-top: 16px;
+  padding: 14px;
+  border: 1px solid #dce4d6;
+  border-radius: 9px;
+  background: #f4f7ed;
+}
+.architecture-caption {
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  color: #75816e;
+}
+.architecture-chain {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 13px 0 10px;
+  font-family: var(--mono);
+}
+.architecture-layer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.architecture-layer i {
+  color: #97aa8c;
+  font-size: 13px;
+  font-style: normal;
+}
+.architecture-layer b {
+  display: grid;
+  gap: 4px;
+  font-size: 19px;
+  font-weight: 500;
+}
+.architecture-layer small {
+  color: #7a8773;
+  font-size: 7px;
+  letter-spacing: 0.06em;
+}
+.architecture-activation {
+  font-size: 10px;
+  color: #66775e;
+}
+.architecture-details {
+  margin-top: 12px;
+  border-top: 1px solid #dce4d6;
+  padding-top: 10px;
+}
+.architecture-details summary {
+  cursor: pointer;
+  font-size: 10px;
+  color: #486441;
+}
+.architecture-details ol {
+  padding-left: 17px;
+  font-size: 10px;
+}
+.architecture-details li {
+  margin-top: 10px;
+}
+.architecture-details li b {
+  display: block;
+}
+.architecture-details li span {
+  color: #71806a;
+  font-weight: 400;
+}
+.architecture-details code {
+  display: block;
+  overflow-wrap: anywhere;
+  margin-top: 3px;
+  color: #75816e;
+}
+.pick-architecture {
+  margin: 6px 2px 0;
+  font-family: var(--mono);
+  color: #70806b;
+  font-size: 10px;
+}
+.training-link {
+  font-size: 11px;
+  color: #38613b;
+  margin-bottom: 15px;
+}

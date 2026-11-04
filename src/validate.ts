@@ -75,6 +75,11 @@ export function validateModel(bytes: Uint8Array) {
     params += n
   }
   const nodes = g.node ?? []
+  const operations: { op: string; inputs: string[]; output: string; shape: Shape }[] = []
+  const widths = [6]
+  let sequential = true
+  let previous = 'observation'
+  const constants = new Set((g.initializer ?? []).map((p) => p.name))
   check(nodes.length <= 256, 'Limit the graph to 256 operators.')
   for (const node of nodes) {
     const op = node.opType
@@ -140,10 +145,30 @@ export function validateModel(bytes: Uint8Array) {
       'Each node needs one unique output.',
     )
     shapes.set(name, out)
+    const dynamicInputs = (node.input ?? []).filter((input) => !constants.has(input))
+    if (
+      dynamicInputs.length !== 1 ||
+      dynamicInputs[0] !== previous ||
+      out.length !== 2 ||
+      out[0] !== 1
+    )
+      sequential = false
+    if (op === 'Gemm' || op === 'MatMul') widths.push(out.at(-1)!)
+    else if (out.at(-1) !== widths.at(-1)) sequential = false
+    operations.push({ op, inputs: node.input ?? [], output: name, shape: out })
+    previous = name
   }
   check(
     shapes.get('action_scores')?.join() === '1,3',
     'The graph must produce action_scores[1, 3].',
   )
-  return { params, macs, nodes: nodes.length }
+  return {
+    params,
+    macs,
+    nodes: nodes.length,
+    architecture: {
+      widths: sequential && previous === 'action_scores' ? widths : null,
+      operations,
+    },
+  }
 }
