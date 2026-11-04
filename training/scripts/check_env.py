@@ -21,7 +21,7 @@ def verify(env, frames, actions):
 
 
 def main():
-    fixtures = json.loads((Path(__file__).resolve().parents[1] / 'v1/fixtures.json').read_text())
+    fixtures = json.loads((Path(__file__).resolve().parents[1] / 'v2/fixtures.json').read_text())
     frames, actions = [], []
     for match in fixtures['matches']:
         prev = match['initial']['state']

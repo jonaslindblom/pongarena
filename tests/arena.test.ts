@@ -13,6 +13,7 @@ import {
   type Scores,
 } from '../src/game'
 import { validateModel } from '../src/validate'
+import { advance as advanceV1, serve as serveV1 } from '../training/v1/game'
 
 const still: Pair<Scores> = [
   [0, 1, 0],
@@ -26,8 +27,23 @@ test('a policy can play either side using the same observation', () => {
 test('edge contact gives a defender less time to reach the corner', () => {
   const before = { ...serve(24), x: 20, y: 80, vy: 0, vx: -5 }
   assert.equal(advance(before, still).vx, 5)
-  assert.equal(advance({ ...before, y: 95 }, still).vx, 15)
+  assert.equal(advance({ ...before, y: 95 }, still).vx, 13)
   assert.equal(before.points[0] + before.points[1], 0)
+})
+test('v2 softens edge speed while preserving aiming, paddle motion and seeded serves', () => {
+  for (const seed of [0, 24, 902, 4294967295]) assert.deepEqual(serve(seed), serveV1(seed))
+  for (const side of [0, 1] as const) {
+    for (let offset = -15; offset <= 15; offset++) {
+      const before = { ...serve(24), x: side === 0 ? 20 : 340, y: 80 + offset, vx: side === 0 ? -5 : 5, vy: 0 }
+      const old = advanceV1(before, still)
+      const next = advance(before, still)
+      assert.deepEqual({ ...next, vx: old.vx }, old)
+      assert.ok(Math.abs(next.vx) <= 13)
+    }
+  }
+  const edge = { ...serve(24), x: 20, y: 94, vx: -5, vy: 0 }
+  assert.equal(advance(edge, still).vx, 12)
+  assert.equal(advanceV1(edge, still).vx, 14)
 })
 test('five seeded rallies reproduce and a missed ball awards exactly one point', () => {
   let f = serve(902)
@@ -116,9 +132,9 @@ test('the MAC limit counts repeated use of an embedded matrix', () => {
   assert.throws(() => validateModel(pb.onnx.ModelProto.encode(m).finish()), /compute budget/)
 })
 
-test('the published v1 training reference stays identical to the live rules', () => {
+test('the published v2 training reference stays identical to the live rules', () => {
   assert.equal(
-    readFileSync(new URL('../training/v1/game.ts', import.meta.url), 'utf8'),
+    readFileSync(new URL('../training/v2/game.ts', import.meta.url), 'utf8'),
     readFileSync(new URL('../src/game.ts', import.meta.url), 'utf8'),
   )
 })

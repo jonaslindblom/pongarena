@@ -3,6 +3,7 @@ export type Scores = [number, number, number]
 export type Pair<T> = [T, T]
 export const ACTIONS = ['Up', 'Stay', 'Down'] as const
 export const RALLIES = 5
+export const MAX_BALL_VX = 13
 export const TICKS_PER_SECOND = 30
 export type Event = 'serve' | 'return' | 'point' | 'draw' | null
 
@@ -111,7 +112,7 @@ export function advance(prior: Frame, scores: Pair<Scores>): Frame {
       f.event = 'point'
     } else {
       f.x = side === 0 ? 15 : 345
-      f.vx = (side === 0 ? 1 : -1) * (5 + Math.round((10 * Math.abs(offset)) / 15))
+      f.vx = (side === 0 ? 1 : -1) * (5 + Math.round(((MAX_BALL_VX - 5) * Math.abs(offset)) / 15))
       f.vy = clamp(Math.round(offset / 3), -5, 5)
       f.returns++
       f.actor = side

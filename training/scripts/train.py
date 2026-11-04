@@ -15,7 +15,7 @@ from evaluate import evaluate
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument('--out', type=Path, default=Path('training/runs/seed7'))
+    p.add_argument('--out', type=Path, default=Path('training/runs/v2-seed7'))
     p.add_argument('--seed', type=int, default=7)
     p.add_argument('--dagger-rounds', type=int, default=10)
     p.add_argument('--updates', type=int, default=250)
@@ -34,7 +34,7 @@ def main():
     rng = np.random.default_rng(args.seed)
     config = vars(args).copy()
     config.update(out=str(args.out), torch=torch.__version__, numpy=np.__version__,
-                  architecture=[6, 64, 64, 3], activation='Tanh', gamma=.99, gae_lambda=.95,
+                  architecture=[6, 64, 64, 3], activation='Tanh', rules='pong-v2', max_ball_vx=13, gamma=.99, gae_lambda=.95,
                   clip=.2, epochs=4, minibatch=2048, entropy=.01, return_reward=.02,
                   seed_ranges={'train': [0, 999999999], 'validation': [1000000000, 1000000023],
                                'test': [2000000000, 2000000099]})

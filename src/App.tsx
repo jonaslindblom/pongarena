@@ -29,7 +29,7 @@ const tabs: { page: Page; icon: typeof Gamepad2 }[] = [
 const descriptions: Record<Page, string> = {
   Arena: 'Pit two controllers against each other and watch every decision unfold.',
   'Model library': 'Choose a controller, download a baseline, or bring your own weights.',
-  'Field guide': 'Everything your paddle needs to compete in Pong v1.',
+  'Field guide': 'Everything your paddle needs to compete in Pong v2.',
 }
 const inputs = [
   ['Ball X', 'Centered at 0. Negative toward your end, positive toward your opponent.'],
@@ -51,7 +51,8 @@ function Guide() {
           wins.
         </p>
         <p>
-          Hit near the edge of your paddle to send a faster, steeper return. Both players see the
+          Hit near the edge of your paddle to send a faster, steeper return. Horizontal ball speed
+          ranges from 5 to 13 units per tick; paddles move 2 units per tick. Both players see the
           same instant before either moves. Opening the arena picks five serves from different
           heights. Each paddle receives both rising and falling serves. Restart repeats the set.
         </p>
@@ -115,10 +116,10 @@ function Guide() {
         </a>
         <h3>Train independently</h3>
         <p>
-          The v1 package includes exact rules, a headless example, a Python reference, and
+          The v2 package includes exact rules, a headless example, a Python reference, and
           deterministic test cases.
         </p>
-        <a className="secondary-btn" href="/training/pong-v1.zip" download>
+        <a className="secondary-btn" href="/training/pong-v2.zip" download>
           <ArrowDownToLine size={16} /> Training package
         </a>
         <h3>First weight edit</h3>
@@ -281,7 +282,7 @@ export default function App() {
         <div className="page-head">
           <div>
             <div className="eyebrow">
-              <i /> NEURAL GAME LAB <span>/</span> PONG V1
+              <i /> NEURAL GAME LAB <span>/</span> PONG V2
             </div>
             <h1>{page === 'Arena' ? 'Match arena' : page}</h1>
             <p>{descriptions[page]}</p>
@@ -405,7 +406,7 @@ export default function App() {
             <X size={20} />
           </button>
         </div>
-        <div className="section-code">PONG V1 / LOCAL IMPORT</div>
+        <div className="section-code">PONG V2 / LOCAL IMPORT</div>
         <h2>Import a model</h2>
         <p>Choose a self-contained ONNX file. Your weights stay in this browser.</p>
         <fieldset disabled={uploading}>

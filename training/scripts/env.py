@@ -1,13 +1,14 @@
-"""Vectorized Pong v1. Episodes end per rally; all five seeded openings are used."""
+"""Vectorized Pong v2. Episodes end per rally; all five seeded openings are used."""
 import sys
 from pathlib import Path
 import numpy as np
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'v1'))
-from reference import serve
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'v2'))
+from reference import serve, MAX_BALL_VX
 
 
 class Arena:
-    def __init__(self, n, seed=1):
+    def __init__(self, n, seed=1, max_vx=MAX_BALL_VX):
+        self.max_vx = max_vx
         self.n = n
         self.rng = np.random.default_rng(seed)
         self.ball = np.zeros((n, 4), dtype=np.float64)
@@ -58,7 +59,7 @@ class Arena:
         miss = contact & (np.abs(offset) > 15)
         hit = contact & ~miss
         x[hit] = np.where(side[hit] == 0, 15, 345)
-        vx[hit] = np.where(side[hit] == 0, 1, -1) * (5 + np.floor(10 * np.abs(offset[hit]) / 15 + .5))
+        vx[hit] = np.where(side[hit] == 0, 1, -1) * (5 + np.floor((self.max_vx - 5) * np.abs(offset[hit]) / 15 + .5))
         vy[hit] = np.clip(np.floor(offset[hit] / 3 + .5), -5, 5)
         self.returns[hit] += 1
         outcome = np.where(miss, 1 - side, np.where(self.ticks >= 800, 2, -1))
@@ -70,7 +71,7 @@ def reflect(y):
     return 4 + np.where(z <= 152, z, 304 - z)
 
 
-def scripted(obs, attack=False):
+def scripted(obs, attack=False, max_vx=MAX_BALL_VX):
     """Exact-flight reference using only the six exposed inputs. No hidden state."""
     x = np.rint(obs[:, 0].astype(np.float64) * 180 + 180)
     y = np.rint(obs[:, 1].astype(np.float64) * 80 + 80)
@@ -86,7 +87,7 @@ def scripted(obs, attack=False):
         moves = np.arange(-65, 66)[None, :]
         centers = np.clip(own[:, None] + 2 * moves, 15, 145)
         offset = landing[:, None] - centers
-        speed_x = 5 + np.floor(10 * np.abs(offset) / 15 + .5)
+        speed_x = 5 + np.floor((max_vx - 5) * np.abs(offset) / 15 + .5)
         speed_y = np.clip(np.floor(offset / 3 + .5), -5, 5)
         flight = np.ceil(330 / speed_x)
         destination = reflect(landing[:, None] + flight * speed_y)
