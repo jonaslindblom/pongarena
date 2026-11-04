@@ -1,0 +1,126 @@
+export type Side = 0 | 1
+export type Scores = [number, number, number]
+export type Pair<T> = [T, T]
+export const ACTIONS = ['Up', 'Stay', 'Down'] as const
+export const RALLIES = 5
+export const TICKS_PER_SECOND = 30
+export type Event = 'serve' | 'return' | 'point' | 'draw' | null
+
+export interface Frame {
+  tick: number
+  rally: number
+  rallyTick: number
+  x: number
+  y: number
+  vx: number
+  vy: number
+  paddles: Pair<number>
+  points: Pair<number>
+  returns: number
+  event: Event
+  actor?: Side
+  scores: Pair<Scores | null>
+}
+
+const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(max, n))
+export const endedRally = (f: Frame) => f.event === 'point' || f.event === 'draw'
+export const endedMatch = (f: Frame) => f.rally === RALLIES && endedRally(f)
+
+export function serve(seed: number, prior?: Frame): Frame {
+  const rally = prior ? prior.rally + 1 : 1
+  let n = seed >>> 0
+  function random() {
+    n = (Math.imul(1664525, n) + 1013904223) >>> 0
+    return n / 4294967296
+  }
+  const sign = () => (random() < 0.5 ? -1 : 1)
+  const firstVx = 5 * sign()
+  // Each receiver gets a rising and a falling serve in the first four rallies.
+  const firstSlope = sign()
+  const secondSlope = sign()
+  const directions = [firstSlope, secondSlope, -firstSlope, -secondSlope, sign()]
+  const openings = [32, 56, 80, 104, 128].map((center) => ({
+    y: center + Math.floor(random() * 21) - 10,
+    speedY: 1 + Math.floor(random() * 5),
+  }))
+  for (let i = openings.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1))
+    ;[openings[i], openings[j]] = [openings[j], openings[i]]
+  }
+  const { y, speedY } = openings[rally - 1]
+  return {
+    tick: prior ? prior.tick + 1 : 0,
+    rally,
+    rallyTick: 0,
+    x: 180,
+    y,
+    vx: rally % 2 ? firstVx : -firstVx,
+    vy: speedY * directions[rally - 1],
+    paddles: [80, 80],
+    points: prior ? [...prior.points] : [0, 0],
+    returns: 0,
+    event: 'serve',
+    scores: [null, null],
+  }
+}
+
+export function observation(f: Frame, side: Side) {
+  const mirror = side === 0 ? 1 : -1
+  return Float32Array.of(
+    (mirror * (f.x - 180)) / 180,
+    (f.y - 80) / 80,
+    (mirror * f.vx) / 6,
+    f.vy / 6,
+    (f.paddles[side] - 80) / 80,
+    (f.paddles[1 - side] - 80) / 80,
+  )
+}
+
+export function choice(scores: Scores) {
+  if (!scores.every(Number.isFinite))
+    throw new Error('The controller produced a non-finite action score.')
+  return scores.indexOf(Math.max(...scores))
+}
+
+export function advance(prior: Frame, scores: Pair<Scores>): Frame {
+  const paddles = prior.paddles.map((p, i) =>
+    clamp(p + 2 * (choice(scores[i]) - 1), 15, 145),
+  ) as Pair<number>
+  const f: Frame = {
+    ...prior,
+    tick: prior.tick + 1,
+    rallyTick: prior.rallyTick + 1,
+    x: prior.x + prior.vx,
+    y: prior.y + prior.vy,
+    paddles,
+    points: [...prior.points],
+    event: null,
+    actor: undefined,
+    scores,
+  }
+  if (f.y < 4 || f.y > 156) {
+    f.y = f.y < 4 ? 8 - f.y : 312 - f.y
+    f.vy *= -1
+  }
+  if ((f.vx < 0 && f.x <= 15) || (f.vx > 0 && f.x >= 345)) {
+    const side: Side = f.vx < 0 ? 0 : 1
+    const offset = f.y - paddles[side]
+    if (Math.abs(offset) > 15) {
+      f.actor = side === 0 ? 1 : 0
+      f.points[f.actor]++
+      f.event = 'point'
+    } else {
+      f.x = side === 0 ? 15 : 345
+      f.vx = (side === 0 ? 1 : -1) * (5 + Math.round((10 * Math.abs(offset)) / 15))
+      f.vy = clamp(Math.round(offset / 3), -5, 5)
+      f.returns++
+      f.actor = side
+      f.event = 'return'
+    }
+  }
+  if (f.rallyTick >= 800 && f.event !== 'point') {
+    f.event = 'draw'
+    f.actor = undefined
+  }
+  return f
+}
