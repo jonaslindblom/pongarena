@@ -140,7 +140,7 @@ function Guide() {
 export default function App() {
   const [page, setPage] = useState<Page>('Arena')
   const [models, setModels] = useState<Controller[]>([keyboard])
-  const [ids, setIds] = useState<Pair<string>>(['selfplay-v2', 'apprentice-v2'])
+  const [ids, setIds] = useState<Pair<string>>(['selfplay-v3', 'apprentice-v3'])
   const [error, setError] = useState(''),
     [notice, setNotice] = useState('')
   const [importSide, setImportSide] = useState<Side>(0),
@@ -287,7 +287,7 @@ export default function App() {
         <div className="page-head">
           <div>
             <div className="eyebrow">
-              <i /> NEURAL GAME LAB <span>/</span> PONG V2
+              <i /> NEURAL GAME LAB <span>/</span> PONG V3
             </div>
             <h1>{page === 'Arena' ? 'Match arena' : page}</h1>
             <p>{descriptions[page]}</p>
@@ -411,7 +411,7 @@ export default function App() {
             <X size={20} />
           </button>
         </div>
-        <div className="section-code">PONG V2 / LOCAL IMPORT</div>
+        <div className="section-code">PONG V3 / LOCAL IMPORT</div>
         <h2>Import a model</h2>
         <p>Choose a self-contained ONNX file. Your weights stay in this browser.</p>
         <fieldset disabled={uploading}>

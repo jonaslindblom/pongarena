@@ -23,7 +23,7 @@ def main():
     options.inter_op_num_threads = 1
     options.enable_cpu_mem_arena = False
     sessions = {name: ort.InferenceSession(str(ROOT / f'public/models/{name}.onnx'), sess_options=options)
-                for name in ['selfplay-v3', 'apprentice-v3', 'challenger']}
+                for name in ['selfplay-v3', 'apprentice-v3', 'selfplay-v2', 'challenger']}
     env = Arena(64, seed=721)
     observations = []
     for _ in range(64):
@@ -43,7 +43,8 @@ def main():
         checks[name] = dict(observations=len(obs), max_abs_error=float(np.abs(actual - expected).max()),
                             action_agreement=1., sha256=hashlib.sha256((ROOT / f'public/models/{name}.onnx').read_bytes()).hexdigest())
     matches = []
-    for names in [('selfplay-v3', 'challenger'), ('challenger', 'selfplay-v3'), ('selfplay-v3', 'apprentice-v3'), ('selfplay-v3', 'selfplay-v3')]:
+    for names in [('selfplay-v3', 'challenger'), ('challenger', 'selfplay-v3'), ('selfplay-v3', 'apprentice-v3'),
+                  ('selfplay-v3', 'selfplay-v3'), ('selfplay-v3', 'selfplay-v2')]:
         for seed in [2_200_000_007, 2_200_000_043]:
             frame = serve(seed)
             loops = LoopDetector()

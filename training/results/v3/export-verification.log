@@ -1,0 +1,19 @@
+2026-11-05 11:19:14.341 Python[14130:63151130] 2026-11-05 11:19:14.341751 [W:onnxruntime:Default, telemetry_1ds.cc:600 operator()] Failed to persist telemetry device ID; using an in-memory identifier
+{
+  "apprentice-v3": {
+    "observations": 8192,
+    "max_abs_error": 7.152557373046875e-06,
+    "action_agreement": 1.0,
+    "sha256": "22a5f912ec6805741e26faa47977b7c9b1208a0bd42e983b1583d3ee8e1e7ef8"
+  },
+  "selfplay-v3": {
+    "observations": 8192,
+    "max_abs_error": 9.059906005859375e-06,
+    "action_agreement": 1.0,
+    "sha256": "bbe512ee7d5d7f1e0287d55da5c4d25ef0a505d2e1ee98bb908a3e16c684fc8b"
+  }
+}
+Wrote 10 complete ONNX match replays for TypeScript verification.
+apprentice-v3 4803 parameters; 4672 MACs
+selfplay-v3 4803 parameters; 4672 MACs
+PASS: 10 complete Python/ONNX matches reproduce exactly in the live TypeScript engine (17536 frames).

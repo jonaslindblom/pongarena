@@ -211,10 +211,10 @@ test('the archived v2 engine stays frozen for earlier models and balance studies
 })
 
 test('trained exports reveal their actual widths and remain within the upload contract', () => {
-  for (const name of ['apprentice-v2', 'selfplay-v2']) {
+  for (const name of ['apprentice-v2', 'selfplay-v2', 'apprentice-v3', 'selfplay-v3']) {
     const bytes = readFileSync(new URL(`../public/models/${name}.onnx`, import.meta.url))
     const graph = pb.onnx.ModelProto.decode(bytes)
-    assert.equal(graph.metadataProps.find((p) => p.key === 'rules')?.value, 'pong-v2')
+    assert.equal(graph.metadataProps.find((p) => p.key === 'rules')?.value, 'pong-' + name.split('-')[1])
     const stats = validateModel(bytes)
     assert.deepEqual(stats.architecture.widths, [6, 64, 64, 3])
     assert.equal(stats.params, 4803)

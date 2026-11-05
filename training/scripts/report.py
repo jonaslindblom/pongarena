@@ -103,6 +103,12 @@ def main():
     old_actor = previous['selfplay-v2']['opponents']
     delta_score = np.mean([r['score_rate'] - old_actor[name]['score_rate'] for name, r in tests['selfplay']['opponents'].items()])
     comparison_summary = f'The new Selfplay actor changes mean score rate across the five reference opponents by {100*delta_score:+.2f} percentage points on these test serves.'
+    direct = matchups['selfplay-v2']
+    defense = tests['selfplay']['opponents']['interceptor']
+    comparison_details = (f'Against the attacker, rally wins change from {old_actor["attacker"]["point_rate"]:.1%} to {actor_test["point_rate"]:.1%}; '
+                          f'against the interceptor, they change from {old_actor["interceptor"]["point_rate"]:.1%} to {defense["point_rate"]:.1%}. '
+                          f'In their direct matchup, new Selfplay wins {direct["wins"]}, loses {direct["losses"]} and draws {direct["draws"]} against old Selfplay. '
+                          'Retraining produces a different policy, not a guaranteed improvement across opponents.')
     attacker_summary = ('The scripted attacker still wins more rallies than Selfplay.' if actor_test['losses'] > actor_test['wins']
                         else 'Selfplay wins more rallies than the scripted attacker in this evaluation.' if actor_test['wins'] > actor_test['losses']
                         else 'Selfplay and the scripted attacker win the same number of rallies in this evaluation.')
@@ -125,7 +131,7 @@ def main():
 <section><h2>Unseen test serves</h2><p>The actual exported ONNX actors use deterministic argmax on seeds {test_start:,}–{test_start + test_count - 1:,}, both sides and all five serves. Every row contains {test_count * 10:,} rallies / {test_count * 2:,} five-rally matches under Pong v3. Loop and timeout counts add up to total draws.</p>{body}
 <p class="note">¹ Median successful returns in scored rallies only. ² Simulation action ticks / 30, including early loop exits but excluding inference, display pauses and serves. Long rallies and draws are reported separately.</p>
 <p>{attacker_summary} Selfplay wins {actor_test['point_rate']:.1%}, loses {actor_test['losses']/actor_test['rallies']:.1%} and draws {actor_test['draws']/actor_test['rallies']:.1%} against it. A draw is not a win.</p></section>
-<section><h2>Did retraining improve the weights?</h2><p>The original v2 exports were reevaluated under the same v3 rules, on the same fresh test serves as the new actors. This isolates the weights comparison from the longer deadline and early loop exits. {comparison_summary}</p>{comparison_body}
+<section><h2>Did retraining improve the weights?</h2><p>The original v2 exports were reevaluated under the same v3 rules, on the same fresh test serves as the new actors. This isolates the weights comparison from the longer deadline and early loop exits. {comparison_summary}</p><p>{comparison_details}</p>{comparison_body}
 <p class="note">³ Score rate = (wins + ½ draws) / rallies; pp = percentage points. Both models in each comparison face the same reference policies. These selected-checkpoint results are descriptive, not a statistical guarantee of improvement against unseen opponents.</p>
 <h3>New Selfplay against learned opponents</h3><p>Selfplay v3 is the first player in every row. The v2 entries use their original frozen weights.</p>{result_table(matchups)}</section>
 <section><h2>How the weights were learned</h2><p>Each run collects {imitation_steps:,} DAgger decisions over {config['dagger_rounds']} rounds. A predictive attacker labels the learner’s visited states. PPO then adds {per_run-imitation_steps:,} decisions ({config['updates']} updates × {config['envs']} environments × {config['horizon']} steps), facing three original baselines, two scripts and up to five historical actors.</p>

@@ -37,6 +37,8 @@ def run(cap, pair, start, count):
         ours=np.where(sides[:,None]==0,left,right);theirs=np.where(sides[:,None]==0,right,left)
         a,b=decide(pair[0],ours,0),decide(pair[1],theirs,1)
         terminal,hit=env.step(np.stack([np.where(sides==0,a,b),np.where(sides==0,b,a)],1))
+        # This archived v2 study retains its 800-tick deadline as current training evolves.
+        terminal=np.where((terminal<0)&(env.ticks>=800),2,terminal)
         done=(outcome<0)&(terminal>=0)
         outcome[done]=terminal[done];lengths[done]=env.returns[done];duration[done]=env.ticks[done]
         if (outcome>=0).all():break

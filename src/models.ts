@@ -30,18 +30,25 @@ export const keyboard: Controller = {
 }
 export const presets = [
   {
-    id: 'selfplay-v2',
+    id: 'selfplay-v3',
     name: 'Selfplay',
-    kind: 'PyTorch · PPO · v2',
+    kind: 'PyTorch · PPO · v3',
     description: 'Refined through league self-play after a predictive-controller warm start.',
     report: '/training/report.html',
   },
   {
-    id: 'apprentice-v2',
+    id: 'apprentice-v3',
     name: 'Apprentice',
-    kind: 'PyTorch · Imitation · v2',
+    kind: 'PyTorch · Imitation · v3',
     description: 'Learns a predictive attacker’s decisions from states it visits during play.',
     report: '/training/report.html',
+  },
+  {
+    id: 'selfplay-v2',
+    name: 'Selfplay v2',
+    kind: 'PyTorch · PPO · v2',
+    description: 'Previous PPO weights, retained for comparison under the current v3 rules.',
+    report: '/training/v2/report.html',
   },
   {
     id: 'challenger',

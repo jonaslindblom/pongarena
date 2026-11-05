@@ -1,0 +1,29 @@
+2026-11-05 11:14:38.968 Python[12124:63136687] 2026-11-05 11:14:38.968087 [W:onnxruntime:Default, telemetry_1ds.cc:600 operator()] Failed to persist telemetry device ID; using an in-memory identifier
+imitation   0 | 0 steps | validation 0.127 | tracker=29%, anticipator=15%, challenger=14%, interceptor=0%, attacker=0%
+imitation   1 | 65,536 steps | validation 0.244 | tracker=42%, anticipator=34%, challenger=32%, interceptor=1%, attacker=0%
+imitation   2 | 131,072 steps | validation 0.341 | tracker=57%, anticipator=48%, challenger=46%, interceptor=2%, attacker=1%
+imitation   3 | 196,608 steps | validation 0.434 | tracker=67%, anticipator=57%, challenger=65%, interceptor=7%, attacker=6%
+imitation   4 | 262,144 steps | validation 0.378 | tracker=63%, anticipator=47%, challenger=55%, interceptor=3%, attacker=7%
+2026-11-05 11:14:47.988 Python[12124:63136752] NetworkStorageDB:_openDBReadConnections: failed to open read connection to DB @ /Users/jonas/Library/Caches/org.python.python/Cache.db.  Error=14. Cause=unable to open database file
+2026-11-05 11:14:47.988 Python[12124:63136752] The read-connection to the DB=/Users/jonas/Library/Caches/org.python.python/Cache.db is NOT valid.  Unable to determine schema version.
+2026-11-05 11:14:47.988 Python[12124:63136752] NetworkStorageDB:_openDBWriteConnections: failed to open write connection to DB @ /Users/jonas/Library/Caches/org.python.python/Cache.db.  Error=14. Cause=unable to open database file
+2026-11-05 11:14:47.988 Python[12124:63136752] DEBUG: there is no SQL cache DB located at /Users/jonas/Library/Caches/org.python.python/Cache.db.
+2026-11-05 11:14:47.988 Python[12124:63136752] DEBUG: there is no SQL cache DB located at /Users/jonas/Library/Caches/org.python.python/Cache.db-shm.
+2026-11-05 11:14:47.988 Python[12124:63136752] DEBUG: there is no SQL cache DB located at /Users/jonas/Library/Caches/org.python.python/Cache.db-wal.
+imitation   5 | 327,680 steps | validation 0.407 | tracker=65%, anticipator=60%, challenger=54%, interceptor=5%, attacker=4%
+imitation   6 | 393,216 steps | validation 0.516 | tracker=75%, anticipator=62%, challenger=66%, interceptor=26%, attacker=6%
+imitation   7 | 458,752 steps | validation 0.520 | tracker=82%, anticipator=67%, challenger=68%, interceptor=6%, attacker=4%
+imitation   8 | 524,288 steps | validation 0.589 | tracker=84%, anticipator=72%, challenger=73%, interceptor=32%, attacker=4%
+imitation   9 | 589,824 steps | validation 0.590 | tracker=80%, anticipator=79%, challenger=78%, interceptor=27%, attacker=6%
+imitation  10 | 655,360 steps | validation 0.633 | tracker=86%, anticipator=81%, challenger=84%, interceptor=30%, attacker=5%
+ppo  25 | 1,474,560 steps | validation 0.759 | tracker=90%, anticipator=88%, challenger=93%, interceptor=70%, attacker=5%
+ppo  50 | 2,293,760 steps | validation 0.687 | tracker=93%, anticipator=88%, challenger=91%, interceptor=22%, attacker=7%
+ppo  75 | 3,112,960 steps | validation 0.699 | tracker=91%, anticipator=88%, challenger=89%, interceptor=27%, attacker=7%
+ppo 100 | 3,932,160 steps | validation 0.811 | tracker=93%, anticipator=91%, challenger=93%, interceptor=53%, attacker=18%
+ppo 125 | 4,751,360 steps | validation 0.743 | tracker=93%, anticipator=93%, challenger=90%, interceptor=39%, attacker=8%
+ppo 150 | 5,570,560 steps | validation 0.750 | tracker=89%, anticipator=88%, challenger=95%, interceptor=31%, attacker=10%
+ppo 175 | 6,389,760 steps | validation 0.731 | tracker=92%, anticipator=91%, challenger=90%, interceptor=34%, attacker=14%
+ppo 200 | 7,208,960 steps | validation 0.787 | tracker=93%, anticipator=92%, challenger=94%, interceptor=48%, attacker=16%
+ppo 225 | 8,028,160 steps | validation 0.796 | tracker=96%, anticipator=94%, challenger=95%, interceptor=55%, attacker=15%
+ppo 250 | 8,847,360 steps | validation 0.792 | tracker=95%, anticipator=91%, challenger=95%, interceptor=58%, attacker=10%
+Finished in 120.8s. Best validation scores: {'imitation': 0.6325000000000001, 'ppo': 0.81125}

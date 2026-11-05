@@ -109,6 +109,6 @@ Any training method is allowed. Training rewards, curricula and opponent pools a
 
 ## Change from v2
 
-The maximum rally length changes from800 to1,600 ticks (53⅓ simulated seconds at30ticks/s), and fixed deterministic model matches end early when a post-contact state repeats exactly. Draws carry a reason. Points take precedence on the last tick; match scoring remains five rallies with one point per miss and none for a draw.
+The maximum rally length changes from 800 to 1,600 ticks (53⅓ simulated seconds at 30 ticks/s), and fixed deterministic model matches end early when a post-contact state repeats exactly. Draws carry a reason. Points take precedence on the last tick; match scoring remains five rallies with one point per miss and none for a draw.
 
 **Physics is unchanged:** court, paddle dimensions and speed, contact geometry and order, wall reflections, shot formula, return velocities, seeded serves, tick rate, rounding and all six input/three output meanings remain identical to v2. No speed ramp, hidden difficulty phase or handicap is introduced. V1/v2 model files remain interface-compatible, but their performance must be evaluated under v3 termination rules. Prior v1/v2 packages remain frozen.

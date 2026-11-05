@@ -1,0 +1,45 @@
+{
+  "out": "training/runs/v3-seed29",
+  "seed": 29,
+  "dagger_rounds": 10,
+  "updates": 250,
+  "envs": 256,
+  "horizon": 128,
+  "eval_every": 25,
+  "torch": "2.15.0",
+  "numpy": "2.5.4",
+  "architecture": [
+    6,
+    64,
+    64,
+    3
+  ],
+  "activation": "Tanh",
+  "rules": "pong-v3",
+  "max_ball_vx": 13,
+  "rally_tick_limit": 1600,
+  "training_loop_detection": false,
+  "evaluation_loop_detection": true,
+  "gamma": 0.99,
+  "gae_lambda": 0.95,
+  "clip": 0.2,
+  "epochs": 4,
+  "minibatch": 2048,
+  "entropy": 0.01,
+  "return_reward": 0.02,
+  "seed_ranges": {
+    "train": [
+      0,
+      999999999
+    ],
+    "validation": [
+      1100000000,
+      1100000023
+    ],
+    "test": [
+      2200000000,
+      2200000099
+    ]
+  },
+  "test_range_recorded_by": "release.py; does not affect training or validation"
+}
