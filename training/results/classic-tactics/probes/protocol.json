@@ -1,0 +1,80 @@
+{
+  "rules": "pong-v4",
+  "rule_config": {
+    "name": "pace13-v9-scaled",
+    "cap": 13,
+    "vertical_max": 9,
+    "baseline": false,
+    "scaled_angle": true
+  },
+  "pairs": [
+    [
+      "attack",
+      "attack"
+    ],
+    [
+      "attack",
+      "defend"
+    ]
+  ],
+  "sampling": "Every unique flight-start physical state, both receiving sides, all five rallies.",
+  "branches": "Unchanged scripts plus every exactly reachable legal contact center. Commit a deterministic shortest-direction-first legal path until contact, then resume the same scripts.",
+  "termination": "Original elapsed ticks and 1600-tick deadline. No loop shortcut in any diagnostic branch.",
+  "labels": "One strict loss-to-win branch per state, minimize action departures from the baseline pre-contact path, then center index. Original labels use the original controlled-side script on the same visited observations.",
+  "excluded_preexisting_seeds": [
+    3502446039,
+    3509813992,
+    3509869267,
+    3607230410,
+    3608270858,
+    3703494462
+  ],
+  "seed_sets": {
+    "train": [
+      3507017852,
+      3507649860,
+      3506627336,
+      3509637729,
+      3503896684,
+      3501790418,
+      3500961579,
+      3503385240,
+      3500499979,
+      3507848784,
+      3509665666,
+      3504488320,
+      3504302040,
+      3504600771,
+      3500916590,
+      3501089611
+    ],
+    "dev": [
+      3603358672,
+      3602436698,
+      3604423996,
+      3604251540,
+      3606129715,
+      3601805339,
+      3609024007,
+      3607206260
+    ],
+    "final": [
+      3709639342,
+      3705861083,
+      3706811051,
+      3704861008,
+      3706616078,
+      3709702930,
+      3702014865,
+      3709577993,
+      3706983639,
+      3709389853,
+      3707736393,
+      3702291609,
+      3704503076,
+      3702433327,
+      3701847845,
+      3707311520
+    ]
+  }
+}

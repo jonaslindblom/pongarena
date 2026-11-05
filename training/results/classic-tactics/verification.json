@@ -1,0 +1,161 @@
+{
+  "rules": "pong-v4",
+  "scalar_reference_sha256": "8e2d3368b7e8c3ca5883161617417738c018ba821ba3c1be803d28c37aa592b6",
+  "verifier_sha256": "1cf48c02b3501dfd4093f7cfde3e543506f448f1c9de9a4fa11119d2c369562c",
+  "game_source_unchanged": true,
+  "results": [
+    {
+      "path": "training/results/classic-tactics/probes/train.json",
+      "sha256": "72eb4f2696e581850c5957da5c027e52a9e992a9705be32b6249781478c3f1c4",
+      "phase": "train",
+      "seeds": [
+        3507017852,
+        3507649860,
+        3506627336,
+        3509637729,
+        3503896684,
+        3501790418,
+        3500961579,
+        3503385240,
+        3500499979,
+        3507848784,
+        3509665666,
+        3504488320,
+        3504302040,
+        3504600771,
+        3500916590,
+        3501089611
+      ],
+      "scope": "all retained branches",
+      "baseline_matches": 160,
+      "prefix_transitions": 87442,
+      "snapshots": 1972,
+      "branches_checked": 22567,
+      "branch_transitions": 7397239,
+      "strict_loss_to_win_branches_checked": 1891,
+      "observation_consistent_strict_improvements": 1891,
+      "selected_training_branches": 414,
+      "representative": {
+        "phase": "train",
+        "seed": 3507017852,
+        "rally": 1,
+        "snapshot_id": 160,
+        "target": 18,
+        "side": 0,
+        "baseline_value": -1,
+        "alternative_value": 1,
+        "returns_at_start": 1,
+        "baseline_contact_center": 26,
+        "baseline_terminal": {
+          "ball": [
+            7,
+            151,
+            -13,
+            -2
+          ],
+          "paddles": [
+            129,
+            54
+          ],
+          "tick": 618,
+          "returns": 19
+        },
+        "alternative_terminal": {
+          "ball": [
+            353,
+            15,
+            13,
+            0
+          ],
+          "paddles": [
+            67,
+            32
+          ],
+          "tick": 332,
+          "returns": 8
+        },
+        "selection": "First retained strict loss-to-win branch after at least one return whose full trajectory is observation-consistent and never loops.",
+        "unique_observations": 332,
+        "action_conflict": null,
+        "first_standard_loop_tick": null,
+        "full_prefix_ticks": 33,
+        "total_ticks": 332
+      },
+      "seconds": 89.3936165
+    },
+    {
+      "path": "training/results/classic-tactics/probes/dev.json",
+      "sha256": "18105679707952bb4d68b5da61f69694d3f095473efbfb01ed1d4f5030c3d351",
+      "phase": "dev",
+      "seeds": [
+        3603358672,
+        3602436698,
+        3604423996,
+        3604251540,
+        3606129715,
+        3601805339,
+        3609024007,
+        3607206260
+      ],
+      "scope": "all retained branches",
+      "baseline_matches": 80,
+      "prefix_transitions": 44960,
+      "snapshots": 965,
+      "branches_checked": 10939,
+      "branch_transitions": 3604133,
+      "strict_loss_to_win_branches_checked": 1013,
+      "observation_consistent_strict_improvements": 1013,
+      "selected_training_branches": 207,
+      "representative": {
+        "phase": "dev",
+        "seed": 3603358672,
+        "rally": 1,
+        "snapshot_id": 80,
+        "target": 15,
+        "side": 0,
+        "baseline_value": -1,
+        "alternative_value": 1,
+        "returns_at_start": 1,
+        "baseline_contact_center": 24,
+        "baseline_terminal": {
+          "ball": [
+            7,
+            142,
+            -13,
+            8
+          ],
+          "paddles": [
+            123,
+            80
+          ],
+          "tick": 410,
+          "returns": 11
+        },
+        "alternative_terminal": {
+          "ball": [
+            353,
+            148,
+            13,
+            -2
+          ],
+          "paddles": [
+            61,
+            130
+          ],
+          "tick": 436,
+          "returns": 12
+        },
+        "selection": "First retained strict loss-to-win branch after at least one return whose full trajectory is observation-consistent and never loops.",
+        "unique_observations": 436,
+        "action_conflict": null,
+        "first_standard_loop_tick": null,
+        "full_prefix_ticks": 33,
+        "total_ticks": 436
+      },
+      "seconds": 45.968815000000006
+    }
+  ],
+  "limitations": [
+    "A consistent finite trajectory establishes a possible stateless mapping on visited states, not a general winning policy."
+  ]
+}
