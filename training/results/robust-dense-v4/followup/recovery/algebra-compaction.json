@@ -1,0 +1,24 @@
+{
+  "purpose": "Exactsourceweightalgebra, nomatches/nofitting",
+  "architecture": [
+    6,
+    38,
+    32,
+    3
+  ],
+  "parameters": 1613,
+  "retained_reachable_probes": 176501,
+  "action_mismatches": 0,
+  "max_score_error": 2.0384788513183594e-05,
+  "plus_twelve_recovery_hinges": {
+    "architecture": [
+      6,
+      39,
+      44,
+      3
+    ],
+    "parameters": 2168,
+    "over_budget": 120
+  },
+  "available_recovery_hinges": 9
+}

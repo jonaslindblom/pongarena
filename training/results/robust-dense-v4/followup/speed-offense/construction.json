@@ -1,0 +1,22 @@
+{
+  "architecture": [
+    6,
+    123,
+    9,
+    3
+  ],
+  "parameters": 2007,
+  "macs": 1872,
+  "gain": 1.064516129032258,
+  "cue": 0.05241935483870968,
+  "deadband_units": 1.101,
+  "source_sha256": "2f74b181568bb47554e1cfcd2c68ff166b58acfd5ce1ca5827fd64392002ef51",
+  "hidden_tensors_identical": true,
+  "target": "Incominggain*approximatereflectedlandingnorm+cue*clipped(10*opponentnorm,\u22121,+1);outgoingcenter80",
+  "limitations": [
+    "Approximatevariable-speedforecast",
+    "Targetusesfar-corner15/145 approximationand15.5angleflightcoefficient",
+    "Notlearnedsourceweighttransfer;notformaltraining"
+  ],
+  "sha256": "7ef35725e694b5bd09cf07f3ca6af315992fde71f5a6ae8bc766d98cd2eab40e"
+}

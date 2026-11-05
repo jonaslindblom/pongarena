@@ -1,0 +1,340 @@
+{
+  "status": "Rejected as an established upgrade; no final holdout or promotion",
+  "candidate": "small-inner-recovery",
+  "architecture": [
+    6,
+    39,
+    40,
+    3
+  ],
+  "parameters": 1996,
+  "macs": 1914,
+  "nodes": 5,
+  "model_sha256": "ed60d95b02e463acb3c2d7ef312e13f0a7a778fa9d76c095f0377d716589867a",
+  "frozen_source_checkpoint_unchanged": true,
+  "protected_final_results_read": false,
+  "no_training_or_fitting": true,
+  "positive_physical_evidence": {
+    "shots": 248,
+    "decisions": 6448,
+    "action_mismatches": 0,
+    "max_target_error_units": 0.00035095214842328915,
+    "safe_final": 242,
+    "unsafe_final": 6,
+    "maximum_risk": 1
+  },
+  "incoming_preservation": {
+    "probes": 90076,
+    "action_mismatches": 0,
+    "max_score_error": 2.0384788513183594e-05
+  },
+  "native_numeric": {
+    "probes": 8192,
+    "action_mismatches": 0,
+    "max_score_error": 1.3947486877441406e-05
+  },
+  "development": {
+    "tracker": {
+      "wins": 216,
+      "losses": 23,
+      "draws": 1,
+      "point_margin_ci95": [
+        0.7291666666666666,
+        0.8708333333333332
+      ],
+      "paired_match_wins": 24,
+      "paired_match_losses": 0,
+      "paired_match_draws": 0
+    },
+    "anticipator": {
+      "wins": 218,
+      "losses": 21,
+      "draws": 1,
+      "point_margin_ci95": [
+        0.7458333333333335,
+        0.8875000000000001
+      ],
+      "paired_match_wins": 24,
+      "paired_match_losses": 0,
+      "paired_match_draws": 0
+    },
+    "challenger": {
+      "wins": 220,
+      "losses": 20,
+      "draws": 0,
+      "point_margin_ci95": [
+        0.7583333333333333,
+        0.9
+      ],
+      "paired_match_wins": 24,
+      "paired_match_losses": 0,
+      "paired_match_draws": 0
+    },
+    "pacer": {
+      "wins": 143,
+      "losses": 46,
+      "draws": 51,
+      "point_margin_ci95": [
+        0.3082291666666666,
+        0.5
+      ],
+      "paired_match_wins": 22,
+      "paired_match_losses": 2,
+      "paired_match_draws": 0
+    },
+    "attack": {
+      "wins": 8,
+      "losses": 225,
+      "draws": 7,
+      "point_margin_ci95": [
+        -0.9499999999999998,
+        -0.8541666666666669
+      ],
+      "paired_match_wins": 0,
+      "paired_match_losses": 24,
+      "paired_match_draws": 0
+    },
+    "defend": {
+      "wins": 0,
+      "losses": 182,
+      "draws": 58,
+      "point_margin_ci95": [
+        -0.8084375000000001,
+        -0.7000000000000001
+      ],
+      "paired_match_wins": 0,
+      "paired_match_losses": 24,
+      "paired_match_draws": 0
+    },
+    "frozen-robust-small": {
+      "wins": 87,
+      "losses": 86,
+      "draws": 67,
+      "point_margin_ci95": [
+        -0.008333333333333333,
+        0.016770833333332763
+      ],
+      "paired_match_wins": 2,
+      "paired_match_losses": 1,
+      "paired_match_draws": 21
+    }
+  },
+  "goal_constraint_evidence": {
+    "float_intervals": {
+      "nonempty": 18,
+      "empty": 135,
+      "empty_heights": [
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        121,
+        122,
+        123,
+        124,
+        125,
+        126,
+        127,
+        128,
+        129,
+        130,
+        131,
+        132,
+        133,
+        134,
+        135,
+        136,
+        137,
+        138,
+        139,
+        140,
+        141,
+        142,
+        143,
+        144,
+        145,
+        146,
+        147
+      ],
+      "min_width": -21.0,
+      "max_width": 76.0
+    },
+    "controlled_invariant": {
+      "state_count_history": [
+        20043,
+        856,
+        0,
+        0
+      ],
+      "iterations": 3,
+      "remaining_states": 0,
+      "heights_with_any_position": 0,
+      "interpretation": "Permissive controlledgoalpolicy with arbitrary recovery and any stationary goal center; emptiness rules out this goal guarantee, nonempty does not prove fixedNN sustainsit"
+    },
+    "unrestricted_cap_control": {
+      "state_count_history": [
+        20043,
+        1086,
+        516,
+        192,
+        50,
+        50
+      ],
+      "remaining_states": 50,
+      "heights_with_any_position": [
+        4,
+        156
+      ],
+      "interpretation": "Samecapcontrolled-invariantoperatorwithalllegalcontactcenters, tovalidateandcontrastthefixedgoalrestriction"
+    },
+    "eight_profile_future_goal_reach": {
+      "shots": 248,
+      "catch_safe": 242,
+      "all_next_goals_reachable": 56,
+      "catch_safe_but_goal_reach_failed": 186,
+      "scope": "Only248stationaryrobustcontactshots;notallgameplayoroutcomes"
+    }
+  },
+  "artifacts": {
+    "analyze.py": {
+      "bytes": 5432,
+      "sha256": "0c3cbb6823a6c11f7dd2c8b07a538a6fc24eace3b8c21eadf3532707ad50a180"
+    },
+    "extend_physics.py": {
+      "bytes": 2896,
+      "sha256": "2285495603c4cb0ece22f3180842b8ecdca6eac690264b7969a38943cadc9639"
+    },
+    "goal-recovery.json": {
+      "bytes": 100270,
+      "sha256": "5d5c6fd1961bb785f7e718ff7e48a33177f5a3158a9fbd75c06bca9950633064"
+    },
+    "goal-recovery.npz": {
+      "bytes": 1996,
+      "sha256": "b20ba591088f5c5bf755ff368be3ae76215e56e0c3399ca15ed76e6a6941ee6f"
+    },
+    "inner-results.json": {
+      "bytes": 138386,
+      "sha256": "ecf0c2c805ec4a5259bdb70b37d4cf85119e64d831ed87572e0b2b43949c748e"
+    },
+    "inner-verification.json": {
+      "bytes": 1445,
+      "sha256": "99ed16c0f77a2d8a3474c0784c1be1e217b9c1bb1660b841fc2a3a237f2483cb"
+    },
+    "inner_model.py": {
+      "bytes": 8763,
+      "sha256": "4c45be980a6c3bff7785d8d7a116c8aed34605aaf9dc3c5e983e1a971a80e311"
+    },
+    "small-inner-recovery.onnx": {
+      "bytes": 8822,
+      "sha256": "ed60d95b02e463acb3c2d7ef312e13f0a7a778fa9d76c095f0377d716589867a"
+    },
+    "small-inner-recovery.pt": {
+      "bytes": 10993,
+      "sha256": "c98dfdd28babf4f9d59382926ab6c56d1345a3fa95563c4e98d4d147204d82aa"
+    }
+  }
+}

@@ -1,0 +1,1663 @@
+{
+  "top_heights": 103,
+  "bottom_heights": 103,
+  "both_heights": 82,
+  "either_heights": 124,
+  "rows": [
+    {
+      "height": 4,
+      "top_offsets": [],
+      "bottom_offsets": []
+    },
+    {
+      "height": 5,
+      "top_offsets": [],
+      "bottom_offsets": []
+    },
+    {
+      "height": 6,
+      "top_offsets": [],
+      "bottom_offsets": []
+    },
+    {
+      "height": 7,
+      "top_offsets": [],
+      "bottom_offsets": []
+    },
+    {
+      "height": 8,
+      "top_offsets": [],
+      "bottom_offsets": []
+    },
+    {
+      "height": 9,
+      "top_offsets": [],
+      "bottom_offsets": []
+    },
+    {
+      "height": 10,
+      "top_offsets": [],
+      "bottom_offsets": []
+    },
+    {
+      "height": 11,
+      "top_offsets": [],
+      "bottom_offsets": []
+    },
+    {
+      "height": 12,
+      "top_offsets": [],
+      "bottom_offsets": []
+    },
+    {
+      "height": 13,
+      "top_offsets": [],
+      "bottom_offsets": []
+    },
+    {
+      "height": 14,
+      "top_offsets": [],
+      "bottom_offsets": []
+    },
+    {
+      "height": 15,
+      "top_offsets": [],
+      "bottom_offsets": []
+    },
+    {
+      "height": 16,
+      "top_offsets": [],
+      "bottom_offsets": []
+    },
+    {
+      "height": 17,
+      "top_offsets": [],
+      "bottom_offsets": [
+        10.5,
+        11.5
+      ]
+    },
+    {
+      "height": 18,
+      "top_offsets": [],
+      "bottom_offsets": [
+        10.5,
+        11.5
+      ]
+    },
+    {
+      "height": 19,
+      "top_offsets": [],
+      "bottom_offsets": [
+        10.5,
+        11.5
+      ]
+    },
+    {
+      "height": 20,
+      "top_offsets": [],
+      "bottom_offsets": [
+        10.5,
+        11.5
+      ]
+    },
+    {
+      "height": 21,
+      "top_offsets": [],
+      "bottom_offsets": [
+        10.5,
+        11.5
+      ]
+    },
+    {
+      "height": 22,
+      "top_offsets": [],
+      "bottom_offsets": [
+        10.5,
+        11.5
+      ]
+    },
+    {
+      "height": 23,
+      "top_offsets": [],
+      "bottom_offsets": [
+        10.5,
+        11.5
+      ]
+    },
+    {
+      "height": 24,
+      "top_offsets": [],
+      "bottom_offsets": [
+        -8.5,
+        10.5,
+        11.5
+      ]
+    },
+    {
+      "height": 25,
+      "top_offsets": [],
+      "bottom_offsets": [
+        -8.5,
+        10.5,
+        11.5
+      ]
+    },
+    {
+      "height": 26,
+      "top_offsets": [],
+      "bottom_offsets": [
+        -8.5,
+        10.5,
+        11.5
+      ]
+    },
+    {
+      "height": 27,
+      "top_offsets": [],
+      "bottom_offsets": [
+        -8.5,
+        11.5
+      ]
+    },
+    {
+      "height": 28,
+      "top_offsets": [],
+      "bottom_offsets": [
+        -8.5,
+        11.5
+      ]
+    },
+    {
+      "height": 29,
+      "top_offsets": [],
+      "bottom_offsets": [
+        -8.5,
+        11.5
+      ]
+    },
+    {
+      "height": 30,
+      "top_offsets": [
+        1.5
+      ],
+      "bottom_offsets": [
+        -8.5,
+        11.5
+      ]
+    },
+    {
+      "height": 31,
+      "top_offsets": [],
+      "bottom_offsets": [
+        -8.5,
+        11.5
+      ]
+    },
+    {
+      "height": 32,
+      "top_offsets": [],
+      "bottom_offsets": [
+        -8.5,
+        11.5
+      ]
+    },
+    {
+      "height": 33,
+      "top_offsets": [],
+      "bottom_offsets": [
+        -8.5,
+        11.5
+      ]
+    },
+    {
+      "height": 34,
+      "top_offsets": [],
+      "bottom_offsets": [
+        -8.5,
+        11.5
+      ]
+    },
+    {
+      "height": 35,
+      "top_offsets": [
+        1.5
+      ],
+      "bottom_offsets": [
+        -8.5,
+        -7.5,
+        -6.5,
+        11.5
+      ]
+    },
+    {
+      "height": 36,
+      "top_offsets": [
+        1.5
+      ],
+      "bottom_offsets": [
+        -8.5,
+        -7.5,
+        -6.5,
+        11.5
+      ]
+    },
+    {
+      "height": 37,
+      "top_offsets": [
+        1.5
+      ],
+      "bottom_offsets": [
+        -8.5,
+        -7.5,
+        -6.5,
+        11.5
+      ]
+    },
+    {
+      "height": 38,
+      "top_offsets": [
+        1.5,
+        2.5,
+        3.5
+      ],
+      "bottom_offsets": [
+        -8.5,
+        -7.5,
+        -6.5,
+        11.5
+      ]
+    },
+    {
+      "height": 39,
+      "top_offsets": [
+        1.5,
+        2.5,
+        3.5
+      ],
+      "bottom_offsets": [
+        -8.5,
+        -7.5,
+        -6.5,
+        11.5
+      ]
+    },
+    {
+      "height": 40,
+      "top_offsets": [
+        1.5,
+        2.5,
+        3.5
+      ],
+      "bottom_offsets": [
+        -8.5,
+        -7.5,
+        -6.5,
+        11.5
+      ]
+    },
+    {
+      "height": 41,
+      "top_offsets": [
+        1.5,
+        2.5,
+        3.5
+      ],
+      "bottom_offsets": [
+        -8.5,
+        -7.5,
+        -6.5,
+        11.5
+      ]
+    },
+    {
+      "height": 42,
+      "top_offsets": [
+        1.5,
+        2.5,
+        3.5
+      ],
+      "bottom_offsets": [
+        -8.5,
+        -7.5,
+        -6.5,
+        11.5,
+        12.5,
+        13.5
+      ]
+    },
+    {
+      "height": 43,
+      "top_offsets": [
+        1.5,
+        2.5,
+        3.5
+      ],
+      "bottom_offsets": [
+        -8.5,
+        -7.5,
+        -6.5,
+        11.5,
+        12.5,
+        13.5
+      ]
+    },
+    {
+      "height": 44,
+      "top_offsets": [
+        1.5,
+        2.5,
+        3.5
+      ],
+      "bottom_offsets": [
+        -8.5,
+        -7.5,
+        -6.5,
+        11.5,
+        12.5,
+        13.5
+      ]
+    },
+    {
+      "height": 45,
+      "top_offsets": [
+        1.5,
+        2.5,
+        3.5
+      ],
+      "bottom_offsets": [
+        -6.5,
+        11.5,
+        12.5,
+        13.5
+      ]
+    },
+    {
+      "height": 46,
+      "top_offsets": [
+        1.5,
+        2.5,
+        3.5
+      ],
+      "bottom_offsets": [
+        -6.5,
+        11.5,
+        12.5,
+        13.5
+      ]
+    },
+    {
+      "height": 47,
+      "top_offsets": [
+        1.5,
+        2.5,
+        3.5
+      ],
+      "bottom_offsets": [
+        -6.5,
+        11.5,
+        12.5,
+        13.5
+      ]
+    },
+    {
+      "height": 48,
+      "top_offsets": [
+        1.5,
+        2.5,
+        3.5
+      ],
+      "bottom_offsets": [
+        -6.5,
+        11.5,
+        12.5,
+        13.5
+      ]
+    },
+    {
+      "height": 49,
+      "top_offsets": [
+        3.5
+      ],
+      "bottom_offsets": [
+        -6.5,
+        11.5,
+        12.5,
+        13.5
+      ]
+    },
+    {
+      "height": 50,
+      "top_offsets": [
+        3.5
+      ],
+      "bottom_offsets": [
+        -6.5,
+        11.5,
+        12.5,
+        13.5
+      ]
+    },
+    {
+      "height": 51,
+      "top_offsets": [
+        3.5
+      ],
+      "bottom_offsets": [
+        -6.5,
+        11.5,
+        12.5,
+        13.5
+      ]
+    },
+    {
+      "height": 52,
+      "top_offsets": [
+        3.5
+      ],
+      "bottom_offsets": [
+        -6.5,
+        11.5,
+        12.5,
+        13.5
+      ]
+    },
+    {
+      "height": 53,
+      "top_offsets": [
+        3.5
+      ],
+      "bottom_offsets": [
+        -6.5,
+        13.5
+      ]
+    },
+    {
+      "height": 54,
+      "top_offsets": [
+        3.5
+      ],
+      "bottom_offsets": [
+        -6.5,
+        13.5
+      ]
+    },
+    {
+      "height": 55,
+      "top_offsets": [
+        3.5
+      ],
+      "bottom_offsets": [
+        -6.5,
+        13.5
+      ]
+    },
+    {
+      "height": 56,
+      "top_offsets": [
+        3.5
+      ],
+      "bottom_offsets": [
+        -6.5,
+        13.5
+      ]
+    },
+    {
+      "height": 57,
+      "top_offsets": [
+        3.5
+      ],
+      "bottom_offsets": [
+        -6.5,
+        13.5
+      ]
+    },
+    {
+      "height": 58,
+      "top_offsets": [
+        3.5
+      ],
+      "bottom_offsets": [
+        -6.5,
+        13.5
+      ]
+    },
+    {
+      "height": 59,
+      "top_offsets": [
+        3.5
+      ],
+      "bottom_offsets": [
+        -6.5,
+        13.5
+      ]
+    },
+    {
+      "height": 60,
+      "top_offsets": [
+        3.5
+      ],
+      "bottom_offsets": [
+        -6.5,
+        -5.5,
+        13.5
+      ]
+    },
+    {
+      "height": 61,
+      "top_offsets": [
+        3.5
+      ],
+      "bottom_offsets": [
+        -6.5,
+        -5.5,
+        13.5
+      ]
+    },
+    {
+      "height": 62,
+      "top_offsets": [
+        3.5
+      ],
+      "bottom_offsets": [
+        -6.5,
+        -5.5,
+        13.5
+      ]
+    },
+    {
+      "height": 63,
+      "top_offsets": [
+        3.5
+      ],
+      "bottom_offsets": [
+        -6.5,
+        -5.5,
+        13.5
+      ]
+    },
+    {
+      "height": 64,
+      "top_offsets": [
+        3.5,
+        4.5
+      ],
+      "bottom_offsets": [
+        -6.5,
+        -5.5,
+        13.5
+      ]
+    },
+    {
+      "height": 65,
+      "top_offsets": [
+        3.5,
+        4.5
+      ],
+      "bottom_offsets": [
+        -6.5,
+        -5.5,
+        13.5
+      ]
+    },
+    {
+      "height": 66,
+      "top_offsets": [
+        3.5,
+        4.5
+      ],
+      "bottom_offsets": [
+        -6.5,
+        -5.5,
+        13.5
+      ]
+    },
+    {
+      "height": 67,
+      "top_offsets": [
+        3.5,
+        4.5
+      ],
+      "bottom_offsets": [
+        -6.5,
+        -5.5,
+        13.5
+      ]
+    },
+    {
+      "height": 68,
+      "top_offsets": [
+        3.5,
+        4.5
+      ],
+      "bottom_offsets": [
+        -6.5,
+        -5.5,
+        13.5,
+        14.5
+      ]
+    },
+    {
+      "height": 69,
+      "top_offsets": [
+        3.5,
+        4.5
+      ],
+      "bottom_offsets": [
+        -6.5,
+        -5.5,
+        13.5,
+        14.5
+      ]
+    },
+    {
+      "height": 70,
+      "top_offsets": [
+        3.5,
+        4.5
+      ],
+      "bottom_offsets": [
+        -6.5,
+        -5.5,
+        13.5,
+        14.5
+      ]
+    },
+    {
+      "height": 71,
+      "top_offsets": [
+        3.5,
+        4.5
+      ],
+      "bottom_offsets": [
+        13.5,
+        14.5
+      ]
+    },
+    {
+      "height": 72,
+      "top_offsets": [
+        3.5,
+        4.5
+      ],
+      "bottom_offsets": [
+        13.5,
+        14.5
+      ]
+    },
+    {
+      "height": 73,
+      "top_offsets": [
+        3.5,
+        4.5
+      ],
+      "bottom_offsets": [
+        13.5,
+        14.5
+      ]
+    },
+    {
+      "height": 74,
+      "top_offsets": [
+        3.5,
+        4.5
+      ],
+      "bottom_offsets": [
+        13.5,
+        14.5
+      ]
+    },
+    {
+      "height": 75,
+      "top_offsets": [],
+      "bottom_offsets": [
+        13.5,
+        14.5
+      ]
+    },
+    {
+      "height": 76,
+      "top_offsets": [],
+      "bottom_offsets": [
+        13.5,
+        14.5
+      ]
+    },
+    {
+      "height": 77,
+      "top_offsets": [],
+      "bottom_offsets": [
+        13.5,
+        14.5
+      ]
+    },
+    {
+      "height": 78,
+      "top_offsets": [],
+      "bottom_offsets": [
+        13.5,
+        14.5
+      ]
+    },
+    {
+      "height": 79,
+      "top_offsets": [],
+      "bottom_offsets": []
+    },
+    {
+      "height": 80,
+      "top_offsets": [],
+      "bottom_offsets": []
+    },
+    {
+      "height": 81,
+      "top_offsets": [],
+      "bottom_offsets": []
+    },
+    {
+      "height": 82,
+      "top_offsets": [
+        -14.5,
+        -13.5
+      ],
+      "bottom_offsets": []
+    },
+    {
+      "height": 83,
+      "top_offsets": [
+        -14.5,
+        -13.5
+      ],
+      "bottom_offsets": []
+    },
+    {
+      "height": 84,
+      "top_offsets": [
+        -14.5,
+        -13.5
+      ],
+      "bottom_offsets": []
+    },
+    {
+      "height": 85,
+      "top_offsets": [
+        -14.5,
+        -13.5
+      ],
+      "bottom_offsets": []
+    },
+    {
+      "height": 86,
+      "top_offsets": [
+        -14.5,
+        -13.5
+      ],
+      "bottom_offsets": [
+        -4.5,
+        -3.5
+      ]
+    },
+    {
+      "height": 87,
+      "top_offsets": [
+        -14.5,
+        -13.5
+      ],
+      "bottom_offsets": [
+        -4.5,
+        -3.5
+      ]
+    },
+    {
+      "height": 88,
+      "top_offsets": [
+        -14.5,
+        -13.5
+      ],
+      "bottom_offsets": [
+        -4.5,
+        -3.5
+      ]
+    },
+    {
+      "height": 89,
+      "top_offsets": [
+        -14.5,
+        -13.5
+      ],
+      "bottom_offsets": [
+        -4.5,
+        -3.5
+      ]
+    },
+    {
+      "height": 90,
+      "top_offsets": [
+        -14.5,
+        -13.5,
+        5.5,
+        6.5
+      ],
+      "bottom_offsets": [
+        -4.5,
+        -3.5
+      ]
+    },
+    {
+      "height": 91,
+      "top_offsets": [
+        -14.5,
+        -13.5,
+        5.5,
+        6.5
+      ],
+      "bottom_offsets": [
+        -4.5,
+        -3.5
+      ]
+    },
+    {
+      "height": 92,
+      "top_offsets": [
+        -14.5,
+        -13.5,
+        5.5,
+        6.5
+      ],
+      "bottom_offsets": [
+        -4.5,
+        -3.5
+      ]
+    },
+    {
+      "height": 93,
+      "top_offsets": [
+        -13.5,
+        5.5,
+        6.5
+      ],
+      "bottom_offsets": [
+        -4.5,
+        -3.5
+      ]
+    },
+    {
+      "height": 94,
+      "top_offsets": [
+        -13.5,
+        5.5,
+        6.5
+      ],
+      "bottom_offsets": [
+        -4.5,
+        -3.5
+      ]
+    },
+    {
+      "height": 95,
+      "top_offsets": [
+        -13.5,
+        5.5,
+        6.5
+      ],
+      "bottom_offsets": [
+        -4.5,
+        -3.5
+      ]
+    },
+    {
+      "height": 96,
+      "top_offsets": [
+        -13.5,
+        5.5,
+        6.5
+      ],
+      "bottom_offsets": [
+        -4.5,
+        -3.5
+      ]
+    },
+    {
+      "height": 97,
+      "top_offsets": [
+        -13.5,
+        5.5,
+        6.5
+      ],
+      "bottom_offsets": [
+        -3.5
+      ]
+    },
+    {
+      "height": 98,
+      "top_offsets": [
+        -13.5,
+        5.5,
+        6.5
+      ],
+      "bottom_offsets": [
+        -3.5
+      ]
+    },
+    {
+      "height": 99,
+      "top_offsets": [
+        -13.5,
+        5.5,
+        6.5
+      ],
+      "bottom_offsets": [
+        -3.5
+      ]
+    },
+    {
+      "height": 100,
+      "top_offsets": [
+        -13.5,
+        5.5,
+        6.5
+      ],
+      "bottom_offsets": [
+        -3.5
+      ]
+    },
+    {
+      "height": 101,
+      "top_offsets": [
+        -13.5,
+        6.5
+      ],
+      "bottom_offsets": [
+        -3.5
+      ]
+    },
+    {
+      "height": 102,
+      "top_offsets": [
+        -13.5,
+        6.5
+      ],
+      "bottom_offsets": [
+        -3.5
+      ]
+    },
+    {
+      "height": 103,
+      "top_offsets": [
+        -13.5,
+        6.5
+      ],
+      "bottom_offsets": [
+        -3.5
+      ]
+    },
+    {
+      "height": 104,
+      "top_offsets": [
+        -13.5,
+        6.5
+      ],
+      "bottom_offsets": [
+        -3.5
+      ]
+    },
+    {
+      "height": 105,
+      "top_offsets": [
+        -13.5,
+        6.5
+      ],
+      "bottom_offsets": [
+        -3.5
+      ]
+    },
+    {
+      "height": 106,
+      "top_offsets": [
+        -13.5,
+        6.5
+      ],
+      "bottom_offsets": [
+        -3.5
+      ]
+    },
+    {
+      "height": 107,
+      "top_offsets": [
+        -13.5,
+        6.5
+      ],
+      "bottom_offsets": [
+        -3.5
+      ]
+    },
+    {
+      "height": 108,
+      "top_offsets": [
+        -13.5,
+        -12.5,
+        -11.5,
+        6.5
+      ],
+      "bottom_offsets": [
+        -3.5
+      ]
+    },
+    {
+      "height": 109,
+      "top_offsets": [
+        -13.5,
+        -12.5,
+        -11.5,
+        6.5
+      ],
+      "bottom_offsets": [
+        -3.5
+      ]
+    },
+    {
+      "height": 110,
+      "top_offsets": [
+        -13.5,
+        -12.5,
+        -11.5,
+        6.5
+      ],
+      "bottom_offsets": [
+        -3.5
+      ]
+    },
+    {
+      "height": 111,
+      "top_offsets": [
+        -13.5,
+        -12.5,
+        -11.5,
+        6.5
+      ],
+      "bottom_offsets": [
+        -3.5
+      ]
+    },
+    {
+      "height": 112,
+      "top_offsets": [
+        -13.5,
+        -12.5,
+        -11.5,
+        6.5
+      ],
+      "bottom_offsets": [
+        -3.5,
+        -2.5,
+        -1.5
+      ]
+    },
+    {
+      "height": 113,
+      "top_offsets": [
+        -13.5,
+        -12.5,
+        -11.5,
+        6.5
+      ],
+      "bottom_offsets": [
+        -3.5,
+        -2.5,
+        -1.5
+      ]
+    },
+    {
+      "height": 114,
+      "top_offsets": [
+        -13.5,
+        -12.5,
+        -11.5,
+        6.5
+      ],
+      "bottom_offsets": [
+        -3.5,
+        -2.5,
+        -1.5
+      ]
+    },
+    {
+      "height": 115,
+      "top_offsets": [
+        -13.5,
+        -12.5,
+        -11.5,
+        6.5
+      ],
+      "bottom_offsets": [
+        -3.5,
+        -2.5,
+        -1.5
+      ]
+    },
+    {
+      "height": 116,
+      "top_offsets": [
+        -13.5,
+        -12.5,
+        -11.5,
+        6.5,
+        7.5,
+        8.5
+      ],
+      "bottom_offsets": [
+        -3.5,
+        -2.5,
+        -1.5
+      ]
+    },
+    {
+      "height": 117,
+      "top_offsets": [
+        -13.5,
+        -12.5,
+        -11.5,
+        6.5,
+        7.5,
+        8.5
+      ],
+      "bottom_offsets": [
+        -3.5,
+        -2.5,
+        -1.5
+      ]
+    },
+    {
+      "height": 118,
+      "top_offsets": [
+        -13.5,
+        -12.5,
+        -11.5,
+        6.5,
+        7.5,
+        8.5
+      ],
+      "bottom_offsets": [
+        -3.5,
+        -2.5,
+        -1.5
+      ]
+    },
+    {
+      "height": 119,
+      "top_offsets": [
+        -11.5,
+        6.5,
+        7.5,
+        8.5
+      ],
+      "bottom_offsets": [
+        -3.5,
+        -2.5,
+        -1.5
+      ]
+    },
+    {
+      "height": 120,
+      "top_offsets": [
+        -11.5,
+        6.5,
+        7.5,
+        8.5
+      ],
+      "bottom_offsets": [
+        -3.5,
+        -2.5,
+        -1.5
+      ]
+    },
+    {
+      "height": 121,
+      "top_offsets": [
+        -11.5,
+        6.5,
+        7.5,
+        8.5
+      ],
+      "bottom_offsets": [
+        -3.5,
+        -2.5,
+        -1.5
+      ]
+    },
+    {
+      "height": 122,
+      "top_offsets": [
+        -11.5,
+        6.5,
+        7.5,
+        8.5
+      ],
+      "bottom_offsets": [
+        -3.5,
+        -2.5,
+        -1.5
+      ]
+    },
+    {
+      "height": 123,
+      "top_offsets": [
+        -11.5,
+        6.5,
+        7.5,
+        8.5
+      ],
+      "bottom_offsets": [
+        -1.5
+      ]
+    },
+    {
+      "height": 124,
+      "top_offsets": [
+        -11.5,
+        6.5,
+        7.5,
+        8.5
+      ],
+      "bottom_offsets": [
+        -1.5
+      ]
+    },
+    {
+      "height": 125,
+      "top_offsets": [
+        -11.5,
+        6.5,
+        7.5,
+        8.5
+      ],
+      "bottom_offsets": [
+        -1.5
+      ]
+    },
+    {
+      "height": 126,
+      "top_offsets": [
+        -11.5,
+        8.5
+      ],
+      "bottom_offsets": []
+    },
+    {
+      "height": 127,
+      "top_offsets": [
+        -11.5,
+        8.5
+      ],
+      "bottom_offsets": []
+    },
+    {
+      "height": 128,
+      "top_offsets": [
+        -11.5,
+        8.5
+      ],
+      "bottom_offsets": []
+    },
+    {
+      "height": 129,
+      "top_offsets": [
+        -11.5,
+        8.5
+      ],
+      "bottom_offsets": []
+    },
+    {
+      "height": 130,
+      "top_offsets": [
+        -11.5,
+        8.5
+      ],
+      "bottom_offsets": [
+        -1.5
+      ]
+    },
+    {
+      "height": 131,
+      "top_offsets": [
+        -11.5,
+        8.5
+      ],
+      "bottom_offsets": []
+    },
+    {
+      "height": 132,
+      "top_offsets": [
+        -11.5,
+        8.5
+      ],
+      "bottom_offsets": []
+    },
+    {
+      "height": 133,
+      "top_offsets": [
+        -11.5,
+        8.5
+      ],
+      "bottom_offsets": []
+    },
+    {
+      "height": 134,
+      "top_offsets": [
+        -11.5,
+        -10.5,
+        8.5
+      ],
+      "bottom_offsets": []
+    },
+    {
+      "height": 135,
+      "top_offsets": [
+        -11.5,
+        -10.5,
+        8.5
+      ],
+      "bottom_offsets": []
+    },
+    {
+      "height": 136,
+      "top_offsets": [
+        -11.5,
+        -10.5,
+        8.5
+      ],
+      "bottom_offsets": []
+    },
+    {
+      "height": 137,
+      "top_offsets": [
+        -11.5,
+        -10.5
+      ],
+      "bottom_offsets": []
+    },
+    {
+      "height": 138,
+      "top_offsets": [
+        -11.5,
+        -10.5
+      ],
+      "bottom_offsets": []
+    },
+    {
+      "height": 139,
+      "top_offsets": [
+        -11.5,
+        -10.5
+      ],
+      "bottom_offsets": []
+    },
+    {
+      "height": 140,
+      "top_offsets": [
+        -11.5,
+        -10.5
+      ],
+      "bottom_offsets": []
+    },
+    {
+      "height": 141,
+      "top_offsets": [
+        -11.5,
+        -10.5
+      ],
+      "bottom_offsets": []
+    },
+    {
+      "height": 142,
+      "top_offsets": [
+        -11.5,
+        -10.5
+      ],
+      "bottom_offsets": []
+    },
+    {
+      "height": 143,
+      "top_offsets": [
+        -11.5,
+        -10.5
+      ],
+      "bottom_offsets": []
+    },
+    {
+      "height": 144,
+      "top_offsets": [],
+      "bottom_offsets": []
+    },
+    {
+      "height": 145,
+      "top_offsets": [],
+      "bottom_offsets": []
+    },
+    {
+      "height": 146,
+      "top_offsets": [],
+      "bottom_offsets": []
+    },
+    {
+      "height": 147,
+      "top_offsets": [],
+      "bottom_offsets": []
+    },
+    {
+      "height": 148,
+      "top_offsets": [],
+      "bottom_offsets": []
+    },
+    {
+      "height": 149,
+      "top_offsets": [],
+      "bottom_offsets": []
+    },
+    {
+      "height": 150,
+      "top_offsets": [],
+      "bottom_offsets": []
+    },
+    {
+      "height": 151,
+      "top_offsets": [],
+      "bottom_offsets": []
+    },
+    {
+      "height": 152,
+      "top_offsets": [],
+      "bottom_offsets": []
+    },
+    {
+      "height": 153,
+      "top_offsets": [],
+      "bottom_offsets": []
+    },
+    {
+      "height": 154,
+      "top_offsets": [],
+      "bottom_offsets": []
+    },
+    {
+      "height": 155,
+      "top_offsets": [],
+      "bottom_offsets": []
+    },
+    {
+      "height": 156,
+      "top_offsets": [],
+      "bottom_offsets": []
+    }
+  ],
+  "diagonal_intervals": {
+    "top": {
+      "-14.5": [
+        [
+          82,
+          92
+        ]
+      ],
+      "-13.5": [
+        [
+          82,
+          118
+        ]
+      ],
+      "-12.5": [
+        [
+          108,
+          118
+        ]
+      ],
+      "-11.5": [
+        [
+          108,
+          143
+        ]
+      ],
+      "-10.5": [
+        [
+          134,
+          143
+        ]
+      ],
+      "1.5": [
+        [
+          30,
+          30
+        ],
+        [
+          35,
+          48
+        ]
+      ],
+      "2.5": [
+        [
+          38,
+          48
+        ]
+      ],
+      "3.5": [
+        [
+          38,
+          74
+        ]
+      ],
+      "4.5": [
+        [
+          64,
+          74
+        ]
+      ],
+      "5.5": [
+        [
+          90,
+          100
+        ]
+      ],
+      "6.5": [
+        [
+          90,
+          125
+        ]
+      ],
+      "7.5": [
+        [
+          116,
+          125
+        ]
+      ],
+      "8.5": [
+        [
+          116,
+          136
+        ]
+      ]
+    },
+    "bottom": {
+      "-8.5": [
+        [
+          24,
+          44
+        ]
+      ],
+      "-7.5": [
+        [
+          35,
+          44
+        ]
+      ],
+      "-6.5": [
+        [
+          35,
+          70
+        ]
+      ],
+      "-5.5": [
+        [
+          60,
+          70
+        ]
+      ],
+      "-4.5": [
+        [
+          86,
+          96
+        ]
+      ],
+      "-3.5": [
+        [
+          86,
+          122
+        ]
+      ],
+      "-2.5": [
+        [
+          112,
+          122
+        ]
+      ],
+      "-1.5": [
+        [
+          112,
+          125
+        ],
+        [
+          130,
+          130
+        ]
+      ],
+      "10.5": [
+        [
+          17,
+          26
+        ]
+      ],
+      "11.5": [
+        [
+          17,
+          52
+        ]
+      ],
+      "12.5": [
+        [
+          42,
+          52
+        ]
+      ],
+      "13.5": [
+        [
+          42,
+          78
+        ]
+      ],
+      "14.5": [
+        [
+          68,
+          78
+        ]
+      ]
+    }
+  }
+}

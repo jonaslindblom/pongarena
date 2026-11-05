@@ -1,0 +1,53 @@
+{
+  "architecture": [
+    6,
+    40,
+    40,
+    3
+  ],
+  "parameters": 2043,
+  "macs": 1960,
+  "base_height_knots": [
+    4.0,
+    46.0,
+    48.0,
+    78.0,
+    82.0,
+    112.0,
+    114.0,
+    156.0
+  ],
+  "base_values": [
+    15.5,
+    57.5,
+    61.5,
+    91.5,
+    68.5,
+    98.5,
+    102.5,
+    144.5
+  ],
+  "lower_pulse_knots": [
+    50.0,
+    51.0,
+    73.0,
+    74.0
+  ],
+  "upper_pulse_knots": [
+    86.0,
+    87.0,
+    109.0,
+    110.0
+  ],
+  "opponent_selector": "center>=80selectstopalternativeonlower51..73;center<80selectsbottomalternativeonupper87..109",
+  "correction_units": 10,
+  "method": "Fixedanalyticalfamilyselectionandtiminggeometry;notraining,fitting,optimizer,mutationorrewardselection",
+  "outgoing": "center80",
+  "limitations": [
+    "Delayedgoalcanbeunreachableifbasegoalwasalreadybarelyreachable",
+    "Conditionalbranchesonlyinthephysicalunfoldedforecastwindow,notearlierreflectioncopies",
+    "Lowerflightstagesusecap13approximation",
+    "One-replysafetyifstationarygoalattained;notinfinitewinningguarantee"
+  ],
+  "sha256": "b75ec5467dd64c8d270592e68c00b39f506f4aea0e6943ed559f87f5f74d2d8b"
+}
