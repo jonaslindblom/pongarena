@@ -1,0 +1,42 @@
+{
+  "purpose": "Numerical/contract verification, not model selection",
+  "models": {
+    "pacer": {
+      "sha256": "01eeeee5f0c2c65d934c4988ebd24e91c0da7c3f1d88c9a48829dc881262739e",
+      "numeric_probes": 8192,
+      "actual_recorded_actions": 3689,
+      "mismatches": 0,
+      "maximum_score_error": 1.33514404296875e-05,
+      "bytes": 71658,
+      "params": 17795,
+      "macs": 17536,
+      "nodes": 5,
+      "widths": [
+        6,
+        128,
+        128,
+        3
+      ]
+    },
+    "apprentice": {
+      "sha256": "b1c2164c0a93d2bb11007478c7e8c1da31f5844258ae1255b2568e002fc4a1dc",
+      "numeric_probes": 8192,
+      "actual_recorded_actions": 2712,
+      "mismatches": 0,
+      "maximum_score_error": 4.76837158203125e-06,
+      "bytes": 71658,
+      "params": 17795,
+      "macs": 17536,
+      "nodes": 5,
+      "widths": [
+        6,
+        128,
+        128,
+        3
+      ]
+    }
+  },
+  "native_matches": 6,
+  "native_frames": 10904,
+  "reference_sha256": "8e2d3368b7e8c3ca5883161617417738c018ba821ba3c1be803d28c37aa592b6"
+}

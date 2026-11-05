@@ -11,12 +11,22 @@ npm ci
 npm run dev
 ```
 
-Open the localhost URL printed by Vite. The default match pairs Contender and Selfplay v2 under the unchanged Pong v3 rules.
+Open the localhost URL printed by Vite. The default match pairs Pacer v4 and Apprentice v4 under the Pong v4 rules.
+
+To try it on a phone connected to the same Wi-Fi, start Vite with:
+
+```sh
+npm run dev -- --host 0.0.0.0
+```
+
+Open the **Network** URL printed by Vite on the phone. The default `127.0.0.1` URL is accessible only on the computer running the app. Mobile checks so far use browser emulation; physical-device performance and touch feel still need testing.
 
 ## Play and inspect
 
-- Set either paddle to **Keyboard**, then press **Play match**. Use W/S or the up/down arrows. With two humans, the left player uses W/S and the right uses the arrows.
+- Press **Play yourself** to start Human vs Tracker, or set either paddle to **Human** and press **Play match**. Use W/S or the up/down arrows. With two humans, the left player uses W/S and the right uses the arrows.
+- On touch screens, drag the court to steer your paddle or hold the Up/Down buttons. One human can drag anywhere on the court; two humans use their respective halves. Touch targeting uses the same two-unit movement limit as keyboard and model actions. Releasing, cancelling, pausing or restarting clears held controls.
 - Use **P1** or **P2** in Action scores to inspect that player's last decision. Pause, step, or scrub the timeline to see the exact scores and actions recorded during play. Selecting an event in the match log jumps to its frame.
+- The simulation makes 30 decisions per second; court animation interpolates between those states at the display's refresh rate. Paused and stepped frames show exact recorded states. Animation does not change physics or model decisions, and switching away from the page pauses play.
 - Opening or reloading the arena draws a fresh seed. Its five rallies start in five different height bands, and both paddles receive rising and falling serves. A point is worth one; a draw scores zero. Rallies have a 1,600-tick limit. Model-only matches also end a rally when its exact ball/paddle state repeats after a return. Human matches use the full limit. The log distinguishes loops from timeouts. **Restart** repeats the set. **New serves** draws a fresh seed. Choosing different players keeps the current set for comparison.
 - **Import model** assigns a local ONNX file to either paddle. Imported models are kept in this browser's IndexedDB when available. The model library contains downloadable baseline files. The field guide documents the submission contract.
 
@@ -24,7 +34,9 @@ Open the localhost URL printed by Vite. The default match pairs Contender and Se
 
 Two competitive paddles should be able to sustain a rally under pressure and still win the point through shot placement. To check a rules change, keep the attacking opponent and serve seeds fixed, swap sides, and compare a baseline defender with one that wins more often across several opponents. Track how often a rally ends before the second return, the median number of returns in rallies that end in a point, and both loop and timeout draws. Match score determines the winner.
 
-The [offensive-balance experiment](training/results/offense-study/README.md) compares steeper returns and contact-motion deflection with adaptive opponents and four equally budgeted learned-weight runs. Open `/training/offense-study.html` for synchronized replays, learning curves and final results. Neither tested change justified replacing v3: the milder angle still admits guaranteed defense, while the stronger candidates favor short first-receiver points between strong scripts. Live rules and model presets remain unchanged.
+Pong v4 separates placement from speed. Every return increases horizontal speed by one, capped at 13; contact position controls vertical deflection. The first return has speed 6, and center hits never reset the speed. The [gradual-speed study](training/results/pace-study/README.md) records candidate selection, stronger defensive checks and matched-serve evaluation; open `/training/pace-study.html` for the report and learned models. Human enjoyment still requires actual playtesting.
+
+The earlier [offensive-balance experiment](training/results/offense-study/README.md) compared steeper returns and contact-motion deflection with adaptive opponents and four equally budgeted learned-weight runs. Its archived `/training/offense-study.html` report explains why those settings were not promoted: the milder angle still admits guaranteed defense, while stronger candidates favor short first-receiver points between strong scripts.
 
 ## Model interface
 
@@ -46,11 +58,11 @@ The tests cover the game rules, perspective symmetry, finite output and tie hand
 
 ## Train your own weights
 
-The standalone [Pong v3 training contract](training/v3/README.md) includes the frozen engine, a headless TypeScript example, a dependency-free Python reference, and full deterministic match fixtures. Copy `training/v3/` to train independently of the app. Run `python3 training/v3/check.py` to verify the Python port. Enable loop detection only for fixed deterministic stateless policies; sampled training actions can escape a repeated position.
+The standalone [Pong v4 training contract](training/v4/README.md), downloadable as `/training/pong-v4.zip`, includes the frozen engine, a headless TypeScript example, a dependency-free Python reference, and deterministic match fixtures. Copy `training/v4/` to train independently of the app. Run `python3 training/v4/check.py` to verify the Python port. Enable loop detection only for fixed deterministic stateless policies; sampled training actions can escape a repeated position.
 
-[PyTorch training and results](training/README.md) includes runnable DAgger + PPO self-play scripts, learning curves, held-out tests, and standalone ONNX exports. **Apprentice** and **Selfplay** are available in the Model library. Cards show the actual network architecture and link to the local training report. Pong v3 preserves all v2 physics and the six-input/three-score model interface, extends the rally limit from 800 to 1,600 ticks, and adds early loop draws for model matches. The frozen v1/v2 packages, weights and results remain available.
+[PyTorch training and results](training/README.md) links to the current `pace_study.py` and `train_pace.py` workflow, learning curves, evaluation and standalone exports. **Pacer v4** and **Apprentice v4** are fully learned `6→128→128→3` Tanh networks trained through DAgger; no fixed trajectory calculations are embedded in their inference graphs. Cards show the actual network architecture and link to the report. The six-input/three-score model interface is unchanged. The v1/v2/v3 packages, weights and results remain frozen; old models are interface-compatible but their previous results do not establish strength under v4.
 
-**Contender** is fully learned: a plain `6→64→64→3` Tanh network with 4,803 learned parameters and no fixed trajectory or feedback layers. PPO followed by direct weight search produced an export that passed three reserved blocks against v2 and the attacker, including winning a majority of ordinary five-rally games in every block. The [fully learned investigation](training/results/fully-learned/README.md) includes reproducible scripts, unsuccessful variants and final results; open `/training/fully-learned.html` for its curves. Rules and upload limits are unchanged.
+The earlier **Contender** is fully learned: a plain `6→64→64→3` Tanh network with 4,803 learned parameters and no fixed trajectory or feedback layers. Under v3, PPO followed by direct weight search produced an export that passed three reserved blocks against v2 and the attacker, including winning a majority of ordinary five-rally games in every block. The [fully learned investigation](training/results/fully-learned/README.md) retains those historical results; open `/training/fully-learned.html` for its curves.
 
 **Strategist** remains a clearly labelled hybrid comparison, with fixed trajectory features. It does not meet the fully learned requirement. Its [earlier investigation](training/results/training-improvement/README.md) and `/training/improvement.html` retain the v3 diagnosis, separate results and learning curves.
 

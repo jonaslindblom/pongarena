@@ -1,0 +1,12 @@
+{
+  "model_test_count": 64,
+  "training_interval_disjoint": true,
+  "archived_json_files": 195,
+  "archived_seed_count": 2881,
+  "archived_overlap": [],
+  "known_phase_overlap": {
+    "development": [],
+    "rule_screen": [],
+    "rule_confirmation": []
+  }
+}

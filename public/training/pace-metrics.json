@@ -1,0 +1,6157 @@
+{
+  "rule_seeds": [
+    2480926982,
+    2427009356,
+    2489888832,
+    2482976998,
+    2401794689,
+    2496587190,
+    2428678143,
+    2450950729,
+    2426582055,
+    2428659814,
+    2442946731,
+    2447506223,
+    2463706812,
+    2403939767,
+    2401023032,
+    2409260870,
+    2412250408,
+    2472188258,
+    2425960755,
+    2413213856,
+    2410041911,
+    2444024603,
+    2465887455,
+    2472236198,
+    2450107963,
+    2498482030,
+    2496198179,
+    2484998153,
+    2436628417,
+    2494854179,
+    2457983192,
+    2438070913,
+    2460096083,
+    2421373195,
+    2451832845,
+    2477757220,
+    2410928172,
+    2454258584,
+    2437286006,
+    2484283343,
+    2415215605,
+    2455350637,
+    2490459297,
+    2468839759,
+    2415114830,
+    2414340428,
+    2421854585,
+    2485078744,
+    2400081871,
+    2472981769,
+    2427765929,
+    2406325971,
+    2458061758,
+    2481202756,
+    2455804399,
+    2484296281,
+    2452951849,
+    2495554994,
+    2485623268,
+    2470674145,
+    2401523765,
+    2466807152,
+    2426263881,
+    2423659814
+  ],
+  "model_seeds": [
+    2618633149,
+    2603230926,
+    2674818006,
+    2650201963,
+    2677607901,
+    2685583601,
+    2661668424,
+    2661909530,
+    2624843308,
+    2652003980,
+    2692553463,
+    2667253778,
+    2603338823,
+    2693841583,
+    2603014644,
+    2624173289,
+    2651855206,
+    2618034376,
+    2697350531,
+    2608604854,
+    2626171088,
+    2697232350,
+    2679303369,
+    2620618065,
+    2694093791,
+    2666835508,
+    2608098952,
+    2600186224,
+    2677883052,
+    2695745685,
+    2641689704,
+    2651349507,
+    2640276000,
+    2663511007,
+    2660034589,
+    2650238332,
+    2642849932,
+    2683779879,
+    2685523134,
+    2646130004,
+    2687121744,
+    2653375186,
+    2655306554,
+    2627423458,
+    2636356664,
+    2636182188,
+    2623684289,
+    2649863654,
+    2602225722,
+    2657730658,
+    2651565801,
+    2660004258,
+    2697221419,
+    2689129055,
+    2638751052,
+    2610108750,
+    2641593655,
+    2664692749,
+    2692726616,
+    2672971232,
+    2606480149,
+    2636026554,
+    2621217407,
+    2645388271
+  ],
+  "development_seeds": [
+    1989994286,
+    1905686948,
+    1990112883,
+    1943622537,
+    1900493862,
+    1971971383,
+    1967584353,
+    1938539462,
+    1972805390,
+    1980182881,
+    1991203794,
+    1991250853,
+    1954832929,
+    1950718056,
+    1979108810,
+    1994648743,
+    1990598557,
+    1932281797,
+    1978700673,
+    1947715784,
+    1980386055,
+    1953627630,
+    1965515750,
+    1959983375,
+    1973844226,
+    1959102862,
+    1943913373,
+    1968160842,
+    1949233918,
+    1948174351,
+    1946167778,
+    1938183079
+  ],
+  "rule_confirmation": {
+    "baseline": {
+      "attack:attack": {
+        "rallies": 640,
+        "wins": 0,
+        "losses": 0,
+        "draws": 640,
+        "loop_draws": 640,
+        "timeout_draws": 0,
+        "point_rate": 0.0,
+        "score_rate": 0.5,
+        "point_margin": 0.0,
+        "match_wins": 0,
+        "match_losses": 0,
+        "match_draws": 128,
+        "paired_match_wins": 0,
+        "paired_match_losses": 0,
+        "paired_match_draws": 64,
+        "paired_match_win_rate": 0.0,
+        "median_decisive_returns": null,
+        "mean_returns": 4.909375,
+        "mean_ticks": 196.690625,
+        "early_finish_rate": 0.0,
+        "point_margin_ci95": [
+          0.0,
+          0.0
+        ],
+        "score_rate_ci95": [
+          0.5,
+          0.5
+        ],
+        "acceptance": {
+          "passed": false,
+          "criteria": {
+            "majority_paired_matches": false,
+            "positive_margin_ci": false,
+            "wins_exceed_losses_on_both_sides": false
+          }
+        },
+        "first_receiver_win_rate": null,
+        "long_scored_rate": 0.0,
+        "scored_after_return_rate": 0.0,
+        "locally_unreachable_scores": 0,
+        "locally_unreachable_share_of_scores": null,
+        "loop_detection_enabled": true,
+        "reaction_window_ticks": {
+          "minimum": 26,
+          "maximum": 66
+        }
+      },
+      "attack:defend": {
+        "rallies": 640,
+        "wins": 0,
+        "losses": 0,
+        "draws": 640,
+        "loop_draws": 640,
+        "timeout_draws": 0,
+        "point_rate": 0.0,
+        "score_rate": 0.5,
+        "point_margin": 0.0,
+        "match_wins": 0,
+        "match_losses": 0,
+        "match_draws": 128,
+        "paired_match_wins": 0,
+        "paired_match_losses": 0,
+        "paired_match_draws": 64,
+        "paired_match_win_rate": 0.0,
+        "median_decisive_returns": null,
+        "mean_returns": 6.2234375,
+        "mean_ticks": 251.6546875,
+        "early_finish_rate": 0.0,
+        "point_margin_ci95": [
+          0.0,
+          0.0
+        ],
+        "score_rate_ci95": [
+          0.5,
+          0.5
+        ],
+        "acceptance": {
+          "passed": false,
+          "criteria": {
+            "majority_paired_matches": false,
+            "positive_margin_ci": false,
+            "wins_exceed_losses_on_both_sides": false
+          }
+        },
+        "first_receiver_win_rate": null,
+        "long_scored_rate": 0.0,
+        "scored_after_return_rate": 0.0,
+        "locally_unreachable_scores": 0,
+        "locally_unreachable_share_of_scores": null,
+        "loop_detection_enabled": true,
+        "reaction_window_ticks": {
+          "minimum": 26,
+          "maximum": 66
+        }
+      },
+      "defend:defend": {
+        "rallies": 640,
+        "wins": 0,
+        "losses": 0,
+        "draws": 640,
+        "loop_draws": 640,
+        "timeout_draws": 0,
+        "point_rate": 0.0,
+        "score_rate": 0.5,
+        "point_margin": 0.0,
+        "match_wins": 0,
+        "match_losses": 0,
+        "match_draws": 128,
+        "paired_match_wins": 0,
+        "paired_match_losses": 0,
+        "paired_match_draws": 64,
+        "paired_match_win_rate": 0.0,
+        "median_decisive_returns": null,
+        "mean_returns": 4.328125,
+        "mean_ticks": 206.528125,
+        "early_finish_rate": 0.0,
+        "point_margin_ci95": [
+          0.0,
+          0.0
+        ],
+        "score_rate_ci95": [
+          0.5,
+          0.5
+        ],
+        "acceptance": {
+          "passed": false,
+          "criteria": {
+            "majority_paired_matches": false,
+            "positive_margin_ci": false,
+            "wins_exceed_losses_on_both_sides": false
+          }
+        },
+        "first_receiver_win_rate": null,
+        "long_scored_rate": 0.0,
+        "scored_after_return_rate": 0.0,
+        "locally_unreachable_scores": 0,
+        "locally_unreachable_share_of_scores": null,
+        "loop_detection_enabled": true,
+        "reaction_window_ticks": {
+          "minimum": 26,
+          "maximum": 66
+        }
+      },
+      "attack:interceptor": {
+        "rallies": 640,
+        "wins": 0,
+        "losses": 0,
+        "draws": 640,
+        "loop_draws": 640,
+        "timeout_draws": 0,
+        "point_rate": 0.0,
+        "score_rate": 0.5,
+        "point_margin": 0.0,
+        "match_wins": 0,
+        "match_losses": 0,
+        "match_draws": 128,
+        "paired_match_wins": 0,
+        "paired_match_losses": 0,
+        "paired_match_draws": 64,
+        "paired_match_win_rate": 0.0,
+        "median_decisive_returns": null,
+        "mean_returns": 6.63125,
+        "mean_ticks": 305.2484375,
+        "early_finish_rate": 0.0,
+        "point_margin_ci95": [
+          0.0,
+          0.0
+        ],
+        "score_rate_ci95": [
+          0.5,
+          0.5
+        ],
+        "acceptance": {
+          "passed": false,
+          "criteria": {
+            "majority_paired_matches": false,
+            "positive_margin_ci": false,
+            "wins_exceed_losses_on_both_sides": false
+          }
+        },
+        "first_receiver_win_rate": null,
+        "long_scored_rate": 0.0,
+        "scored_after_return_rate": 0.0,
+        "locally_unreachable_scores": 0,
+        "locally_unreachable_share_of_scores": null,
+        "loop_detection_enabled": true,
+        "reaction_window_ticks": {
+          "minimum": 26,
+          "maximum": 66
+        }
+      },
+      "attack:delayed": {
+        "rallies": 640,
+        "wins": 0,
+        "losses": 0,
+        "draws": 640,
+        "loop_draws": 0,
+        "timeout_draws": 640,
+        "point_rate": 0.0,
+        "score_rate": 0.5,
+        "point_margin": 0.0,
+        "match_wins": 0,
+        "match_losses": 0,
+        "match_draws": 128,
+        "paired_match_wins": 0,
+        "paired_match_losses": 0,
+        "paired_match_draws": 64,
+        "paired_match_win_rate": 0.0,
+        "median_decisive_returns": null,
+        "mean_returns": 38.2515625,
+        "mean_ticks": 1600.0,
+        "early_finish_rate": 0.0,
+        "point_margin_ci95": [
+          0.0,
+          0.0
+        ],
+        "score_rate_ci95": [
+          0.5,
+          0.5
+        ],
+        "acceptance": {
+          "passed": false,
+          "criteria": {
+            "majority_paired_matches": false,
+            "positive_margin_ci": false,
+            "wins_exceed_losses_on_both_sides": false
+          }
+        },
+        "first_receiver_win_rate": null,
+        "long_scored_rate": 0.0,
+        "scored_after_return_rate": 0.0,
+        "locally_unreachable_scores": 0,
+        "locally_unreachable_share_of_scores": null,
+        "loop_detection_enabled": false,
+        "reaction_window_ticks": {
+          "minimum": 26,
+          "maximum": 66
+        }
+      },
+      "contender:attack": {
+        "rallies": 640,
+        "wins": 0,
+        "losses": 92,
+        "draws": 548,
+        "loop_draws": 548,
+        "timeout_draws": 0,
+        "point_rate": 0.0,
+        "score_rate": 0.428125,
+        "point_margin": -0.14375,
+        "match_wins": 0,
+        "match_losses": 70,
+        "match_draws": 58,
+        "paired_match_wins": 0,
+        "paired_match_losses": 49,
+        "paired_match_draws": 15,
+        "paired_match_win_rate": 0.0,
+        "median_decisive_returns": 4.5,
+        "mean_returns": 12.1625,
+        "mean_ticks": 478.996875,
+        "early_finish_rate": 0.0453125,
+        "point_margin_ci95": [
+          -0.175,
+          -0.1171875
+        ],
+        "score_rate_ci95": [
+          0.4125,
+          0.44140625
+        ],
+        "acceptance": {
+          "passed": false,
+          "criteria": {
+            "majority_paired_matches": false,
+            "positive_margin_ci": false,
+            "wins_exceed_losses_on_both_sides": false
+          }
+        },
+        "first_receiver_win_rate": 0.41304347826086957,
+        "long_scored_rate": 0.053125,
+        "scored_after_return_rate": 0.1171875,
+        "locally_unreachable_scores": 3,
+        "locally_unreachable_share_of_scores": 0.03260869565217391,
+        "loop_detection_enabled": true,
+        "reaction_window_ticks": {
+          "minimum": 26,
+          "maximum": 66
+        }
+      },
+      "contender:defend": {
+        "rallies": 640,
+        "wins": 0,
+        "losses": 17,
+        "draws": 623,
+        "loop_draws": 623,
+        "timeout_draws": 0,
+        "point_rate": 0.0,
+        "score_rate": 0.48671875,
+        "point_margin": -0.0265625,
+        "match_wins": 0,
+        "match_losses": 16,
+        "match_draws": 112,
+        "paired_match_wins": 0,
+        "paired_match_losses": 15,
+        "paired_match_draws": 49,
+        "paired_match_win_rate": 0.0,
+        "median_decisive_returns": 0.0,
+        "mean_returns": 7.2296875,
+        "mean_ticks": 276.7484375,
+        "early_finish_rate": 0.0265625,
+        "point_margin_ci95": [
+          -0.0390625,
+          -0.014062500000000002
+        ],
+        "score_rate_ci95": [
+          0.48046875,
+          0.49296875
+        ],
+        "acceptance": {
+          "passed": false,
+          "criteria": {
+            "majority_paired_matches": false,
+            "positive_margin_ci": false,
+            "wins_exceed_losses_on_both_sides": false
+          }
+        },
+        "first_receiver_win_rate": 0.0,
+        "long_scored_rate": 0.0,
+        "scored_after_return_rate": 0.0,
+        "locally_unreachable_scores": 0,
+        "locally_unreachable_share_of_scores": 0.0,
+        "loop_detection_enabled": true,
+        "reaction_window_ticks": {
+          "minimum": 26,
+          "maximum": 66
+        }
+      }
+    },
+    "pace13-v9": {
+      "attack:attack": {
+        "rallies": 640,
+        "wins": 233,
+        "losses": 233,
+        "draws": 174,
+        "loop_draws": 174,
+        "timeout_draws": 0,
+        "point_rate": 0.3640625,
+        "score_rate": 0.5,
+        "point_margin": 0.0,
+        "match_wins": 55,
+        "match_losses": 55,
+        "match_draws": 18,
+        "paired_match_wins": 0,
+        "paired_match_losses": 0,
+        "paired_match_draws": 64,
+        "paired_match_win_rate": 0.0,
+        "median_decisive_returns": 9.0,
+        "mean_returns": 9.440625,
+        "mean_ticks": 362.3875,
+        "early_finish_rate": 0.0,
+        "point_margin_ci95": [
+          0.0,
+          0.0
+        ],
+        "score_rate_ci95": [
+          0.5,
+          0.5
+        ],
+        "acceptance": {
+          "passed": false,
+          "criteria": {
+            "majority_paired_matches": false,
+            "positive_margin_ci": false,
+            "wins_exceed_losses_on_both_sides": false
+          }
+        },
+        "first_receiver_win_rate": 0.6351931330472103,
+        "long_scored_rate": 0.728125,
+        "locally_unreachable_scores": 466,
+        "locally_unreachable_share_of_scores": 1.0,
+        "loop_detection_enabled": true,
+        "reaction_window_ticks": {
+          "first_return": 55,
+          "minimum": 26
+        }
+      },
+      "attack:defend": {
+        "rallies": 640,
+        "wins": 308,
+        "losses": 296,
+        "draws": 36,
+        "loop_draws": 36,
+        "timeout_draws": 0,
+        "point_rate": 0.48125,
+        "score_rate": 0.509375,
+        "point_margin": 0.01875,
+        "match_wins": 60,
+        "match_losses": 53,
+        "match_draws": 15,
+        "paired_match_wins": 29,
+        "paired_match_losses": 26,
+        "paired_match_draws": 9,
+        "paired_match_win_rate": 0.453125,
+        "median_decisive_returns": 9.0,
+        "mean_returns": 9.940625,
+        "mean_ticks": 380.99375,
+        "early_finish_rate": 0.0,
+        "point_margin_ci95": [
+          -0.045351562500000005,
+          0.08437499999999999
+        ],
+        "score_rate_ci95": [
+          0.47732421875,
+          0.5421875
+        ],
+        "acceptance": {
+          "passed": false,
+          "criteria": {
+            "majority_paired_matches": false,
+            "positive_margin_ci": false,
+            "wins_exceed_losses_on_both_sides": true
+          }
+        },
+        "first_receiver_win_rate": 0.5728476821192053,
+        "long_scored_rate": 0.94375,
+        "locally_unreachable_scores": 604,
+        "locally_unreachable_share_of_scores": 1.0,
+        "loop_detection_enabled": true,
+        "reaction_window_ticks": {
+          "first_return": 55,
+          "minimum": 26
+        }
+      },
+      "defend:defend": {
+        "rallies": 640,
+        "wins": 98,
+        "losses": 98,
+        "draws": 444,
+        "loop_draws": 444,
+        "timeout_draws": 0,
+        "point_rate": 0.153125,
+        "score_rate": 0.5,
+        "point_margin": 0.0,
+        "match_wins": 46,
+        "match_losses": 46,
+        "match_draws": 36,
+        "paired_match_wins": 0,
+        "paired_match_losses": 0,
+        "paired_match_draws": 64,
+        "paired_match_win_rate": 0.0,
+        "median_decisive_returns": 10.0,
+        "mean_returns": 10.10625,
+        "mean_ticks": 368.725,
+        "early_finish_rate": 0.0,
+        "point_margin_ci95": [
+          0.0,
+          0.0
+        ],
+        "score_rate_ci95": [
+          0.5,
+          0.5
+        ],
+        "acceptance": {
+          "passed": false,
+          "criteria": {
+            "majority_paired_matches": false,
+            "positive_margin_ci": false,
+            "wins_exceed_losses_on_both_sides": false
+          }
+        },
+        "first_receiver_win_rate": 0.05102040816326531,
+        "long_scored_rate": 0.30625,
+        "locally_unreachable_scores": 196,
+        "locally_unreachable_share_of_scores": 1.0,
+        "loop_detection_enabled": true,
+        "reaction_window_ticks": {
+          "first_return": 55,
+          "minimum": 26
+        }
+      },
+      "attack:interceptor": {
+        "rallies": 640,
+        "wins": 502,
+        "losses": 138,
+        "draws": 0,
+        "loop_draws": 0,
+        "timeout_draws": 0,
+        "point_rate": 0.784375,
+        "score_rate": 0.784375,
+        "point_margin": 0.56875,
+        "match_wins": 122,
+        "match_losses": 6,
+        "match_draws": 0,
+        "paired_match_wins": 64,
+        "paired_match_losses": 0,
+        "paired_match_draws": 0,
+        "paired_match_win_rate": 1.0,
+        "median_decisive_returns": 8.0,
+        "mean_returns": 7.890625,
+        "mean_ticks": 329.15625,
+        "early_finish_rate": 0.0,
+        "point_margin_ci95": [
+          0.5217968749999999,
+          0.6187499999999999
+        ],
+        "score_rate_ci95": [
+          0.7608984375,
+          0.809375
+        ],
+        "acceptance": {
+          "passed": true,
+          "criteria": {
+            "majority_paired_matches": true,
+            "positive_margin_ci": true,
+            "wins_exceed_losses_on_both_sides": true
+          }
+        },
+        "first_receiver_win_rate": 0.284375,
+        "long_scored_rate": 1.0,
+        "locally_unreachable_scores": 640,
+        "locally_unreachable_share_of_scores": 1.0,
+        "loop_detection_enabled": true,
+        "reaction_window_ticks": {
+          "first_return": 55,
+          "minimum": 26
+        }
+      },
+      "attack:delayed": {
+        "rallies": 640,
+        "wins": 640,
+        "losses": 0,
+        "draws": 0,
+        "loop_draws": 0,
+        "timeout_draws": 0,
+        "point_rate": 1.0,
+        "score_rate": 1.0,
+        "point_margin": 1.0,
+        "match_wins": 128,
+        "match_losses": 0,
+        "match_draws": 0,
+        "paired_match_wins": 64,
+        "paired_match_losses": 0,
+        "paired_match_draws": 0,
+        "paired_match_win_rate": 1.0,
+        "median_decisive_returns": 7.0,
+        "mean_returns": 7.228125,
+        "mean_ticks": 311.653125,
+        "early_finish_rate": 0.0,
+        "point_margin_ci95": [
+          1.0,
+          1.0
+        ],
+        "score_rate_ci95": [
+          1.0,
+          1.0
+        ],
+        "acceptance": {
+          "passed": true,
+          "criteria": {
+            "majority_paired_matches": true,
+            "positive_margin_ci": true,
+            "wins_exceed_losses_on_both_sides": true
+          }
+        },
+        "first_receiver_win_rate": 0.5,
+        "long_scored_rate": 1.0,
+        "locally_unreachable_scores": 551,
+        "locally_unreachable_share_of_scores": 0.8609375,
+        "loop_detection_enabled": false,
+        "reaction_window_ticks": {
+          "first_return": 55,
+          "minimum": 26
+        }
+      },
+      "contender:attack": {
+        "rallies": 640,
+        "wins": 0,
+        "losses": 640,
+        "draws": 0,
+        "loop_draws": 0,
+        "timeout_draws": 0,
+        "point_rate": 0.0,
+        "score_rate": 0.0,
+        "point_margin": -1.0,
+        "match_wins": 0,
+        "match_losses": 128,
+        "match_draws": 0,
+        "paired_match_wins": 0,
+        "paired_match_losses": 64,
+        "paired_match_draws": 0,
+        "paired_match_win_rate": 0.0,
+        "median_decisive_returns": 2.0,
+        "mean_returns": 2.815625,
+        "mean_ticks": 160.70625,
+        "early_finish_rate": 0.284375,
+        "point_margin_ci95": [
+          -1.0,
+          -1.0
+        ],
+        "score_rate_ci95": [
+          0.0,
+          0.0
+        ],
+        "acceptance": {
+          "passed": false,
+          "criteria": {
+            "majority_paired_matches": false,
+            "positive_margin_ci": false,
+            "wins_exceed_losses_on_both_sides": false
+          }
+        },
+        "first_receiver_win_rate": 0.5,
+        "long_scored_rate": 0.171875,
+        "locally_unreachable_scores": 68,
+        "locally_unreachable_share_of_scores": 0.10625,
+        "loop_detection_enabled": true,
+        "reaction_window_ticks": {
+          "first_return": 55,
+          "minimum": 26
+        }
+      },
+      "contender:defend": {
+        "rallies": 640,
+        "wins": 0,
+        "losses": 617,
+        "draws": 23,
+        "loop_draws": 23,
+        "timeout_draws": 0,
+        "point_rate": 0.0,
+        "score_rate": 0.01796875,
+        "point_margin": -0.9640625,
+        "match_wins": 0,
+        "match_losses": 128,
+        "match_draws": 0,
+        "paired_match_wins": 0,
+        "paired_match_losses": 64,
+        "paired_match_draws": 0,
+        "paired_match_win_rate": 0.0,
+        "median_decisive_returns": 2.0,
+        "mean_returns": 3.55,
+        "mean_ticks": 181.5265625,
+        "early_finish_rate": 0.2796875,
+        "point_margin_ci95": [
+          -0.978125,
+          -0.95
+        ],
+        "score_rate_ci95": [
+          0.010937499999999989,
+          0.025000000000000022
+        ],
+        "acceptance": {
+          "passed": false,
+          "criteria": {
+            "majority_paired_matches": false,
+            "positive_margin_ci": false,
+            "wins_exceed_losses_on_both_sides": false
+          }
+        },
+        "first_receiver_win_rate": 0.5008103727714749,
+        "long_scored_rate": 0.1625,
+        "locally_unreachable_scores": 72,
+        "locally_unreachable_share_of_scores": 0.1166936790923825,
+        "loop_detection_enabled": true,
+        "reaction_window_ticks": {
+          "first_return": 55,
+          "minimum": 26
+        }
+      }
+    },
+    "pace13-v9-scaled": {
+      "attack:attack": {
+        "rallies": 640,
+        "wins": 320,
+        "losses": 320,
+        "draws": 0,
+        "loop_draws": 0,
+        "timeout_draws": 0,
+        "point_rate": 0.5,
+        "score_rate": 0.5,
+        "point_margin": 0.0,
+        "match_wins": 64,
+        "match_losses": 64,
+        "match_draws": 0,
+        "paired_match_wins": 0,
+        "paired_match_losses": 0,
+        "paired_match_draws": 64,
+        "paired_match_win_rate": 0.0,
+        "median_decisive_returns": 11.0,
+        "mean_returns": 11.503125,
+        "mean_ticks": 423.08125,
+        "early_finish_rate": 0.0,
+        "point_margin_ci95": [
+          0.0,
+          0.0
+        ],
+        "score_rate_ci95": [
+          0.5,
+          0.5
+        ],
+        "acceptance": {
+          "passed": false,
+          "criteria": {
+            "majority_paired_matches": false,
+            "positive_margin_ci": false,
+            "wins_exceed_losses_on_both_sides": false
+          }
+        },
+        "first_receiver_win_rate": 0.603125,
+        "long_scored_rate": 1.0,
+        "locally_unreachable_scores": 640,
+        "locally_unreachable_share_of_scores": 1.0,
+        "loop_detection_enabled": true,
+        "reaction_window_ticks": {
+          "first_return": 55,
+          "minimum": 26
+        }
+      },
+      "attack:defend": {
+        "rallies": 640,
+        "wins": 384,
+        "losses": 119,
+        "draws": 137,
+        "loop_draws": 137,
+        "timeout_draws": 0,
+        "point_rate": 0.6,
+        "score_rate": 0.70703125,
+        "point_margin": 0.4140625,
+        "match_wins": 103,
+        "match_losses": 11,
+        "match_draws": 14,
+        "paired_match_wins": 60,
+        "paired_match_losses": 2,
+        "paired_match_draws": 2,
+        "paired_match_win_rate": 0.9375,
+        "median_decisive_returns": 11.0,
+        "mean_returns": 11.1390625,
+        "mean_ticks": 408.05,
+        "early_finish_rate": 0.0,
+        "point_margin_ci95": [
+          0.3578125,
+          0.4671875
+        ],
+        "score_rate_ci95": [
+          0.67890625,
+          0.73359375
+        ],
+        "acceptance": {
+          "passed": true,
+          "criteria": {
+            "majority_paired_matches": true,
+            "positive_margin_ci": true,
+            "wins_exceed_losses_on_both_sides": true
+          }
+        },
+        "first_receiver_win_rate": 0.6003976143141153,
+        "long_scored_rate": 0.7859375,
+        "locally_unreachable_scores": 503,
+        "locally_unreachable_share_of_scores": 1.0,
+        "loop_detection_enabled": true,
+        "reaction_window_ticks": {
+          "first_return": 55,
+          "minimum": 26
+        }
+      },
+      "defend:defend": {
+        "rallies": 640,
+        "wins": 320,
+        "losses": 320,
+        "draws": 0,
+        "loop_draws": 0,
+        "timeout_draws": 0,
+        "point_rate": 0.5,
+        "score_rate": 0.5,
+        "point_margin": 0.0,
+        "match_wins": 64,
+        "match_losses": 64,
+        "match_draws": 0,
+        "paired_match_wins": 0,
+        "paired_match_losses": 0,
+        "paired_match_draws": 64,
+        "paired_match_win_rate": 0.0,
+        "median_decisive_returns": 12.0,
+        "mean_returns": 11.790625,
+        "mean_ticks": 430.55625,
+        "early_finish_rate": 0.0,
+        "point_margin_ci95": [
+          0.0,
+          0.0
+        ],
+        "score_rate_ci95": [
+          0.5,
+          0.5
+        ],
+        "acceptance": {
+          "passed": false,
+          "criteria": {
+            "majority_paired_matches": false,
+            "positive_margin_ci": false,
+            "wins_exceed_losses_on_both_sides": false
+          }
+        },
+        "first_receiver_win_rate": 0.715625,
+        "long_scored_rate": 1.0,
+        "locally_unreachable_scores": 640,
+        "locally_unreachable_share_of_scores": 1.0,
+        "loop_detection_enabled": true,
+        "reaction_window_ticks": {
+          "first_return": 55,
+          "minimum": 26
+        }
+      },
+      "attack:interceptor": {
+        "rallies": 640,
+        "wins": 593,
+        "losses": 47,
+        "draws": 0,
+        "loop_draws": 0,
+        "timeout_draws": 0,
+        "point_rate": 0.9265625,
+        "score_rate": 0.9265625,
+        "point_margin": 0.853125,
+        "match_wins": 128,
+        "match_losses": 0,
+        "match_draws": 0,
+        "paired_match_wins": 64,
+        "paired_match_losses": 0,
+        "paired_match_draws": 0,
+        "paired_match_win_rate": 1.0,
+        "median_decisive_returns": 8.0,
+        "mean_returns": 9.5703125,
+        "mean_ticks": 372.828125,
+        "early_finish_rate": 0.0,
+        "point_margin_ci95": [
+          0.8187499999999999,
+          0.890625
+        ],
+        "score_rate_ci95": [
+          0.9093749999999999,
+          0.9453125
+        ],
+        "acceptance": {
+          "passed": true,
+          "criteria": {
+            "majority_paired_matches": true,
+            "positive_margin_ci": true,
+            "wins_exceed_losses_on_both_sides": true
+          }
+        },
+        "first_receiver_win_rate": 0.4265625,
+        "long_scored_rate": 1.0,
+        "locally_unreachable_scores": 640,
+        "locally_unreachable_share_of_scores": 1.0,
+        "loop_detection_enabled": true,
+        "reaction_window_ticks": {
+          "first_return": 55,
+          "minimum": 26
+        }
+      },
+      "attack:delayed": {
+        "rallies": 640,
+        "wins": 640,
+        "losses": 0,
+        "draws": 0,
+        "loop_draws": 0,
+        "timeout_draws": 0,
+        "point_rate": 1.0,
+        "score_rate": 1.0,
+        "point_margin": 1.0,
+        "match_wins": 128,
+        "match_losses": 0,
+        "match_draws": 0,
+        "paired_match_wins": 64,
+        "paired_match_losses": 0,
+        "paired_match_draws": 0,
+        "paired_match_win_rate": 1.0,
+        "median_decisive_returns": 7.0,
+        "mean_returns": 7.10625,
+        "mean_ticks": 308.36875,
+        "early_finish_rate": 0.0,
+        "point_margin_ci95": [
+          1.0,
+          1.0
+        ],
+        "score_rate_ci95": [
+          1.0,
+          1.0
+        ],
+        "acceptance": {
+          "passed": true,
+          "criteria": {
+            "majority_paired_matches": true,
+            "positive_margin_ci": true,
+            "wins_exceed_losses_on_both_sides": true
+          }
+        },
+        "first_receiver_win_rate": 0.5,
+        "long_scored_rate": 1.0,
+        "locally_unreachable_scores": 609,
+        "locally_unreachable_share_of_scores": 0.9515625,
+        "loop_detection_enabled": false,
+        "reaction_window_ticks": {
+          "first_return": 55,
+          "minimum": 26
+        }
+      },
+      "contender:attack": {
+        "rallies": 640,
+        "wins": 28,
+        "losses": 612,
+        "draws": 0,
+        "loop_draws": 0,
+        "timeout_draws": 0,
+        "point_rate": 0.04375,
+        "score_rate": 0.04375,
+        "point_margin": -0.9125,
+        "match_wins": 0,
+        "match_losses": 128,
+        "match_draws": 0,
+        "paired_match_wins": 0,
+        "paired_match_losses": 64,
+        "paired_match_draws": 0,
+        "paired_match_win_rate": 0.0,
+        "median_decisive_returns": 7.0,
+        "mean_returns": 5.85,
+        "mean_ticks": 262.453125,
+        "early_finish_rate": 0.1234375,
+        "point_margin_ci95": [
+          -0.94375,
+          -0.8781249999999999
+        ],
+        "score_rate_ci95": [
+          0.02812500000000001,
+          0.06093750000000003
+        ],
+        "acceptance": {
+          "passed": false,
+          "criteria": {
+            "majority_paired_matches": false,
+            "positive_margin_ci": false,
+            "wins_exceed_losses_on_both_sides": false
+          }
+        },
+        "first_receiver_win_rate": 0.503125,
+        "long_scored_rate": 0.6328125,
+        "locally_unreachable_scores": 307,
+        "locally_unreachable_share_of_scores": 0.4796875,
+        "loop_detection_enabled": true,
+        "reaction_window_ticks": {
+          "first_return": 55,
+          "minimum": 26
+        }
+      },
+      "contender:defend": {
+        "rallies": 640,
+        "wins": 0,
+        "losses": 555,
+        "draws": 85,
+        "loop_draws": 85,
+        "timeout_draws": 0,
+        "point_rate": 0.0,
+        "score_rate": 0.06640625,
+        "point_margin": -0.8671875,
+        "match_wins": 0,
+        "match_losses": 128,
+        "match_draws": 0,
+        "paired_match_wins": 0,
+        "paired_match_losses": 64,
+        "paired_match_draws": 0,
+        "paired_match_win_rate": 0.0,
+        "median_decisive_returns": 6.0,
+        "mean_returns": 7.0171875,
+        "mean_ticks": 289.8109375,
+        "early_finish_rate": 0.1,
+        "point_margin_ci95": [
+          -0.8906250000000001,
+          -0.8421875000000001
+        ],
+        "score_rate_ci95": [
+          0.054687499999999944,
+          0.07890624999999996
+        ],
+        "acceptance": {
+          "passed": false,
+          "criteria": {
+            "majority_paired_matches": false,
+            "positive_margin_ci": false,
+            "wins_exceed_losses_on_both_sides": false
+          }
+        },
+        "first_receiver_win_rate": 0.4594594594594595,
+        "long_scored_rate": 0.4859375,
+        "locally_unreachable_scores": 212,
+        "locally_unreachable_share_of_scores": 0.38198198198198197,
+        "loop_detection_enabled": true,
+        "reaction_window_ticks": {
+          "first_return": 55,
+          "minimum": 26
+        }
+      }
+    }
+  },
+  "model_confirmation": {
+    "pacer:pacer": {
+      "rallies": 640,
+      "wins": 307,
+      "losses": 307,
+      "draws": 26,
+      "loop_draws": 26,
+      "timeout_draws": 0,
+      "point_rate": 0.4796875,
+      "score_rate": 0.5,
+      "point_margin": 0.0,
+      "match_wins": 60,
+      "match_losses": 60,
+      "match_draws": 8,
+      "paired_match_wins": 0,
+      "paired_match_losses": 0,
+      "paired_match_draws": 64,
+      "paired_match_win_rate": 0.0,
+      "median_decisive_returns": 11.0,
+      "mean_returns": 12.225,
+      "mean_ticks": 438.765625,
+      "early_finish_rate": 0.01875,
+      "point_margin_ci95": [
+        0.0,
+        0.0
+      ],
+      "score_rate_ci95": [
+        0.5,
+        0.5
+      ],
+      "acceptance": {
+        "passed": false,
+        "criteria": {
+          "majority_paired_matches": false,
+          "positive_margin_ci": false,
+          "wins_exceed_losses_on_both_sides": false
+        }
+      },
+      "first_receiver_win_rate": 0.4820846905537459,
+      "long_scored_rate": 0.9125,
+      "locally_unreachable_scores": 582,
+      "locally_unreachable_share_of_scores": 0.9478827361563518,
+      "loop_detection_enabled": true,
+      "reaction_window_ticks": {
+        "first_return": 55,
+        "minimum": 26
+      }
+    },
+    "pacer:apprentice": {
+      "rallies": 640,
+      "wins": 397,
+      "losses": 186,
+      "draws": 57,
+      "loop_draws": 57,
+      "timeout_draws": 0,
+      "point_rate": 0.6203125,
+      "score_rate": 0.66484375,
+      "point_margin": 0.3296875,
+      "match_wins": 96,
+      "match_losses": 20,
+      "match_draws": 12,
+      "paired_match_wins": 53,
+      "paired_match_losses": 5,
+      "paired_match_draws": 6,
+      "paired_match_win_rate": 0.828125,
+      "median_decisive_returns": 8.0,
+      "mean_returns": 8.8828125,
+      "mean_ticks": 335.759375,
+      "early_finish_rate": 0.1609375,
+      "point_margin_ci95": [
+        0.265625,
+        0.4
+      ],
+      "score_rate_ci95": [
+        0.6328125,
+        0.7
+      ],
+      "acceptance": {
+        "passed": true,
+        "criteria": {
+          "majority_paired_matches": true,
+          "positive_margin_ci": true,
+          "wins_exceed_losses_on_both_sides": true
+        }
+      },
+      "first_receiver_win_rate": 0.47684391080617494,
+      "long_scored_rate": 0.5671875,
+      "locally_unreachable_scores": 322,
+      "locally_unreachable_share_of_scores": 0.5523156089193825,
+      "loop_detection_enabled": true,
+      "reaction_window_ticks": {
+        "first_return": 55,
+        "minimum": 26
+      }
+    },
+    "pacer:attack": {
+      "rallies": 640,
+      "wins": 163,
+      "losses": 439,
+      "draws": 38,
+      "loop_draws": 38,
+      "timeout_draws": 0,
+      "point_rate": 0.2546875,
+      "score_rate": 0.284375,
+      "point_margin": -0.43125,
+      "match_wins": 9,
+      "match_losses": 110,
+      "match_draws": 9,
+      "paired_match_wins": 0,
+      "paired_match_losses": 63,
+      "paired_match_draws": 1,
+      "paired_match_win_rate": 0.0,
+      "median_decisive_returns": 9.0,
+      "mean_returns": 9.9296875,
+      "mean_ticks": 380.325,
+      "early_finish_rate": 0.003125,
+      "point_margin_ci95": [
+        -0.4765625,
+        -0.3859375
+      ],
+      "score_rate_ci95": [
+        0.26171875,
+        0.30703125
+      ],
+      "acceptance": {
+        "passed": false,
+        "criteria": {
+          "majority_paired_matches": false,
+          "positive_margin_ci": false,
+          "wins_exceed_losses_on_both_sides": false
+        }
+      },
+      "first_receiver_win_rate": 0.6112956810631229,
+      "long_scored_rate": 0.9375,
+      "locally_unreachable_scores": 593,
+      "locally_unreachable_share_of_scores": 0.9850498338870431,
+      "loop_detection_enabled": true,
+      "reaction_window_ticks": {
+        "first_return": 55,
+        "minimum": 26
+      }
+    },
+    "pacer:defend": {
+      "rallies": 640,
+      "wins": 77,
+      "losses": 441,
+      "draws": 122,
+      "loop_draws": 122,
+      "timeout_draws": 0,
+      "point_rate": 0.1203125,
+      "score_rate": 0.215625,
+      "point_margin": -0.56875,
+      "match_wins": 1,
+      "match_losses": 120,
+      "match_draws": 7,
+      "paired_match_wins": 0,
+      "paired_match_losses": 64,
+      "paired_match_draws": 0,
+      "paired_match_win_rate": 0.0,
+      "median_decisive_returns": 8.0,
+      "mean_returns": 9.209375,
+      "mean_ticks": 358.1765625,
+      "early_finish_rate": 0.003125,
+      "point_margin_ci95": [
+        -0.6140625,
+        -0.5203125000000001
+      ],
+      "score_rate_ci95": [
+        0.19296875000000002,
+        0.23984374999999997
+      ],
+      "acceptance": {
+        "passed": false,
+        "criteria": {
+          "majority_paired_matches": false,
+          "positive_margin_ci": false,
+          "wins_exceed_losses_on_both_sides": false
+        }
+      },
+      "first_receiver_win_rate": 0.3667953667953668,
+      "long_scored_rate": 0.8046875,
+      "locally_unreachable_scores": 505,
+      "locally_unreachable_share_of_scores": 0.974903474903475,
+      "loop_detection_enabled": true,
+      "reaction_window_ticks": {
+        "first_return": 55,
+        "minimum": 26
+      }
+    },
+    "pacer:contender": {
+      "rallies": 640,
+      "wins": 512,
+      "losses": 112,
+      "draws": 16,
+      "loop_draws": 16,
+      "timeout_draws": 0,
+      "point_rate": 0.8,
+      "score_rate": 0.8125,
+      "point_margin": 0.625,
+      "match_wins": 123,
+      "match_losses": 3,
+      "match_draws": 2,
+      "paired_match_wins": 64,
+      "paired_match_losses": 0,
+      "paired_match_draws": 0,
+      "paired_match_win_rate": 1.0,
+      "median_decisive_returns": 8.5,
+      "mean_returns": 9.6,
+      "mean_ticks": 365.503125,
+      "early_finish_rate": 0.053125,
+      "point_margin_ci95": [
+        0.578125,
+        0.6749999999999998
+      ],
+      "score_rate_ci95": [
+        0.7890625,
+        0.8374999999999999
+      ],
+      "acceptance": {
+        "passed": true,
+        "criteria": {
+          "majority_paired_matches": true,
+          "positive_margin_ci": true,
+          "wins_exceed_losses_on_both_sides": true
+        }
+      },
+      "first_receiver_win_rate": 0.47596153846153844,
+      "long_scored_rate": 0.7484375,
+      "locally_unreachable_scores": 327,
+      "locally_unreachable_share_of_scores": 0.5240384615384616,
+      "loop_detection_enabled": true,
+      "reaction_window_ticks": {
+        "first_return": 55,
+        "minimum": 26
+      }
+    },
+    "pacer:v2": {
+      "rallies": 640,
+      "wins": 490,
+      "losses": 113,
+      "draws": 37,
+      "loop_draws": 37,
+      "timeout_draws": 0,
+      "point_rate": 0.765625,
+      "score_rate": 0.79453125,
+      "point_margin": 0.5890625,
+      "match_wins": 121,
+      "match_losses": 5,
+      "match_draws": 2,
+      "paired_match_wins": 63,
+      "paired_match_losses": 0,
+      "paired_match_draws": 1,
+      "paired_match_win_rate": 0.984375,
+      "median_decisive_returns": 9.0,
+      "mean_returns": 10.8328125,
+      "mean_ticks": 396.246875,
+      "early_finish_rate": 0.0609375,
+      "point_margin_ci95": [
+        0.534375,
+        0.64375
+      ],
+      "score_rate_ci95": [
+        0.7671875,
+        0.821875
+      ],
+      "acceptance": {
+        "passed": true,
+        "criteria": {
+          "majority_paired_matches": true,
+          "positive_margin_ci": true,
+          "wins_exceed_losses_on_both_sides": true
+        }
+      },
+      "first_receiver_win_rate": 0.494195688225539,
+      "long_scored_rate": 0.74375,
+      "locally_unreachable_scores": 399,
+      "locally_unreachable_share_of_scores": 0.6616915422885572,
+      "loop_detection_enabled": true,
+      "reaction_window_ticks": {
+        "first_return": 55,
+        "minimum": 26
+      }
+    },
+    "pacer:tracker": {
+      "rallies": 640,
+      "wins": 615,
+      "losses": 25,
+      "draws": 0,
+      "loop_draws": 0,
+      "timeout_draws": 0,
+      "point_rate": 0.9609375,
+      "score_rate": 0.9609375,
+      "point_margin": 0.921875,
+      "match_wins": 128,
+      "match_losses": 0,
+      "match_draws": 0,
+      "paired_match_wins": 64,
+      "paired_match_losses": 0,
+      "paired_match_draws": 0,
+      "paired_match_win_rate": 1.0,
+      "median_decisive_returns": 2.0,
+      "mean_returns": 2.4765625,
+      "mean_ticks": 146.3046875,
+      "early_finish_rate": 0.3625,
+      "point_margin_ci95": [
+        0.8937499999999999,
+        0.946875
+      ],
+      "score_rate_ci95": [
+        0.9468749999999999,
+        0.9734375
+      ],
+      "acceptance": {
+        "passed": true,
+        "criteria": {
+          "majority_paired_matches": true,
+          "positive_margin_ci": true,
+          "wins_exceed_losses_on_both_sides": true
+        }
+      },
+      "first_receiver_win_rate": 0.4828125,
+      "long_scored_rate": 0.0609375,
+      "locally_unreachable_scores": 190,
+      "locally_unreachable_share_of_scores": 0.296875,
+      "loop_detection_enabled": true,
+      "reaction_window_ticks": {
+        "first_return": 55,
+        "minimum": 26
+      }
+    },
+    "pacer:anticipator": {
+      "rallies": 640,
+      "wins": 624,
+      "losses": 16,
+      "draws": 0,
+      "loop_draws": 0,
+      "timeout_draws": 0,
+      "point_rate": 0.975,
+      "score_rate": 0.975,
+      "point_margin": 0.95,
+      "match_wins": 128,
+      "match_losses": 0,
+      "match_draws": 0,
+      "paired_match_wins": 64,
+      "paired_match_losses": 0,
+      "paired_match_draws": 0,
+      "paired_match_win_rate": 1.0,
+      "median_decisive_returns": 3.0,
+      "mean_returns": 3.2875,
+      "mean_ticks": 178.290625,
+      "early_finish_rate": 0.2,
+      "point_margin_ci95": [
+        0.921875,
+        0.971875
+      ],
+      "score_rate_ci95": [
+        0.9609375,
+        0.9859375
+      ],
+      "acceptance": {
+        "passed": true,
+        "criteria": {
+          "majority_paired_matches": true,
+          "positive_margin_ci": true,
+          "wins_exceed_losses_on_both_sides": true
+        }
+      },
+      "first_receiver_win_rate": 0.49375,
+      "long_scored_rate": 0.1375,
+      "locally_unreachable_scores": 191,
+      "locally_unreachable_share_of_scores": 0.2984375,
+      "loop_detection_enabled": true,
+      "reaction_window_ticks": {
+        "first_return": 55,
+        "minimum": 26
+      }
+    },
+    "apprentice:tracker": {
+      "rallies": 640,
+      "wins": 517,
+      "losses": 123,
+      "draws": 0,
+      "loop_draws": 0,
+      "timeout_draws": 0,
+      "point_rate": 0.8078125,
+      "score_rate": 0.8078125,
+      "point_margin": 0.615625,
+      "match_wins": 120,
+      "match_losses": 8,
+      "match_draws": 0,
+      "paired_match_wins": 64,
+      "paired_match_losses": 0,
+      "paired_match_draws": 0,
+      "paired_match_win_rate": 1.0,
+      "median_decisive_returns": 2.0,
+      "mean_returns": 3.0078125,
+      "mean_ticks": 160.5296875,
+      "early_finish_rate": 0.371875,
+      "point_margin_ci95": [
+        0.55625,
+        0.66875
+      ],
+      "score_rate_ci95": [
+        0.778125,
+        0.834375
+      ],
+      "acceptance": {
+        "passed": true,
+        "criteria": {
+          "majority_paired_matches": true,
+          "positive_margin_ci": true,
+          "wins_exceed_losses_on_both_sides": true
+        }
+      },
+      "first_receiver_win_rate": 0.4109375,
+      "long_scored_rate": 0.1796875,
+      "locally_unreachable_scores": 146,
+      "locally_unreachable_share_of_scores": 0.228125,
+      "loop_detection_enabled": true,
+      "reaction_window_ticks": {
+        "first_return": 55,
+        "minimum": 26
+      }
+    },
+    "apprentice:anticipator": {
+      "rallies": 640,
+      "wins": 394,
+      "losses": 246,
+      "draws": 0,
+      "loop_draws": 0,
+      "timeout_draws": 0,
+      "point_rate": 0.615625,
+      "score_rate": 0.615625,
+      "point_margin": 0.23125,
+      "match_wins": 94,
+      "match_losses": 34,
+      "match_draws": 0,
+      "paired_match_wins": 40,
+      "paired_match_losses": 8,
+      "paired_match_draws": 16,
+      "paired_match_win_rate": 0.625,
+      "median_decisive_returns": 3.0,
+      "mean_returns": 4.0375,
+      "mean_ticks": 197.0125,
+      "early_finish_rate": 0.253125,
+      "point_margin_ci95": [
+        0.15625,
+        0.30625
+      ],
+      "score_rate_ci95": [
+        0.578125,
+        0.653125
+      ],
+      "acceptance": {
+        "passed": true,
+        "criteria": {
+          "majority_paired_matches": true,
+          "positive_margin_ci": true,
+          "wins_exceed_losses_on_both_sides": true
+        }
+      },
+      "first_receiver_win_rate": 0.434375,
+      "long_scored_rate": 0.2421875,
+      "locally_unreachable_scores": 147,
+      "locally_unreachable_share_of_scores": 0.2296875,
+      "loop_detection_enabled": true,
+      "reaction_window_ticks": {
+        "first_return": 55,
+        "minimum": 26
+      }
+    },
+    "apprentice:contender": {
+      "rallies": 640,
+      "wins": 299,
+      "losses": 300,
+      "draws": 41,
+      "loop_draws": 37,
+      "timeout_draws": 4,
+      "point_rate": 0.4671875,
+      "score_rate": 0.49921875,
+      "point_margin": -0.0015625,
+      "match_wins": 65,
+      "match_losses": 54,
+      "match_draws": 9,
+      "paired_match_wins": 26,
+      "paired_match_losses": 26,
+      "paired_match_draws": 12,
+      "paired_match_win_rate": 0.40625,
+      "median_decisive_returns": 5.0,
+      "mean_returns": 8.4890625,
+      "mean_ticks": 322.3046875,
+      "early_finish_rate": 0.1765625,
+      "point_margin_ci95": [
+        -0.07343749999999999,
+        0.0671875
+      ],
+      "score_rate_ci95": [
+        0.46328125,
+        0.53359375
+      ],
+      "acceptance": {
+        "passed": false,
+        "criteria": {
+          "majority_paired_matches": false,
+          "positive_margin_ci": false,
+          "wins_exceed_losses_on_both_sides": false
+        }
+      },
+      "first_receiver_win_rate": 0.4791318864774624,
+      "long_scored_rate": 0.4453125,
+      "locally_unreachable_scores": 245,
+      "locally_unreachable_share_of_scores": 0.4090150250417362,
+      "loop_detection_enabled": true,
+      "reaction_window_ticks": {
+        "first_return": 55,
+        "minimum": 26
+      }
+    }
+  },
+  "learning_curves": [
+    [
+      {
+        "run": "dagger-s411",
+        "total_round": 0,
+        "round": 0,
+        "seconds": 0.5051275826990604,
+        "env_steps": 0,
+        "development_margin": -0.8374999999999999,
+        "cross_entropy": null,
+        "training_accuracy": null,
+        "opponents": {
+          "attack": {
+            "rallies": 320,
+            "wins": 0,
+            "losses": 320,
+            "draws": 0,
+            "loop_draws": 0,
+            "timeout_draws": 0,
+            "point_rate": 0.0,
+            "score_rate": 0.0,
+            "point_margin": -1.0,
+            "match_wins": 0,
+            "match_losses": 64,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 1.0,
+            "mean_returns": 1.19375,
+            "mean_ticks": 92.753125,
+            "early_finish_rate": 0.6625,
+            "point_margin_ci95": [
+              -1.0,
+              -1.0
+            ],
+            "score_rate_ci95": [
+              0.0,
+              0.0
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.5,
+            "long_scored_rate": 0.0,
+            "locally_unreachable_scores": 104,
+            "locally_unreachable_share_of_scores": 0.325,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "defend": {
+            "rallies": 320,
+            "wins": 0,
+            "losses": 296,
+            "draws": 24,
+            "loop_draws": 24,
+            "timeout_draws": 0,
+            "point_rate": 0.0,
+            "score_rate": 0.0375,
+            "point_margin": -0.925,
+            "match_wins": 0,
+            "match_losses": 64,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 1.0,
+            "mean_returns": 2.49375,
+            "mean_ticks": 129.840625,
+            "early_finish_rate": 0.66875,
+            "point_margin_ci95": [
+              -0.953125,
+              -0.89375
+            ],
+            "score_rate_ci95": [
+              0.0234375,
+              0.05312499999999998
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.46959459459459457,
+            "long_scored_rate": 0.134375,
+            "locally_unreachable_scores": 53,
+            "locally_unreachable_share_of_scores": 0.17905405405405406,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "contender": {
+            "rallies": 320,
+            "wins": 24,
+            "losses": 296,
+            "draws": 0,
+            "loop_draws": 0,
+            "timeout_draws": 0,
+            "point_rate": 0.075,
+            "score_rate": 0.075,
+            "point_margin": -0.85,
+            "match_wins": 0,
+            "match_losses": 64,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 1.0,
+            "mean_returns": 0.80625,
+            "mean_ticks": 75.3375,
+            "early_finish_rate": 0.846875,
+            "point_margin_ci95": [
+              -0.9001562500000001,
+              -0.79375
+            ],
+            "score_rate_ci95": [
+              0.04992187499999995,
+              0.10312500000000002
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.5,
+            "long_scored_rate": 0.0,
+            "locally_unreachable_scores": 15,
+            "locally_unreachable_share_of_scores": 0.046875,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "tracker": {
+            "rallies": 320,
+            "wins": 67,
+            "losses": 251,
+            "draws": 2,
+            "loop_draws": 2,
+            "timeout_draws": 0,
+            "point_rate": 0.209375,
+            "score_rate": 0.2125,
+            "point_margin": -0.575,
+            "match_wins": 4,
+            "match_losses": 60,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 30,
+            "paired_match_draws": 2,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 0.0,
+            "mean_returns": 0.70625,
+            "mean_ticks": 68.04375,
+            "early_finish_rate": 0.86875,
+            "point_margin_ci95": [
+              -0.66875,
+              -0.48125
+            ],
+            "score_rate_ci95": [
+              0.16562500000000002,
+              0.259375
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.33962264150943394,
+            "long_scored_rate": 0.009375,
+            "locally_unreachable_scores": 15,
+            "locally_unreachable_share_of_scores": 0.04716981132075472,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          }
+        }
+      },
+      {
+        "run": "dagger-s411",
+        "total_round": 3,
+        "round": 3,
+        "seconds": 3.7476434158161283,
+        "env_steps": 196608,
+        "development_margin": -0.50703125,
+        "cross_entropy": 0.44926189091056584,
+        "training_accuracy": 0.8206247965494792,
+        "teacher_action_probability": 0.75,
+        "opponents": {
+          "attack": {
+            "rallies": 320,
+            "wins": 0,
+            "losses": 320,
+            "draws": 0,
+            "loop_draws": 0,
+            "timeout_draws": 0,
+            "point_rate": 0.0,
+            "score_rate": 0.0,
+            "point_margin": -1.0,
+            "match_wins": 0,
+            "match_losses": 64,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 3.0,
+            "mean_returns": 3.425,
+            "mean_ticks": 181.709375,
+            "early_finish_rate": 0.203125,
+            "point_margin_ci95": [
+              -1.0,
+              -1.0
+            ],
+            "score_rate_ci95": [
+              0.0,
+              0.0
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.5,
+            "long_scored_rate": 0.15,
+            "locally_unreachable_scores": 43,
+            "locally_unreachable_share_of_scores": 0.134375,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "defend": {
+            "rallies": 320,
+            "wins": 0,
+            "losses": 319,
+            "draws": 1,
+            "loop_draws": 1,
+            "timeout_draws": 0,
+            "point_rate": 0.0,
+            "score_rate": 0.0015625,
+            "point_margin": -0.996875,
+            "match_wins": 0,
+            "match_losses": 64,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 3.0,
+            "mean_returns": 3.646875,
+            "mean_ticks": 186.709375,
+            "early_finish_rate": 0.246875,
+            "point_margin_ci95": [
+              -1.0,
+              -0.990625
+            ],
+            "score_rate_ci95": [
+              0.0,
+              0.004687500000000011
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.49843260188087773,
+            "long_scored_rate": 0.259375,
+            "locally_unreachable_scores": 63,
+            "locally_unreachable_share_of_scores": 0.1974921630094044,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "contender": {
+            "rallies": 320,
+            "wins": 101,
+            "losses": 214,
+            "draws": 5,
+            "loop_draws": 5,
+            "timeout_draws": 0,
+            "point_rate": 0.315625,
+            "score_rate": 0.3234375,
+            "point_margin": -0.353125,
+            "match_wins": 14,
+            "match_losses": 49,
+            "match_draws": 1,
+            "paired_match_wins": 4,
+            "paired_match_losses": 24,
+            "paired_match_draws": 4,
+            "paired_match_win_rate": 0.125,
+            "median_decisive_returns": 3.0,
+            "mean_returns": 4.375,
+            "mean_ticks": 201.609375,
+            "early_finish_rate": 0.328125,
+            "point_margin_ci95": [
+              -0.478203125,
+              -0.23124999999999998
+            ],
+            "score_rate_ci95": [
+              0.26089843749999997,
+              0.384375
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.4666666666666667,
+            "long_scored_rate": 0.28125,
+            "locally_unreachable_scores": 33,
+            "locally_unreachable_share_of_scores": 0.10476190476190476,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "tracker": {
+            "rallies": 320,
+            "wins": 211,
+            "losses": 108,
+            "draws": 1,
+            "loop_draws": 1,
+            "timeout_draws": 0,
+            "point_rate": 0.659375,
+            "score_rate": 0.6609375,
+            "point_margin": 0.321875,
+            "match_wins": 51,
+            "match_losses": 12,
+            "match_draws": 1,
+            "paired_match_wins": 25,
+            "paired_match_losses": 3,
+            "paired_match_draws": 4,
+            "paired_match_win_rate": 0.78125,
+            "median_decisive_returns": 2.0,
+            "mean_returns": 2.378125,
+            "mean_ticks": 137.221875,
+            "early_finish_rate": 0.475,
+            "point_margin_ci95": [
+              0.203125,
+              0.428125
+            ],
+            "score_rate_ci95": [
+              0.6015625,
+              0.7140625
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.4231974921630094,
+            "long_scored_rate": 0.134375,
+            "locally_unreachable_scores": 62,
+            "locally_unreachable_share_of_scores": 0.19435736677115986,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          }
+        }
+      },
+      {
+        "run": "dagger-s411",
+        "total_round": 6,
+        "round": 6,
+        "seconds": 9.314727040939033,
+        "env_steps": 393216,
+        "development_margin": -0.34140625,
+        "cross_entropy": 0.3379429996479303,
+        "training_accuracy": 0.8726020812988281,
+        "teacher_action_probability": 0.5,
+        "opponents": {
+          "attack": {
+            "rallies": 320,
+            "wins": 11,
+            "losses": 309,
+            "draws": 0,
+            "loop_draws": 0,
+            "timeout_draws": 0,
+            "point_rate": 0.034375,
+            "score_rate": 0.034375,
+            "point_margin": -0.93125,
+            "match_wins": 0,
+            "match_losses": 64,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 3.0,
+            "mean_returns": 4.290625,
+            "mean_ticks": 211.084375,
+            "early_finish_rate": 0.13125,
+            "point_margin_ci95": [
+              -0.96875,
+              -0.89375
+            ],
+            "score_rate_ci95": [
+              0.015625,
+              0.05312499999999998
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.534375,
+            "long_scored_rate": 0.28125,
+            "locally_unreachable_scores": 81,
+            "locally_unreachable_share_of_scores": 0.253125,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "defend": {
+            "rallies": 320,
+            "wins": 0,
+            "losses": 318,
+            "draws": 2,
+            "loop_draws": 2,
+            "timeout_draws": 0,
+            "point_rate": 0.0,
+            "score_rate": 0.003125,
+            "point_margin": -0.99375,
+            "match_wins": 0,
+            "match_losses": 64,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 4.0,
+            "mean_returns": 4.65625,
+            "mean_ticks": 221.690625,
+            "early_finish_rate": 0.15,
+            "point_margin_ci95": [
+              -1.0,
+              -0.984375
+            ],
+            "score_rate_ci95": [
+              0.0,
+              0.0078125
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.4968553459119497,
+            "long_scored_rate": 0.4125,
+            "locally_unreachable_scores": 102,
+            "locally_unreachable_share_of_scores": 0.32075471698113206,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "contender": {
+            "rallies": 320,
+            "wins": 151,
+            "losses": 144,
+            "draws": 25,
+            "loop_draws": 20,
+            "timeout_draws": 5,
+            "point_rate": 0.471875,
+            "score_rate": 0.5109375,
+            "point_margin": 0.021875,
+            "match_wins": 32,
+            "match_losses": 24,
+            "match_draws": 8,
+            "paired_match_wins": 14,
+            "paired_match_losses": 14,
+            "paired_match_draws": 4,
+            "paired_match_win_rate": 0.4375,
+            "median_decisive_returns": 5.0,
+            "mean_returns": 8.36875,
+            "mean_ticks": 318.51875,
+            "early_finish_rate": 0.159375,
+            "point_margin_ci95": [
+              -0.08437499999999999,
+              0.1375
+            ],
+            "score_rate_ci95": [
+              0.4578125,
+              0.56875
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.4576271186440678,
+            "long_scored_rate": 0.415625,
+            "locally_unreachable_scores": 101,
+            "locally_unreachable_share_of_scores": 0.3423728813559322,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "tracker": {
+            "rallies": 320,
+            "wins": 246,
+            "losses": 74,
+            "draws": 0,
+            "loop_draws": 0,
+            "timeout_draws": 0,
+            "point_rate": 0.76875,
+            "score_rate": 0.76875,
+            "point_margin": 0.5375,
+            "match_wins": 59,
+            "match_losses": 5,
+            "match_draws": 0,
+            "paired_match_wins": 29,
+            "paired_match_losses": 1,
+            "paired_match_draws": 2,
+            "paired_match_win_rate": 0.90625,
+            "median_decisive_returns": 2.0,
+            "mean_returns": 3.24375,
+            "mean_ticks": 168.746875,
+            "early_finish_rate": 0.334375,
+            "point_margin_ci95": [
+              0.44999999999999996,
+              0.63125
+            ],
+            "score_rate_ci95": [
+              0.725,
+              0.815625
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.38125,
+            "long_scored_rate": 0.209375,
+            "locally_unreachable_scores": 84,
+            "locally_unreachable_share_of_scores": 0.2625,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          }
+        }
+      },
+      {
+        "run": "dagger-s411",
+        "total_round": 9,
+        "round": 9,
+        "seconds": 14.660622124560177,
+        "env_steps": 589824,
+        "development_margin": -0.35234375000000007,
+        "cross_entropy": 0.3503903356380761,
+        "training_accuracy": 0.8634185791015625,
+        "teacher_action_probability": 0.25,
+        "opponents": {
+          "attack": {
+            "rallies": 320,
+            "wins": 2,
+            "losses": 317,
+            "draws": 1,
+            "loop_draws": 1,
+            "timeout_draws": 0,
+            "point_rate": 0.00625,
+            "score_rate": 0.0078125,
+            "point_margin": -0.984375,
+            "match_wins": 0,
+            "match_losses": 64,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 7.0,
+            "mean_returns": 5.98125,
+            "mean_ticks": 265.1875,
+            "early_finish_rate": 0.078125,
+            "point_margin_ci95": [
+              -1.0,
+              -0.9625
+            ],
+            "score_rate_ci95": [
+              0.0,
+              0.01874999999999999
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.5078369905956113,
+            "long_scored_rate": 0.578125,
+            "locally_unreachable_scores": 180,
+            "locally_unreachable_share_of_scores": 0.5642633228840125,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "defend": {
+            "rallies": 320,
+            "wins": 1,
+            "losses": 307,
+            "draws": 12,
+            "loop_draws": 12,
+            "timeout_draws": 0,
+            "point_rate": 0.003125,
+            "score_rate": 0.021875,
+            "point_margin": -0.95625,
+            "match_wins": 0,
+            "match_losses": 64,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 7.0,
+            "mean_returns": 6.7875,
+            "mean_ticks": 285.665625,
+            "early_finish_rate": 0.0875,
+            "point_margin_ci95": [
+              -0.978125,
+              -0.9312499999999999
+            ],
+            "score_rate_ci95": [
+              0.010937499999999989,
+              0.034375000000000044
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.4837662337662338,
+            "long_scored_rate": 0.6125,
+            "locally_unreachable_scores": 179,
+            "locally_unreachable_share_of_scores": 0.5811688311688312,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "contender": {
+            "rallies": 320,
+            "wins": 135,
+            "losses": 178,
+            "draws": 7,
+            "loop_draws": 7,
+            "timeout_draws": 0,
+            "point_rate": 0.421875,
+            "score_rate": 0.4328125,
+            "point_margin": -0.134375,
+            "match_wins": 24,
+            "match_losses": 37,
+            "match_draws": 3,
+            "paired_match_wins": 10,
+            "paired_match_losses": 19,
+            "paired_match_draws": 3,
+            "paired_match_win_rate": 0.3125,
+            "median_decisive_returns": 8.0,
+            "mean_returns": 9.13125,
+            "mean_ticks": 344.81875,
+            "early_finish_rate": 0.121875,
+            "point_margin_ci95": [
+              -0.24375,
+              -0.03125
+            ],
+            "score_rate_ci95": [
+              0.378125,
+              0.484375
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.4440894568690096,
+            "long_scored_rate": 0.609375,
+            "locally_unreachable_scores": 135,
+            "locally_unreachable_share_of_scores": 0.43130990415335463,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "tracker": {
+            "rallies": 320,
+            "wins": 266,
+            "losses": 53,
+            "draws": 1,
+            "loop_draws": 1,
+            "timeout_draws": 0,
+            "point_rate": 0.83125,
+            "score_rate": 0.8328125,
+            "point_margin": 0.665625,
+            "match_wins": 62,
+            "match_losses": 1,
+            "match_draws": 1,
+            "paired_match_wins": 32,
+            "paired_match_losses": 0,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 1.0,
+            "median_decisive_returns": 3.0,
+            "mean_returns": 3.8,
+            "mean_ticks": 190.603125,
+            "early_finish_rate": 0.253125,
+            "point_margin_ci95": [
+              0.5843750000000001,
+              0.7375
+            ],
+            "score_rate_ci95": [
+              0.7921875,
+              0.86875
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.4106583072100313,
+            "long_scored_rate": 0.265625,
+            "locally_unreachable_scores": 101,
+            "locally_unreachable_share_of_scores": 0.3166144200626959,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          }
+        }
+      },
+      {
+        "run": "dagger-s411",
+        "total_round": 12,
+        "round": 12,
+        "seconds": 20.045388124883175,
+        "env_steps": 786432,
+        "development_margin": -0.0796875,
+        "cross_entropy": 0.4338317419402301,
+        "training_accuracy": 0.8163436889648438,
+        "teacher_action_probability": 0.05,
+        "opponents": {
+          "attack": {
+            "rallies": 320,
+            "wins": 48,
+            "losses": 272,
+            "draws": 0,
+            "loop_draws": 0,
+            "timeout_draws": 0,
+            "point_rate": 0.15,
+            "score_rate": 0.15,
+            "point_margin": -0.7,
+            "match_wins": 2,
+            "match_losses": 62,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 31,
+            "paired_match_draws": 1,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 8.0,
+            "mean_returns": 7.70625,
+            "mean_ticks": 316.978125,
+            "early_finish_rate": 0.078125,
+            "point_margin_ci95": [
+              -0.7875,
+              -0.6062500000000001
+            ],
+            "score_rate_ci95": [
+              0.10625000000000001,
+              0.19687499999999997
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.48125,
+            "long_scored_rate": 0.825,
+            "locally_unreachable_scores": 261,
+            "locally_unreachable_share_of_scores": 0.815625,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "defend": {
+            "rallies": 320,
+            "wins": 18,
+            "losses": 274,
+            "draws": 28,
+            "loop_draws": 28,
+            "timeout_draws": 0,
+            "point_rate": 0.05625,
+            "score_rate": 0.1,
+            "point_margin": -0.8,
+            "match_wins": 1,
+            "match_losses": 63,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 9.0,
+            "mean_returns": 8.25625,
+            "mean_ticks": 328.321875,
+            "early_finish_rate": 0.08125,
+            "point_margin_ci95": [
+              -0.85625,
+              -0.7375
+            ],
+            "score_rate_ci95": [
+              0.07187500000000002,
+              0.13124999999999998
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.4246575342465753,
+            "long_scored_rate": 0.740625,
+            "locally_unreachable_scores": 230,
+            "locally_unreachable_share_of_scores": 0.7876712328767124,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "contender": {
+            "rallies": 320,
+            "wins": 204,
+            "losses": 98,
+            "draws": 18,
+            "loop_draws": 18,
+            "timeout_draws": 0,
+            "point_rate": 0.6375,
+            "score_rate": 0.665625,
+            "point_margin": 0.33125,
+            "match_wins": 51,
+            "match_losses": 8,
+            "match_draws": 5,
+            "paired_match_wins": 27,
+            "paired_match_losses": 3,
+            "paired_match_draws": 2,
+            "paired_match_win_rate": 0.84375,
+            "median_decisive_returns": 9.0,
+            "mean_returns": 10.13125,
+            "mean_ticks": 374.421875,
+            "early_finish_rate": 0.121875,
+            "point_margin_ci95": [
+              0.240625,
+              0.415625
+            ],
+            "score_rate_ci95": [
+              0.6203125,
+              0.7078125
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.5529801324503312,
+            "long_scored_rate": 0.68125,
+            "locally_unreachable_scores": 155,
+            "locally_unreachable_share_of_scores": 0.5132450331125827,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "tracker": {
+            "rallies": 320,
+            "wins": 296,
+            "losses": 24,
+            "draws": 0,
+            "loop_draws": 0,
+            "timeout_draws": 0,
+            "point_rate": 0.925,
+            "score_rate": 0.925,
+            "point_margin": 0.85,
+            "match_wins": 63,
+            "match_losses": 1,
+            "match_draws": 0,
+            "paired_match_wins": 32,
+            "paired_match_losses": 0,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 1.0,
+            "median_decisive_returns": 3.0,
+            "mean_returns": 3.34375,
+            "mean_ticks": 176.815625,
+            "early_finish_rate": 0.265625,
+            "point_margin_ci95": [
+              0.80625,
+              0.89375
+            ],
+            "score_rate_ci95": [
+              0.903125,
+              0.946875
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.46875,
+            "long_scored_rate": 0.18125,
+            "locally_unreachable_scores": 98,
+            "locally_unreachable_share_of_scores": 0.30625,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          }
+        }
+      },
+      {
+        "run": "dagger-s411",
+        "total_round": 15,
+        "round": 15,
+        "seconds": 25.657416749745607,
+        "env_steps": 983040,
+        "development_margin": -0.16953125000000002,
+        "cross_entropy": 0.47187492372468115,
+        "training_accuracy": 0.7870391845703125,
+        "teacher_action_probability": 0.05,
+        "opponents": {
+          "attack": {
+            "rallies": 320,
+            "wins": 3,
+            "losses": 317,
+            "draws": 0,
+            "loop_draws": 0,
+            "timeout_draws": 0,
+            "point_rate": 0.009375,
+            "score_rate": 0.009375,
+            "point_margin": -0.98125,
+            "match_wins": 0,
+            "match_losses": 64,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 8.0,
+            "mean_returns": 8.140625,
+            "mean_ticks": 332.828125,
+            "early_finish_rate": 0.028125,
+            "point_margin_ci95": [
+              -1.0,
+              -0.95625
+            ],
+            "score_rate_ci95": [
+              0.0,
+              0.021874999999999978
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.509375,
+            "long_scored_rate": 0.93125,
+            "locally_unreachable_scores": 293,
+            "locally_unreachable_share_of_scores": 0.915625,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "defend": {
+            "rallies": 320,
+            "wins": 4,
+            "losses": 277,
+            "draws": 39,
+            "loop_draws": 39,
+            "timeout_draws": 0,
+            "point_rate": 0.0125,
+            "score_rate": 0.0734375,
+            "point_margin": -0.853125,
+            "match_wins": 0,
+            "match_losses": 64,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 8.0,
+            "mean_returns": 9.021875,
+            "mean_ticks": 352.865625,
+            "early_finish_rate": 0.028125,
+            "point_margin_ci95": [
+              -0.8875,
+              -0.815625
+            ],
+            "score_rate_ci95": [
+              0.05625000000000002,
+              0.09218749999999998
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.4483985765124555,
+            "long_scored_rate": 0.8375,
+            "locally_unreachable_scores": 251,
+            "locally_unreachable_share_of_scores": 0.8932384341637011,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "contender": {
+            "rallies": 320,
+            "wins": 220,
+            "losses": 86,
+            "draws": 14,
+            "loop_draws": 14,
+            "timeout_draws": 0,
+            "point_rate": 0.6875,
+            "score_rate": 0.709375,
+            "point_margin": 0.41875,
+            "match_wins": 53,
+            "match_losses": 6,
+            "match_draws": 5,
+            "paired_match_wins": 30,
+            "paired_match_losses": 0,
+            "paired_match_draws": 2,
+            "paired_match_win_rate": 0.9375,
+            "median_decisive_returns": 10.0,
+            "mean_returns": 12.190625,
+            "mean_ticks": 433.253125,
+            "early_finish_rate": 0.05625,
+            "point_margin_ci95": [
+              0.334375,
+              0.5
+            ],
+            "score_rate_ci95": [
+              0.6671875,
+              0.75
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.4934640522875817,
+            "long_scored_rate": 0.7875,
+            "locally_unreachable_scores": 213,
+            "locally_unreachable_share_of_scores": 0.696078431372549,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "tracker": {
+            "rallies": 320,
+            "wins": 278,
+            "losses": 42,
+            "draws": 0,
+            "loop_draws": 0,
+            "timeout_draws": 0,
+            "point_rate": 0.86875,
+            "score_rate": 0.86875,
+            "point_margin": 0.7375,
+            "match_wins": 62,
+            "match_losses": 2,
+            "match_draws": 0,
+            "paired_match_wins": 31,
+            "paired_match_losses": 0,
+            "paired_match_draws": 1,
+            "paired_match_win_rate": 0.96875,
+            "median_decisive_returns": 3.0,
+            "mean_returns": 2.8125,
+            "mean_ticks": 158.24375,
+            "early_finish_rate": 0.325,
+            "point_margin_ci95": [
+              0.65,
+              0.8187500000000001
+            ],
+            "score_rate_ci95": [
+              0.825,
+              0.909375
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.4625,
+            "long_scored_rate": 0.1,
+            "locally_unreachable_scores": 85,
+            "locally_unreachable_share_of_scores": 0.265625,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          }
+        }
+      },
+      {
+        "run": "dagger-s411",
+        "total_round": 18,
+        "round": 18,
+        "seconds": 31.109248999971896,
+        "env_steps": 1179648,
+        "development_margin": -0.12421874999999996,
+        "cross_entropy": 0.46080948659218846,
+        "training_accuracy": 0.7882980346679688,
+        "teacher_action_probability": 0.05,
+        "opponents": {
+          "attack": {
+            "rallies": 320,
+            "wins": 16,
+            "losses": 280,
+            "draws": 24,
+            "loop_draws": 24,
+            "timeout_draws": 0,
+            "point_rate": 0.05,
+            "score_rate": 0.0875,
+            "point_margin": -0.825,
+            "match_wins": 0,
+            "match_losses": 64,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 8.0,
+            "mean_returns": 8.10625,
+            "mean_ticks": 332.1375,
+            "early_finish_rate": 0.00625,
+            "point_margin_ci95": [
+              -0.86875,
+              -0.7811718750000004
+            ],
+            "score_rate_ci95": [
+              0.06562499999999999,
+              0.1094140624999998
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.5067567567567568,
+            "long_scored_rate": 0.91875,
+            "locally_unreachable_scores": 294,
+            "locally_unreachable_share_of_scores": 0.9932432432432432,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "defend": {
+            "rallies": 320,
+            "wins": 0,
+            "losses": 292,
+            "draws": 28,
+            "loop_draws": 28,
+            "timeout_draws": 0,
+            "point_rate": 0.0,
+            "score_rate": 0.04375,
+            "point_margin": -0.9125,
+            "match_wins": 0,
+            "match_losses": 64,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 9.0,
+            "mean_returns": 9.375,
+            "mean_ticks": 364.8625,
+            "early_finish_rate": 0.00625,
+            "point_margin_ci95": [
+              -0.946875,
+              -0.875
+            ],
+            "score_rate_ci95": [
+              0.02656249999999999,
+              0.0625
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.4931506849315068,
+            "long_scored_rate": 0.90625,
+            "locally_unreachable_scores": 283,
+            "locally_unreachable_share_of_scores": 0.9691780821917808,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "contender": {
+            "rallies": 320,
+            "wins": 220,
+            "losses": 75,
+            "draws": 25,
+            "loop_draws": 25,
+            "timeout_draws": 0,
+            "point_rate": 0.6875,
+            "score_rate": 0.7265625,
+            "point_margin": 0.453125,
+            "match_wins": 55,
+            "match_losses": 4,
+            "match_draws": 5,
+            "paired_match_wins": 30,
+            "paired_match_losses": 0,
+            "paired_match_draws": 2,
+            "paired_match_win_rate": 0.9375,
+            "median_decisive_returns": 11.0,
+            "mean_returns": 12.6875,
+            "mean_ticks": 447.19375,
+            "early_finish_rate": 0.0375,
+            "point_margin_ci95": [
+              0.375,
+              0.534375
+            ],
+            "score_rate_ci95": [
+              0.6875,
+              0.7671875
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.5084745762711864,
+            "long_scored_rate": 0.765625,
+            "locally_unreachable_scores": 220,
+            "locally_unreachable_share_of_scores": 0.7457627118644068,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "tracker": {
+            "rallies": 320,
+            "wins": 286,
+            "losses": 34,
+            "draws": 0,
+            "loop_draws": 0,
+            "timeout_draws": 0,
+            "point_rate": 0.89375,
+            "score_rate": 0.89375,
+            "point_margin": 0.7875,
+            "match_wins": 63,
+            "match_losses": 1,
+            "match_draws": 0,
+            "paired_match_wins": 32,
+            "paired_match_losses": 0,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 1.0,
+            "median_decisive_returns": 3.0,
+            "mean_returns": 3.275,
+            "mean_ticks": 174.109375,
+            "early_finish_rate": 0.3,
+            "point_margin_ci95": [
+              0.70625,
+              0.8625
+            ],
+            "score_rate_ci95": [
+              0.853125,
+              0.93125
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.45625,
+            "long_scored_rate": 0.20625,
+            "locally_unreachable_scores": 89,
+            "locally_unreachable_share_of_scores": 0.278125,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          }
+        }
+      },
+      {
+        "run": "dagger-s411",
+        "total_round": 21,
+        "round": 21,
+        "seconds": 36.659359665587544,
+        "env_steps": 1376256,
+        "development_margin": -0.12265625000000005,
+        "cross_entropy": 0.4493987441062927,
+        "training_accuracy": 0.7930427551269531,
+        "teacher_action_probability": 0.05,
+        "opponents": {
+          "attack": {
+            "rallies": 320,
+            "wins": 23,
+            "losses": 291,
+            "draws": 6,
+            "loop_draws": 6,
+            "timeout_draws": 0,
+            "point_rate": 0.071875,
+            "score_rate": 0.08125,
+            "point_margin": -0.8375,
+            "match_wins": 1,
+            "match_losses": 63,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 8.0,
+            "mean_returns": 8.653125,
+            "mean_ticks": 347.753125,
+            "early_finish_rate": 0.00625,
+            "point_margin_ci95": [
+              -0.89375,
+              -0.7749999999999999
+            ],
+            "score_rate_ci95": [
+              0.05312499999999998,
+              0.11250000000000004
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.535031847133758,
+            "long_scored_rate": 0.96875,
+            "locally_unreachable_scores": 310,
+            "locally_unreachable_share_of_scores": 0.9872611464968153,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "defend": {
+            "rallies": 320,
+            "wins": 0,
+            "losses": 233,
+            "draws": 87,
+            "loop_draws": 87,
+            "timeout_draws": 0,
+            "point_rate": 0.0,
+            "score_rate": 0.1359375,
+            "point_margin": -0.728125,
+            "match_wins": 0,
+            "match_losses": 64,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 8.0,
+            "mean_returns": 9.971875,
+            "mean_ticks": 375.4375,
+            "early_finish_rate": 0.00625,
+            "point_margin_ci95": [
+              -0.76875,
+              -0.6843750000000001
+            ],
+            "score_rate_ci95": [
+              0.11562499999999998,
+              0.15781249999999997
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.351931330472103,
+            "long_scored_rate": 0.7125,
+            "locally_unreachable_scores": 228,
+            "locally_unreachable_share_of_scores": 0.9785407725321889,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "contender": {
+            "rallies": 320,
+            "wins": 202,
+            "losses": 100,
+            "draws": 18,
+            "loop_draws": 18,
+            "timeout_draws": 0,
+            "point_rate": 0.63125,
+            "score_rate": 0.659375,
+            "point_margin": 0.31875,
+            "match_wins": 49,
+            "match_losses": 13,
+            "match_draws": 2,
+            "paired_match_wins": 25,
+            "paired_match_losses": 2,
+            "paired_match_draws": 5,
+            "paired_match_win_rate": 0.78125,
+            "median_decisive_returns": 9.0,
+            "mean_returns": 11.825,
+            "mean_ticks": 425.415625,
+            "early_finish_rate": 0.0375,
+            "point_margin_ci95": [
+              0.221875,
+              0.41875
+            ],
+            "score_rate_ci95": [
+              0.6109375,
+              0.709375
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.5,
+            "long_scored_rate": 0.8,
+            "locally_unreachable_scores": 229,
+            "locally_unreachable_share_of_scores": 0.7582781456953642,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "tracker": {
+            "rallies": 320,
+            "wins": 281,
+            "losses": 39,
+            "draws": 0,
+            "loop_draws": 0,
+            "timeout_draws": 0,
+            "point_rate": 0.878125,
+            "score_rate": 0.878125,
+            "point_margin": 0.75625,
+            "match_wins": 64,
+            "match_losses": 0,
+            "match_draws": 0,
+            "paired_match_wins": 32,
+            "paired_match_losses": 0,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 1.0,
+            "median_decisive_returns": 3.0,
+            "mean_returns": 3.384375,
+            "mean_ticks": 175.859375,
+            "early_finish_rate": 0.296875,
+            "point_margin_ci95": [
+              0.6875,
+              0.825
+            ],
+            "score_rate_ci95": [
+              0.84375,
+              0.9125
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.459375,
+            "long_scored_rate": 0.2125,
+            "locally_unreachable_scores": 104,
+            "locally_unreachable_share_of_scores": 0.325,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          }
+        }
+      },
+      {
+        "run": "dagger-s411",
+        "total_round": 24,
+        "round": 24,
+        "seconds": 42.26214433275163,
+        "env_steps": 1572864,
+        "development_margin": -0.05156249999999998,
+        "cross_entropy": 0.42371306382119656,
+        "training_accuracy": 0.8067253112792969,
+        "teacher_action_probability": 0.05,
+        "opponents": {
+          "attack": {
+            "rallies": 320,
+            "wins": 19,
+            "losses": 265,
+            "draws": 36,
+            "loop_draws": 36,
+            "timeout_draws": 0,
+            "point_rate": 0.059375,
+            "score_rate": 0.115625,
+            "point_margin": -0.76875,
+            "match_wins": 0,
+            "match_losses": 64,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 8.0,
+            "mean_returns": 8.815625,
+            "mean_ticks": 349.06875,
+            "early_finish_rate": 0.0125,
+            "point_margin_ci95": [
+              -0.8125,
+              -0.721875
+            ],
+            "score_rate_ci95": [
+              0.09375,
+              0.13906249999999998
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.46830985915492956,
+            "long_scored_rate": 0.875,
+            "locally_unreachable_scores": 280,
+            "locally_unreachable_share_of_scores": 0.9859154929577465,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "defend": {
+            "rallies": 320,
+            "wins": 3,
+            "losses": 257,
+            "draws": 60,
+            "loop_draws": 60,
+            "timeout_draws": 0,
+            "point_rate": 0.009375,
+            "score_rate": 0.103125,
+            "point_margin": -0.79375,
+            "match_wins": 0,
+            "match_losses": 63,
+            "match_draws": 1,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 8.0,
+            "mean_returns": 9.24375,
+            "mean_ticks": 358.3125,
+            "early_finish_rate": 0.0125,
+            "point_margin_ci95": [
+              -0.84375,
+              -0.7375
+            ],
+            "score_rate_ci95": [
+              0.078125,
+              0.13124999999999998
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.48846153846153845,
+            "long_scored_rate": 0.8,
+            "locally_unreachable_scores": 256,
+            "locally_unreachable_share_of_scores": 0.9846153846153847,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "contender": {
+            "rallies": 320,
+            "wins": 226,
+            "losses": 64,
+            "draws": 30,
+            "loop_draws": 30,
+            "timeout_draws": 0,
+            "point_rate": 0.70625,
+            "score_rate": 0.753125,
+            "point_margin": 0.50625,
+            "match_wins": 60,
+            "match_losses": 2,
+            "match_draws": 2,
+            "paired_match_wins": 31,
+            "paired_match_losses": 0,
+            "paired_match_draws": 1,
+            "paired_match_win_rate": 0.96875,
+            "median_decisive_returns": 9.0,
+            "mean_returns": 12.003125,
+            "mean_ticks": 428.790625,
+            "early_finish_rate": 0.040625,
+            "point_margin_ci95": [
+              0.43124999999999997,
+              0.5812499999999999
+            ],
+            "score_rate_ci95": [
+              0.715625,
+              0.7906249999999999
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.4586206896551724,
+            "long_scored_rate": 0.746875,
+            "locally_unreachable_scores": 211,
+            "locally_unreachable_share_of_scores": 0.7275862068965517,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "tracker": {
+            "rallies": 320,
+            "wins": 296,
+            "losses": 24,
+            "draws": 0,
+            "loop_draws": 0,
+            "timeout_draws": 0,
+            "point_rate": 0.925,
+            "score_rate": 0.925,
+            "point_margin": 0.85,
+            "match_wins": 63,
+            "match_losses": 1,
+            "match_draws": 0,
+            "paired_match_wins": 32,
+            "paired_match_losses": 0,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 1.0,
+            "median_decisive_returns": 3.0,
+            "mean_returns": 3.3875,
+            "mean_ticks": 178.915625,
+            "early_finish_rate": 0.234375,
+            "point_margin_ci95": [
+              0.79375,
+              0.9
+            ],
+            "score_rate_ci95": [
+              0.896875,
+              0.95
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.46875,
+            "long_scored_rate": 0.1875,
+            "locally_unreachable_scores": 107,
+            "locally_unreachable_share_of_scores": 0.334375,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          }
+        }
+      }
+    ],
+    [
+      {
+        "run": "dagger-continuation-s412",
+        "total_round": 24,
+        "round": 0,
+        "seconds": 1.4850983750075102,
+        "env_steps": 0,
+        "development_margin": -0.05156249999999998,
+        "cross_entropy": null,
+        "training_accuracy": null,
+        "opponents": {
+          "attack": {
+            "rallies": 320,
+            "wins": 19,
+            "losses": 265,
+            "draws": 36,
+            "loop_draws": 36,
+            "timeout_draws": 0,
+            "point_rate": 0.059375,
+            "score_rate": 0.115625,
+            "point_margin": -0.76875,
+            "match_wins": 0,
+            "match_losses": 64,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 8.0,
+            "mean_returns": 8.815625,
+            "mean_ticks": 349.06875,
+            "early_finish_rate": 0.0125,
+            "point_margin_ci95": [
+              -0.8125,
+              -0.721875
+            ],
+            "score_rate_ci95": [
+              0.09375,
+              0.13906249999999998
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.46830985915492956,
+            "long_scored_rate": 0.875,
+            "locally_unreachable_scores": 280,
+            "locally_unreachable_share_of_scores": 0.9859154929577465,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "defend": {
+            "rallies": 320,
+            "wins": 3,
+            "losses": 257,
+            "draws": 60,
+            "loop_draws": 60,
+            "timeout_draws": 0,
+            "point_rate": 0.009375,
+            "score_rate": 0.103125,
+            "point_margin": -0.79375,
+            "match_wins": 0,
+            "match_losses": 63,
+            "match_draws": 1,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 8.0,
+            "mean_returns": 9.24375,
+            "mean_ticks": 358.3125,
+            "early_finish_rate": 0.0125,
+            "point_margin_ci95": [
+              -0.84375,
+              -0.7375
+            ],
+            "score_rate_ci95": [
+              0.078125,
+              0.13124999999999998
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.48846153846153845,
+            "long_scored_rate": 0.8,
+            "locally_unreachable_scores": 256,
+            "locally_unreachable_share_of_scores": 0.9846153846153847,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "contender": {
+            "rallies": 320,
+            "wins": 226,
+            "losses": 64,
+            "draws": 30,
+            "loop_draws": 30,
+            "timeout_draws": 0,
+            "point_rate": 0.70625,
+            "score_rate": 0.753125,
+            "point_margin": 0.50625,
+            "match_wins": 60,
+            "match_losses": 2,
+            "match_draws": 2,
+            "paired_match_wins": 31,
+            "paired_match_losses": 0,
+            "paired_match_draws": 1,
+            "paired_match_win_rate": 0.96875,
+            "median_decisive_returns": 9.0,
+            "mean_returns": 12.003125,
+            "mean_ticks": 428.790625,
+            "early_finish_rate": 0.040625,
+            "point_margin_ci95": [
+              0.43124999999999997,
+              0.5812499999999999
+            ],
+            "score_rate_ci95": [
+              0.715625,
+              0.7906249999999999
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.4586206896551724,
+            "long_scored_rate": 0.746875,
+            "locally_unreachable_scores": 211,
+            "locally_unreachable_share_of_scores": 0.7275862068965517,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "tracker": {
+            "rallies": 320,
+            "wins": 296,
+            "losses": 24,
+            "draws": 0,
+            "loop_draws": 0,
+            "timeout_draws": 0,
+            "point_rate": 0.925,
+            "score_rate": 0.925,
+            "point_margin": 0.85,
+            "match_wins": 63,
+            "match_losses": 1,
+            "match_draws": 0,
+            "paired_match_wins": 32,
+            "paired_match_losses": 0,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 1.0,
+            "median_decisive_returns": 3.0,
+            "mean_returns": 3.3875,
+            "mean_ticks": 178.915625,
+            "early_finish_rate": 0.234375,
+            "point_margin_ci95": [
+              0.79375,
+              0.9
+            ],
+            "score_rate_ci95": [
+              0.896875,
+              0.95
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.46875,
+            "long_scored_rate": 0.1875,
+            "locally_unreachable_scores": 107,
+            "locally_unreachable_share_of_scores": 0.334375,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          }
+        }
+      },
+      {
+        "run": "dagger-continuation-s412",
+        "total_round": 27,
+        "round": 3,
+        "seconds": 5.800097750034183,
+        "env_steps": 196608,
+        "development_margin": -0.325,
+        "cross_entropy": 0.2352963647701674,
+        "training_accuracy": 0.920220947265625,
+        "teacher_action_probability": 0.75,
+        "opponents": {
+          "attack": {
+            "rallies": 320,
+            "wins": 0,
+            "losses": 320,
+            "draws": 0,
+            "loop_draws": 0,
+            "timeout_draws": 0,
+            "point_rate": 0.0,
+            "score_rate": 0.0,
+            "point_margin": -1.0,
+            "match_wins": 0,
+            "match_losses": 64,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 7.0,
+            "mean_returns": 6.075,
+            "mean_ticks": 269.63125,
+            "early_finish_rate": 0.0875,
+            "point_margin_ci95": [
+              -1.0,
+              -1.0
+            ],
+            "score_rate_ci95": [
+              0.0,
+              0.0
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.5,
+            "long_scored_rate": 0.69375,
+            "locally_unreachable_scores": 202,
+            "locally_unreachable_share_of_scores": 0.63125,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "defend": {
+            "rallies": 320,
+            "wins": 3,
+            "losses": 311,
+            "draws": 6,
+            "loop_draws": 6,
+            "timeout_draws": 0,
+            "point_rate": 0.009375,
+            "score_rate": 0.01875,
+            "point_margin": -0.9625,
+            "match_wins": 0,
+            "match_losses": 64,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 7.0,
+            "mean_returns": 6.521875,
+            "mean_ticks": 278.659375,
+            "early_finish_rate": 0.103125,
+            "point_margin_ci95": [
+              -0.9875,
+              -0.928125
+            ],
+            "score_rate_ci95": [
+              0.006249999999999978,
+              0.03593750000000001
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.5127388535031847,
+            "long_scored_rate": 0.68125,
+            "locally_unreachable_scores": 195,
+            "locally_unreachable_share_of_scores": 0.6210191082802548,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "contender": {
+            "rallies": 320,
+            "wins": 168,
+            "losses": 130,
+            "draws": 22,
+            "loop_draws": 22,
+            "timeout_draws": 0,
+            "point_rate": 0.525,
+            "score_rate": 0.559375,
+            "point_margin": 0.11875,
+            "match_wins": 36,
+            "match_losses": 22,
+            "match_draws": 6,
+            "paired_match_wins": 18,
+            "paired_match_losses": 10,
+            "paired_match_draws": 4,
+            "paired_match_win_rate": 0.5625,
+            "median_decisive_returns": 6.0,
+            "mean_returns": 7.5125,
+            "mean_ticks": 300.571875,
+            "early_finish_rate": 0.140625,
+            "point_margin_ci95": [
+              -0.0032031249999999946,
+              0.2375
+            ],
+            "score_rate_ci95": [
+              0.4983984375,
+              0.61875
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.46308724832214765,
+            "long_scored_rate": 0.490625,
+            "locally_unreachable_scores": 96,
+            "locally_unreachable_share_of_scores": 0.3221476510067114,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "tracker": {
+            "rallies": 320,
+            "wins": 245,
+            "losses": 71,
+            "draws": 4,
+            "loop_draws": 4,
+            "timeout_draws": 0,
+            "point_rate": 0.765625,
+            "score_rate": 0.771875,
+            "point_margin": 0.54375,
+            "match_wins": 56,
+            "match_losses": 6,
+            "match_draws": 2,
+            "paired_match_wins": 31,
+            "paired_match_losses": 0,
+            "paired_match_draws": 1,
+            "paired_match_win_rate": 0.96875,
+            "median_decisive_returns": 3.0,
+            "mean_returns": 3.503125,
+            "mean_ticks": 177.109375,
+            "early_finish_rate": 0.31875,
+            "point_margin_ci95": [
+              0.46562499999999996,
+              0.621875
+            ],
+            "score_rate_ci95": [
+              0.7328125,
+              0.8109375
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.40822784810126583,
+            "long_scored_rate": 0.234375,
+            "locally_unreachable_scores": 84,
+            "locally_unreachable_share_of_scores": 0.26582278481012656,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          }
+        }
+      },
+      {
+        "run": "dagger-continuation-s412",
+        "total_round": 30,
+        "round": 6,
+        "seconds": 14.193833334371448,
+        "env_steps": 393216,
+        "development_margin": -0.30234375,
+        "cross_entropy": 0.20587786379166775,
+        "training_accuracy": 0.9291334364149305,
+        "teacher_action_probability": 0.5,
+        "opponents": {
+          "attack": {
+            "rallies": 320,
+            "wins": 0,
+            "losses": 317,
+            "draws": 3,
+            "loop_draws": 3,
+            "timeout_draws": 0,
+            "point_rate": 0.0,
+            "score_rate": 0.0046875,
+            "point_margin": -0.990625,
+            "match_wins": 0,
+            "match_losses": 64,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 7.0,
+            "mean_returns": 6.309375,
+            "mean_ticks": 276.565625,
+            "early_finish_rate": 0.06875,
+            "point_margin_ci95": [
+              -1.0,
+              -0.9781249999999999
+            ],
+            "score_rate_ci95": [
+              0.0,
+              0.010937500000000044
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.4952681388012618,
+            "long_scored_rate": 0.6625,
+            "locally_unreachable_scores": 185,
+            "locally_unreachable_share_of_scores": 0.583596214511041,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "defend": {
+            "rallies": 320,
+            "wins": 1,
+            "losses": 303,
+            "draws": 16,
+            "loop_draws": 16,
+            "timeout_draws": 0,
+            "point_rate": 0.003125,
+            "score_rate": 0.028125,
+            "point_margin": -0.94375,
+            "match_wins": 0,
+            "match_losses": 64,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 7.0,
+            "mean_returns": 6.321875,
+            "mean_ticks": 273.259375,
+            "early_finish_rate": 0.0875,
+            "point_margin_ci95": [
+              -0.965625,
+              -0.91875
+            ],
+            "score_rate_ci95": [
+              0.017187500000000022,
+              0.04062500000000002
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.506578947368421,
+            "long_scored_rate": 0.56875,
+            "locally_unreachable_scores": 155,
+            "locally_unreachable_share_of_scores": 0.5098684210526315,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "contender": {
+            "rallies": 320,
+            "wins": 170,
+            "losses": 146,
+            "draws": 4,
+            "loop_draws": 4,
+            "timeout_draws": 0,
+            "point_rate": 0.53125,
+            "score_rate": 0.5375,
+            "point_margin": 0.075,
+            "match_wins": 40,
+            "match_losses": 24,
+            "match_draws": 0,
+            "paired_match_wins": 13,
+            "paired_match_losses": 10,
+            "paired_match_draws": 9,
+            "paired_match_win_rate": 0.40625,
+            "median_decisive_returns": 6.0,
+            "mean_returns": 7.215625,
+            "mean_ticks": 293.809375,
+            "early_finish_rate": 0.134375,
+            "point_margin_ci95": [
+              -0.012499999999999999,
+              0.16875
+            ],
+            "score_rate_ci95": [
+              0.49375,
+              0.584375
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.5474683544303798,
+            "long_scored_rate": 0.503125,
+            "locally_unreachable_scores": 113,
+            "locally_unreachable_share_of_scores": 0.3575949367088608,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "tracker": {
+            "rallies": 320,
+            "wins": 264,
+            "losses": 56,
+            "draws": 0,
+            "loop_draws": 0,
+            "timeout_draws": 0,
+            "point_rate": 0.825,
+            "score_rate": 0.825,
+            "point_margin": 0.65,
+            "match_wins": 63,
+            "match_losses": 1,
+            "match_draws": 0,
+            "paired_match_wins": 32,
+            "paired_match_losses": 0,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 1.0,
+            "median_decisive_returns": 2.0,
+            "mean_returns": 2.8375,
+            "mean_ticks": 158.8625,
+            "early_finish_rate": 0.28125,
+            "point_margin_ci95": [
+              0.575,
+              0.725
+            ],
+            "score_rate_ci95": [
+              0.7875,
+              0.8625
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.39375,
+            "long_scored_rate": 0.134375,
+            "locally_unreachable_scores": 71,
+            "locally_unreachable_share_of_scores": 0.221875,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          }
+        }
+      },
+      {
+        "run": "dagger-continuation-s412",
+        "total_round": 33,
+        "round": 9,
+        "seconds": 26.525785292033106,
+        "env_steps": 589824,
+        "development_margin": -0.15234374999999994,
+        "cross_entropy": 0.2043174349858115,
+        "training_accuracy": 0.9280754089355469,
+        "teacher_action_probability": 0.25,
+        "opponents": {
+          "attack": {
+            "rallies": 320,
+            "wins": 13,
+            "losses": 307,
+            "draws": 0,
+            "loop_draws": 0,
+            "timeout_draws": 0,
+            "point_rate": 0.040625,
+            "score_rate": 0.040625,
+            "point_margin": -0.91875,
+            "match_wins": 0,
+            "match_losses": 64,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 8.0,
+            "mean_returns": 7.234375,
+            "mean_ticks": 305.465625,
+            "early_finish_rate": 0.04375,
+            "point_margin_ci95": [
+              -0.9562499999999999,
+              -0.875
+            ],
+            "score_rate_ci95": [
+              0.021875000000000033,
+              0.0625
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.478125,
+            "long_scored_rate": 0.825,
+            "locally_unreachable_scores": 244,
+            "locally_unreachable_share_of_scores": 0.7625,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "defend": {
+            "rallies": 320,
+            "wins": 34,
+            "losses": 256,
+            "draws": 30,
+            "loop_draws": 30,
+            "timeout_draws": 0,
+            "point_rate": 0.10625,
+            "score_rate": 0.153125,
+            "point_margin": -0.69375,
+            "match_wins": 0,
+            "match_losses": 64,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 8.0,
+            "mean_returns": 8.178125,
+            "mean_ticks": 327.8,
+            "early_finish_rate": 0.04375,
+            "point_margin_ci95": [
+              -0.771875,
+              -0.609375
+            ],
+            "score_rate_ci95": [
+              0.11406250000000001,
+              0.1953125
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.5103448275862069,
+            "long_scored_rate": 0.778125,
+            "locally_unreachable_scores": 234,
+            "locally_unreachable_share_of_scores": 0.8068965517241379,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "contender": {
+            "rallies": 320,
+            "wins": 192,
+            "losses": 115,
+            "draws": 13,
+            "loop_draws": 13,
+            "timeout_draws": 0,
+            "point_rate": 0.6,
+            "score_rate": 0.6203125,
+            "point_margin": 0.240625,
+            "match_wins": 44,
+            "match_losses": 18,
+            "match_draws": 2,
+            "paired_match_wins": 22,
+            "paired_match_losses": 7,
+            "paired_match_draws": 3,
+            "paired_match_win_rate": 0.6875,
+            "median_decisive_returns": 8.0,
+            "mean_returns": 8.85,
+            "mean_ticks": 339.571875,
+            "early_finish_rate": 0.1125,
+            "point_margin_ci95": [
+              0.13437500000000002,
+              0.34687500000000004
+            ],
+            "score_rate_ci95": [
+              0.5671875,
+              0.6734375
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.48534201954397393,
+            "long_scored_rate": 0.61875,
+            "locally_unreachable_scores": 180,
+            "locally_unreachable_share_of_scores": 0.5863192182410424,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "tracker": {
+            "rallies": 320,
+            "wins": 282,
+            "losses": 38,
+            "draws": 0,
+            "loop_draws": 0,
+            "timeout_draws": 0,
+            "point_rate": 0.88125,
+            "score_rate": 0.88125,
+            "point_margin": 0.7625,
+            "match_wins": 63,
+            "match_losses": 1,
+            "match_draws": 0,
+            "paired_match_wins": 32,
+            "paired_match_losses": 0,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 1.0,
+            "median_decisive_returns": 3.0,
+            "mean_returns": 3.15,
+            "mean_ticks": 167.909375,
+            "early_finish_rate": 0.29375,
+            "point_margin_ci95": [
+              0.6937500000000001,
+              0.8250000000000001
+            ],
+            "score_rate_ci95": [
+              0.846875,
+              0.9125000000000001
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.40625,
+            "long_scored_rate": 0.184375,
+            "locally_unreachable_scores": 79,
+            "locally_unreachable_share_of_scores": 0.246875,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          }
+        }
+      },
+      {
+        "run": "dagger-continuation-s412",
+        "total_round": 36,
+        "round": 12,
+        "seconds": 39.413592000026256,
+        "env_steps": 786432,
+        "development_margin": -0.11328124999999997,
+        "cross_entropy": 0.2813899839917819,
+        "training_accuracy": 0.8948287963867188,
+        "teacher_action_probability": 0.05,
+        "opponents": {
+          "attack": {
+            "rallies": 320,
+            "wins": 38,
+            "losses": 276,
+            "draws": 6,
+            "loop_draws": 6,
+            "timeout_draws": 0,
+            "point_rate": 0.11875,
+            "score_rate": 0.128125,
+            "point_margin": -0.74375,
+            "match_wins": 1,
+            "match_losses": 62,
+            "match_draws": 1,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 8.0,
+            "mean_returns": 8.09375,
+            "mean_ticks": 329.040625,
+            "early_finish_rate": 0.053125,
+            "point_margin_ci95": [
+              -0.821875,
+              -0.6625
+            ],
+            "score_rate_ci95": [
+              0.08906249999999999,
+              0.16875
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.5636942675159236,
+            "long_scored_rate": 0.89375,
+            "locally_unreachable_scores": 282,
+            "locally_unreachable_share_of_scores": 0.8980891719745223,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "defend": {
+            "rallies": 320,
+            "wins": 32,
+            "losses": 272,
+            "draws": 16,
+            "loop_draws": 16,
+            "timeout_draws": 0,
+            "point_rate": 0.1,
+            "score_rate": 0.125,
+            "point_margin": -0.75,
+            "match_wins": 0,
+            "match_losses": 63,
+            "match_draws": 1,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 9.0,
+            "mean_returns": 9.40625,
+            "mean_ticks": 362.6625,
+            "early_finish_rate": 0.05,
+            "point_margin_ci95": [
+              -0.809375,
+              -0.684375
+            ],
+            "score_rate_ci95": [
+              0.09531250000000002,
+              0.15781250000000002
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.4506578947368421,
+            "long_scored_rate": 0.884375,
+            "locally_unreachable_scores": 268,
+            "locally_unreachable_share_of_scores": 0.881578947368421,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "contender": {
+            "rallies": 320,
+            "wins": 203,
+            "losses": 82,
+            "draws": 35,
+            "loop_draws": 35,
+            "timeout_draws": 0,
+            "point_rate": 0.634375,
+            "score_rate": 0.6890625,
+            "point_margin": 0.378125,
+            "match_wins": 52,
+            "match_losses": 5,
+            "match_draws": 7,
+            "paired_match_wins": 29,
+            "paired_match_losses": 3,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.90625,
+            "median_decisive_returns": 8.0,
+            "mean_returns": 9.796875,
+            "mean_ticks": 363.9125,
+            "early_finish_rate": 0.115625,
+            "point_margin_ci95": [
+              0.284375,
+              0.4625
+            ],
+            "score_rate_ci95": [
+              0.6421875,
+              0.73125
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.49122807017543857,
+            "long_scored_rate": 0.571875,
+            "locally_unreachable_scores": 150,
+            "locally_unreachable_share_of_scores": 0.5263157894736842,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "tracker": {
+            "rallies": 320,
+            "wins": 266,
+            "losses": 54,
+            "draws": 0,
+            "loop_draws": 0,
+            "timeout_draws": 0,
+            "point_rate": 0.83125,
+            "score_rate": 0.83125,
+            "point_margin": 0.6625,
+            "match_wins": 62,
+            "match_losses": 2,
+            "match_draws": 0,
+            "paired_match_wins": 31,
+            "paired_match_losses": 0,
+            "paired_match_draws": 1,
+            "paired_match_win_rate": 0.96875,
+            "median_decisive_returns": 2.0,
+            "mean_returns": 3.2625,
+            "mean_ticks": 170.446875,
+            "early_finish_rate": 0.3125,
+            "point_margin_ci95": [
+              0.59375,
+              0.73125
+            ],
+            "score_rate_ci95": [
+              0.796875,
+              0.865625
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.4,
+            "long_scored_rate": 0.2125,
+            "locally_unreachable_scores": 84,
+            "locally_unreachable_share_of_scores": 0.2625,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          }
+        }
+      },
+      {
+        "run": "dagger-continuation-s412",
+        "total_round": 39,
+        "round": 15,
+        "seconds": 52.25238508405164,
+        "env_steps": 983040,
+        "development_margin": -0.14375000000000002,
+        "cross_entropy": 0.34680004275093473,
+        "training_accuracy": 0.8563695271809896,
+        "teacher_action_probability": 0.05,
+        "opponents": {
+          "attack": {
+            "rallies": 320,
+            "wins": 20,
+            "losses": 295,
+            "draws": 5,
+            "loop_draws": 5,
+            "timeout_draws": 0,
+            "point_rate": 0.0625,
+            "score_rate": 0.0703125,
+            "point_margin": -0.859375,
+            "match_wins": 0,
+            "match_losses": 64,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 8.0,
+            "mean_returns": 8.859375,
+            "mean_ticks": 352.903125,
+            "early_finish_rate": 0.009375,
+            "point_margin_ci95": [
+              -0.9125,
+              -0.8
+            ],
+            "score_rate_ci95": [
+              0.04375000000000001,
+              0.09999999999999998
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.5142857142857142,
+            "long_scored_rate": 0.971875,
+            "locally_unreachable_scores": 294,
+            "locally_unreachable_share_of_scores": 0.9333333333333333,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "defend": {
+            "rallies": 320,
+            "wins": 14,
+            "losses": 261,
+            "draws": 45,
+            "loop_draws": 45,
+            "timeout_draws": 0,
+            "point_rate": 0.04375,
+            "score_rate": 0.1140625,
+            "point_margin": -0.771875,
+            "match_wins": 0,
+            "match_losses": 63,
+            "match_draws": 1,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 9.0,
+            "mean_returns": 9.16875,
+            "mean_ticks": 357.7375,
+            "early_finish_rate": 0.009375,
+            "point_margin_ci95": [
+              -0.821875,
+              -0.715625
+            ],
+            "score_rate_ci95": [
+              0.08906249999999999,
+              0.14218750000000002
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.509090909090909,
+            "long_scored_rate": 0.846875,
+            "locally_unreachable_scores": 233,
+            "locally_unreachable_share_of_scores": 0.8472727272727273,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "contender": {
+            "rallies": 320,
+            "wins": 210,
+            "losses": 94,
+            "draws": 16,
+            "loop_draws": 16,
+            "timeout_draws": 0,
+            "point_rate": 0.65625,
+            "score_rate": 0.68125,
+            "point_margin": 0.3625,
+            "match_wins": 46,
+            "match_losses": 11,
+            "match_draws": 7,
+            "paired_match_wins": 26,
+            "paired_match_losses": 3,
+            "paired_match_draws": 3,
+            "paired_match_win_rate": 0.8125,
+            "median_decisive_returns": 9.0,
+            "mean_returns": 10.540625,
+            "mean_ticks": 389.771875,
+            "early_finish_rate": 0.0625,
+            "point_margin_ci95": [
+              0.253125,
+              0.478125
+            ],
+            "score_rate_ci95": [
+              0.6265625,
+              0.7390625
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.4473684210526316,
+            "long_scored_rate": 0.765625,
+            "locally_unreachable_scores": 201,
+            "locally_unreachable_share_of_scores": 0.6611842105263158,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "tracker": {
+            "rallies": 320,
+            "wins": 271,
+            "losses": 49,
+            "draws": 0,
+            "loop_draws": 0,
+            "timeout_draws": 0,
+            "point_rate": 0.846875,
+            "score_rate": 0.846875,
+            "point_margin": 0.69375,
+            "match_wins": 63,
+            "match_losses": 1,
+            "match_draws": 0,
+            "paired_match_wins": 31,
+            "paired_match_losses": 0,
+            "paired_match_draws": 1,
+            "paired_match_win_rate": 0.96875,
+            "median_decisive_returns": 3.0,
+            "mean_returns": 2.896875,
+            "mean_ticks": 160.28125,
+            "early_finish_rate": 0.321875,
+            "point_margin_ci95": [
+              0.60625,
+              0.775
+            ],
+            "score_rate_ci95": [
+              0.803125,
+              0.8875
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.428125,
+            "long_scored_rate": 0.1625,
+            "locally_unreachable_scores": 82,
+            "locally_unreachable_share_of_scores": 0.25625,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          }
+        }
+      },
+      {
+        "run": "dagger-continuation-s412",
+        "total_round": 42,
+        "round": 18,
+        "seconds": 65.10845499997959,
+        "env_steps": 1179648,
+        "development_margin": 0.017968750000000006,
+        "cross_entropy": 0.3806926931409786,
+        "training_accuracy": 0.8350855509440104,
+        "teacher_action_probability": 0.05,
+        "opponents": {
+          "attack": {
+            "rallies": 320,
+            "wins": 63,
+            "losses": 236,
+            "draws": 21,
+            "loop_draws": 21,
+            "timeout_draws": 0,
+            "point_rate": 0.196875,
+            "score_rate": 0.2296875,
+            "point_margin": -0.540625,
+            "match_wins": 3,
+            "match_losses": 58,
+            "match_draws": 3,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 8.0,
+            "mean_returns": 8.525,
+            "mean_ticks": 341.075,
+            "early_finish_rate": 0.03125,
+            "point_margin_ci95": [
+              -0.621875,
+              -0.459375
+            ],
+            "score_rate_ci95": [
+              0.18906250000000002,
+              0.2703125
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.48494983277591974,
+            "long_scored_rate": 0.903125,
+            "locally_unreachable_scores": 289,
+            "locally_unreachable_share_of_scores": 0.9665551839464883,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "defend": {
+            "rallies": 320,
+            "wins": 44,
+            "losses": 236,
+            "draws": 40,
+            "loop_draws": 40,
+            "timeout_draws": 0,
+            "point_rate": 0.1375,
+            "score_rate": 0.2,
+            "point_margin": -0.6,
+            "match_wins": 1,
+            "match_losses": 61,
+            "match_draws": 2,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 9.0,
+            "mean_returns": 9.309375,
+            "mean_ticks": 359.7125,
+            "early_finish_rate": 0.034375,
+            "point_margin_ci95": [
+              -0.653125,
+              -0.546875
+            ],
+            "score_rate_ci95": [
+              0.17343750000000002,
+              0.2265625
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.4035714285714286,
+            "long_scored_rate": 0.840625,
+            "locally_unreachable_scores": 261,
+            "locally_unreachable_share_of_scores": 0.9321428571428572,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "contender": {
+            "rallies": 320,
+            "wins": 251,
+            "losses": 59,
+            "draws": 10,
+            "loop_draws": 10,
+            "timeout_draws": 0,
+            "point_rate": 0.784375,
+            "score_rate": 0.8,
+            "point_margin": 0.6,
+            "match_wins": 60,
+            "match_losses": 1,
+            "match_draws": 3,
+            "paired_match_wins": 32,
+            "paired_match_losses": 0,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 1.0,
+            "median_decisive_returns": 9.0,
+            "mean_returns": 10.146875,
+            "mean_ticks": 377.375,
+            "early_finish_rate": 0.09375,
+            "point_margin_ci95": [
+              0.525,
+              0.671875
+            ],
+            "score_rate_ci95": [
+              0.7625,
+              0.8359375
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.5161290322580645,
+            "long_scored_rate": 0.746875,
+            "locally_unreachable_scores": 187,
+            "locally_unreachable_share_of_scores": 0.603225806451613,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "tracker": {
+            "rallies": 320,
+            "wins": 258,
+            "losses": 62,
+            "draws": 0,
+            "loop_draws": 0,
+            "timeout_draws": 0,
+            "point_rate": 0.80625,
+            "score_rate": 0.80625,
+            "point_margin": 0.6125,
+            "match_wins": 60,
+            "match_losses": 4,
+            "match_draws": 0,
+            "paired_match_wins": 32,
+            "paired_match_losses": 0,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 1.0,
+            "median_decisive_returns": 2.0,
+            "mean_returns": 2.3875,
+            "mean_ticks": 141.84375,
+            "early_finish_rate": 0.365625,
+            "point_margin_ci95": [
+              0.5375,
+              0.6814062499999993
+            ],
+            "score_rate_ci95": [
+              0.76875,
+              0.8407031249999997
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.38125,
+            "long_scored_rate": 0.10625,
+            "locally_unreachable_scores": 72,
+            "locally_unreachable_share_of_scores": 0.225,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          }
+        }
+      },
+      {
+        "run": "dagger-continuation-s412",
+        "total_round": 45,
+        "round": 21,
+        "seconds": 77.93016333412379,
+        "env_steps": 1376256,
+        "development_margin": 0.01171875,
+        "cross_entropy": 0.3918167830755313,
+        "training_accuracy": 0.8284093221028646,
+        "teacher_action_probability": 0.05,
+        "opponents": {
+          "attack": {
+            "rallies": 320,
+            "wins": 66,
+            "losses": 252,
+            "draws": 2,
+            "loop_draws": 2,
+            "timeout_draws": 0,
+            "point_rate": 0.20625,
+            "score_rate": 0.209375,
+            "point_margin": -0.58125,
+            "match_wins": 5,
+            "match_losses": 59,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 8.0,
+            "mean_returns": 8.35625,
+            "mean_ticks": 338.5875,
+            "early_finish_rate": 0.025,
+            "point_margin_ci95": [
+              -0.6625000000000001,
+              -0.49375
+            ],
+            "score_rate_ci95": [
+              0.16874999999999996,
+              0.253125
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.49056603773584906,
+            "long_scored_rate": 0.965625,
+            "locally_unreachable_scores": 299,
+            "locally_unreachable_share_of_scores": 0.940251572327044,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "defend": {
+            "rallies": 320,
+            "wins": 58,
+            "losses": 223,
+            "draws": 39,
+            "loop_draws": 39,
+            "timeout_draws": 0,
+            "point_rate": 0.18125,
+            "score_rate": 0.2421875,
+            "point_margin": -0.515625,
+            "match_wins": 1,
+            "match_losses": 58,
+            "match_draws": 5,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 9.0,
+            "mean_returns": 9.76875,
+            "mean_ticks": 372.4625,
+            "early_finish_rate": 0.025,
+            "point_margin_ci95": [
+              -0.5875,
+              -0.4436718750000004
+            ],
+            "score_rate_ci95": [
+              0.20625,
+              0.2781640624999998
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.43416370106761565,
+            "long_scored_rate": 0.853125,
+            "locally_unreachable_scores": 240,
+            "locally_unreachable_share_of_scores": 0.8540925266903915,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "contender": {
+            "rallies": 320,
+            "wins": 230,
+            "losses": 70,
+            "draws": 20,
+            "loop_draws": 20,
+            "timeout_draws": 0,
+            "point_rate": 0.71875,
+            "score_rate": 0.75,
+            "point_margin": 0.5,
+            "match_wins": 56,
+            "match_losses": 4,
+            "match_draws": 4,
+            "paired_match_wins": 30,
+            "paired_match_losses": 2,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.9375,
+            "median_decisive_returns": 8.5,
+            "mean_returns": 10.409375,
+            "mean_ticks": 383.653125,
+            "early_finish_rate": 0.096875,
+            "point_margin_ci95": [
+              0.409375,
+              0.5875
+            ],
+            "score_rate_ci95": [
+              0.7046875,
+              0.79375
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.4766666666666667,
+            "long_scored_rate": 0.71875,
+            "locally_unreachable_scores": 190,
+            "locally_unreachable_share_of_scores": 0.6333333333333333,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "tracker": {
+            "rallies": 320,
+            "wins": 263,
+            "losses": 57,
+            "draws": 0,
+            "loop_draws": 0,
+            "timeout_draws": 0,
+            "point_rate": 0.821875,
+            "score_rate": 0.821875,
+            "point_margin": 0.64375,
+            "match_wins": 60,
+            "match_losses": 4,
+            "match_draws": 0,
+            "paired_match_wins": 30,
+            "paired_match_losses": 0,
+            "paired_match_draws": 2,
+            "paired_match_win_rate": 0.9375,
+            "median_decisive_returns": 2.0,
+            "mean_returns": 2.478125,
+            "mean_ticks": 144.325,
+            "early_finish_rate": 0.38125,
+            "point_margin_ci95": [
+              0.5375,
+              0.75
+            ],
+            "score_rate_ci95": [
+              0.76875,
+              0.875
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.434375,
+            "long_scored_rate": 0.11875,
+            "locally_unreachable_scores": 80,
+            "locally_unreachable_share_of_scores": 0.25,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          }
+        }
+      },
+      {
+        "run": "dagger-continuation-s412",
+        "total_round": 48,
+        "round": 24,
+        "seconds": 90.90050116693601,
+        "env_steps": 1572864,
+        "development_margin": -0.005468749999999967,
+        "cross_entropy": 0.38881496149115263,
+        "training_accuracy": 0.8284001668294271,
+        "teacher_action_probability": 0.05,
+        "opponents": {
+          "attack": {
+            "rallies": 320,
+            "wins": 20,
+            "losses": 282,
+            "draws": 18,
+            "loop_draws": 18,
+            "timeout_draws": 0,
+            "point_rate": 0.0625,
+            "score_rate": 0.090625,
+            "point_margin": -0.81875,
+            "match_wins": 0,
+            "match_losses": 64,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 8.0,
+            "mean_returns": 9.178125,
+            "mean_ticks": 359.375,
+            "early_finish_rate": 0.01875,
+            "point_margin_ci95": [
+              -0.86875,
+              -0.7625
+            ],
+            "score_rate_ci95": [
+              0.06562499999999999,
+              0.11875000000000002
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.5596026490066225,
+            "long_scored_rate": 0.91875,
+            "locally_unreachable_scores": 284,
+            "locally_unreachable_share_of_scores": 0.9403973509933775,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "defend": {
+            "rallies": 320,
+            "wins": 18,
+            "losses": 232,
+            "draws": 70,
+            "loop_draws": 70,
+            "timeout_draws": 0,
+            "point_rate": 0.05625,
+            "score_rate": 0.165625,
+            "point_margin": -0.66875,
+            "match_wins": 0,
+            "match_losses": 64,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 9.0,
+            "mean_returns": 9.70625,
+            "mean_ticks": 368.94375,
+            "early_finish_rate": 0.01875,
+            "point_margin_ci95": [
+              -0.7218749999999999,
+              -0.61875
+            ],
+            "score_rate_ci95": [
+              0.13906250000000003,
+              0.190625
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.468,
+            "long_scored_rate": 0.7625,
+            "locally_unreachable_scores": 243,
+            "locally_unreachable_share_of_scores": 0.972,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "contender": {
+            "rallies": 320,
+            "wins": 269,
+            "losses": 42,
+            "draws": 9,
+            "loop_draws": 9,
+            "timeout_draws": 0,
+            "point_rate": 0.840625,
+            "score_rate": 0.8546875,
+            "point_margin": 0.709375,
+            "match_wins": 60,
+            "match_losses": 1,
+            "match_draws": 3,
+            "paired_match_wins": 32,
+            "paired_match_losses": 0,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 1.0,
+            "median_decisive_returns": 9.0,
+            "mean_returns": 10.4375,
+            "mean_ticks": 383.2625,
+            "early_finish_rate": 0.1125,
+            "point_margin_ci95": [
+              0.634375,
+              0.78125
+            ],
+            "score_rate_ci95": [
+              0.8171875,
+              0.890625
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.4790996784565916,
+            "long_scored_rate": 0.678125,
+            "locally_unreachable_scores": 146,
+            "locally_unreachable_share_of_scores": 0.4694533762057878,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "tracker": {
+            "rallies": 320,
+            "wins": 281,
+            "losses": 39,
+            "draws": 0,
+            "loop_draws": 0,
+            "timeout_draws": 0,
+            "point_rate": 0.878125,
+            "score_rate": 0.878125,
+            "point_margin": 0.75625,
+            "match_wins": 62,
+            "match_losses": 2,
+            "match_draws": 0,
+            "paired_match_wins": 31,
+            "paired_match_losses": 0,
+            "paired_match_draws": 1,
+            "paired_match_win_rate": 0.96875,
+            "median_decisive_returns": 2.0,
+            "mean_returns": 2.478125,
+            "mean_ticks": 145.625,
+            "early_finish_rate": 0.346875,
+            "point_margin_ci95": [
+              0.6687500000000001,
+              0.83125
+            ],
+            "score_rate_ci95": [
+              0.8343750000000001,
+              0.915625
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.428125,
+            "long_scored_rate": 0.075,
+            "locally_unreachable_scores": 88,
+            "locally_unreachable_share_of_scores": 0.275,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          }
+        }
+      },
+      {
+        "run": "dagger-continuation-s412",
+        "total_round": 51,
+        "round": 27,
+        "seconds": 103.50937158428133,
+        "env_steps": 1769472,
+        "development_margin": -0.06640624999999997,
+        "cross_entropy": 0.37654928403596083,
+        "training_accuracy": 0.8336374918619792,
+        "teacher_action_probability": 0.05,
+        "opponents": {
+          "attack": {
+            "rallies": 320,
+            "wins": 19,
+            "losses": 296,
+            "draws": 5,
+            "loop_draws": 5,
+            "timeout_draws": 0,
+            "point_rate": 0.059375,
+            "score_rate": 0.0671875,
+            "point_margin": -0.865625,
+            "match_wins": 0,
+            "match_losses": 64,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 8.0,
+            "mean_returns": 8.15,
+            "mean_ticks": 332.309375,
+            "early_finish_rate": 0.034375,
+            "point_margin_ci95": [
+              -0.9093749999999999,
+              -0.81875
+            ],
+            "score_rate_ci95": [
+              0.04531250000000003,
+              0.09062500000000001
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.5682539682539682,
+            "long_scored_rate": 0.95,
+            "locally_unreachable_scores": 293,
+            "locally_unreachable_share_of_scores": 0.9301587301587302,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "defend": {
+            "rallies": 320,
+            "wins": 7,
+            "losses": 233,
+            "draws": 80,
+            "loop_draws": 80,
+            "timeout_draws": 0,
+            "point_rate": 0.021875,
+            "score_rate": 0.146875,
+            "point_margin": -0.70625,
+            "match_wins": 0,
+            "match_losses": 63,
+            "match_draws": 1,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 9.0,
+            "mean_returns": 9.146875,
+            "mean_ticks": 352.084375,
+            "early_finish_rate": 0.034375,
+            "point_margin_ci95": [
+              -0.765625,
+              -0.646875
+            ],
+            "score_rate_ci95": [
+              0.1171875,
+              0.1765625
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.4708333333333333,
+            "long_scored_rate": 0.715625,
+            "locally_unreachable_scores": 210,
+            "locally_unreachable_share_of_scores": 0.875,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "contender": {
+            "rallies": 320,
+            "wins": 229,
+            "losses": 79,
+            "draws": 12,
+            "loop_draws": 12,
+            "timeout_draws": 0,
+            "point_rate": 0.715625,
+            "score_rate": 0.734375,
+            "point_margin": 0.46875,
+            "match_wins": 57,
+            "match_losses": 6,
+            "match_draws": 1,
+            "paired_match_wins": 29,
+            "paired_match_losses": 2,
+            "paired_match_draws": 1,
+            "paired_match_win_rate": 0.90625,
+            "median_decisive_returns": 8.0,
+            "mean_returns": 9.0125,
+            "mean_ticks": 345.63125,
+            "early_finish_rate": 0.1125,
+            "point_margin_ci95": [
+              0.36875,
+              0.559375
+            ],
+            "score_rate_ci95": [
+              0.684375,
+              0.7796875
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.4675324675324675,
+            "long_scored_rate": 0.659375,
+            "locally_unreachable_scores": 136,
+            "locally_unreachable_share_of_scores": 0.44155844155844154,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "tracker": {
+            "rallies": 320,
+            "wins": 294,
+            "losses": 26,
+            "draws": 0,
+            "loop_draws": 0,
+            "timeout_draws": 0,
+            "point_rate": 0.91875,
+            "score_rate": 0.91875,
+            "point_margin": 0.8375,
+            "match_wins": 64,
+            "match_losses": 0,
+            "match_draws": 0,
+            "paired_match_wins": 32,
+            "paired_match_losses": 0,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 1.0,
+            "median_decisive_returns": 3.0,
+            "mean_returns": 2.45,
+            "mean_ticks": 146.303125,
+            "early_finish_rate": 0.334375,
+            "point_margin_ci95": [
+              0.78125,
+              0.89375
+            ],
+            "score_rate_ci95": [
+              0.890625,
+              0.946875
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.4375,
+            "long_scored_rate": 0.0625,
+            "locally_unreachable_scores": 74,
+            "locally_unreachable_share_of_scores": 0.23125,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          }
+        }
+      },
+      {
+        "run": "dagger-continuation-s412",
+        "total_round": 54,
+        "round": 30,
+        "seconds": 116.16671725036576,
+        "env_steps": 1966080,
+        "development_margin": 0.07890625000000001,
+        "cross_entropy": 0.37145201745443046,
+        "training_accuracy": 0.8362716674804688,
+        "teacher_action_probability": 0.05,
+        "opponents": {
+          "attack": {
+            "rallies": 320,
+            "wins": 59,
+            "losses": 250,
+            "draws": 11,
+            "loop_draws": 11,
+            "timeout_draws": 0,
+            "point_rate": 0.184375,
+            "score_rate": 0.2015625,
+            "point_margin": -0.596875,
+            "match_wins": 6,
+            "match_losses": 58,
+            "match_draws": 0,
+            "paired_match_wins": 2,
+            "paired_match_losses": 30,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0625,
+            "median_decisive_returns": 8.0,
+            "mean_returns": 8.425,
+            "mean_ticks": 339.7625,
+            "early_finish_rate": 0.025,
+            "point_margin_ci95": [
+              -0.700078125,
+              -0.49367187500000037
+            ],
+            "score_rate_ci95": [
+              0.1499609375,
+              0.2531640624999998
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.45307443365695793,
+            "long_scored_rate": 0.940625,
+            "locally_unreachable_scores": 285,
+            "locally_unreachable_share_of_scores": 0.9223300970873787,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "defend": {
+            "rallies": 320,
+            "wins": 26,
+            "losses": 223,
+            "draws": 71,
+            "loop_draws": 71,
+            "timeout_draws": 0,
+            "point_rate": 0.08125,
+            "score_rate": 0.1921875,
+            "point_margin": -0.615625,
+            "match_wins": 2,
+            "match_losses": 61,
+            "match_draws": 1,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 9.0,
+            "mean_returns": 9.290625,
+            "mean_ticks": 357.44375,
+            "early_finish_rate": 0.025,
+            "point_margin_ci95": [
+              -0.678125,
+              -0.55
+            ],
+            "score_rate_ci95": [
+              0.1609375,
+              0.22499999999999998
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.3453815261044177,
+            "long_scored_rate": 0.753125,
+            "locally_unreachable_scores": 238,
+            "locally_unreachable_share_of_scores": 0.9558232931726908,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "contender": {
+            "rallies": 320,
+            "wins": 259,
+            "losses": 52,
+            "draws": 9,
+            "loop_draws": 9,
+            "timeout_draws": 0,
+            "point_rate": 0.809375,
+            "score_rate": 0.8234375,
+            "point_margin": 0.646875,
+            "match_wins": 61,
+            "match_losses": 2,
+            "match_draws": 1,
+            "paired_match_wins": 32,
+            "paired_match_losses": 0,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 1.0,
+            "median_decisive_returns": 8.0,
+            "mean_returns": 8.840625,
+            "mean_ticks": 342.065625,
+            "early_finish_rate": 0.1125,
+            "point_margin_ci95": [
+              0.5749218749999999,
+              0.71875
+            ],
+            "score_rate_ci95": [
+              0.7874609374999999,
+              0.859375
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.47266881028938906,
+            "long_scored_rate": 0.696875,
+            "locally_unreachable_scores": 149,
+            "locally_unreachable_share_of_scores": 0.4790996784565916,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "tracker": {
+            "rallies": 320,
+            "wins": 301,
+            "losses": 19,
+            "draws": 0,
+            "loop_draws": 0,
+            "timeout_draws": 0,
+            "point_rate": 0.940625,
+            "score_rate": 0.940625,
+            "point_margin": 0.88125,
+            "match_wins": 64,
+            "match_losses": 0,
+            "match_draws": 0,
+            "paired_match_wins": 32,
+            "paired_match_losses": 0,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 1.0,
+            "median_decisive_returns": 3.0,
+            "mean_returns": 2.496875,
+            "mean_ticks": 148.009375,
+            "early_finish_rate": 0.315625,
+            "point_margin_ci95": [
+              0.8375,
+              0.925
+            ],
+            "score_rate_ci95": [
+              0.91875,
+              0.9625
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.459375,
+            "long_scored_rate": 0.059375,
+            "locally_unreachable_scores": 86,
+            "locally_unreachable_share_of_scores": 0.26875,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          }
+        }
+      },
+      {
+        "run": "dagger-continuation-s412",
+        "total_round": 57,
+        "round": 33,
+        "seconds": 128.98655800009146,
+        "env_steps": 2162688,
+        "development_margin": 0.03125000000000003,
+        "cross_entropy": 0.3611974874356141,
+        "training_accuracy": 0.8402562459309896,
+        "teacher_action_probability": 0.05,
+        "opponents": {
+          "attack": {
+            "rallies": 320,
+            "wins": 58,
+            "losses": 257,
+            "draws": 5,
+            "loop_draws": 5,
+            "timeout_draws": 0,
+            "point_rate": 0.18125,
+            "score_rate": 0.1890625,
+            "point_margin": -0.621875,
+            "match_wins": 5,
+            "match_losses": 58,
+            "match_draws": 1,
+            "paired_match_wins": 0,
+            "paired_match_losses": 31,
+            "paired_match_draws": 1,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 9.0,
+            "mean_returns": 9.415625,
+            "mean_ticks": 365.828125,
+            "early_finish_rate": 0.028125,
+            "point_margin_ci95": [
+              -0.7157031250000001,
+              -0.528125
+            ],
+            "score_rate_ci95": [
+              0.14214843749999995,
+              0.23593750000000002
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.5333333333333333,
+            "long_scored_rate": 0.95625,
+            "locally_unreachable_scores": 306,
+            "locally_unreachable_share_of_scores": 0.9714285714285714,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "defend": {
+            "rallies": 320,
+            "wins": 17,
+            "losses": 244,
+            "draws": 59,
+            "loop_draws": 59,
+            "timeout_draws": 0,
+            "point_rate": 0.053125,
+            "score_rate": 0.1453125,
+            "point_margin": -0.709375,
+            "match_wins": 1,
+            "match_losses": 63,
+            "match_draws": 0,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 9.0,
+            "mean_returns": 9.31875,
+            "mean_ticks": 358.890625,
+            "early_finish_rate": 0.028125,
+            "point_margin_ci95": [
+              -0.76875,
+              -0.65
+            ],
+            "score_rate_ci95": [
+              0.11562499999999998,
+              0.175
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.4789272030651341,
+            "long_scored_rate": 0.7875,
+            "locally_unreachable_scores": 249,
+            "locally_unreachable_share_of_scores": 0.9540229885057471,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "contender": {
+            "rallies": 320,
+            "wins": 255,
+            "losses": 53,
+            "draws": 12,
+            "loop_draws": 12,
+            "timeout_draws": 0,
+            "point_rate": 0.796875,
+            "score_rate": 0.815625,
+            "point_margin": 0.63125,
+            "match_wins": 61,
+            "match_losses": 3,
+            "match_draws": 0,
+            "paired_match_wins": 32,
+            "paired_match_losses": 0,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 1.0,
+            "median_decisive_returns": 9.0,
+            "mean_returns": 9.340625,
+            "mean_ticks": 354.371875,
+            "early_finish_rate": 0.090625,
+            "point_margin_ci95": [
+              0.553125,
+              0.709375
+            ],
+            "score_rate_ci95": [
+              0.7765625,
+              0.8546875
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.525974025974026,
+            "long_scored_rate": 0.709375,
+            "locally_unreachable_scores": 157,
+            "locally_unreachable_share_of_scores": 0.5097402597402597,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "tracker": {
+            "rallies": 320,
+            "wins": 292,
+            "losses": 28,
+            "draws": 0,
+            "loop_draws": 0,
+            "timeout_draws": 0,
+            "point_rate": 0.9125,
+            "score_rate": 0.9125,
+            "point_margin": 0.825,
+            "match_wins": 64,
+            "match_losses": 0,
+            "match_draws": 0,
+            "paired_match_wins": 32,
+            "paired_match_losses": 0,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 1.0,
+            "median_decisive_returns": 2.0,
+            "mean_returns": 2.41875,
+            "mean_ticks": 143.875,
+            "early_finish_rate": 0.371875,
+            "point_margin_ci95": [
+              0.7812500000000001,
+              0.8687499999999999
+            ],
+            "score_rate_ci95": [
+              0.890625,
+              0.934375
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.4625,
+            "long_scored_rate": 0.084375,
+            "locally_unreachable_scores": 100,
+            "locally_unreachable_share_of_scores": 0.3125,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          }
+        }
+      },
+      {
+        "run": "dagger-continuation-s412",
+        "total_round": 60,
+        "round": 36,
+        "seconds": 141.7073554592207,
+        "env_steps": 2359296,
+        "development_margin": 0.09296874999999996,
+        "cross_entropy": 0.35307791917584835,
+        "training_accuracy": 0.8451286315917969,
+        "teacher_action_probability": 0.05,
+        "opponents": {
+          "attack": {
+            "rallies": 320,
+            "wins": 61,
+            "losses": 239,
+            "draws": 20,
+            "loop_draws": 20,
+            "timeout_draws": 0,
+            "point_rate": 0.190625,
+            "score_rate": 0.221875,
+            "point_margin": -0.55625,
+            "match_wins": 3,
+            "match_losses": 58,
+            "match_draws": 3,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 8.0,
+            "mean_returns": 9.940625,
+            "mean_ticks": 380.8,
+            "early_finish_rate": 0.0,
+            "point_margin_ci95": [
+              -0.634375,
+              -0.48125
+            ],
+            "score_rate_ci95": [
+              0.1828125,
+              0.259375
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.56,
+            "long_scored_rate": 0.9375,
+            "locally_unreachable_scores": 300,
+            "locally_unreachable_share_of_scores": 1.0,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "defend": {
+            "rallies": 320,
+            "wins": 34,
+            "losses": 225,
+            "draws": 61,
+            "loop_draws": 61,
+            "timeout_draws": 0,
+            "point_rate": 0.10625,
+            "score_rate": 0.2015625,
+            "point_margin": -0.596875,
+            "match_wins": 1,
+            "match_losses": 60,
+            "match_draws": 3,
+            "paired_match_wins": 0,
+            "paired_match_losses": 32,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.0,
+            "median_decisive_returns": 9.0,
+            "mean_returns": 9.28125,
+            "mean_ticks": 360.325,
+            "early_finish_rate": 0.0,
+            "point_margin_ci95": [
+              -0.646875,
+              -0.546875
+            ],
+            "score_rate_ci95": [
+              0.1765625,
+              0.2265625
+            ],
+            "acceptance": {
+              "passed": false,
+              "criteria": {
+                "majority_paired_matches": false,
+                "positive_margin_ci": false,
+                "wins_exceed_losses_on_both_sides": false
+              }
+            },
+            "first_receiver_win_rate": 0.3552123552123552,
+            "long_scored_rate": 0.809375,
+            "locally_unreachable_scores": 253,
+            "locally_unreachable_share_of_scores": 0.9768339768339769,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "contender": {
+            "rallies": 320,
+            "wins": 256,
+            "losses": 54,
+            "draws": 10,
+            "loop_draws": 10,
+            "timeout_draws": 0,
+            "point_rate": 0.8,
+            "score_rate": 0.815625,
+            "point_margin": 0.63125,
+            "match_wins": 59,
+            "match_losses": 3,
+            "match_draws": 2,
+            "paired_match_wins": 31,
+            "paired_match_losses": 1,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 0.96875,
+            "median_decisive_returns": 8.0,
+            "mean_returns": 9.484375,
+            "mean_ticks": 360.9125,
+            "early_finish_rate": 0.078125,
+            "point_margin_ci95": [
+              0.5375000000000001,
+              0.721875
+            ],
+            "score_rate_ci95": [
+              0.76875,
+              0.8609375
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.4967741935483871,
+            "long_scored_rate": 0.73125,
+            "locally_unreachable_scores": 169,
+            "locally_unreachable_share_of_scores": 0.5451612903225806,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          },
+          "tracker": {
+            "rallies": 320,
+            "wins": 303,
+            "losses": 17,
+            "draws": 0,
+            "loop_draws": 0,
+            "timeout_draws": 0,
+            "point_rate": 0.946875,
+            "score_rate": 0.946875,
+            "point_margin": 0.89375,
+            "match_wins": 64,
+            "match_losses": 0,
+            "match_draws": 0,
+            "paired_match_wins": 32,
+            "paired_match_losses": 0,
+            "paired_match_draws": 0,
+            "paired_match_win_rate": 1.0,
+            "median_decisive_returns": 3.0,
+            "mean_returns": 2.703125,
+            "mean_ticks": 155.915625,
+            "early_finish_rate": 0.321875,
+            "point_margin_ci95": [
+              0.84375,
+              0.9375
+            ],
+            "score_rate_ci95": [
+              0.921875,
+              0.96875
+            ],
+            "acceptance": {
+              "passed": true,
+              "criteria": {
+                "majority_paired_matches": true,
+                "positive_margin_ci": true,
+                "wins_exceed_losses_on_both_sides": true
+              }
+            },
+            "first_receiver_win_rate": 0.496875,
+            "long_scored_rate": 0.084375,
+            "locally_unreachable_scores": 91,
+            "locally_unreachable_share_of_scores": 0.284375,
+            "loop_detection_enabled": true,
+            "reaction_window_ticks": {
+              "first_return": 55,
+              "minimum": 26
+            }
+          }
+        }
+      }
+    ]
+  ],
+  "export_verification": {
+    "purpose": "Numerical/contract verification, not model selection",
+    "models": {
+      "pacer": {
+        "sha256": "01eeeee5f0c2c65d934c4988ebd24e91c0da7c3f1d88c9a48829dc881262739e",
+        "numeric_probes": 8192,
+        "actual_recorded_actions": 3689,
+        "mismatches": 0,
+        "maximum_score_error": 1.33514404296875e-05,
+        "bytes": 71658,
+        "params": 17795,
+        "macs": 17536,
+        "nodes": 5,
+        "widths": [
+          6,
+          128,
+          128,
+          3
+        ]
+      },
+      "apprentice": {
+        "sha256": "b1c2164c0a93d2bb11007478c7e8c1da31f5844258ae1255b2568e002fc4a1dc",
+        "numeric_probes": 8192,
+        "actual_recorded_actions": 2712,
+        "mismatches": 0,
+        "maximum_score_error": 4.76837158203125e-06,
+        "bytes": 71658,
+        "params": 17795,
+        "macs": 17536,
+        "nodes": 5,
+        "widths": [
+          6,
+          128,
+          128,
+          3
+        ]
+      }
+    },
+    "native_matches": 6,
+    "native_frames": 10904,
+    "reference_sha256": "8e2d3368b7e8c3ca5883161617417738c018ba821ba3c1be803d28c37aa592b6"
+  }
+}

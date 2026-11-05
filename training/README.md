@@ -1,20 +1,49 @@
-# Train a Pong v3 paddle
+# Train a Pong v4 paddle
+
+Start with the self-contained [v4 contract](v4/README.md), also downloadable as `/training/pong-v4.zip`. It includes the current engine, headless example, dependency-free Python reference, fixtures and checker. The [v1](v1/README.md), [v2](v2/README.md) and [v3](v3/README.md) contracts remain immutable archives.
+
+Pong v4 builds speed over a rally. On each successful contact, let `s = min(13, abs(incoming_vx) + 1)` and `d` be ball Y minus the updated paddle center. Outgoing horizontal velocity is `±s`, away from the paddle; vertical velocity is `floor(9 * s * d / 195 + 0.5)`. The first return has horizontal speed 6, independently of contact offset. Placement sets approximately the same aiming angle as the ball accelerates, and a center return cannot reset speed. The current velocity already exposes the progression, so all six input and three output meanings remain unchanged.
+
+The [gradual-speed study](results/pace-study/README.md) documents tuning, rule-aware opponents, the current `pace_study.py` and `train_pace.py` workflow, and reproduction commands. Its report is `/training/pace-study.html`. **Pacer v4** and **Apprentice v4** are standalone, fully learned `6→128→128→3` Tanh actors trained through DAgger. The geometric teachers are training tools; their trajectory calculations are not included in the exported networks. These two models form the arena's default matchup.
+
+For a human game, **Play yourself** starts Human vs Tracker. Keyboard, touch dragging and hold buttons all produce the same legal up/stay/down moves. Simulation remains at 30 decisions per second; display interpolation smooths animation without changing recorded states, collisions, inference inputs or training rules. Paused replay frames are exact. Human matches disable the deterministic loop shortcut and retain the 1,600-tick deadline.
+
+## Current setup and verification
+
+Run from the repository root. The PyTorch scripts use the pinned dependencies in `requirements.txt`; `requirements-lock.txt` records the environment.
+
+```sh
+python3.12 -m venv .venv
+.venv/bin/python -m pip install -r training/requirements.txt
+python3 training/v4/check.py
+node --import tsx training/scripts/check_replays.ts
+npm test
+npm run build
+```
+
+V4 fixtures contain 3,545 full-match transitions, 1,958 trace transitions, 20 boundary cases, five detector histories and a restart-reset check. `training/v4/game.ts` is the packaged current engine. The v4 contract specifies rounding, collision order, the speed progression and point-before-loop-before-timeout precedence precisely. Use its headless example with `--no-loops` for human or stochastic-controller semantics. Training and evaluation commands for the new models are maintained in the [pace study](results/pace-study/README.md).
+
+**The older `env.py`, `train.py` and `release.py` scripts still target v3.** They are retained for historical reproduction and must not be used as the v4 simulator or release workflow. Earlier model files remain interface-compatible, but evaluate them again under v4 before comparing strength.
+
+## Archived v3 training and evaluation
+
+The remainder records the original v3 experiment. Its results and verification counts apply to v3, not the current arena. Reproducing its browser/release checks requires a separate checkout of the v3 source, for example commit `623e3a3`. The current replay checker can also verify its saved fixtures against the frozen v3 engine with `node --import tsx training/scripts/check_replays.ts --v3`.
 
 Pong v3 keeps all v2 physics and the six-input/three-score interface. The rally deadline is now **1,600 ticks**. Fixed deterministic model pairs also draw when an exact post-contact ball/paddle state repeats. The arena labels loop and timeout draws separately; neither awards a point. Human matches use the full deadline.
 
-Start with the self-contained [v3 contract](v3/README.md), also downloadable as `/training/pong-v3.zip`. It includes the engine, headless example, dependency-free Python reference, fixtures and checker. [V1](v1/README.md) and [v2](v2/README.md) remain frozen.
+The historical [v3 contract](v3/README.md), also downloadable as `/training/pong-v3.zip`, includes its engine, headless example, dependency-free Python reference, fixtures and checker.
 
-The latest [fully learned investigation](results/fully-learned/README.md) introduces **Contender**, a plain `6→64→64→3` Tanh actor trained through PPO and direct weight search. It passes three fresh test blocks against original v2 and the unchanged attacker, including majority ordinary five-rally game wins in each block. Its curves and final results are at `/training/fully-learned.html`. There are no fixed geometry or paddle-feedback layers in this export.
+The v3 [fully learned investigation](results/fully-learned/README.md) introduced **Contender**, a plain `6→64→64→3` Tanh actor trained through PPO and direct weight search. Under v3 it passed three fresh test blocks against original v2 and the unchanged attacker, including majority ordinary five-rally game wins in each block. Its curves and final results are at `/training/fully-learned.html`. There are no fixed geometry or paddle-feedback layers in this export.
 
 The [earlier fixed-rules investigation](results/training-improvement/README.md) diagnoses the v3 regression and records **Strategist**, a hybrid with fixed trajectory features and a learned target head. It does not satisfy the fully learned requirement. Its separate curves and results remain at `/training/improvement.html`; the original v3 recipe below also remains historical evidence.
 
-## Why these rules
+### Why v3 used these rules
 
 The [rule study](results/rule-study/README.md) compared 800/1,600/3,200-tick limits and ten physics configurations on matched serves. Longer limits let some genuinely unfinished contests score; exact cycles otherwise consume time without changing the outcome. The study favored retaining paddle speed 2 and horizontal shot speed 5–13. Its original report is `/training/rule-study.html`.
 
 Loop termination is valid only when both policies are fixed, deterministic and stateless. A sampled training policy, a human, changing weights or untracked recurrent state can choose differently after a repeated physical position. Consequently **DAgger and PPO training disable loop exits**, while deterministic validation, final evaluation and browser model matches enable them. All modes use the 1,600-tick maximum. This is explicit in run configurations and the standalone specification.
 
-## Setup and verification
+### V3 setup and verification
 
 Run from the repository root. Recorded training used Python 3.12 on Apple Silicon, with one Torch CPU thread per run. Dependencies are pinned in `requirements.txt`; `requirements-lock.txt` records the full environment.
 
@@ -27,11 +56,11 @@ python3 training/v3/check.py
 .venv/bin/python training/scripts/check_env.py
 ```
 
-V3 fixtures contain 2,446 full-match transitions, 1,765 synthetic trace transitions, 18 boundary cases, five detector histories and a restart reset check. They include deterministic loop draws and the same exchange continuing to timeout with detection disabled. The copied TypeScript engine is byte-identical to the live engine. The vector simulator passes 978 isolated fixture transitions, 32,000 randomized transitions, all 4,187 published action transitions, and 8,326 deterministic transitions against the scalar reference.
+V3 fixtures contain 2,446 full-match transitions, 1,765 synthetic trace transitions, 18 boundary cases, five detector histories and a restart reset check. They include deterministic loop draws and the same exchange continuing to timeout with detection disabled. The copied TypeScript engine matches the archived v3 engine, not the current v4 engine. The historical vector simulator passed 978 isolated fixture transitions, 32,000 randomized transitions, all 4,187 published action transitions, and 8,326 deterministic transitions against the v3 scalar reference.
 
 The headless example accepts `--no-loops`. For seed 24, both modes finish 1–1: 742 ticks with loops, 4,870 without. At a deadline, points take precedence; a repeated contact is labelled a loop ahead of a timeout. Instantiate/reset the detector on a new match or controller change. Its history resets at a new rally.
 
-## Train and select
+### V3 training and selection
 
 Three runs, seeds 7/17/29, each executed 10 DAgger rounds and 250 PPO updates: 8,847,360 decisions per run, 26,542,080 total. Concurrent runs completed in about 121 seconds each on this machine, excluding release evaluation. Architecture, reward, discount and other training hyperparameters were retained from the v2 recipe to limit confounding changes.
 
@@ -56,7 +85,7 @@ Selection maximizes mean `(rally wins + 0.5 × draws) / rallies` over five refer
 
 Training seeds are [0,999,999,999], fresh validation seeds [1,100,000,000,1,100,000,023], and fresh final tests [2,200,000,000,2,200,000,099]. Both sides and all five serves are evaluated. These sets differ from v2 validation/tests and the rule-study sets. V2's recorded validation score therefore is not directly comparable to the v3 validation score.
 
-## Training method
+### V3 training method
 
 Each actor is `6→64→64→3`, Tanh hidden layers, 4,803 parameters and 4,672 MACs/decision, approximately 20 KiB ONNX. A separate `6→64→64→1` critic is training-only. Export uses supported Gemm/Tanh operators, opset18/IR10, embedded float32 weights and `rules=pong-v3` metadata.
 
@@ -66,7 +95,7 @@ Each actor is `6→64→64→3`, Tanh hidden layers, 4,803 parameters and 4,672 
 - Opponents include Tracker, Anticipator, Challenger, a predictive interceptor, a greedy attacking script and up to five historical actor snapshots. Episodes end per rally; all five openings are visited. Sampled training episodes end on points or the 1,600 deadline, with no bootstrap through termination. Validation uses frozen first-argmax policies and exact loop detection.
 - Both scripts use only the six exposed observations. The attacker predicts flights and chooses a reachable contact placement by a greedy reachability margin; it is a strong reference, not an optimal-play proof or multi-exchange planner.
 
-## Final exported-model results
+### V3 final exported-model results
 
 Each row is 1,000 rallies / 200 five-rally games on identical held-out serves, both sides, using the actual ONNX files. Draws are explicitly split by termination reason.
 
@@ -78,7 +107,7 @@ Each row is 1,000 rallies / 200 five-rally games on identical held-out serves, b
 | Interceptor | 320 /257 /423 | 445 /30 /525 | 363 /162 |
 | Attacker | 60 /876 /64 | 203 /350 /447 | 447 /0 |
 
-The new model is **not universally stronger**. V2 weights were reevaluated under the same v3 rules and exact same final-test serves, separating weight differences from the new deadline:
+The v3 model was **not universally stronger**. V2 weights were reevaluated under the same v3 rules and exact same final-test serves, separating weight differences from the new deadline:
 
 | Opponent | Previous Selfplay v2 W / L / D | New Selfplay v3 W / L / D |
 | --- | --- | --- |
@@ -98,9 +127,9 @@ Evaluation also reports paired ten-rally contests by aggregating the two side as
 
 Use fresh seeds for future development rather than tuning repeatedly against this published test set.
 
-## Reports, exports and browser checks
+### V3 reports, exports and browser checks
 
-The Model library links to `/training/report.html`: all three learning curves, final tests, loop/timeout counts and comparisons against old weights. Raw curves are unsmoothed. Final-minibatch losses are diagnostics, not full-dataset averages. Cards derive their architecture from the actual uploaded graph. Both new actors are available locally as `public/models/selfplay-v3.onnx` and `apprentice-v3.onnx`.
+The historical v3 report is `/training/report.html`: all three learning curves, final tests, loop/timeout counts and comparisons against old weights. Raw curves are unsmoothed. Final-minibatch losses are diagnostics, not full-dataset averages. Cards derive their architecture from the actual uploaded graph. Those actors remain available locally as `public/models/selfplay-v3.onnx` and `apprentice-v3.onnx`.
 
 ```sh
 .venv/bin/python training/scripts/verify_export.py
@@ -111,10 +140,10 @@ npm test
 npm run build
 ```
 
-Both actors agree with native ONNX on every action across 8,192 observations each. Ten complete ONNX matches reproduce exactly in live TypeScript: 17,536 frames, including 8 loop draws and one actual 1,600-tick model timeout. Browser WASM inference agrees on all 34,992 decisions and advances the same states; maximum score difference is 9.54e−6. Verification records are in `results/v3/`.
+At the v3 release, both actors agreed with native ONNX on every action across 8,192 observations each. Ten complete ONNX matches reproduced exactly in the then-live v3 TypeScript engine: 17,536 frames, including 8 loop draws and one actual 1,600-tick model timeout. Browser WASM inference agreed on all 34,992 decisions and advanced the same states; maximum score difference was 9.54e−6. These historical verification records are in `results/v3/`.
 
 ## Archives
 
-V1/v2 contracts, ZIPs, original weights and original result directories are preserved. Their visual reports are `/training/v1/report.html` and `/training/v2/report.html`. V2 source and original documentation are at Git commit `517a730`; use a separate checkout to reproduce that experiment. The pre-v3 rule-study source checkpoint is `0b0cba1`; its historical checker continues to use the explicit v2 reference. Current training and release scripts target v3.
+V1/v2/v3 contracts, ZIPs, original weights and original result directories are preserved. Their visual reports are `/training/v1/report.html`, `/training/v2/report.html` and `/training/report.html`. V2 source and original documentation are at Git commit `517a730`; use a separate checkout to reproduce that experiment. The pre-v3 rule-study source checkpoint is `0b0cba1`; its historical checker continues to use the explicit v2 reference. The legacy `env.py`, `train.py` and `release.py` target v3; current v4 work uses `pace_study.py` and `train_pace.py` as documented above.
 
 Methods: [PPO](https://arxiv.org/abs/1707.06347), [DAgger](https://arxiv.org/abs/1011.0686), [CleanRL PPO notes](https://docs.cleanrl.dev/rl-algorithms/ppo/). All training, inference and logging are local.

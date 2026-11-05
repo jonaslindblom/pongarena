@@ -279,3 +279,18 @@ test('the fully learned release is the evaluated plain MLP, without fixed featur
   assert.equal(stats.params, frozen.trainable_parameters)
   assert.deepEqual(stats.architecture.operations.map((node) => node.op), ['Gemm', 'Tanh', 'Gemm', 'Tanh', 'Gemm'])
 })
+
+test('v4 releases use the evaluated learned weights and expose their larger architecture', () => {
+  const manifest = JSON.parse(readFileSync(new URL('../training/results/pace-study/training/manifest.json', import.meta.url), 'utf8'))
+  for (const name of ['pacer', 'apprentice']) {
+    const bytes = readFileSync(new URL(`../public/models/${name}-v4.onnx`, import.meta.url))
+    const expected = manifest.files[`training/results/pace-study/training/candidate/${name}/best.onnx`]
+    assert.equal(createHash('sha256').update(bytes).digest('hex'), expected)
+    const graph = pb.onnx.ModelProto.decode(bytes)
+    assert.equal(graph.metadataProps.find((p) => p.key === 'rules')?.value, 'pong-v4')
+    const stats = validateModel(bytes)
+    assert.deepEqual(stats.architecture.widths, [6, 128, 128, 3])
+    assert.equal(stats.params, 17795)
+    assert.deepEqual(stats.architecture.operations.map((node) => node.op), ['Gemm', 'Tanh', 'Gemm', 'Tanh', 'Gemm'])
+  }
+})

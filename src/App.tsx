@@ -29,7 +29,7 @@ const tabs: { page: Page; icon: typeof Gamepad2 }[] = [
 const descriptions: Record<Page, string> = {
   Arena: 'Pit two controllers against each other and watch every decision unfold.',
   'Model library': 'Choose a controller, download a baseline, or bring your own weights.',
-  'Field guide': 'Everything your paddle needs to compete in Pong v3.',
+  'Field guide': 'Everything your paddle needs to compete in Pong v4.',
 }
 const inputs = [
   ['Ball X', 'Centered at 0. Negative toward your end, positive toward your opponent.'],
@@ -56,10 +56,16 @@ function Guide() {
           full time limit. Drawn rallies award no points.
         </p>
         <p>
-          Hit near the edge of your paddle to send a faster, steeper return. Horizontal ball speed
-          ranges from 5 to 13 units per tick; paddles move 2 units per tick. Both players see the
+          Aim with the contact point on your paddle: edge hits send steeper returns. Every successful
+          return increases horizontal speed by one, from a gentle serve at 5 up to a cap of 13.
+          Center hits keep that speed. Paddles move 2 units per tick. Both players see the
           same instant before either moves. Opening the arena picks five serves from different
           heights. Each paddle receives both rising and falling serves. Restart repeats the set.
+        </p>
+        <p>
+          Choose Human to use W/S, arrow keys, the on-screen buttons, or drag the court. Touch and
+          pointer controls steer through the same movement limit. Animation fills the space between
+          decisions; paused frames and replays preserve the exact game state.
         </p>
         <div className="section-code">02 / OBSERVATION</div>
         <h2>What your model sees</h2>
@@ -121,10 +127,10 @@ function Guide() {
         </a>
         <h3>Train independently</h3>
         <p>
-          The v3 package includes exact rules, a headless example, a Python reference, and
+          The v4 package includes exact rules, a headless example, a Python reference, and
           deterministic test cases.
         </p>
-        <a className="secondary-btn" href="/training/pong-v3.zip" download>
+        <a className="secondary-btn" href="/training/pong-v4.zip" download>
           <ArrowDownToLine size={16} /> Training package
         </a>
         <h3>First weight edit</h3>
@@ -140,7 +146,7 @@ function Guide() {
 export default function App() {
   const [page, setPage] = useState<Page>('Arena')
   const [models, setModels] = useState<Controller[]>([keyboard])
-  const [ids, setIds] = useState<Pair<string>>(['contender-v3', 'selfplay-v2'])
+  const [ids, setIds] = useState<Pair<string>>(['pacer-v4', 'apprentice-v4'])
   const [error, setError] = useState(''),
     [notice, setNotice] = useState('')
   const [importSide, setImportSide] = useState<Side>(0),
@@ -210,6 +216,15 @@ export default function App() {
     setFileError('')
     setImportSide(0)
     dialog.current?.showModal()
+  }
+  function playYourself() {
+    initialView.current = false
+    m.reset()
+    m.setSpeed(1)
+    setIds(['keyboard', 'tracker'])
+    setPage('Arena')
+    setError('')
+    m.play()
   }
   async function importFile(file: File | undefined) {
     if (!file || uploading) return
@@ -287,14 +302,21 @@ export default function App() {
         <div className="page-head">
           <div>
             <div className="eyebrow">
-              <i /> NEURAL GAME LAB <span>/</span> PONG V3
+              <i /> NEURAL GAME LAB <span>/</span> PONG V4
             </div>
             <h1>{page === 'Arena' ? 'Match arena' : page}</h1>
             <p>{descriptions[page]}</p>
           </div>
-          <button className="import-btn" disabled={!ready} onClick={openImport}>
-            <Plus size={17} /> Import model
-          </button>
+          <div className="page-actions">
+            {page === 'Arena' && (
+              <button className="secondary-btn" disabled={!ready} onClick={playYourself}>
+                <Gamepad2 size={17} /> Play yourself
+              </button>
+            )}
+            <button className="import-btn" disabled={!ready} onClick={openImport}>
+              <Plus size={17} /> Import model
+            </button>
+          </div>
         </div>
         {error && (
           <div className="message error" role="alert">
@@ -411,7 +433,7 @@ export default function App() {
             <X size={20} />
           </button>
         </div>
-        <div className="section-code">PONG V3 / LOCAL IMPORT</div>
+        <div className="section-code">PONG V4 / LOCAL IMPORT</div>
         <h2>Import a model</h2>
         <p>Choose a self-contained ONNX file. Your weights stay in this browser.</p>
         <fieldset disabled={uploading}>
