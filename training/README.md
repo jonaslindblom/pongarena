@@ -12,6 +12,8 @@ With two identical attackers, cap 13 changes median decisive returns from 1 to 5
 
 See [balance evidence and reproduction commands](results/balance-v2/README.md). The fastest crossing is now 26 ticks (~0.87s), versus 22 (~0.73s). Human comfort still requires playtesting; the delayed-controller benchmark is a sensitivity check, not a human win-rate estimate. No hidden difficulty state or human-only modifier exists.
 
+The later [timeout and rule study](results/rule-study/README.md) compares 800/1,600/3,200-tick limits, proves deterministic loops, and tests paddle/shot changes on matched serves. Its [visual report](../public/training/rule-study.html) is served at `/training/rule-study.html`. It recommends retaining v2 physics and considering a longer budget with model-loop termination; these are evaluated proposals, not changes to the current contract.
+
 ## Setup and parity
 
 Run from the repository root. The recorded training used Python 3.12 on Apple Silicon and one Torch CPU thread per run. Direct dependencies are pinned; `requirements-lock.txt` records the original full environment.
