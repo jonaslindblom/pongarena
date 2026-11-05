@@ -9,6 +9,7 @@ import {
   Gamepad2,
   Layers3,
   Monitor,
+  Smartphone,
   Plus,
   Upload,
   Trophy,
@@ -26,18 +27,22 @@ import { CLASSIC } from './rules'
 import { Ranking } from './Ranking'
 import { browserCompetitionMatch } from './runCompetition'
 import { sha256, smallestDivision, type CompetitionEntrant } from './competition'
-type Page = 'Arena' | 'Rankings' | 'Model library' | 'Field guide'
+import { DeviceTest } from './DeviceTest'
+import { finishStartup, getStartupSnapshot, markArenaReady, recordStartupFailure, recordStartupTiming } from './startup'
+type Page = 'Arena' | 'Rankings' | 'Model library' | 'Field guide' | 'Device test'
 const tabs: { page: Page; icon: typeof Gamepad2 }[] = [
   { page: 'Arena', icon: Gamepad2 },
   { page: 'Rankings', icon: Trophy },
   { page: 'Model library', icon: Layers3 },
   { page: 'Field guide', icon: BookOpen },
+  { page: 'Device test', icon: Smartphone },
 ]
 const descriptions: Record<Page, string> = {
   Arena: 'Pit two controllers against each other and watch every decision unfold.',
   Rankings: 'Run reproducible local tournaments with equal budgets, paired serves, and your own weights.',
   'Model library': 'Choose a controller, download a baseline, or bring your own weights.',
   'Field guide': 'The game rules, observations, actions, and submission contract.',
+  'Device test': 'Measure this device with a repeatable workload, then copy the report to compare.',
 }
 const rules = CLASSIC
 const inputs = [
@@ -161,6 +166,8 @@ function Guide() {
 
 export default function App() {
   const [page, setPage] = useState<Page>('Arena')
+  const [startup, setStartup] = useState(getStartupSnapshot)
+  const [loadingComplete, setLoadingComplete] = useState(false)
   const [models, setModels] = useState<Controller[]>([keyboard])
   const currentModels = useRef(models)
   const [ids, setIds] = useState<Pair<string>>(['pacer-v4', 'apprentice-v4'])
@@ -175,6 +182,12 @@ export default function App() {
   const eligibleModels = models.filter((model) => model.id === 'keyboard' ||
     model.inputSize === rules.inputSize && model.outputSize === rules.outputSize)
   const ready = models.some((p) => p.id === 'tracker')
+  useEffect(() => {
+    if (ready) { markArenaReady(); setStartup(getStartupSnapshot()) }
+  }, [ready])
+  useEffect(() => {
+    if (loadingComplete) { finishStartup(ready); setStartup(getStartupSnapshot()) }
+  }, [loadingComplete, ready])
   const players = ids.map((id) => models.find((p) => p.id === id)) as Pair<Controller | undefined>
   const m = useMatch(players, setError, page === 'Arena', rules)
   const currentMatch = useRef(m)
@@ -191,12 +204,15 @@ export default function App() {
   }
   useEffect(() => {
     let active = true
+    const bundledStartedAt = performance.now()
     loadPresets()
       .then(async (builtins) => {
         if (!active) return
+        recordStartupTiming('Bundled controller loading', bundledStartedAt)
         appendModels(builtins)
         if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && initialView.current)
           m.play()
+        const restoreStartedAt = performance.now()
         try {
           const restored: Controller[] = []
           for (const item of await savedModels()) {
@@ -210,22 +226,31 @@ export default function App() {
                 }),
               )
             } catch (error) {
-              if (active && !(error instanceof ArchivedModelError))
+              if (active && !(error instanceof ArchivedModelError)) {
+                recordStartupFailure('A previously saved model could not be loaded.')
                 setError('A previously saved model could not be loaded.')
+              }
             }
           }
           if (active && restored.length) appendModels(restored)
         } catch {
-          if (active)
+          if (active) {
+            recordStartupFailure('Browser storage was unavailable.')
             setNotice('Browser storage is unavailable. Models can still play in this session.')
+          }
+        } finally {
+          if (active) recordStartupTiming('Saved controller restoration', restoreStartedAt)
         }
       })
       .catch((e) => {
-        if (active)
+        if (active) {
+          recordStartupFailure(e instanceof Error ? e.message : String(e))
           setError(
             'Could not initialize the arena. ' + (e instanceof Error ? e.message : String(e)),
           )
+        }
       })
+      .finally(() => { if (active) setLoadingComplete(true) })
     return () => {
       active = false
     }
@@ -344,9 +369,9 @@ export default function App() {
                 <Gamepad2 size={17} /> Play yourself
               </button>
             )}
-            <button className="import-btn" disabled={!ready} onClick={openImport}>
+            {page !== 'Device test' && <button className="import-btn" disabled={!ready} onClick={openImport}>
               <Plus size={17} /> Import model
-            </button>
+            </button>}
           </div>
         </div>
         {error && (
@@ -379,6 +404,7 @@ export default function App() {
             ready={ready}
           />
         )}
+        {page === 'Device test' && <DeviceTest models={eligibleModels} startup={startup} loadingComplete={loadingComplete} />}
         {page === 'Rankings' && (
           <Ranking key={rules.id} entrants={eligibleModels.filter((model) => model.type === 'weights' && model.sha256).map((model) => ({
             id: model.id, name: model.name, sha256: model.sha256!, params: model.params, macs: model.macs,

@@ -1129,6 +1129,10 @@ legend {
     grid-template-columns: minmax(0, 2.6fr) minmax(310px, 1fr);
   }
 }
+@media (max-width: 1100px) {
+  .topinner { gap: 24px; }
+  .topinner .local-status { display: none; }
+}
 @media (max-width: 920px) {
   .topinner {
     gap: 25px;
@@ -1190,11 +1194,13 @@ legend {
     gap: 3px;
   }
   nav button {
-    font-size: 12px;
-    padding: 7px 8px;
+    font-size: 11px;
+    padding: 6px 2px;
     min-width: 0;
     flex: 1;
-    gap: 6px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
   }
   .page-head {
     padding: 23px 0 17px;

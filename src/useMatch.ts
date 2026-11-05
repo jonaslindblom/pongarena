@@ -16,12 +16,22 @@ function newSeed() {
   return crypto.getRandomValues(new Uint32Array(1))[0] % 1000000
 }
 
+export interface MatchTickTiming {
+  completedAt: number
+  scheduledAt: number
+  tick: number
+  previousEndedRally: boolean
+}
+
 export function useMatch(
   players: Pair<Controller | undefined>,
   onError: (message: string) => void,
   arenaActive: boolean,
   rules: Ruleset,
+  onTick?: (sample: MatchTickTiming) => void,
 ) {
+  const observer = useRef(onTick)
+  observer.current = onTick
   const [seed, setSeed] = useState(newSeed)
   const history = useRef<Frame[]>([])
   const loops = useRef(rules.detector())
@@ -131,7 +141,7 @@ export function useMatch(
     action ??= 1
     return Array.from({ length: rules.outputSize }, (_, index) => index === action ? 1 : 0) as Scores
   }
-  function advanceOne(animate = false, duration = TICK_MS / speed): Promise<boolean> {
+  function advanceOne(animate = false, duration = TICK_MS / speed, scheduledAt?: number): Promise<boolean> {
     if (pending.current || !players[0] || !players[1]) return Promise.resolve(false)
     const version = revision.current, at = cursor.current
     const previous = history.current[at]
@@ -161,6 +171,10 @@ export function useMatch(
         cursor.current = at + 1
         present(animate, duration)
         setTick(at + 1)
+        if (scheduledAt !== undefined && observer.current) observer.current({
+          completedAt: performance.now(), scheduledAt, tick: at + 1,
+          previousEndedRally: endedRally(previous),
+        })
         if (endedMatch(history.current[at + 1])) {
           running.current = false
           setPlaying(false)
@@ -191,7 +205,7 @@ export function useMatch(
       // At most four states are advanced per animation callback after a stall.
       due = boundedDeadline(due, now, speed)
       for (let count = 0; count < 4 && alive && running.current && now >= due; count++) {
-        if (!await advanceOne(true, TICK_MS / speed)) break
+        if (!await advanceOne(true, TICK_MS / speed, due)) break
         due += frameDuration(history.current[cursor.current], speed)
       }
       pumping = false

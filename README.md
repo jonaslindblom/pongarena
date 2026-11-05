@@ -32,6 +32,23 @@ Open the **Network** URL printed by Vite on the phone. The default `127.0.0.1` U
 - Opening or reloading the arena draws a fresh seed. Its five rallies start in five different height bands, and both paddles receive rising and falling serves. A point is worth one; a draw scores zero. Rallies have a 1,600-tick limit. Matches between models and/or scripts also end a rally when its exact ball/paddle state repeats after a return. Human matches use the full limit. The log distinguishes loops from timeouts. **Restart** repeats the set. **New serves** draws a fresh seed. Choosing different players keeps the current set for comparison.
 - **Import model** assigns a local ONNX file to either paddle. Imported models are kept in this browser's IndexedDB when available. The model library contains downloadable baseline files. The field guide documents the submission contract.
 
+## Measure a phone baseline
+
+Use a production build for comparable performance measurements:
+
+```sh
+npm run build
+npm run preview -- --host 0.0.0.0 --port 4173
+```
+
+Keep the Mac and phone on the same Wi-Fi, then open Vite's **Network** URL in Safari on iPhone or Chrome on Android. Open **Device test**, enter the phone model, label the visit, and press **Run device test**. Keep the page visible and the orientation unchanged. The test measures warmed-up inference followed by 15 seconds of animated play. Press **Copy report** and paste the result into the chat. If clipboard access is unavailable on the local HTTP connection, select and copy the report text manually.
+
+Save the first report before reloading. Reload the same page and run again with the repeat-visit label to compare loading with a potentially warmer browser cache. The visit label is self-reported; the app does not claim to detect an empty cache. Keep battery-saving settings and other device conditions consistent across comparisons.
+
+Reports include navigation-relative arena/library readiness, loading phases, observed startup visibility, browser/viewport information, a source fingerprint, model hashes, and the versioned workload. The benchmark uses the existing CPU WASM runtime and ordinary game/rendering code. Inference statistics describe **batch-average decision times**, not individual-call tail latency. Animation statistics describe browser animation-callback intervals, not physical display FPS or touch-to-display latency; intentional between-rally pauses are counted separately. Hidden or interrupted tests are cancelled rather than reported as complete.
+
+Startup measurements belong to that page load. Running the test again without reloading only repeats inference and animation. Development-server reports are labelled as development and should not be used for before/after comparisons; the production source fingerprint is calculated at build time. Phone viewport emulation is useful for UI checks but is not physical-device performance evidence. The Device test addition preserves the existing startup sequence so the initial phone reports can serve as a baseline before optimization.
+
 ## Rally balance
 
 Two competitive paddles should be able to sustain a rally under pressure and still win the point through shot placement. To check a rules change, keep the attacking opponent and serve seeds fixed, swap sides, and compare a baseline defender with one that wins more often across several opponents. Track how often a rally ends before the second return, the median number of returns in rallies that end in a point, and both loop and timeout draws. Match score determines the winner.
