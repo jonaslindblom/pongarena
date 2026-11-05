@@ -72,6 +72,8 @@ def export(actor, path):
                               [helper.make_tensor_value_info('observation', 1, [1, 6])],
                               [helper.make_tensor_value_info('action_scores', 1, [1, 3])], weights)
     model = helper.make_model(graph, opset_imports=[helper.make_opsetid('', 18)], ir_version=10)
-    helper.set_model_props(model, {'rules': 'pong-v3', 'architecture': '6-64-64-3 Tanh', 'training': 'PyTorch'})
+    linear = [layer for layer in actor if isinstance(layer, nn.Linear)]
+    widths = [linear[0].in_features] + [layer.out_features for layer in linear]
+    helper.set_model_props(model, {'rules': 'pong-v3', 'architecture': '-'.join(map(str, widths)) + ' Tanh', 'training': 'PyTorch'})
     onnx.checker.check_model(model)
     onnx.save(model, str(path))

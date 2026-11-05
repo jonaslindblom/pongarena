@@ -1,0 +1,87 @@
+{
+  "rules": "pong-v3",
+  "status": "predeclared; final holdout not evaluated",
+  "objective": "A frozen exported model consistently beats both original Selfplay v2 and the unchanged scripted attacker.",
+  "rules_unchanged": {
+    "engine": "src/game.ts",
+    "sha256": "74e4e0eae1e5ec54bca0b9926a8b0cf9d6a973115371e4df4351599bf188dc6a",
+    "contract": "training/v3/game.ts",
+    "contract_sha256": "74e4e0eae1e5ec54bca0b9926a8b0cf9d6a973115371e4df4351599bf188dc6a"
+  },
+  "primary_targets": {
+    "selfplay-v2": {
+      "file": "public/models/selfplay-v2.onnx",
+      "sha256": "71e04e300d02aa968a376f599cd5c1a5c04734c714794d7d7b5f3ab078ef6f63"
+    },
+    "attacker": {
+      "implementation": "training/scripts/env.py:scripted(obs, attack=True)",
+      "source_sha256": "af2d14a9f20ec7a7d95be1e890b1cbb9ef19eb91aaf4b249c75280b815d90762"
+    }
+  },
+  "guardrail_opponents": {
+    "interceptor": "training/scripts/env.py:scripted(obs, attack=False); reported, not a primary acceptance target"
+  },
+  "candidate_selection": {
+    "data": "Training seeds below 1,000,000,000; development seeds in [1,200,000,000,1,300,000,000).",
+    "freeze": "Before final evaluation, save candidate checkpoint and exported ONNX SHA256 plus the development selection evidence. Do not select or retune using holdout outcomes.",
+    "previous_tests": "Published v1/v2/v3 evaluation sets are diagnostic history, not fresh final evidence."
+  },
+  "holdout": {
+    "file": "holdout-seeds.json",
+    "sha256": "d79a026ca9bd0996103ebae5d56f5b32a9eb59e820749889e9133d604b749052",
+    "blocks": 3,
+    "seeds_per_block": 200,
+    "trajectories_per_opponent_per_block": 2000,
+    "paired_ten_rally_matches_per_block": 200,
+    "sampling": "Three disjoint uint32 intervals; 200 unique dispersed seeds per block; fixed samplers 73, 74, 75.",
+    "ranges": [
+      [
+        2500000000,
+        2600000000
+      ],
+      [
+        2600000000,
+        2700000000
+      ],
+      [
+        2700000000,
+        2800000000
+      ]
+    ]
+  },
+  "evaluation": {
+    "candidate": "Actual exported ONNX through native ONNX Runtime, deterministic first argmax.",
+    "learned_reference": "Actual frozen selfplay-v2.onnx through native ONNX Runtime.",
+    "scripted_reference": "Unmodified deterministic attacker using only the six policy inputs.",
+    "matches": "Each seed: all five serves, both physical side assignments; aggregate ten-rally point margins.",
+    "termination": "Fixed v3 1,600-tick limit and exact post-contact loop detection for these fixed deterministic stateless controllers.",
+    "bootstrap": {
+      "unit": "whole seed: both sides and all five rallies remain together",
+      "samples": 2000,
+      "seed": 1741,
+      "confidence": 0.95,
+      "method": "percentile",
+      "intervals": [
+        "mean rally point margin (wins minus losses per rally)",
+        "score_rate = wins plus half draws per rally"
+      ]
+    },
+    "report": [
+      "rally wins/losses/draws",
+      "loop and timeout draws",
+      "each-side rally outcomes",
+      "paired ten-rally match outcomes including draws",
+      "per-seed outcomes",
+      "score and point-margin confidence intervals",
+      "interceptor guardrail outcomes"
+    ]
+  },
+  "acceptance": {
+    "scope": "Every criterion must pass against both primary targets independently in each of all three holdout blocks.",
+    "paired_match_win_rate": "Strictly greater than 0.5, counting drawn matches in the denominator.",
+    "point_margin_interval": "Lower endpoint of seed-cluster 95% bootstrap confidence interval strictly greater than zero.",
+    "side_fairness": "Rally wins strictly exceed rally losses separately on left and right.",
+    "failure": "Report failure or mixed evidence honestly. Do not silently select another candidate on these same holdouts.",
+    "interpretation": "These are predeclared empirical acceptance thresholds, not a proof of optimal play or a family-wise statistical guarantee."
+  }
+}
