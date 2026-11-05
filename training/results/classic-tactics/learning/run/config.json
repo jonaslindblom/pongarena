@@ -1,0 +1,82 @@
+{
+  "dataset": "training/results/classic-tactics/probes/train.npz",
+  "out": "training/results/classic-tactics/learning/run",
+  "rounds": 24,
+  "envs": 64,
+  "horizon": 128,
+  "epochs": 4,
+  "replay_rounds": 4,
+  "tactical_samples": 8192,
+  "synthetic": 8192,
+  "eval_every": 4,
+  "dev_seeds": 16,
+  "seed": 701,
+  "rules": "pong-v4",
+  "rule_config": {
+    "name": "pace13-v9-scaled",
+    "cap": 13,
+    "vertical_max": 9,
+    "baseline": false,
+    "scaled_angle": true
+  },
+  "architecture": [
+    6,
+    128,
+    128,
+    3
+  ],
+  "parameters": 17795,
+  "baseline": "training/results/pace-study/training/candidate/pacer/best.pt",
+  "baseline_sha256": "57cd566fd8a0ddecb19dd2d20cce54a6bd1d18fb9784c37e5f5e2d8fd6790371",
+  "development_seeds": [
+    3604102126,
+    3602560711,
+    3603361646,
+    3600638892,
+    3603675393,
+    3604020727,
+    3603056327,
+    3600962121,
+    3601582119,
+    3609068161,
+    3600941946,
+    3603979819,
+    3608081570,
+    3606766798,
+    3600124337,
+    3607924771
+  ],
+  "training_seed_interval": [
+    3500000000,
+    3510000000
+  ],
+  "excluded_old_training_seeds": [
+    3502446039,
+    3509813992,
+    3509869267
+  ],
+  "tactical_dataset_sha256": "3239cf5c7cc0218e604ec30fed4f89e67e09c280bd774d549e5fa952c6ddf1d1",
+  "tactical_examples": 16898,
+  "tactical_unique_source_seeds": 16,
+  "tactical_label_conflicts": {
+    "unique_observations": 6608,
+    "conflicting_observations": 39,
+    "samples_with_conflicting_labels": 206
+  },
+  "original_label_conflicts": {
+    "unique_observations": 6608,
+    "conflicting_observations": 0,
+    "samples_with_conflicting_labels": 0
+  },
+  "labels_different_from_attack_teacher": 6867,
+  "selection": "Highest mean point margin vs adaptive attack and adaptive defense on development seeds; Pacer is a secondary regression check; first checkpoint wins ties",
+  "method": "Both arms receive same pooled trajectories, observations, permutations and epochs. Only labels on the oversampled tactical paths differ; control always uses the original adaptive ATTACK teacher, even for states sourced from defender trajectories.",
+  "learning_rate": "0.0003 linearly declining to approximately 0.00012",
+  "minibatch": 2048,
+  "scope": "Finite rollout supervision may depend on branch context absent from six inputs; full held-out matches test transfer. No tactical calculations in inference.",
+  "sources": {
+    "training/scripts/train_classic_tactics.py": "e6554fa1585aae1f3e6aced20f41f5eff269753865fc7b568f8ef1d0577af363",
+    "training/scripts/pace_study.py": "2ec30c7bdcb0d7f91bf7c4a40af067cbc14cc298191b4c502d716e0316e1f46b",
+    "training/scripts/classic_tactics.py": "2f22e621820ecf20840fa40fff756bea1cebca48f9ccb813c64a530830544cd5"
+  }
+}

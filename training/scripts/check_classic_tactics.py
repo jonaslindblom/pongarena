@@ -98,6 +98,192 @@ def observation_consistency(match, prefix, branch, side):
         total_ticks=len(encoded))
 
 
+def verify_labels(path, data, snapshots, groups, snapshot_frames):
+    import numpy as np
+    from pace_study import CONFIGS, make_policy
+
+    dataset = path.with_suffix('.npz')
+    with np.load(dataset, allow_pickle=False) as stored:
+        arrays = {key:stored[key].copy() for key in stored.files}
+    observations, labels, seeds, ids, kinds = [], [], [], [], []
+    for sid, snapshot in snapshots.items():
+        rows = groups[sid]
+        baseline = next(row for row in rows if row['target'] is None)
+        winners = [row for row in rows if row['target'] is not None and row['value'] == 1]
+        if baseline['value'] != -1 or not winners:
+            assert 'selected_target' not in snapshot
+            continue
+        side = snapshot['side']
+        def tie(branch):
+            prefix = zip(branch['actions'][:branch['flight_ticks']], baseline['actions'][:branch['flight_ticks']])
+            return sum(actions(a)[side] != actions(b)[side] for a, b in prefix), branch['target']
+        selected = min(winners, key=tie)
+        assert selected['target'] == snapshot['selected_target']
+        frame = snapshot_frames[sid]
+        for code in selected['actions'][:selected['flight_ticks']]:
+            observations.append(ref.observation(frame, side))
+            labels.append(actions(code)[side])
+            seeds.append(snapshot['seed'])
+            ids.append(sid)
+            kinds.append(snapshot['kinds'][side])
+            frame = advance(frame, code)
+    expected = dict(obs=np.asarray(observations, dtype=np.float32), labels=np.asarray(labels),
+        source_seeds=np.asarray(seeds), branch_ids=np.asarray(ids))
+    for key, values in expected.items():
+        assert np.array_equal(arrays[key], values), f'{dataset}: incorrect {key}'
+    original = np.empty(len(labels), dtype=int)
+    kinds = np.asarray(kinds)
+    for kind in ('attack', 'defend'):
+        mask = kinds == kind
+        if mask.any():
+            original[mask] = make_policy(CONFIGS['pace13-v9-scaled'], kind)(expected['obs'][mask])
+    assert np.array_equal(arrays['original_labels'], original)
+    assert len(labels) == data['summary']['training_path_observations']
+    return dict(path=str(dataset.relative_to(ROOT)) if dataset.is_relative_to(ROOT) else str(dataset),
+        sha256=digest(dataset), examples=len(labels), selected_branches=len(set(ids)),
+        observations_and_actions_match_scalar=True, selection_tie_rule_verified=True,
+        original_script_labels_verified=True)
+
+
+def verify_seeds():
+    base = ROOT/'training/results/classic-tactics'
+    protocol = json.loads((base/'probes/protocol.json').read_text())
+    seed_sets = {'probe_'+key:values for key, values in protocol['seed_sets'].items()}
+    for path in sorted((base/'learning').glob('*/config.json')):
+        value = json.loads(path.read_text())
+        if 'development_seeds' in value:
+            seed_sets[path.parent.name+'_development'] = value['development_seeds']
+    for path in sorted((base/'learning').glob('*/manifest.json')):
+        value = json.loads(path.read_text())
+        if 'final_seeds' in value:
+            seed_sets[path.parent.name+'_final'] = value['final_seeds']
+    proposed = set()
+    for values in seed_sets.values():
+        assert len(values) == len(set(values))
+        proposed.update(values)
+    historical_files, hits = 0, []
+    for path in (ROOT/'training/results').rglob('*.json'):
+        if 'classic-tactics' in path.parts:
+            continue
+        try:
+            value = json.loads(path.read_text())
+        except (UnicodeDecodeError, json.JSONDecodeError):
+            continue
+        historical_files += 1
+        stack = [value]
+        while stack:
+            item = stack.pop()
+            if isinstance(item, dict):
+                stack.extend(item.values())
+            elif isinstance(item, list):
+                stack.extend(item)
+            elif isinstance(item, int) and not isinstance(item, bool) and item in proposed:
+                hits.append(dict(path=str(path.relative_to(ROOT)), seed=item))
+    assert not hits, hits
+    train, dev, final = (set(protocol['seed_sets'][key]) for key in ('train', 'dev', 'final'))
+    assert not train & dev and not train & final and not dev & final
+    for key, values in seed_sets.items():
+        if key.endswith('_development'):
+            assert not set(values) & (train | final)
+        if key.endswith('_final'):
+            assert not set(values) & (train | dev)
+            for name, development in seed_sets.items():
+                if name.endswith('_development'):
+                    assert not set(values) & set(development)
+    return dict(seed_sets=seed_sets, distinct_seed_count=len(proposed),
+        historical_json_files_checked=historical_files, historical_overlap=hits,
+        train_development_final_separation=True,
+        note='Repeated development lists across bounded follow-ups are intentional; fresh seeds do not guarantee unseen physical states.')
+
+
+def verify_displayed_examples():
+    base = ROOT/'training/results/classic-tactics/probes'
+    data = json.loads((base/'train.json').read_text())
+    output = []
+    for path in sorted(base.glob('representative*.json')):
+        record = json.loads(path.read_text())
+        assert record['phase'] == 'train'
+        snapshot = data['snapshots'][record['snapshot_id']]
+        match = data['matches'][snapshot['match_id']]
+        rows = [b for b in data['candidates'] if b['snapshot_id'] == snapshot['id']]
+        baseline = next(b for b in rows if b['target'] is None)
+        branch = next(b for b in rows if b['target'] == record['alternative_contact'])
+        assert baseline['contact_center'] == record['baseline_contact']
+        assert snapshot['tick'] == record['start_tick']
+        assert record['contact_tick'] == snapshot['tick']+branch['flight_ticks']
+        prefix = match['actions'][:snapshot['tick']]
+        for key, row in [('baseline', baseline), ('alternative', branch)]:
+            frame = opening(match)
+            frames = [state(frame)]
+            for code in prefix+row['actions']:
+                frame = advance(frame, code)
+                frames.append(state(frame))
+            assert frames == record[key]['frames']
+            assert row['outcome'] == record[key]['outcome']
+            assert frame['rallyTick'] == record[key]['end_tick']
+        consistency = observation_consistency(match, prefix, branch, snapshot['side'])
+        assert consistency['action_conflict'] is None
+        assert consistency['first_standard_loop_tick'] is None
+        if 'legal_centers' in record:
+            assert record['legal_centers'] == sorted(b['target'] for b in rows if b['target'] is not None)
+            assert record['winning_centers'] == sorted(b['target'] for b in rows if b['target'] is not None and b['value'] == 1)
+        output.append(dict(path=str(path.relative_to(ROOT)), sha256=digest(path),
+            snapshot_id=snapshot['id'], seed=snapshot['seed'], rally=snapshot['rally'],
+            baseline_contact=baseline['contact_center'], alternative_contact=branch['target'],
+            baseline_value=baseline['value'], alternative_value=branch['value'], **consistency))
+    return output
+
+
+def canonical_observation_audit():
+    """Numeric float32 equality intentionally treats +0 and -0 as the same."""
+    import numpy as np
+
+    base = ROOT/'training/results/classic-tactics'
+    with np.load(base/'probes/train.npz', allow_pickle=False) as stored:
+        training = stored['obs'].copy()
+    keys = {tuple(row) for row in training}
+    result = dict(equality='Numeric float32 values; signed zeros are equal',
+        training_path_examples=len(training), training_unique_observations=len(keys),
+        scope='Overlap with tactical-path supervision only; pooled game and synthetic training observations are not included.',
+        phases={})
+    for phase in ('dev', 'final'):
+        data_path = base/'probes'/f'{phase}.json'
+        if not data_path.exists():
+            continue
+        data = json.loads(data_path.read_text())
+        with np.load(data_path.with_suffix('.npz'), allow_pickle=False) as stored:
+            values = stored['obs'].copy()
+        seen = np.array([tuple(row) in keys for row in values])
+        unique = {tuple(row) for row in values}
+        start_seen = {}
+        for snapshot in data['snapshots']:
+            frame = dict(zip(('x', 'y', 'vx', 'vy'), snapshot['ball']))
+            frame['paddles'] = snapshot['paddles']
+            start_seen[snapshot['id']] = tuple(ref.observation(frame, snapshot['side'])) in keys
+        row = dict(path_examples=len(values), path_examples_seen=int(seen.sum()),
+            unique_path_observations=len(unique), unique_path_observations_seen=len(unique & keys),
+            flight_starts=len(start_seen), flight_starts_seen=sum(start_seen.values()))
+        evaluation = base/'learning/evaluation/tactic-probes.json'
+        if phase == 'final' and evaluation.exists():
+            probes = json.loads(evaluation.read_text())
+            assert probes['data_sha256'] == digest(data_path)
+            row['model_partitions'] = {}
+            for name, model in probes['models'].items():
+                partitions = {}
+                for value, label in [(False, 'unseen_in_training_paths'), (True, 'seen_in_training_paths')]:
+                    subset = [r for r in model['rows'] if start_seen[r['snapshot_id']] == value]
+                    opportunities = [r for r in subset if r['strict_opportunity']]
+                    partitions[label] = dict(states=len(subset), strict_opportunities=len(opportunities),
+                        strict_opportunities_won=sum(r['value'] == 1 for r in opportunities),
+                        model_wins=sum(r['value'] == 1 for r in subset),
+                        better=sum(r['value'] > r['baseline_value'] for r in subset),
+                        worse=sum(r['value'] < r['baseline_value'] for r in subset))
+                row['model_partitions'][name] = partitions
+            row['frozen_probe_results_sha256'] = digest(evaluation)
+        result['phases'][phase] = row
+    return result
+
+
 def verify(path, representative_only=False):
     started = time.monotonic()
     data = json.loads(path.read_text())
@@ -185,22 +371,33 @@ def verify(path, representative_only=False):
         observation_consistent_strict_improvements=consistent,
         selected_training_branches=selected, representative=representative,
         seconds=time.monotonic()-started)
+    if not representative_only:
+        result['label_verification'] = verify_labels(path, data, snapshots, groups, snapshot_frames)
     return result
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('paths', nargs='+', type=Path)
+    parser.add_argument('paths', nargs='*', type=Path)
     parser.add_argument('--representative-only', action='store_true')
+    parser.add_argument('--supplement-only', action='store_true')
     parser.add_argument('--out', type=Path, default=ROOT/'training/results/classic-tactics/verification.json')
     args = parser.parse_args()
-    records = []
-    for path in args.paths:
-        records.append(verify(path, args.representative_only))
+    if args.supplement_only:
+        prior = json.loads(args.out.read_text())
+        assert prior['verifier_sha256'] == digest(Path(__file__)), 'Replay verification belongs to a different checker revision'
+        records = prior['results']
+        for record in records:
+            assert digest(ROOT/record['path']) == record['sha256']
+    else:
+        if not args.paths:
+            parser.error('Supply probe JSON paths, or --supplement-only after replay verification.')
+        records = [verify(path, args.representative_only) for path in args.paths]
     result = dict(rules='pong-v4', scalar_reference_sha256=digest(REFERENCE),
         verifier_sha256=digest(Path(__file__)), game_source_unchanged=
         (ROOT/'src/game.ts').read_bytes() == (ROOT/'training/v4/game.ts').read_bytes(),
-        results=records,
+        results=records, seed_audit=verify_seeds(), displayed_examples=verify_displayed_examples(),
+        canonical_observation_overlap=canonical_observation_audit(),
         limitations=['A consistent finite trajectory establishes a possible stateless mapping on visited states, not a general winning policy.'])
     assert result['game_source_unchanged']
     args.out.parent.mkdir(parents=True, exist_ok=True)

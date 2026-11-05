@@ -6,6 +6,8 @@ The active arena uses **Classic v4** (`pong-v4`), with Pacer vs Apprentice. Star
 
 The [competition protocol](COMPETITION.md) defines Nano, Small, Standard and Open limits, paired common-seed scoring and reproducible benchmark identities. Smaller models may enter larger classes, regardless of how their weights were created. The app runs and stores local leagues; public standings will require an independent evaluator and reserved evaluation seeds. Archived Burst results cannot be restored as Classic rankings.
 
+The latest [Classic tactical test](results/classic-tactics/README.md), with replays and curves at `/training/classic-tactics.html`, separates legal placement opportunities from learned performance. It finds many scripted loss-to-win alternatives, but two controlled imitation continuations fail to produce an overall stronger model. The game rules and active weights are unchanged; see the retained methods and negative results before using those tactical labels for another experiment.
+
 ## Current Classic v4 workflow
 
 Pong v4 builds speed over a rally. On each successful contact, let `s = min(13, abs(incoming_vx) + 1)` and `d` be ball Y minus the updated paddle center. Outgoing horizontal velocity is `±s`, away from the paddle; vertical velocity is `floor(9 * s * d / 195 + 0.5)`. The first return has horizontal speed 6, independently of contact offset. Placement sets approximately the same aiming angle as the ball accelerates, and a center return cannot reset speed. Its six-input/three-score interface has no burst resource.

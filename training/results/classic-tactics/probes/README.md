@@ -27,9 +27,11 @@ count as improvement.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | Training, 16 seeds | 1,972 | 22,567 | 578 | 414 | 16,898 |
 | Development, 8 seeds | 965 | 10,939 | 294 | 207 | 8,367 |
+| Final, 16 reserved seeds | 1,950 | 22,350 | 567 | 410 | 16,616 |
 
 These are correlated diagnostic counts, not independent statistical trials.
-The final set is reserved until training checkpoint selection is frozen.
+The final set was generated only after training checkpoint selection and the
+evaluation manifest were frozen. Its labels must not select future checkpoints.
 
 Each NPZ retains only one strict loss-to-win path per qualifying state. Ties
 prefer fewer action departures from the baseline pre-contact path, then lower
@@ -46,7 +48,7 @@ ordinary actions numbered up=0, stay=1, down=2. `snapshots` points back to its
 baseline match and elapsed tick, so its complete legal prefix is retained.
 `candidates` includes terminal states, outcomes, actual contact centers and all
 continuation actions. `generator-source.py` exactly matches the recorded source
-hash for the training/development data.
+hash for all three datasets.
 
 `representative.json` is an explicitly selected training-set illustration,
 not a favorable held-out result. At seed 3,507,017,852, rally 2, after six prior
@@ -56,12 +58,25 @@ reconstructed through the independent scalar engine. The auditor additionally
 checked that the winning full trajectory has no conflicting actions for an
 identical controlled-side float32 observation and no premature exact loop.
 
+The first illustration has only one winning contact center. `breadth.json`
+measures this sensitivity across every strict opportunity: 279 of 414 training
+states and 140 of 207 development states have at least three winning centers.
+The median winning fraction among reachable legal centers is 36.4% and 38.5%,
+respectively. These remain outcomes against the specified scripted continuation.
+`representative-broad.json` shows training snapshot 642 after four returns:
+eight of fifteen reachable centers win, including every integer center from 139
+through 144. Center 141 wins at tick 358; the unchanged center-132 choice loses
+at tick 332. Both full trajectories are independently checked and compatible
+with stateless controlled-side actions. Neither example measures human success.
+
 Reproduce the retained seed comparisons in a fresh output directory:
 
 ```sh
 .venv/bin/python training/scripts/classic_tactics.py --phase train --out /tmp/classic-tactic-reproduction
 .venv/bin/python training/scripts/classic_tactics.py --phase dev --out /tmp/classic-tactic-reproduction
 .venv/bin/python training/results/classic-tactics/probes/export_representative.py
+.venv/bin/python training/results/classic-tactics/probes/export_representative.py --snapshot 642 --target 141 --selection broad --out representative-broad.json
+.venv/bin/python training/results/classic-tactics/probes/measure_breadth.py
 ```
 
 `evaluate_policy(data, model)` in `classic_tactics.py` lets a learned policy
