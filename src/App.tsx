@@ -47,11 +47,11 @@ const descriptions: Record<Page, string> = {
 const rules = CLASSIC
 const inputs = [
   ['Ball X', 'Centered at 0. Negative toward your end, positive toward your opponent.'],
-  ['Ball Y', 'Centered at 0. Negative at the top, positive at the bottom.'],
+  ['Ball Y', 'Simulation Y, centered at 0. On screen, negative is left and positive is right.'],
   ['Ball velocity X', 'An approaching serve moves 5 units toward your paddle per tick, so the model receives −5/6 (about −0.83). Moving away is positive.'],
-  ['Ball velocity Y', 'Moving 3 units down per tick gives the model +0.5. Moving up is negative.'],
-  ['Your paddle Y', 'Center of your paddle, using the same scale as ball Y.'],
-  ['Opponent paddle Y', 'Center of the opposing paddle, using the same scale as ball Y.'],
+  ['Ball velocity Y', 'Moving 3 units right per tick on screen gives the model +0.5. Moving left is negative.'],
+  ['Your paddle Y', 'Position of your paddle across the screen, using the same scale as ball Y.'],
+  ['Opponent paddle Y', 'Position of the opposing paddle across the screen, using the same scale as ball Y.'],
 ]
 function Guide() {
   return (
@@ -71,14 +71,17 @@ function Guide() {
         </p>
         <p>
           Aim with the contact point on your paddle: edge hits send steeper returns. Every successful
-          return increases horizontal speed by one, from a gentle serve at 5 up to a cap of 13.
+          return increases speed toward the opposing paddle by one, from a gentle serve at 5 up to a cap of 13.
           Center hits keep that speed. Paddles move 2 units per tick. Both players see the
           same instant before either moves. Opening the arena picks five serves from different
-          heights. Each paddle receives both rising and falling serves. Restart repeats the set.
+          positions across the court. Each paddle receives serves moving both left and right. Restart repeats the set.
         </p>
         <p>
-          Choose Human to use W/S, arrow keys, the on-screen buttons, or drag the court. Touch and
-          pointer controls steer through the same movement limit. Animation fills the space between
+          Every match uses a vertical court. Choose Human to play from the bottom. Hold the left
+          half to move left or the right half to move right, and lift to stop. You can also use A/D,
+          ←/→, or the on-screen buttons. In a two-human match, P1 is at the bottom with A/D
+          and P2 is at the top with ←/→. Full screen hides the workspace and locks page scrolling.
+          Touch and pointer controls steer through the same movement limit. Animation fills the space between
           decisions; paused frames and replays preserve the exact game state.
         </p>
         <p>
@@ -90,9 +93,11 @@ function Guide() {
         <div className="section-code">02 / OBSERVATION</div>
         <h2>What your model sees</h2>
         <p>
-          One float32 tensor named <code>observation</code> with shape <code>[1, {rules.inputSize}]</code>. Your
-          paddle is always on the left from the model’s perspective. The court is 360 by 160 units,
-          with positions scaled to −1 and +1 at the edges.
+          One float32 tensor named <code>observation</code> with shape <code>[1, {rules.inputSize}]</code>.
+          Models keep the original simulation coordinates: your paddle is on the left from the
+          model’s perspective, and the court is 360 by 160 units, with positions scaled to −1 and +1
+          at the edges. On screen, this court is rotated: simulation X runs between the paddles,
+          and simulation Y runs left to right. Existing models use the same inputs and actions.
         </p>
         <p>
           For each velocity input, the arena divides the ball’s movement in one tick by 6. This
@@ -112,7 +117,8 @@ function Guide() {
         <h2>Choose a move</h2>
         <p>
           Return finite float32 scores in <code>action_scores</code> with shape <code>[1, {rules.outputSize}]</code>,
-          ordered <strong>{rules.actions.join(', ').toLowerCase()}</strong>. The highest score wins.
+          ordered <strong>{rules.actions.join(', ').toLowerCase()}</strong> in simulation coordinates.
+          On screen these mean <strong>left, stay, right</strong>. The highest score wins.
           Ties go to the earliest action. Ordinary moves cover two court units.
         </p>
         <p>
@@ -157,7 +163,7 @@ function Guide() {
         <h3>First weight edit</h3>
         <p>
           In Tracker, change <code>w1[0, 3]</code> from 0 to 0.525. The paddle now accounts for
-          vertical ball velocity. Compare it with the bundled Anticipator.
+          ball velocity across the court (simulation Y). Compare it with the bundled Anticipator.
         </p>
       </aside>
     </div>
@@ -515,13 +521,13 @@ export default function App() {
         </div>
         <div className="section-code">{rules.name.toUpperCase()} / LOCAL IMPORT</div>
         <h2>Import a model</h2>
-        <p>Choose a self-contained ONNX file with six observations and three action scores: up, stay, down. Your weights stay in this browser.</p>
+        <p>Choose a self-contained ONNX file with six observations and three action scores: up, stay, down in simulation coordinates (left, stay, right on screen). Your weights stay in this browser.</p>
         <fieldset disabled={uploading}>
           <legend>Assign to paddle</legend>
           <div className="side-options">
             {([0, 1] as const).map((i) => (
               <button key={i} aria-pressed={i === importSide} onClick={() => setImportSide(i)}>
-                P{i + 1} · {i === 0 ? 'Left' : 'Right'}
+                Player {i + 1}
               </button>
             ))}
           </div>

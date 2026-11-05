@@ -1,11 +1,11 @@
-import { ArrowDown, ArrowUp, Hand, Zap } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Hand, Zap } from 'lucide-react'
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
 import { endedMatch, type Pair, type Side } from './rules'
-import { courtTargetAt, heldHumanAction, humanSideAt, type HeldDirection } from './humanInput'
+import { courtActionAt, heldHumanAction, humanSideAt, type HeldDirection } from './humanInput'
 import type { Match } from './useMatch'
 
 type Props = { m: Match; humanSides: Pair<boolean> }
-type CapturedPointer = { side: Side; element: Element }
+type CapturedPointer = HeldDirection & { element: HTMLElement }
 
 function releaseCapture(element: Element, pointerId: number) {
   if (element.hasPointerCapture(pointerId)) element.releasePointerCapture(pointerId)
@@ -23,7 +23,7 @@ export function useCourtPointerControls(m: Match, humanSides: Pair<boolean>) {
       const held = [...pointers.current]
       pointers.current.clear()
       for (const [id, pointer] of held) {
-        latest.current.setHumanTarget(pointer.side, null)
+        latest.current.setHumanAction(pointer.side, null)
         releaseCapture(pointer.element, id)
       }
     }
@@ -37,35 +37,38 @@ export function useCourtPointerControls(m: Match, humanSides: Pair<boolean>) {
     }
   }, [enabled, left, right, m.seed, m.history])
 
-  function move(event: ReactPointerEvent<SVGSVGElement>, side: Side) {
-    const bounds = event.currentTarget.getBoundingClientRect()
-    latest.current.setHumanTarget(side, courtTargetAt(event.clientY - bounds.top, bounds.height))
+  function publish(side: Side) {
+    latest.current.setHumanAction(side, heldHumanAction(pointers.current.values(), side))
   }
-  function release(event: ReactPointerEvent<SVGSVGElement>) {
+  function release(event: ReactPointerEvent<HTMLElement>) {
     const held = pointers.current.get(event.pointerId)
     if (!held) return
     pointers.current.delete(event.pointerId)
-    latest.current.setHumanTarget(held.side, null)
+    publish(held.side)
     releaseCapture(held.element, event.pointerId)
   }
   return {
-    className: 'field' + (enabled && (left || right) ? ' human-controlled' : ''),
-    onPointerDown(event: ReactPointerEvent<SVGSVGElement>) {
-      if (!enabled || event.button !== 0) return
+    active: enabled && (left || right),
+    onPointerDown(event: ReactPointerEvent<HTMLElement>) {
+      if (!enabled || event.button !== 0 || (event.target as Element).closest('button')) return
       const bounds = event.currentTarget.getBoundingClientRect()
-      const side = humanSideAt(event.clientX - bounds.left, bounds.width, humanSides)
-      if (side === null || [...pointers.current.values()].some((p) => p.side === side)) return
+      const side = humanSideAt(event.clientY - bounds.top, bounds.height, humanSides)
+      if (side === null) return
       event.preventDefault()
-      pointers.current.set(event.pointerId, { side, element: event.currentTarget })
+      pointers.current.set(event.pointerId, {
+        side, element: event.currentTarget,
+        action: courtActionAt(event.clientX - bounds.left, bounds.width),
+      })
       event.currentTarget.setPointerCapture(event.pointerId)
-      latest.current.setHumanAction(side, null)
-      move(event, side)
+      publish(side)
     },
-    onPointerMove(event: ReactPointerEvent<SVGSVGElement>) {
+    onPointerMove(event: ReactPointerEvent<HTMLElement>) {
       const held = pointers.current.get(event.pointerId)
       if (!held || !enabled) return
       event.preventDefault()
-      move(event, held.side)
+      const bounds = event.currentTarget.getBoundingClientRect()
+      held.action = courtActionAt(event.clientX - bounds.left, bounds.width)
+      publish(held.side)
     },
     onPointerUp: release,
     onPointerCancel: release,
@@ -96,7 +99,6 @@ export function HumanControls({ m, humanSides }: Props) {
   }
   function start(key: string, side: Side, action: 0 | 2) {
     if (!enabled) return
-    latest.current.setHumanTarget(side, null)
     held.current.set(key, { side, action })
     publish()
   }
@@ -139,10 +141,10 @@ export function HumanControls({ m, humanSides }: Props) {
   const instruction = m.tick < m.history.length - 1
     ? 'Replay · controls resume when you reach live play.'
     : !m.playing
-      ? 'Press Play, then drag the court or hold a button.'
+      ? 'Press Play, then hold the left or right half of the court.'
       : left && right
-        ? 'Drag your half of the court or hold a button.'
-        : 'Drag the court or hold a button.'
+        ? 'In your top or bottom half, hold left or right to move.'
+        : 'Hold the left half to move left, or the right half to move right. Lift to stop.'
   return (
     <section className="panel human-controls" aria-label="Human paddle controls">
       <div className="human-control-heading">
@@ -153,14 +155,14 @@ export function HumanControls({ m, humanSides }: Props) {
         {([0, 1] as const).filter((side) => humanSides[side]).map((side) => (
           <div className={'human-control-pad side-' + side} key={side}>
             <div className="human-control-label">
-              <span><i className={side === 0 ? 'p1-dot' : 'p2-dot'} /> P{side + 1} · {side === 0 ? 'Left' : 'Right'}</span>
-              <small>{left && right ? side === 0 ? 'W / S' : '↑ / ↓' : 'W / S or ↑ / ↓'}</small>
+              <span><i className={side === 0 ? 'p1-dot' : 'p2-dot'} /> P{side + 1} · {left && right && side === 1 ? 'Top' : 'Bottom'}</span>
+              <small>{left && right ? side === 0 ? 'A / D' : '← / →' : 'A / D or ← / →'}</small>
             </div>
             <div className="human-direction-buttons">
               {([0, 2] as const).map((action) => {
-                const label = action === 0 ? 'Up' : 'Down'
+                const label = action === 0 ? 'Left' : 'Right'
                 const key = side + ':' + action
-                const Icon = action === 0 ? ArrowUp : ArrowDown
+                const Icon = action === 0 ? ArrowLeft : ArrowRight
                 return (
                   <button
                     key={action}
