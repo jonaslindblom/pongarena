@@ -1,0 +1,22 @@
+2026-11-05 14:10:25.026 Python[84117:63619059] 2026-11-05 14:10:25.026175 [W:onnxruntime:Default, telemetry_1ds.cc:600 operator()] Failed to persist telemetry device ID; using an in-memory identifier
+update    0 | 0 steps | game min 0.555 | score min 0.568 | selfplay-v2: 249/74/317 | attacker: 133/46/461
+2026-11-05 14:10:34.047 Python[84117:63619088] NetworkStorageDB:_openDBReadConnections: failed to open read connection to DB @ /Users/jonas/Library/Caches/org.python.python/Cache.db.  Error=14. Cause=unable to open database file
+2026-11-05 14:10:34.047 Python[84117:63619088] The read-connection to the DB=/Users/jonas/Library/Caches/org.python.python/Cache.db is NOT valid.  Unable to determine schema version.
+2026-11-05 14:10:34.047 Python[84117:63619088] NetworkStorageDB:_openDBWriteConnections: failed to open write connection to DB @ /Users/jonas/Library/Caches/org.python.python/Cache.db.  Error=14. Cause=unable to open database file
+2026-11-05 14:10:34.047 Python[84117:63619088] DEBUG: there is no SQL cache DB located at /Users/jonas/Library/Caches/org.python.python/Cache.db.
+2026-11-05 14:10:34.048 Python[84117:63619088] DEBUG: there is no SQL cache DB located at /Users/jonas/Library/Caches/org.python.python/Cache.db-shm.
+2026-11-05 14:10:34.048 Python[84117:63619088] DEBUG: there is no SQL cache DB located at /Users/jonas/Library/Caches/org.python.python/Cache.db-wal.
+update   25 | 1,638,400 steps | game min 0.555 | score min 0.568 | selfplay-v2: 249/74/317 | attacker: 133/46/461
+update   50 | 3,276,800 steps | game min 0.609 | score min 0.578 | selfplay-v2: 296/25/319 | attacker: 137/37/466
+update   75 | 4,915,200 steps | game min 0.625 | score min 0.586 | selfplay-v2: 283/26/331 | attacker: 142/32/466
+update  100 | 6,553,600 steps | game min 0.609 | score min 0.579 | selfplay-v2: 263/22/355 | attacker: 138/37/465
+update  125 | 8,192,000 steps | game min 0.609 | score min 0.580 | selfplay-v2: 262/21/357 | attacker: 138/36/466
+update  150 | 9,830,400 steps | game min 0.609 | score min 0.580 | selfplay-v2: 247/26/367 | attacker: 138/36/466
+update  175 | 11,468,800 steps | game min 0.625 | score min 0.587 | selfplay-v2: 259/21/360 | attacker: 143/32/465
+update  200 | 13,107,200 steps | game min 0.625 | score min 0.587 | selfplay-v2: 245/21/374 | attacker: 143/32/465
+update  225 | 14,745,600 steps | game min 0.625 | score min 0.587 | selfplay-v2: 250/26/364 | attacker: 143/32/465
+update  250 | 16,384,000 steps | game min 0.609 | score min 0.584 | selfplay-v2: 242/21/377 | attacker: 143/36/461
+update  275 | 18,022,400 steps | game min 0.609 | score min 0.584 | selfplay-v2: 246/26/368 | attacker: 143/36/461
+update  300 | 19,660,800 steps | game min 0.625 | score min 0.587 | selfplay-v2: 256/21/363 | attacker: 143/32/465
+update  325 | 21,299,200 steps | game min 0.625 | score min 0.587 | selfplay-v2: 241/26/373 | attacker: 143/32/465
+Completed in 251.4s

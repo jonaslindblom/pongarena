@@ -1,0 +1,21 @@
+{
+  "observations": 8192,
+  "max_score_error": 3.814697265625e-06,
+  "action_agreement": 1.0,
+  "onnx_sha256": "fdcb9d322005d3fa035d0f241954c85d7b1d98fd527b82fd37f0717068b04abf",
+  "architecture": [
+    6,
+    64,
+    64,
+    3
+  ],
+  "learned_parameters": 4803,
+  "graph_ops": [
+    "Gemm",
+    "Tanh",
+    "Gemm",
+    "Tanh",
+    "Gemm"
+  ],
+  "fixed_feature_layers": false
+}

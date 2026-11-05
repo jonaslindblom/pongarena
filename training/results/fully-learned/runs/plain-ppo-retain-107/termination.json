@@ -1,0 +1,8 @@
+{
+  "status": "completed",
+  "last_logged_update": 325,
+  "last_logged_env_steps": 21299200,
+  "completed_actor_updates": 300,
+  "critic_warmup_updates": 25,
+  "reason": "All planned 300 actor updates and 25 critic-only warmup updates completed."
+}

@@ -1,0 +1,53 @@
+{
+  "checkpoint": "training/results/fully-learned/development/search-all-91/best.pt",
+  "onnx": "training/results/fully-learned/development/search-all-91/best.onnx",
+  "checkpoint_sha256": "102b0ab601f06bc87965b03b27976c419b6fcb76c1723646f6f936a0e1e94166",
+  "onnx_sha256": "fdcb9d322005d3fa035d0f241954c85d7b1d98fd527b82fd37f0717068b04abf",
+  "graph_matches_trainable_checkpoint": true,
+  "fixed_feature_or_feedback_parameters": 0,
+  "trainable_parameters": 4803,
+  "arena_validator": {
+    "bytes": 19643,
+    "params": 4803,
+    "macs": 4672,
+    "nodes": 5,
+    "widths": [
+      6,
+      64,
+      64,
+      3
+    ]
+  },
+  "inference_contract": "Original six observations \u2192 learned Tanh MLP \u2192 three action scores; no branches or preprocessing.",
+  "observations": 8192,
+  "source_reachable_observations": 66372,
+  "probe_seeds": [
+    1319293183,
+    1327091977,
+    1369169710,
+    1397412765,
+    1305252654,
+    1361051538,
+    1320971944,
+    1316519400,
+    1355966977,
+    1337535042,
+    1361690385,
+    1316924327,
+    1367337079,
+    1380157564,
+    1348165937,
+    1347758666,
+    1366728321,
+    1363309955,
+    1385288853,
+    1356620999,
+    1311488554,
+    1376552505,
+    1371387413,
+    1324030665
+  ],
+  "probe_purpose": "Development-only numerical verification, not final evaluation",
+  "action_agreement": 1.0,
+  "max_abs_score_error": 4.76837158203125e-06
+}

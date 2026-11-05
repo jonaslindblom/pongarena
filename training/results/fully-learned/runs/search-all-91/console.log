@@ -1,0 +1,40 @@
+2026-11-05 14:06:46.016 Python[82490:63608482] 2026-11-05 14:06:46.016366 [W:onnxruntime:Default, telemetry_1ds.cc:600 operator()] Failed to persist telemetry device ID; using an in-memory identifier
+PASS: population evaluator matches ordinary evaluator and identical members.
+gen 0 | 0 decisions | dev (0.5546875, 0.1359375, 0.6640625) | selfplay-v2 249/74/317 | attacker 133/46/461
+gen 1 | accepted True | train (0.35624999999999996, 0.3265625)
+2026-11-05 14:06:55.060 Python[82490:63608983] NetworkStorageDB:_openDBReadConnections: failed to open read connection to DB @ /Users/jonas/Library/Caches/org.python.python/Cache.db.  Error=14. Cause=unable to open database file
+2026-11-05 14:06:55.060 Python[82490:63608983] The read-connection to the DB=/Users/jonas/Library/Caches/org.python.python/Cache.db is NOT valid.  Unable to determine schema version.
+2026-11-05 14:06:55.060 Python[82490:63608983] NetworkStorageDB:_openDBWriteConnections: failed to open write connection to DB @ /Users/jonas/Library/Caches/org.python.python/Cache.db.  Error=14. Cause=unable to open database file
+2026-11-05 14:06:55.060 Python[82490:63608983] DEBUG: there is no SQL cache DB located at /Users/jonas/Library/Caches/org.python.python/Cache.db.
+2026-11-05 14:06:55.061 Python[82490:63608983] DEBUG: there is no SQL cache DB located at /Users/jonas/Library/Caches/org.python.python/Cache.db-shm.
+2026-11-05 14:06:55.061 Python[82490:63608983] DEBUG: there is no SQL cache DB located at /Users/jonas/Library/Caches/org.python.python/Cache.db-wal.
+gen 2 | accepted False | train (0.35624999999999996, 0.3265625)
+gen 3 | accepted True | train (0.375, 0.3)
+gen 4 | accepted False | train (0.375, 0.3)
+gen 5 | 8,047,478 decisions | dev (0.546875, 0.1390625, 0.6875) | selfplay-v2 286/50/304 | attacker 134/45/461
+gen 6 | accepted False | train (0.378125, 0.2984375)
+gen 7 | accepted False | train (0.378125, 0.2984375)
+gen 8 | accepted False | train (0.378125, 0.2984375)
+gen 9 | accepted True | train (0.39375, 0.2140625)
+gen 10 | 16,503,801 decisions | dev (0.5546875, 0.1359375, 0.62890625) | selfplay-v2 175/28/437 | attacker 142/55/443
+gen 11 | accepted False | train (0.39375, 0.2140625)
+gen 12 | accepted True | train (0.4078125, 0.25625)
+gen 13 | accepted True | train (0.4125, 0.253125)
+gen 14 | accepted False | train (0.4125, 0.253125)
+gen 15 | 25,776,972 decisions | dev (0.6171875, 0.1828125, 0.6953125) | selfplay-v2 202/22/416 | attacker 155/38/447
+gen 16 | accepted False | train (0.4125, 0.253125)
+gen 17 | accepted False | train (0.4125, 0.253125)
+gen 18 | accepted True | train (0.4234375, 0.384375)
+gen 19 | accepted True | train (0.4265625, 0.271875)
+gen 20 | 34,778,177 decisions | dev (0.65625, 0.2015625, 0.76953125) | selfplay-v2 259/16/365 | attacker 152/23/465
+gen 21 | accepted True | train (0.45625, 0.3125)
+gen 22 | accepted False | train (0.45625, 0.3125)
+gen 23 | accepted False | train (0.45625, 0.3125)
+gen 24 | accepted False | train (0.45625, 0.3125)
+gen 25 | 43,584,643 decisions | dev (0.671875, 0.2109375, 0.78125) | selfplay-v2 260/17/363 | attacker 153/18/469
+gen 26 | accepted False | train (0.45625, 0.3125)
+gen 27 | accepted False | train (0.45625, 0.3125)
+gen 28 | accepted False | train (0.45625, 0.3125)
+gen 29 | accepted False | train (0.45625, 0.3125)
+gen 30 | 52,475,112 decisions | dev (0.671875, 0.2109375, 0.78125) | selfplay-v2 260/17/363 | attacker 153/18/469
+Finished training/runs/search-all-91 best (0.671875, 0.2109375, 0.78125)

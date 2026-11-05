@@ -1,0 +1,60 @@
+{
+  "original_v2": {
+    "checkpoint": "training/results/v2/ppo.pt",
+    "tensors": {
+      "0.weight": {
+        "elements": 384,
+        "changed_elements": 384
+      },
+      "0.bias": {
+        "elements": 64,
+        "changed_elements": 64
+      },
+      "2.weight": {
+        "elements": 4096,
+        "changed_elements": 4096
+      },
+      "2.bias": {
+        "elements": 64,
+        "changed_elements": 64
+      },
+      "4.weight": {
+        "elements": 192,
+        "changed_elements": 192
+      },
+      "4.bias": {
+        "elements": 3,
+        "changed_elements": 3
+      }
+    }
+  },
+  "terminal_stage1": {
+    "checkpoint": "training/results/training-improvement/runs/focus-terminal-s71/best.pt",
+    "tensors": {
+      "0.weight": {
+        "elements": 384,
+        "changed_elements": 384
+      },
+      "0.bias": {
+        "elements": 64,
+        "changed_elements": 64
+      },
+      "2.weight": {
+        "elements": 4096,
+        "changed_elements": 4096
+      },
+      "2.bias": {
+        "elements": 64,
+        "changed_elements": 64
+      },
+      "4.weight": {
+        "elements": 192,
+        "changed_elements": 192
+      },
+      "4.bias": {
+        "elements": 3,
+        "changed_elements": 3
+      }
+    }
+  }
+}

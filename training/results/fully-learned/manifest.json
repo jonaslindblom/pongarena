@@ -1,0 +1,65 @@
+{
+  "rules": "pong-v3",
+  "status": "in_progress",
+  "runs": [
+    {
+      "label": "PPO \u00b7 conservative",
+      "family": "ppo",
+      "path": "training/results/fully-learned/runs/plain-ppo-conservative-101",
+      "note": "Stopped after 250 logged updates because attacker performance regressed; best remains initial policy."
+    },
+    {
+      "label": "PPO \u00b7 longer credit",
+      "family": "ppo",
+      "path": "training/results/fully-learned/runs/plain-ppo-credit-103",
+      "note": "Stopped after 225 logged updates because attacker performance regressed; best remains initial policy."
+    },
+    {
+      "label": "PPO \u00b7 retain policy",
+      "family": "ppo",
+      "path": "training/results/fully-learned/runs/plain-ppo-retain-107",
+      "note": "Sharper action sampling and stronger KL penalty against the learned starting policy."
+    },
+    {
+      "label": "Weight search \u00b7 all layers",
+      "family": "search",
+      "path": "training/results/fully-learned/runs/search-all-91",
+      "note": "Thirty generations; perturbs all learned affine weights and biases."
+    },
+    {
+      "label": "Weight search \u00b7 output layer",
+      "family": "search",
+      "path": "training/results/fully-learned/runs/search-output-93",
+      "note": "Thirty generations; inherited hidden weights remain learned, only output parameters are further optimized."
+    }
+  ],
+  "candidate": {
+    "name": "Contender",
+    "model_path": "training/results/fully-learned/candidate/best.onnx",
+    "freeze_file": "training/results/fully-learned/candidate/freeze.json",
+    "check_file": "training/results/fully-learned/candidate/model-check.json",
+    "architecture": "6\u219264\u219264\u21923 Tanh; all 4,803 affine parameters learned; no fixed trajectory calculations or action feedback",
+    "selection_note": "Selected before final testing from the same 512 fresh development seeds. Highest weaker-target ordinary-game win rate among the prior learned PPO baseline, two weight-search variants and the improved PPO continuation: 696/1024 (67.97%) against attacker and 920/1024 (89.84%) against v2. The interceptor mostly draws (164/1024 games won); this tradeoff is reported. Final test blocks are untouched at freeze."
+  },
+  "holdouts": [],
+  "development": [
+    {
+      "name": "baseline",
+      "file": "training/results/fully-learned/development/baseline/evaluation.json"
+    },
+    {
+      "name": "search-all-91",
+      "file": "training/results/fully-learned/development/search-all-91/evaluation.json"
+    },
+    {
+      "name": "search-output-93",
+      "file": "training/results/fully-learned/development/search-output-93/evaluation.json"
+    },
+    {
+      "name": "plain-ppo-retain-107",
+      "file": "training/results/fully-learned/development/plain-ppo-retain-107/evaluation.json"
+    }
+  ],
+  "final_candidates_tested": 1,
+  "verification_note": "Pending final model selection and verification."
+}

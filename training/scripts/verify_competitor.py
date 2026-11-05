@@ -2,6 +2,8 @@
 import hashlib
 import json
 import sys
+import argparse
+from pathlib import Path
 
 import numpy as np
 import onnxruntime as ort
@@ -12,11 +14,16 @@ from reference import serve, advance, observation, ended_match, ended_rally, Loo
 
 
 def main():
-    directory = ROOT / 'training/results/training-improvement'
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--results', type=Path, default=ROOT / 'training/results/training-improvement')
+    parser.add_argument('--name', default='strategist-v3')
+    parser.add_argument('--seed-start', type=int, default=1_270_000_000)
+    args = parser.parse_args()
+    directory = args.results
     frozen = json.loads((directory / 'candidate/freeze.json').read_text())
-    paths = {'strategist-v3': ROOT / frozen['onnx'],
+    paths = {args.name: ROOT / frozen['onnx'],
              'selfplay-v2': ROOT / 'public/models/selfplay-v2.onnx'}
-    if hashlib.sha256(paths['strategist-v3'].read_bytes()).hexdigest() != frozen['onnx_sha256']:
+    if hashlib.sha256(paths[args.name].read_bytes()).hexdigest() != frozen['onnx_sha256']:
         raise ValueError('The selected candidate changed.')
     options = ort.SessionOptions()
     options.intra_op_num_threads = 1
@@ -24,9 +31,8 @@ def main():
     sessions = {name: ort.InferenceSession(str(path), sess_options=options,
                  providers=['CPUExecutionProvider']) for name, path in paths.items()}
     matches = []
-    for names in [('strategist-v3', 'selfplay-v2'), ('selfplay-v2', 'strategist-v3'),
-                  ('strategist-v3', 'strategist-v3')]:
-        for seed in [1_270_000_007, 1_270_000_043]:
+    for names in [(args.name, 'selfplay-v2'), ('selfplay-v2', args.name), (args.name, args.name)]:
+        for seed in [args.seed_start + 7, args.seed_start + 43]:
             frame, loops, steps = serve(seed), LoopDetector(), []
             while not ended_match(frame):
                 scores = None if ended_rally(frame) else [sessions[name].run(None,

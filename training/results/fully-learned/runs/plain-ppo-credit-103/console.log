@@ -1,0 +1,27 @@
+2026-11-05 14:06:11.752 Python[82224:63606509] 2026-11-05 14:06:11.752207 [W:onnxruntime:Default, telemetry_1ds.cc:600 operator()] Failed to persist telemetry device ID; using an in-memory identifier
+update    0 | 0 steps | game min 0.555 | score min 0.568 | selfplay-v2: 249/74/317 | attacker: 133/46/461
+2026-11-05 14:06:20.768 Python[82224:63606576] NetworkStorageDB:_openDBReadConnections: failed to open read connection to DB @ /Users/jonas/Library/Caches/org.python.python/Cache.db.  Error=14. Cause=unable to open database file
+2026-11-05 14:06:20.768 Python[82224:63606576] The read-connection to the DB=/Users/jonas/Library/Caches/org.python.python/Cache.db is NOT valid.  Unable to determine schema version.
+2026-11-05 14:06:20.768 Python[82224:63606576] NetworkStorageDB:_openDBWriteConnections: failed to open write connection to DB @ /Users/jonas/Library/Caches/org.python.python/Cache.db.  Error=14. Cause=unable to open database file
+2026-11-05 14:06:20.768 Python[82224:63606576] DEBUG: there is no SQL cache DB located at /Users/jonas/Library/Caches/org.python.python/Cache.db.
+2026-11-05 14:06:20.768 Python[82224:63606576] DEBUG: there is no SQL cache DB located at /Users/jonas/Library/Caches/org.python.python/Cache.db-shm.
+2026-11-05 14:06:20.769 Python[82224:63606576] DEBUG: there is no SQL cache DB located at /Users/jonas/Library/Caches/org.python.python/Cache.db-wal.
+update   25 | 1,638,400 steps | game min 0.555 | score min 0.568 | selfplay-v2: 249/74/317 | attacker: 133/46/461
+update   50 | 3,276,800 steps | game min 0.391 | score min 0.521 | selfplay-v2: 199/88/353 | attacker: 108/81/451
+update   75 | 4,915,200 steps | game min 0.086 | score min 0.463 | selfplay-v2: 203/26/411 | attacker: 18/65/557
+update  100 | 6,553,600 steps | game min 0.172 | score min 0.480 | selfplay-v2: 299/29/312 | attacker: 30/56/554
+update  125 | 8,192,000 steps | game min 0.133 | score min 0.477 | selfplay-v2: 197/19/424 | attacker: 21/51/568
+update  150 | 9,830,400 steps | game min 0.078 | score min 0.399 | selfplay-v2: 139/93/408 | attacker: 34/163/443
+update  175 | 11,468,800 steps | game min 0.078 | score min 0.392 | selfplay-v2: 240/174/226 | attacker: 27/165/448
+update  200 | 13,107,200 steps | game min 0.023 | score min 0.392 | selfplay-v2: 151/67/422 | attacker: 10/148/482
+update  225 | 14,745,600 steps | game min 0.109 | score min 0.473 | selfplay-v2: 210/36/394 | attacker: 17/51/572
+Traceback (most recent call last):
+  File "/Users/jonas/projects/weights/training/scripts/train_plain.py", line 194, in <module>
+    main()
+  File "/Users/jonas/projects/weights/training/scripts/train_plain.py", line 163, in main
+    distribution = Categorical(logits=actor(x[ix]))
+                                      ^^^^^^^^^^^^
+  File "/Users/jonas/projects/weights/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    def _wrapped_call_impl(self, *args, **kwargs):
+
+KeyboardInterrupt
