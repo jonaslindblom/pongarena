@@ -1,0 +1,30 @@
+{
+  "baseline": {
+    "legal_shots": 4041,
+    "empty_coverage_heights": 0,
+    "recovery_failed_shots": 0,
+    "smallest_interval_width": 30,
+    "minimum_flight": 26
+  },
+  "angle8": {
+    "legal_shots": 4041,
+    "empty_coverage_heights": 0,
+    "recovery_failed_shots": 36,
+    "smallest_interval_width": 22,
+    "minimum_flight": 26
+  },
+  "angle9": {
+    "legal_shots": 4041,
+    "empty_coverage_heights": 23,
+    "recovery_failed_shots": 597,
+    "smallest_interval_width": -12,
+    "minimum_flight": 26
+  },
+  "motion2": {
+    "legal_shots": 12013,
+    "empty_coverage_heights": 27,
+    "recovery_failed_shots": 2287,
+    "smallest_interval_width": -14,
+    "minimum_flight": 26
+  }
+}

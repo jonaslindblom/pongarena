@@ -92,3 +92,23 @@ Run:
 `verification/checks.json` records counts and source hashes. `verification/fixtures.json` is compact JSON containing candidate parameters, explicit contact cases, and complete deterministic rally traces for seeds 11, 2026 and 4,294,967,295. Each trace contains the initial frame, the two action indices at every tick, and the expected resulting frame. Replay the recorded actions directly; no controller implementation is required. Cases with pre-populated loop histories include `seen_before` tuples. Traces enable loop detection and finish at a point, a proven loop or the 1,600-tick deadline.
 
 These checks establish implementation agreement, not game balance. They do not show that a model can learn strong attack, that no alternative safe defense exists, or that humans find a candidate enjoyable.
+
+## Stronger defensive-invariant check
+
+`training/scripts/offense_invariant.py` checks whether choosing safe returns can preserve guaranteed defense even when arbitrary returns cannot. For every opponent contact height `y` and own paddle center `p`, define a candidate safe set `G[y,p]`. Start with all 20,043 height/center states, then repeatedly remove a state unless this condition holds:
+
+For **every** geometrically legal opponent shot from `y`, there **exists** a reachable own contact center and actual final movement whose outgoing shot permits recovery into the current safe set at the next opponent contact. Reachability enumerates exact two-unit moves, stays, boundary clamps, reversal paths, and the final movement direction. Iterate to equality, with no early cutoff.
+
+The opponent can choose any legal shot even when its preceding position would forbid it. This makes the proof conservative: a surviving invariant with a valid serve base case proves never-concede defense against real opponents; failure to find such an invariant does **not** prove forceable attack in the full game.
+
+`baseline` retains 8,399 states, covering all 153 contact heights with at least 31 centers at each. `angle8` retains 7,643, also covering every height with at least 23 centers. Both cover all 1,050 possible standard serve height/vertical-speed combinations in both receiving roles. A deterministic table-driven controller realizes the choices using only the current six observations. Therefore **angle8 still permits guaranteed survival from the standard serves**. Its earlier arbitrary-return recovery failures are avoidable by choosing a safe return.
+
+Neither `angle9` nor `motion2` passes this sufficient defense test: they retain states at only 100 and 126 heights, respectively, and fail some standard-serve base cases. That result narrows the candidates; it does not establish that either is balanced or that strong attack can always force points.
+
+Reproduce the proof and played corroboration:
+
+```sh
+.venv/bin/python training/scripts/offense_invariant.py --matches
+```
+
+`verification/invariant.json` records the fixed point, exact reachable sets, constructive-policy checks and source hashes. `verification/invariant-matches.json` records 3,200 diagnostic rallies: for each of `baseline` and `angle8`, the constructed defender plays 320 rallies against each of the adapted attacker, adapted defender, Contender, v2 and itself. It concedes zero. These played samples corroborate the finite-state proof; they are not a held-out test of learned models. The diagnostic controller is explicitly scripted and is not an arena submission.

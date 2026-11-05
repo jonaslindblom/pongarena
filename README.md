@@ -24,6 +24,8 @@ Open the localhost URL printed by Vite. The default match pairs Contender and Se
 
 Two competitive paddles should be able to sustain a rally under pressure and still win the point through shot placement. To check a rules change, keep the attacking opponent and serve seeds fixed, swap sides, and compare a baseline defender with one that wins more often across several opponents. Track how often a rally ends before the second return, the median number of returns in rallies that end in a point, and both loop and timeout draws. Match score determines the winner.
 
+The [offensive-balance experiment](training/results/offense-study/README.md) compares steeper returns and contact-motion deflection with adaptive opponents and four equally budgeted learned-weight runs. Open `/training/offense-study.html` for synchronized replays, learning curves and final results. Neither tested change justified replacing v3: the milder angle still admits guaranteed defense, while the stronger candidates favor short first-receiver points between strong scripts. Live rules and model presets remain unchanged.
+
 ## Model interface
 
 Submit one opset 18 ONNX file (up to 256 KiB) with embedded float32 weights. The single input is `observation`, float32 with shape `[1, 6]`. It contains centered ball X and Y, horizontal and vertical velocity divided by six, own paddle Y, and opponent paddle Y. The observing player's court is mirrored horizontally to place its paddle on the left.

@@ -1,0 +1,302 @@
+{
+  "purpose": "Numerical verification of frozen exports, not another policy-strength evaluation",
+  "confirmation_sha256": "b5d813bc0f8475bd835eb7feda1879105e6ad20cbbd8a0bba108f8e7b403e0e4",
+  "manifest_sha256": "757f06b701354ab89a51e6bb2bf07e44ae9136d8d8ca005154cd4251d4810d6c",
+  "source_sha256": "93844cbf859cfd3cffc8d470834f6d390ed089b7c322095874c5df4ff4df96f0",
+  "arena_validator_sha256": "b4dc8a7e4ea684a1fc15263b793903c7dd3e696ece6d2cdfe94793ebf28fcca4",
+  "input_contract": "The six v3 observation normalizations, including unbounded velocity/6 values",
+  "scope": "Every actual trained-policy input in captured trained:attack replays; first final seed, five rallies per rule",
+  "configs": {
+    "baseline": {
+      "checkpoint_sha256": "6d946d23f2e625987123fdc07320601a9b1cca9fd5f52418b98abd083ca3ae73",
+      "onnx_sha256": "7eec9ac13fa1c77ffb4fa247f2a9130207eb5bff1360387dd1f7cc2374ef39e4",
+      "arena_validator": {
+        "bytes": 19770,
+        "params": 4803,
+        "macs": 4672,
+        "nodes": 5,
+        "widths": [
+          6,
+          64,
+          64,
+          3
+        ]
+      },
+      "action_frames": 1481,
+      "native_vs_torch_action_mismatches": 0,
+      "recorded_action_mismatches": 0,
+      "maximum_score_error": 3.5762786865234375e-06,
+      "replays": [
+        {
+          "seed": 1816495743,
+          "rally": 1,
+          "side": 0,
+          "action_frames": 61,
+          "native_vs_torch_action_mismatches": 0,
+          "native_vs_recorded_action_mismatches": 0,
+          "torch_vs_recorded_action_mismatches": 0,
+          "maximum_score_error": 1.773238182067871e-06
+        },
+        {
+          "seed": 1816495743,
+          "rally": 2,
+          "side": 0,
+          "action_frames": 217,
+          "native_vs_torch_action_mismatches": 0,
+          "native_vs_recorded_action_mismatches": 0,
+          "torch_vs_recorded_action_mismatches": 0,
+          "maximum_score_error": 2.384185791015625e-06
+        },
+        {
+          "seed": 1816495743,
+          "rally": 3,
+          "side": 0,
+          "action_frames": 486,
+          "native_vs_torch_action_mismatches": 0,
+          "native_vs_recorded_action_mismatches": 0,
+          "torch_vs_recorded_action_mismatches": 0,
+          "maximum_score_error": 2.86102294921875e-06
+        },
+        {
+          "seed": 1816495743,
+          "rally": 4,
+          "side": 0,
+          "action_frames": 588,
+          "native_vs_torch_action_mismatches": 0,
+          "native_vs_recorded_action_mismatches": 0,
+          "torch_vs_recorded_action_mismatches": 0,
+          "maximum_score_error": 3.5762786865234375e-06
+        },
+        {
+          "seed": 1816495743,
+          "rally": 5,
+          "side": 0,
+          "action_frames": 129,
+          "native_vs_torch_action_mismatches": 0,
+          "native_vs_recorded_action_mismatches": 0,
+          "torch_vs_recorded_action_mismatches": 0,
+          "maximum_score_error": 2.384185791015625e-06
+        }
+      ]
+    },
+    "angle8": {
+      "checkpoint_sha256": "016c7cdf498d234adb6ee85673af6f30b35693e5e3ae2a59927d0fa7f4b672e1",
+      "onnx_sha256": "f63f4d85a72860b16b80035d760a6320c27ddabb42255b7096e4395b208b162a",
+      "arena_validator": {
+        "bytes": 19766,
+        "params": 4803,
+        "macs": 4672,
+        "nodes": 5,
+        "widths": [
+          6,
+          64,
+          64,
+          3
+        ]
+      },
+      "action_frames": 1052,
+      "native_vs_torch_action_mismatches": 0,
+      "recorded_action_mismatches": 0,
+      "maximum_score_error": 4.76837158203125e-06,
+      "replays": [
+        {
+          "seed": 1816495743,
+          "rally": 1,
+          "side": 0,
+          "action_frames": 61,
+          "native_vs_torch_action_mismatches": 0,
+          "native_vs_recorded_action_mismatches": 0,
+          "torch_vs_recorded_action_mismatches": 0,
+          "maximum_score_error": 1.9073486328125e-06
+        },
+        {
+          "seed": 1816495743,
+          "rally": 2,
+          "side": 0,
+          "action_frames": 231,
+          "native_vs_torch_action_mismatches": 0,
+          "native_vs_recorded_action_mismatches": 0,
+          "torch_vs_recorded_action_mismatches": 0,
+          "maximum_score_error": 2.86102294921875e-06
+        },
+        {
+          "seed": 1816495743,
+          "rally": 3,
+          "side": 0,
+          "action_frames": 195,
+          "native_vs_torch_action_mismatches": 0,
+          "native_vs_recorded_action_mismatches": 0,
+          "torch_vs_recorded_action_mismatches": 0,
+          "maximum_score_error": 2.86102294921875e-06
+        },
+        {
+          "seed": 1816495743,
+          "rally": 4,
+          "side": 0,
+          "action_frames": 290,
+          "native_vs_torch_action_mismatches": 0,
+          "native_vs_recorded_action_mismatches": 0,
+          "torch_vs_recorded_action_mismatches": 0,
+          "maximum_score_error": 4.76837158203125e-06
+        },
+        {
+          "seed": 1816495743,
+          "rally": 5,
+          "side": 0,
+          "action_frames": 275,
+          "native_vs_torch_action_mismatches": 0,
+          "native_vs_recorded_action_mismatches": 0,
+          "torch_vs_recorded_action_mismatches": 0,
+          "maximum_score_error": 2.86102294921875e-06
+        }
+      ]
+    },
+    "angle9": {
+      "checkpoint_sha256": "08f59b5276fc886af4be8bf51f2ee8f90e9e70077beb60ea519ed782d8bce792",
+      "onnx_sha256": "a61c45ed0b55f6cbdc2ff1f7e016fc10f2dcbb7c784c325863069aeefeff3ea2",
+      "arena_validator": {
+        "bytes": 19766,
+        "params": 4803,
+        "macs": 4672,
+        "nodes": 5,
+        "widths": [
+          6,
+          64,
+          64,
+          3
+        ]
+      },
+      "action_frames": 550,
+      "native_vs_torch_action_mismatches": 0,
+      "recorded_action_mismatches": 0,
+      "maximum_score_error": 3.814697265625e-06,
+      "replays": [
+        {
+          "seed": 1816495743,
+          "rally": 1,
+          "side": 0,
+          "action_frames": 59,
+          "native_vs_torch_action_mismatches": 0,
+          "native_vs_recorded_action_mismatches": 0,
+          "torch_vs_recorded_action_mismatches": 0,
+          "maximum_score_error": 1.430511474609375e-06
+        },
+        {
+          "seed": 1816495743,
+          "rally": 2,
+          "side": 0,
+          "action_frames": 277,
+          "native_vs_torch_action_mismatches": 0,
+          "native_vs_recorded_action_mismatches": 0,
+          "torch_vs_recorded_action_mismatches": 0,
+          "maximum_score_error": 3.814697265625e-06
+        },
+        {
+          "seed": 1816495743,
+          "rally": 3,
+          "side": 0,
+          "action_frames": 59,
+          "native_vs_torch_action_mismatches": 0,
+          "native_vs_recorded_action_mismatches": 0,
+          "torch_vs_recorded_action_mismatches": 0,
+          "maximum_score_error": 2.384185791015625e-06
+        },
+        {
+          "seed": 1816495743,
+          "rally": 4,
+          "side": 0,
+          "action_frames": 96,
+          "native_vs_torch_action_mismatches": 0,
+          "native_vs_recorded_action_mismatches": 0,
+          "torch_vs_recorded_action_mismatches": 0,
+          "maximum_score_error": 2.86102294921875e-06
+        },
+        {
+          "seed": 1816495743,
+          "rally": 5,
+          "side": 0,
+          "action_frames": 59,
+          "native_vs_torch_action_mismatches": 0,
+          "native_vs_recorded_action_mismatches": 0,
+          "torch_vs_recorded_action_mismatches": 0,
+          "maximum_score_error": 1.430511474609375e-06
+        }
+      ]
+    },
+    "motion2": {
+      "checkpoint_sha256": "187957816609bf07d11258ece1ca8e0d317cc624c06e90d5360c4adb5548f78c",
+      "onnx_sha256": "cf96fe35c5d0ce45705837008ad9b0f50a9b3659069d80312eeb64ab5086d4bf",
+      "arena_validator": {
+        "bytes": 19768,
+        "params": 4803,
+        "macs": 4672,
+        "nodes": 5,
+        "widths": [
+          6,
+          64,
+          64,
+          3
+        ]
+      },
+      "action_frames": 956,
+      "native_vs_torch_action_mismatches": 0,
+      "recorded_action_mismatches": 0,
+      "maximum_score_error": 2.86102294921875e-06,
+      "replays": [
+        {
+          "seed": 1816495743,
+          "rally": 1,
+          "side": 0,
+          "action_frames": 213,
+          "native_vs_torch_action_mismatches": 0,
+          "native_vs_recorded_action_mismatches": 0,
+          "torch_vs_recorded_action_mismatches": 0,
+          "maximum_score_error": 2.86102294921875e-06
+        },
+        {
+          "seed": 1816495743,
+          "rally": 2,
+          "side": 0,
+          "action_frames": 114,
+          "native_vs_torch_action_mismatches": 0,
+          "native_vs_recorded_action_mismatches": 0,
+          "torch_vs_recorded_action_mismatches": 0,
+          "maximum_score_error": 2.86102294921875e-06
+        },
+        {
+          "seed": 1816495743,
+          "rally": 3,
+          "side": 0,
+          "action_frames": 476,
+          "native_vs_torch_action_mismatches": 0,
+          "native_vs_recorded_action_mismatches": 0,
+          "torch_vs_recorded_action_mismatches": 0,
+          "maximum_score_error": 2.86102294921875e-06
+        },
+        {
+          "seed": 1816495743,
+          "rally": 4,
+          "side": 0,
+          "action_frames": 94,
+          "native_vs_torch_action_mismatches": 0,
+          "native_vs_recorded_action_mismatches": 0,
+          "torch_vs_recorded_action_mismatches": 0,
+          "maximum_score_error": 2.86102294921875e-06
+        },
+        {
+          "seed": 1816495743,
+          "rally": 5,
+          "side": 0,
+          "action_frames": 59,
+          "native_vs_torch_action_mismatches": 0,
+          "native_vs_recorded_action_mismatches": 0,
+          "torch_vs_recorded_action_mismatches": 0,
+          "maximum_score_error": 1.9073486328125e-06
+        }
+      ]
+    }
+  },
+  "frozen_inputs_unchanged": true,
+  "action_frames": 4039,
+  "passed": true
+}

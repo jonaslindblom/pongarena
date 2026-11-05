@@ -1,0 +1,4 @@
+{
+  "reason": "Run stopped after correcting adaptive motion2 legal-shot envelope; module imported once so restart all configs under same final source. Baseline and angle physics are unaffected, but this partial run is excluded from comparison.",
+  "status": "superseded; not eligible for final holdout"
+}

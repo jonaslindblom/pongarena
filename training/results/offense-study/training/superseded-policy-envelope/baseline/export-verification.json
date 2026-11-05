@@ -1,0 +1,15 @@
+{
+  "probes": 8192,
+  "action_mismatches": 0,
+  "maximum_score_error": 4.76837158203125e-06,
+  "checkpoint_parameters_exactly_match_graph": true,
+  "graph_ops": [
+    "Gemm",
+    "Tanh",
+    "Gemm",
+    "Tanh",
+    "Gemm"
+  ],
+  "rules": "offense-study-baseline",
+  "onnx_sha256": "7eec9ac13fa1c77ffb4fa247f2a9130207eb5bff1360387dd1f7cc2374ef39e4"
+}
