@@ -5,12 +5,26 @@ import { createHash } from 'node:crypto'
 import pb from 'onnx-proto'
 import { BURST, CLASSIC, type Pair, type Scores } from '../src/rules'
 import * as classic from '../src/game'
-import { validateModel } from '../src/validate'
+import { ArchivedModelError, validateArenaModel, validateModel } from '../src/validate'
 import { smallestDivision } from '../src/competition'
 
 const still3: Pair<Scores> = [[0, 1, 0], [0, 1, 0]]
 const still5: Pair<Scores> = [[0, 1, 0, 0, 0], [0, 1, 0, 0, 0]]
 const burstUp: Pair<Scores> = [[0, 0, 0, 1, 0], [0, 1, 0, 0, 0]]
+
+test('the active arena accepts classic weights while archived burst weights remain inspectable only', () => {
+  for (const name of ['tracker', 'pacer-v4', 'apprentice-v4']) {
+    const bytes = readFileSync(new URL(`../public/models/${name}.onnx`, import.meta.url))
+    const stats = validateArenaModel(bytes)
+    assert.deepEqual([stats.inputSize, stats.outputSize], [6, 3])
+  }
+  for (const name of ['burst-tiny', 'burst-focus']) {
+    const bytes = readFileSync(new URL(`../public/models/${name}.onnx`, import.meta.url))
+    assert.equal(validateModel(bytes).inputSize, 8, 'Historical experiments can still verify their original exports')
+    assert.throws(() => validateArenaModel(bytes), ArchivedModelError,
+      'The live loader must reject archived actions before saving or creating a playable session')
+  }
+})
 
 test('each rules wrapper exposes the correct ports and preserves the frozen classic behavior', () => {
   assert.deepEqual([CLASSIC.inputSize, CLASSIC.outputSize, BURST.inputSize, BURST.outputSize], [6, 3, 8, 5])

@@ -19,15 +19,15 @@ These are initial engineering budgets, not measured capability boundaries. The m
 
 The existing file, operator and intermediate-tensor limits also apply. A small parameter count does not excuse excessive computation. Count every embedded float32 initializer scalar, including biases and any fixed handcrafted transforms; do not rely on the author's claimed number of trainable parameters. Count a matrix multiplication every time the graph executes it, including reused matrices. Parameters and MACs are derived from the validated graph, not filename or metadata.
 
-For the experimental eight-input/five-action interface, these plain networks illustrate the budgets:
+For the active six-input/three-action interface, these plain network architectures illustrate the budgets. Sizes alone do not establish trained performance:
 
 | Architecture | Parameters | Dense MACs | Smallest class |
 | --- | ---: | ---: | --- |
-| `8 → 16 → 5` | 229 | 208 | Nano |
-| `8 → 16 → 16 → 5` | 501 | 464 | Nano |
-| `8 → 32 → 32 → 5` | 1,509 | 1,440 | Small |
-| `8 → 64 → 64 → 5` | 5,061 | 4,928 | Standard |
-| `8 → 128 → 128 → 5` | 18,309 | 18,048 | Standard |
+| `6 → 16 → 3` | 163 | 144 | Nano |
+| `6 → 16 → 16 → 3` | 435 | 400 | Nano |
+| `6 → 32 → 32 → 3` | 1,379 | 1,312 | Small |
+| `6 → 64 → 64 → 3` | 4,803 | 4,672 | Standard |
+| `6 → 128 → 128 → 3` | 17,795 | 17,536 | Standard |
 
 Parameter count measures capacity; it does not promise a tactical or entertaining opponent. Inference latency is reported separately when measured because it depends on browser, hardware, runtime and graph structure. It does not determine the class.
 
@@ -35,7 +35,7 @@ Parameter count measures capacity; it does not promise a tactical or entertainin
 
 Each entrant's identity is the SHA-256 of its complete ONNX bytes. A renamed file remains the same entrant. Byte-identical files cannot enter twice, even under different display names. Different serializations of the same function can still have different hashes; a public system would additionally need submission and duplicate-policy controls.
 
-Before entering a run, every model must pass the appropriate game input/output validator. Legacy six-input/three-action weights and experimental eight-input/five-action weights do not enter the same game by silently ignoring or inventing outputs. Any explicit compatibility adapter is part of a separate declared contract and its compute/parameter budget. A controller's human label or training method cannot replace graph validation.
+Before entering a run, every model must pass the game's six-input/three-action validator. Archived eight-input/five-action Burst weights are not eligible for the active arena, and their historical rankings cannot be restored as Classic results. Any explicit compatibility adapter would be part of a separate declared contract and its compute/parameter budget. A controller's human label or training method cannot replace graph validation.
 
 The benchmark fingerprint includes:
 
@@ -70,7 +70,7 @@ The browser retains the last complete league in local storage when available. Re
 
 Public standings require an independent evaluator to validate the uploaded bytes, enforce class limits, execute the frozen game/runtime protocol and publish results tied to model/rules hashes. A browser may preview a match, but its claimed score is not authoritative. Keep private or rotating evaluation seeds, separate development and final rounds, rerun a common opponent field, and publish enough match records for auditing after each round. Freeze each season's rules and class budgets; changes start a new season.
 
-Ranking quality also depends on the reference field. Include defensive, attacking and resource-aware opponents and multiple learned policies. Keep tactical probes and human playability measurements separate from league points: a long rally, high teacher agreement or a correctly timed burst is useful evidence but is not itself a match win.
+Ranking quality also depends on the reference field. Include defensive and attacking opponents and multiple learned policies. Keep tactical probes and human playability measurements separate from league points: a long rally, high teacher agreement or a well-placed return is useful evidence but is not itself a match win.
 
 ## Verify
 

@@ -3,6 +3,19 @@ import type { onnx } from 'onnx-proto'
 
 export const MAX_BYTES = 256 * 1024
 export const MAX_MACS = 65536
+export class ArchivedModelError extends Error {
+  constructor() {
+    super('This model uses the archived Burst contract. Import a Classic v4 model with six inputs and three action scores: up, stay, down.')
+    this.name = 'ArchivedModelError'
+  }
+}
+
+export function validateArenaModel(bytes: Uint8Array) {
+  const stats = validateModel(bytes)
+  if (stats.inputSize !== 6 || stats.outputSize !== 3) throw new ArchivedModelError()
+  return stats
+}
+
 type Shape = number[]
 const product = (dims: Shape) => dims.reduce((a, b) => a * b, 1)
 function check(ok: unknown, message: string): asserts ok {

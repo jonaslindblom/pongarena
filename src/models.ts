@@ -1,7 +1,7 @@
 import * as ort from 'onnxruntime-web/wasm'
 import wasmUrl from '../node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.wasm?url'
 import moduleUrl from '../node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.mjs?url'
-import { validateModel } from './validate'
+import { validateArenaModel, validateModel } from './validate'
 import { choice, type Scores } from './rules'
 import { sha256 } from './competition'
 
@@ -33,21 +33,6 @@ export const keyboard: Controller = {
   macs: 0,
 }
 export const presets = [
-  ...[
-    ['micro', 'Micro', '229 parameters. A deliberately small learning baseline; expect missed returns.'],
-    ['tiny', 'Tiny', '501 parameters. A compact learned opponent for exploring the burst rules.'],
-    ['small', 'Small', '1,509 parameters. Learns from the same data as the larger burst policies.'],
-    ['medium', 'Medium', '5,061 parameters. More capacity for trajectory prediction and burst timing.'],
-    ['large', 'Large', '18,309 parameters. The largest baseline in the controlled size comparison.'],
-  ].map(([id, name, description]) => ({
-    id: 'burst-' + id, name: name + ' · Burst', kind: 'Fully learned · Burst preview',
-    description, report: '/training/burst-models.html',
-  })),
-  {
-    id: 'burst-focus', name: 'Focus · Burst', kind: 'Fully learned · Burst specialist',
-    description: '18,309 parameters, trained further on emergency burst decisions. Improves against the attacking script but loses to Large overall; a different strength profile.',
-    report: '/training/burst-models.html',
-  },
   {
     id: 'pacer-v4',
     name: 'Pacer v4',
@@ -120,7 +105,7 @@ export async function loadModel(
   bytes: Uint8Array,
   info: Omit<Controller, 'params' | 'macs' | 'session'>,
 ): Promise<Controller> {
-  const stats = validateModel(bytes)
+  const stats = validateArenaModel(bytes)
   const digest = await sha256(bytes)
   const session = await ort.InferenceSession.create(bytes, { executionProviders: ['wasm'] })
   const controller = { ...info, ...stats, sha256: digest, session }

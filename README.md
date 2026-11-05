@@ -11,7 +11,7 @@ npm ci
 npm run dev
 ```
 
-Open the localhost URL printed by Vite. The default match pairs Focus and Large under **Burst preview**. The **Game rules** selector also offers the frozen **Classic v4** game, with its own compatible models and rankings.
+Open the localhost URL printed by Vite. The default match pairs **Pacer v4** and **Apprentice v4** under the frozen **Classic v4** rules. The active arena uses ordinary Pong movement and contact-position aiming.
 
 To try it on a phone connected to the same Wi-Fi, start Vite with:
 
@@ -23,34 +23,32 @@ Open the **Network** URL printed by Vite on the phone. The default `127.0.0.1` U
 
 ## Play and inspect
 
-- Press **Play yourself** to start Human vs Tiny in Burst preview (Human vs Tracker in Classic v4), or set either paddle to **Human** and press **Play match**. Use W/S or the up/down arrows. With two humans, the left player uses W/S and the right uses the arrows.
-- In Burst preview, hold **Shift** with a direction to move four units instead of two, spending eight energy per boosted tick. Ordinary actions recharge one energy; each serve starts with 96. Two humans use their respective left/right Shift keys.
-- On touch screens, drag the court to steer your paddle or hold the Up/Down buttons. Hold **Burst** while dragging or moving to use the same legal boost. One human can drag anywhere on the court; two humans use their respective halves. Releasing, cancelling, pausing or restarting clears held controls.
+- Press **Play yourself** to start Human vs Tracker, or set either paddle to **Human** and press **Play match**. Use W/S or the up/down arrows. With two humans, the left player uses W/S and the right uses the arrows.
+- On touch screens, drag the court to steer your paddle or hold the Up/Down buttons. One human can drag anywhere on the court; two humans use their respective halves. Releasing, cancelling, pausing or restarting clears held controls.
 - Use **P1** or **P2** in Action scores to inspect that player's last decision. Pause, step, or scrub the timeline to see the exact scores and actions recorded during play. Selecting an event in the match log jumps to its frame.
 - The simulation makes 30 decisions per second; court animation interpolates between those states at the display's refresh rate. Paused and stepped frames show exact recorded states. Animation does not change physics or model decisions, and switching away from the page pauses play.
-- Opening or reloading the arena draws a fresh seed. Its five rallies start in five different height bands, and both paddles receive rising and falling serves. A point is worth one; a draw scores zero. Rallies have a 1,600-tick limit. Model-only matches also end a rally when its exact state repeats after a return, including both energy values in Burst. Human matches use the full limit. The log distinguishes loops from timeouts. **Restart** repeats the set. **New serves** draws a fresh seed. Choosing different players keeps the current set for comparison.
+- Opening or reloading the arena draws a fresh seed. Its five rallies start in five different height bands, and both paddles receive rising and falling serves. A point is worth one; a draw scores zero. Rallies have a 1,600-tick limit. Model-only matches also end a rally when its exact ball/paddle state repeats after a return. Human matches use the full limit. The log distinguishes loops from timeouts. **Restart** repeats the set. **New serves** draws a fresh seed. Choosing different players keeps the current set for comparison.
 - **Import model** assigns a local ONNX file to either paddle. Imported models are kept in this browser's IndexedDB when available. The model library contains downloadable baseline files. The field guide documents the submission contract.
 
 ## Rally balance
 
 Two competitive paddles should be able to sustain a rally under pressure and still win the point through shot placement. To check a rules change, keep the attacking opponent and serve seeds fixed, swap sides, and compare a baseline defender with one that wins more often across several opponents. Track how often a rally ends before the second return, the median number of returns in rallies that end in a point, and both loop and timeout draws. Match score determines the winner.
 
-Burst preview keeps contact placement as the aiming mechanism, increases horizontal speed by half a unit per return up to 13, and adds a limited movement boost. Saving energy can make a later shot reachable; repeated pressure can exhaust that reserve. The [burst rule study](training/results/burst-study/rules-README.md), also at `/training/burst-rules.html`, records matched-serve measurements and a reproducible pressure sequence with defensive counterfactuals. It is a preview for playtesting, not a claim that balance or learned tactics are solved.
+Classic v4 remains frozen. Every return increases horizontal speed by one, capped at 13; contact position controls vertical deflection. Its [gradual-speed study](training/results/pace-study/README.md) and `/training/pace-study.html` demonstrate placement/recovery scoring between strong diagnostic scripts, with a median 11 returns in scored attacker mirrors. This does not establish learned tactical mastery or human enjoyment.
 
-Classic v4 remains frozen. Every return increases horizontal speed by one, capped at 13; contact position controls vertical deflection. Its [gradual-speed study](training/results/pace-study/README.md) and `/training/pace-study.html` retain that game's measurements and models. Human enjoyment still requires actual playtesting.
+The intended direction is simple Pong: ordinary movement, contact-position aiming, and gradual acceleration. A slower speed ramp without boost remains a separate, unevaluated candidate. Substantially faster paddles can make recenter-and-intercept defense sufficient, so speed must be evaluated together with reachable shots. The [burst rule study](training/results/burst-study/rules-README.md) and `/training/burst-rules.html` are retained as historical experiments; Burst is no longer an active arena mode.
 
 The earlier [offensive-balance experiment](training/results/offense-study/README.md) compared steeper returns and contact-motion deflection with adaptive opponents and four equally budgeted learned-weight runs. Its archived `/training/offense-study.html` report explains why those settings were not promoted: the milder angle still admits guaranteed defense, while stronger candidates favor short first-receiver points between strong scripts.
 
 ## Model interface
 
-Submit one opset 18 ONNX file (up to 256 KiB) with embedded float32 weights. Each game has its own contract:
+Submit one opset 18 ONNX file (up to 256 KiB) with embedded float32 weights:
 
 | Rules | `observation` input | `action_scores` output |
 | --- | --- | --- |
-| Burst preview (`pong-burst-v1`) | float32 `[1, 8]` | float32 `[1, 5]`: up, stay, down, burst up, burst down |
 | Classic v4 (`pong-v4`) | float32 `[1, 6]` | float32 `[1, 3]`: up, stay, down |
 
-The first six observations are centered ball X and Y, horizontal and vertical velocity divided by six, own paddle Y, and opponent paddle Y. The observing player's court is mirrored horizontally to place its paddle on the left. Burst appends own energy and opponent energy, each divided by 96. Output scores must be finite; the first maximum wins ties. Both players decide from the same pre-move state. Importing selects the compatible rules; six-input weights do not silently receive a burst adapter.
+The six observations are centered ball X and Y, horizontal and vertical velocity divided by six, own paddle Y, and opponent paddle Y. The observing player's court is mirrored horizontally to place its paddle on the left. Output scores must be finite; the first maximum wins ties. Both players decide from the same pre-move state. Archived eight-input/five-output Burst files cannot be imported into the active game; previously saved Burst files remain in browser storage but are not loaded.
 
 The supported stateless graphs use Gemm, MatMul, Add, Relu, and Tanh. The importer checks tensor shapes and embedded weights, with limits of 65,536 multiply–accumulates, 256 operators, and 262,144 total intermediate output elements per decision. Cards show the actual architecture, parameter count and compute budget.
 
@@ -72,11 +70,13 @@ The tests cover the game rules, perspective symmetry, finite output and tie hand
 
 ## Train your own weights
 
-Start with the standalone [Burst contract](training/burst/README.md), downloadable as `/training/pong-burst-v1.zip`. It includes the engine, a headless TypeScript example, a dependency-free Python reference, and deterministic match fixtures. Copy `training/burst/` to train independently of the app; run `python3 training/burst/check.py` to check the Python port. Enable loop detection only for fixed deterministic stateless policies; sampled training actions can escape a repeated position.
+Start with the standalone [Classic v4 contract](training/v4/README.md), downloadable as `/training/pong-v4.zip`. It includes the engine, a headless TypeScript example, a dependency-free Python reference, and deterministic match fixtures. Copy `training/v4/` to train independently of the app; run `python3 training/v4/check.py` to check the Python port. Enable loop detection only for fixed deterministic stateless policies; sampled training actions can escape a repeated position.
 
-[PyTorch training and results](training/README.md) links to the size comparison, learning curves, evaluation and standalone exports at `/training/burst-models.html`. Five fully learned Tanh networks span 229–18,309 parameters. **Tiny**, at 501 parameters, is the smallest useful learned starter demonstrated by this recipe; that does not establish tactical mastery or the smallest possible model. The separate **Focus** follow-up improves against the attacking teacher (44 wins / 255 losses / 21 draws), but loses to **Large** (25 / 197 / 98) on the same fresh 320-rally block. Focus is a specialist, not a universal upgrade. No fixed trajectory calculations are embedded in these networks.
+[PyTorch training and results](training/README.md) documents the current Classic workflow and archived experiments. Candidate compact Classic networks include `6→16→3` (163 parameters), `6→16→16→3` (435), and `6→32→32→3` (1,379). These are architecture budgets, not freshly trained or evaluated policies. Removing energy management and extra actions simplifies the learning problem; tactical capability still needs measurement.
 
-The standalone [Classic v4 contract](training/v4/README.md) remains available at `/training/pong-v4.zip`. Its `pace_study.py` and `train_pace.py` workflow produced **Pacer v4** and **Apprentice v4**, fully learned `6→128→128→3` Tanh networks trained through DAgger. The v1/v2/v3 packages, weights and results remain frozen; those older weights are interface-compatible with Classic, but previous results do not establish strength under v4. Burst uses a separate eight-input/five-score contract.
+The `pace_study.py` and `train_pace.py` workflow produced **Pacer v4** and **Apprentice v4**, fully learned `6→128→128→3` Tanh networks trained through DAgger. The v1/v2/v3 packages, weights and results remain frozen; those older weights are interface-compatible with Classic, but previous results do not establish strength under v4.
+
+The archived [Burst size comparison](training/results/burst-study/models/README.md), with curves at `/training/burst-models.html`, trained networks from 229 to 18,309 parameters. Its 501-parameter Tiny beat Tracker under Burst rules, and Focus learned useful rescue timing but not the full placement counter. Those results do not transfer to Classic, and the eight-input/five-output exports are no longer arena presets. Reports, training scripts, weights and the standalone Burst package remain available for reproducing that experiment.
 
 The earlier **Contender** is fully learned: a plain `6→64→64→3` Tanh network with 4,803 learned parameters and no fixed trajectory or feedback layers. Under v3, PPO followed by direct weight search produced an export that passed three reserved blocks against v2 and the attacker, including winning a majority of ordinary five-rally games in every block. The [fully learned investigation](training/results/fully-learned/README.md) retains those historical results; open `/training/fully-learned.html` for its curves.
 

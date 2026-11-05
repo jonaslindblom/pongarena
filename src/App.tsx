@@ -17,11 +17,11 @@ import {
 import { Arena, ModelIcon } from './Arena'
 import { keyboard, loadModel, loadPresets, presets, type Controller } from './models'
 import type { Pair, Side } from './game'
-import { MAX_BYTES } from './validate'
+import { ArchivedModelError, MAX_BYTES } from './validate'
 import { savedModels, saveModel } from './storage'
 import { useMatch } from './useMatch'
 import { Architecture } from './Architecture'
-import { BURST, CLASSIC, RULESETS, type Ruleset } from './rules'
+import { CLASSIC } from './rules'
 import { Ranking } from './Ranking'
 import { browserCompetitionMatch } from './runCompetition'
 import { sha256, smallestDivision, type CompetitionEntrant } from './competition'
@@ -36,8 +36,9 @@ const descriptions: Record<Page, string> = {
   Arena: 'Pit two controllers against each other and watch every decision unfold.',
   Rankings: 'Run reproducible local tournaments with equal budgets, paired serves, and your own weights.',
   'Model library': 'Choose a controller, download a baseline, or bring your own weights.',
-  'Field guide': 'The selected game’s rules, observations, actions, and submission contract.',
+  'Field guide': 'The game rules, observations, actions, and submission contract.',
 }
+const rules = CLASSIC
 const inputs = [
   ['Ball X', 'Centered at 0. Negative toward your end, positive toward your opponent.'],
   ['Ball Y', 'Centered at 0. Negative at the top, positive at the bottom.'],
@@ -46,12 +47,7 @@ const inputs = [
   ['Your paddle Y', 'Center of your paddle, using the same scale as ball Y.'],
   ['Opponent paddle Y', 'Center of the opposing paddle, using the same scale as ball Y.'],
 ]
-function Guide({ rules }: { rules: Ruleset }) {
-  const burst = rules === BURST
-  const observations = burst ? [...inputs,
-    ['Your burst energy', 'Available energy divided by 96: zero is empty, one is full.'],
-    ['Opponent burst energy', 'The same energy scale for the other paddle. Both meters are public.'],
-  ] : inputs
+function Guide() {
   return (
     <div className="guide-grid">
       <article className="panel guide">
@@ -63,23 +59,17 @@ function Guide({ rules }: { rules: Ruleset }) {
           wins.
         </p>
         <p>
-          When two models repeat the same ball, paddle{burst ? ', and energy' : ''} state after a return, their rally is
+          When two models repeat the same ball and paddle state after a return, their rally is
           drawn early: the same decisions would repeat forever. Matches with a human use the
           full time limit. Drawn rallies award no points.
         </p>
         <p>
           Aim with the contact point on your paddle: edge hits send steeper returns. Every successful
-          return increases horizontal speed by {burst ? 'half a unit' : 'one'}, from a gentle serve at 5 up to a cap of 13.
+          return increases horizontal speed by one, from a gentle serve at 5 up to a cap of 13.
           Center hits keep that speed. Paddles move 2 units per tick. Both players see the
           same instant before either moves. Opening the arena picks five serves from different
           heights. Each paddle receives both rising and falling serves. Restart repeats the set.
         </p>
-        {burst && <p>
-          Burst moves cover 4 units instead of 2 and spend 8 energy per tick. Each paddle starts
-          with 96 energy. Ordinary moves, including Stay, restore 1 per tick. Requesting Burst
-          with less than 8 energy moves at ordinary speed and does not recharge. Hold Shift
-          with a direction, or hold the Burst button while dragging or using the direction buttons.
-        </p>}
         <p>
           Choose Human to use W/S, arrow keys, the on-screen buttons, or drag the court. Touch and
           pointer controls steer through the same movement limit. Animation fills the space between
@@ -98,7 +88,7 @@ function Guide({ rules }: { rules: Ruleset }) {
           magnitude. Multiply the input by 6 to recover court units per tick.
         </p>
         <div className="input-table">
-          {observations.map(([n, d], i) => (
+          {inputs.map(([n, d], i) => (
             <div key={n}>
               <small>0{i}</small>
               <b>{n}</b>
@@ -139,26 +129,23 @@ function Guide({ rules }: { rules: Ruleset }) {
           Supported operations include <code>Gemm</code>, <code>MatMul</code>, <code>Add</code>,{' '}
           <code>Relu</code>, and <code>Tanh</code>.
         </p>
-        <a className="secondary-btn" href={burst ? '/models/burst-micro.onnx' : '/models/tracker.onnx'} download>
+        <a className="secondary-btn" href="/models/tracker.onnx" download>
           <ArrowDownToLine size={16} />
           Starter ONNX
         </a>
         <h3>Train independently</h3>
         <p>
-          The {burst ? 'burst preview' : 'v4'} package includes exact rules, a headless example, a Python reference, and
+          The v4 package includes exact rules, a headless example, a Python reference, and
           deterministic test cases.
         </p>
-        <a className="secondary-btn" href={burst ? '/training/pong-burst-v1.zip' : '/training/pong-v4.zip'} download>
+        <a className="secondary-btn" href="/training/pong-v4.zip" download>
           <ArrowDownToLine size={16} /> Training package
         </a>
         <h3>First weight edit</h3>
-        {burst ? <p>
-          Micro has just 229 learned parameters. Download it, edit weights, and import your version.
-          Compare both files on the same seeds in Rankings; training method does not affect eligibility.
-        </p> : <p>
+        <p>
           In Tracker, change <code>w1[0, 3]</code> from 0 to 0.525. The paddle now accounts for
           vertical ball velocity. Compare it with the bundled Anticipator.
-        </p>}
+        </p>
       </aside>
     </div>
   )
@@ -168,8 +155,7 @@ export default function App() {
   const [page, setPage] = useState<Page>('Arena')
   const [models, setModels] = useState<Controller[]>([keyboard])
   const currentModels = useRef(models)
-  const [rules, setRules] = useState<Ruleset>(BURST)
-  const [ids, setIds] = useState<Pair<string>>(['burst-focus', 'burst-large'])
+  const [ids, setIds] = useState<Pair<string>>(['pacer-v4', 'apprentice-v4'])
   const [error, setError] = useState(''),
     [notice, setNotice] = useState('')
   const [importSide, setImportSide] = useState<Side>(0),
@@ -180,12 +166,11 @@ export default function App() {
     fileInput = useRef<HTMLInputElement>(null)
   const eligibleModels = models.filter((model) => model.id === 'keyboard' ||
     model.inputSize === rules.inputSize && model.outputSize === rules.outputSize)
-  const ready = models.some((p) => p.id === (rules === BURST ? 'burst-tiny' : 'tracker'))
+  const ready = models.some((p) => p.id === 'tracker')
   const players = ids.map((id) => models.find((p) => p.id === id)) as Pair<Controller | undefined>
   const m = useMatch(players, setError, page === 'Arena', rules)
-  const currentMatch = useRef(m), currentRules = useRef(rules)
+  const currentMatch = useRef(m)
   currentMatch.current = m
-  currentRules.current = rules
   function appendModels(entries: Controller[]) {
     const next = [...currentModels.current]
     for (const entry of entries) {
@@ -216,8 +201,9 @@ export default function App() {
                   description: 'Saved in this browser.',
                 }),
               )
-            } catch {
-              if (active) setError('A previously saved model could not be loaded.')
+            } catch (error) {
+              if (active && !(error instanceof ArchivedModelError))
+                setError('A previously saved model could not be loaded.')
             }
           }
           if (active && restored.length) appendModels(restored)
@@ -247,13 +233,6 @@ export default function App() {
     setIds((prev) => (index === 0 ? [id, prev[1]] : [prev[0], id]))
     setError('')
   }
-  function selectRules(next: Ruleset) {
-    initialView.current = false
-    currentMatch.current.pause()
-    setRules(next)
-    setIds(next === BURST ? ['burst-focus', 'burst-large'] : ['pacer-v4', 'apprentice-v4'])
-    setError('')
-  }
   function openImport() {
     initialView.current = false
     m.pause()
@@ -265,7 +244,7 @@ export default function App() {
     initialView.current = false
     m.reset()
     m.setSpeed(1)
-    setIds(['keyboard', rules === BURST ? 'burst-tiny' : 'tracker'])
+    setIds(['keyboard', 'tracker'])
     setPage('Arena')
     setError('')
     m.play()
@@ -296,8 +275,6 @@ export default function App() {
         appendModels([entry])
         entry = currentModels.current.find((c) => c.id === id)!
       }
-      const importedRules = entry.inputSize === 8 ? BURST : CLASSIC
-      if (importedRules !== currentRules.current) selectRules(importedRules)
       select(importSide, id)
       setPage('Arena')
       setNotice(entry.name + ' assigned to player 0' + (importSide + 1) + '. ' + entry.description)
@@ -363,17 +340,6 @@ export default function App() {
             </button>
           </div>
         </div>
-        <div className="rules-selector">
-          <label>Game rules
-            <select aria-label="Game rules" value={rules.id}
-              onChange={(event) => selectRules(RULESETS.find((item) => item.id === event.target.value)!)}>
-              {RULESETS.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
-            </select>
-          </label>
-          <p>{rules === BURST
-            ? 'Gentler speed progression. Hold Shift or Burst to move faster; energy recharges on ordinary moves. Experimental rules, separate rankings.'
-            : 'The frozen v4 game: three actions, no burst resource. Earlier models remain playable here.'}</p>
-        </div>
         {error && (
           <div className="message error" role="alert">
             {error}
@@ -412,7 +378,7 @@ export default function App() {
         )}
         {page === 'Model library' && (
           <div className="library">
-            {models
+            {eligibleModels
               .filter((c) => c.id !== 'keyboard')
               .map((c) => (
                 <article className="panel library-card" key={c.id}>
@@ -436,7 +402,7 @@ export default function App() {
                     <dt>Smallest class</dt>
                     <dd>{smallestDivision(c) ?? '—'}</dd>
                     <dt>Game contract</dt>
-                    <dd>{c.inputSize === 8 ? 'Burst preview' : 'Classic v4'}</dd>
+                    <dd>Classic v4</dd>
                   </dl>
                   {c.report && (
                     <a className="training-link" href={c.report} target="_blank" rel="noreferrer">
@@ -447,8 +413,6 @@ export default function App() {
                     <button
                       className="secondary-btn"
                       onClick={() => {
-                        const modelRules = c.inputSize === 8 ? BURST : CLASSIC
-                        if (modelRules !== rules) selectRules(modelRules)
                         select(0, c.id)
                         setPage('Arena')
                       }}
@@ -471,7 +435,7 @@ export default function App() {
               ))}
           </div>
         )}
-        {page === 'Field guide' && <Guide rules={rules} />}
+        {page === 'Field guide' && <Guide />}
         <footer>
           <span>
             <FlaskConical size={13} /> Rally Lab <b>/</b> Local edition
@@ -503,7 +467,7 @@ export default function App() {
         </div>
         <div className="section-code">{rules.name.toUpperCase()} / LOCAL IMPORT</div>
         <h2>Import a model</h2>
-        <p>Choose a self-contained ONNX file. Six-input models open Classic v4; eight-input models open Burst preview. Your weights stay in this browser.</p>
+        <p>Choose a self-contained ONNX file with six observations and three action scores: up, stay, down. Your weights stay in this browser.</p>
         <fieldset disabled={uploading}>
           <legend>Assign to paddle</legend>
           <div className="side-options">
