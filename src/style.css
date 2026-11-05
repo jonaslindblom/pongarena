@@ -1662,3 +1662,62 @@ legend {
   color: #38613b;
   margin-bottom: 15px;
 }
+.rules-selector {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin: -8px 0 24px;
+}
+.rules-selector label {
+  display: grid;
+  gap: 5px;
+  min-width: 160px;
+  font-size: 11px;
+  font-weight: 650;
+}
+.rules-selector select {
+  padding: 10px 12px;
+  min-height: 44px;
+  border: 1px solid #cad6c2;
+  border-radius: 7px;
+  color: #244231;
+  background: #f8faf3;
+  font: inherit;
+  font-size: 14px;
+}
+.rules-selector p { max-width: 730px; color: #667867; font-size: 12px; line-height: 1.6; }
+.court-energy { display: flex; gap: 24px; margin-top: 16px; }
+.energy-player { flex: 1; min-width: 0; }
+.energy-player > span { display: flex; justify-content: space-between; font: 9px monospace; color: #b5ccba; letter-spacing: .05em; }
+.energy-player [role='meter'] { height: 4px; background: #ffffff18; margin-top: 6px; overflow: hidden; border-radius: 3px; }
+.energy-player [role='meter'] i { height: 100%; display: block; background: #82e6b8; }
+.energy-player.side-1 [role='meter'] i { background: #ffad74; }
+.human-boost {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 46px;
+  margin-top: 8px;
+  border: 1px solid #b9cba9;
+  border-radius: 8px;
+  background: #edf3df;
+  color: #35552e;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  touch-action: none;
+  user-select: none;
+}
+.human-boost small { font-size: 10px; font-weight: 450; }
+.human-boost[aria-pressed='true'] { background: #d2e5ad; border-color: #648746; }
+.human-boost:disabled { opacity: .5; }
+@media (max-width: 600px) {
+  .rules-selector { align-items: stretch; flex-direction: column; gap: 3px; margin-bottom: 18px; }
+  .rules-selector select { font-size: 16px; }
+  .rules-selector p { margin: 4px 0; }
+  .court-energy { gap: 15px; margin-top: 12px; }
+  .human-control-pads.two-players .human-boost { flex-wrap: wrap; gap: 3px; padding: 7px; }
+  .human-control-pads.two-players .human-boost small { width: 100%; }
+}

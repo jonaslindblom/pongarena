@@ -1,18 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
 import {
-  advance,
   endedMatch,
   endedRally,
-  LoopDetector,
-  observation,
-  serve,
   type Frame,
   type Pair,
   type Scores,
   type Side,
-} from './game'
+  type Ruleset,
+} from './rules'
 import { infer, type Controller } from './models'
 import { boundedDeadline, frameDuration, TICK_MS, type Presentation } from './presentation'
+import { humanTargetAction } from './humanInput'
 
 function newSeed() {
   return crypto.getRandomValues(new Uint32Array(1))[0] % 1000000
@@ -22,11 +20,12 @@ export function useMatch(
   players: Pair<Controller | undefined>,
   onError: (message: string) => void,
   arenaActive: boolean,
+  rules: Ruleset,
 ) {
   const [seed, setSeed] = useState(newSeed)
   const history = useRef<Frame[]>([])
-  const loops = useRef(new LoopDetector())
-  if (history.current.length === 0) history.current.push(serve(seed))
+  const loops = useRef(rules.detector())
+  if (history.current.length === 0) history.current.push(rules.serve(seed))
   const cursor = useRef(0),
     revision = useRef(0),
     keys = useRef(new Set<string>()),
@@ -36,6 +35,7 @@ export function useMatch(
   currentPlayers.current = players
   const humanActions = useRef<Pair<number | null>>([null, null])
   const humanTargets = useRef<Pair<number | null>>([null, null])
+  const humanBoost = useRef<Pair<boolean>>([false, false])
   const [position, setPosition] = useState({ tick: 0 }),
     [playing, setPlaying] = useState(false),
     [runVersion, setRunVersion] = useState(0),
@@ -51,6 +51,7 @@ export function useMatch(
     keys.current.clear()
     humanActions.current = [null, null]
     humanTargets.current = [null, null]
+    humanBoost.current = [false, false]
   }
   function present(animate = false, duration = TICK_MS / speed) {
     const at = cursor.current
@@ -75,8 +76,8 @@ export function useMatch(
   function reset(nextSeed = seed) {
     pause()
     setSeed(nextSeed)
-    history.current = [serve(nextSeed)]
-    loops.current = new LoopDetector()
+    history.current = [rules.serve(nextSeed)]
+    loops.current = rules.detector()
     cursor.current = 0
     setTick(0)
     present()
@@ -107,6 +108,9 @@ export function useMatch(
     humanTargets.current[side] = running.current && y !== null && Number.isFinite(y)
       ? Math.max(15, Math.min(145, y)) : null
   }
+  function setHumanBoost(side: Side, enabled: boolean) {
+    humanBoost.current[side] = running.current && enabled
+  }
   function human(side: Side, previous: Frame): Scores {
     const held = keys.current
     const both = players[0]?.id === 'keyboard' && players[1]?.id === 'keyboard'
@@ -117,11 +121,15 @@ export function useMatch(
       ((!both || side === 1) && held.has('ArrowDown'))
     let action = up || down ? (up === down ? 1 : up ? 0 : 2) : humanActions.current[side]
     const target = humanTargets.current[side]
-    if (action === null && target !== null) {
-      const error = target - previous.paddles[side]
-      action = error < -1 ? 0 : error > 1 ? 2 : 1
-    }
-    return action === 0 ? [1, 0, 0] : action === 2 ? [0, 0, 1] : [0, 1, 0]
+    const boostKey = both ? held.has(side === 0 ? 'ShiftLeft' : 'ShiftRight')
+      : held.has('ShiftLeft') || held.has('ShiftRight')
+    const boosting = rules.outputSize === 5 && (humanBoost.current[side] || boostKey)
+    if (action === null && target !== null)
+      action = humanTargetAction(previous.paddles[side], target, boosting)
+    else if (boosting && action !== null && action !== 1)
+      action = action === 0 ? 3 : 4
+    action ??= 1
+    return Array.from({ length: rules.outputSize }, (_, index) => index === action ? 1 : 0) as Scores
   }
   function advanceOne(animate = false, duration = TICK_MS / speed): Promise<boolean> {
     if (pending.current || !players[0] || !players[1]) return Promise.resolve(false)
@@ -132,19 +140,19 @@ export function useMatch(
       try {
         if (at === history.current.length - 1) {
           let next: Frame
-          if (endedRally(previous)) next = serve(seed, previous)
+          if (endedRally(previous)) next = rules.serve(seed, previous)
           else {
             // Human input is sampled with the same pre-tick state as both models,
             // before either asynchronous inference has a chance to finish.
             const scores = players.map((player, side) => player!.id === 'keyboard'
               ? human(side as Side, previous) : null) as Pair<Scores | null>
             for (const side of [0, 1] as const) {
-              if (!scores[side]) scores[side] = await infer(players[side]!, observation(previous, side))
+              if (!scores[side]) scores[side] = await infer(players[side]!, rules.observation(previous, side))
               if (revision.current !== version) return false
             }
             if (players.some((player, side) => player !== currentPlayers.current[side])) return false
             const modelMatch = players.every((player) => player?.session && player.id !== 'keyboard')
-            next = advance(previous, scores as Pair<Scores>, modelMatch ? loops.current : undefined)
+            next = rules.advance(previous, scores as Pair<Scores>, modelMatch ? loops.current : undefined)
           }
           if (revision.current !== version) return false
           history.current.push(next)
@@ -198,7 +206,9 @@ export function useMatch(
       alive = false
       cancelAnimationFrame(raf)
     }
-  }, [playing, runVersion, speed, players[0], players[1], seed, arenaActive])
+  }, [playing, runVersion, speed, players[0], players[1], seed, arenaActive, rules])
+
+  useEffect(() => { reset() }, [rules])
 
   const usesKeyboard = arenaActive && players.some((p) => p?.id === 'keyboard')
   useEffect(() => {
@@ -206,7 +216,7 @@ export function useMatch(
     function keydown(e: KeyboardEvent) {
       const target = e.target as HTMLElement
       if (target.closest('input, select, textarea, dialog, [contenteditable="true"]')) return
-      if (['ArrowUp', 'ArrowDown', 'KeyW', 'KeyS'].includes(e.code)) {
+      if (['ArrowUp', 'ArrowDown', 'KeyW', 'KeyS', 'ShiftLeft', 'ShiftRight'].includes(e.code)) {
         e.preventDefault()
         keys.current.add(e.code)
       }
@@ -249,6 +259,8 @@ export function useMatch(
     setSpeed,
     setHumanAction,
     setHumanTarget,
+    setHumanBoost,
+    rules,
     toggle,
     pause,
     play,

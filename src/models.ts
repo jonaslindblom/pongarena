@@ -2,7 +2,8 @@ import * as ort from 'onnxruntime-web/wasm'
 import wasmUrl from '../node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.wasm?url'
 import moduleUrl from '../node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.mjs?url'
 import { validateModel } from './validate'
-import { choice, type Scores } from './game'
+import { choice, type Scores } from './rules'
+import { sha256 } from './competition'
 
 ort.env.wasm.numThreads = 1
 ort.env.wasm.wasmPaths = {
@@ -16,6 +17,9 @@ export interface Controller {
   description: string
   params: number
   macs: number
+  sha256?: string
+  inputSize?: number
+  outputSize?: number
   architecture?: ReturnType<typeof validateModel>['architecture']
   report?: string
   session?: ort.InferenceSession
@@ -29,6 +33,21 @@ export const keyboard: Controller = {
   macs: 0,
 }
 export const presets = [
+  ...[
+    ['micro', 'Micro', '229 parameters. A deliberately small learning baseline; expect missed returns.'],
+    ['tiny', 'Tiny', '501 parameters. A compact learned opponent for exploring the burst rules.'],
+    ['small', 'Small', '1,509 parameters. Learns from the same data as the larger burst policies.'],
+    ['medium', 'Medium', '5,061 parameters. More capacity for trajectory prediction and burst timing.'],
+    ['large', 'Large', '18,309 parameters. The largest baseline in the controlled size comparison.'],
+  ].map(([id, name, description]) => ({
+    id: 'burst-' + id, name: name + ' · Burst', kind: 'Fully learned · Burst preview',
+    description, report: '/training/burst-models.html',
+  })),
+  {
+    id: 'burst-focus', name: 'Focus · Burst', kind: 'Fully learned · Burst specialist',
+    description: '18,309 parameters, trained further on emergency burst decisions. Improves against the attacking script but loses to Large overall; a different strength profile.',
+    report: '/training/burst-models.html',
+  },
   {
     id: 'pacer-v4',
     name: 'Pacer v4',
@@ -102,10 +121,11 @@ export async function loadModel(
   info: Omit<Controller, 'params' | 'macs' | 'session'>,
 ): Promise<Controller> {
   const stats = validateModel(bytes)
+  const digest = await sha256(bytes)
   const session = await ort.InferenceSession.create(bytes, { executionProviders: ['wasm'] })
-  const controller = { ...info, ...stats, session }
+  const controller = { ...info, ...stats, sha256: digest, session }
   try {
-    await infer(controller, new Float32Array(6))
+    await infer(controller, new Float32Array(stats.inputSize))
   } catch (error) {
     await session.release()
     throw error
@@ -113,7 +133,8 @@ export async function loadModel(
   return controller
 }
 export async function infer(model: Controller, input: Float32Array): Promise<Scores> {
-  const result = await model.session!.run({ observation: new ort.Tensor('float32', input, [1, 6]) })
+  if (input.length !== model.inputSize) throw new Error('This model belongs to a different game contract.')
+  const result = await model.session!.run({ observation: new ort.Tensor('float32', input, [1, input.length]) })
   const output = result.action_scores
   const scores = Array.from(output.data as Float32Array) as Scores
   choice(scores)

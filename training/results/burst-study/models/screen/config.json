@@ -1,0 +1,95 @@
+{
+  "out": "training/results/burst-study/models/screen",
+  "rules": {
+    "name": "burst96-cost8-half",
+    "paddle_speed": 2,
+    "boost_speed": 4,
+    "energy_max": 96,
+    "boost_cost": 8,
+    "recharge": 1,
+    "speed_step": 0.5,
+    "ball_cap": 13,
+    "vertical_max": 9,
+    "tick_limit": 1600
+  },
+  "module": "burst_rules",
+  "architectures": {
+    "micro": {
+      "architecture": [
+        8,
+        16,
+        5
+      ],
+      "params": 229,
+      "macs": 208
+    },
+    "tiny": {
+      "architecture": [
+        8,
+        16,
+        16,
+        5
+      ],
+      "params": 501,
+      "macs": 464
+    },
+    "small": {
+      "architecture": [
+        8,
+        32,
+        32,
+        5
+      ],
+      "params": 1509,
+      "macs": 1440
+    },
+    "medium": {
+      "architecture": [
+        8,
+        64,
+        64,
+        5
+      ],
+      "params": 5061,
+      "macs": 4928
+    },
+    "large": {
+      "architecture": [
+        8,
+        128,
+        128,
+        5
+      ],
+      "params": 18309,
+      "macs": 18048
+    }
+  },
+  "init_seeds": [
+    611,
+    617
+  ],
+  "seed": 619,
+  "rounds": 24,
+  "envs": 128,
+  "horizon": 128,
+  "epochs": 4,
+  "replay_rounds": 4,
+  "synthetic": 8192,
+  "eval_every": 6,
+  "dev_seeds": 8,
+  "development_seeds": [
+    2819322764,
+    2812779204,
+    2818571956,
+    2813053359,
+    2818747976,
+    2819401592,
+    2811175850,
+    2819621283
+  ],
+  "method": "Identical pooled DAgger data and minibatch orders for every actor; cross entropy; plain inference",
+  "sources": {
+    "training/scripts/train_size_study.py": "f0c0565e170031f9bd20997b46a13e89dc6340e9aef7bac92232ed2982c5b466",
+    "training/scripts/burst_rules.py": "ce0b5593e138ab7b8f5bc7ad17cd432c9e3c699786dedb979c0f7ae66b9838f2"
+  }
+}

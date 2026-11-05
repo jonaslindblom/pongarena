@@ -47,9 +47,12 @@ export function validateModel(bytes: Uint8Array) {
     !model.functions.length && !model.trainingInfo.length && !g.sparseInitializer?.length,
     'Use a self-contained inference graph.',
   )
-  checkPort(g.input ?? [], 'observation', 6)
-  checkPort(g.output ?? [], 'action_scores', 3)
-  const shapes = new Map<string, Shape>([['observation', [1, 6]]])
+  const inputSize = Number(g.input?.[0]?.type?.tensorType?.shape?.dim?.[1]?.dimValue)
+  check(inputSize === 6 || inputSize === 8, 'Use six inputs for Classic v4 or eight for Burst preview.')
+  const outputSize = inputSize === 8 ? 5 : 3
+  checkPort(g.input ?? [], 'observation', inputSize)
+  checkPort(g.output ?? [], 'action_scores', outputSize)
+  const shapes = new Map<string, Shape>([['observation', [1, inputSize]]])
   let params = 0,
     macs = 0,
     elements = 0
@@ -76,7 +79,7 @@ export function validateModel(bytes: Uint8Array) {
   }
   const nodes = g.node ?? []
   const operations: { op: string; inputs: string[]; output: string; shape: Shape }[] = []
-  const widths = [6]
+  const widths = [inputSize]
   let sequential = true
   let previous = 'observation'
   const constants = new Set((g.initializer ?? []).map((p) => p.name))
@@ -159,10 +162,12 @@ export function validateModel(bytes: Uint8Array) {
     previous = name
   }
   check(
-    shapes.get('action_scores')?.join() === '1,3',
-    'The graph must produce action_scores[1, 3].',
+    shapes.get('action_scores')?.join() === '1,' + outputSize,
+    'The graph must produce action_scores[1, ' + outputSize + '].',
   )
   return {
+    inputSize,
+    outputSize,
     params,
     macs,
     nodes: nodes.length,

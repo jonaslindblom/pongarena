@@ -1,0 +1,20 @@
+{
+  "seconds": 136.85153516661376,
+  "env_steps": 983040,
+  "labels": 3440640,
+  "models": {
+    "large-s641": {
+      "architecture": [
+        8,
+        128,
+        128,
+        5
+      ],
+      "params": 18309,
+      "macs": 18048,
+      "best_development_margin": 0.033333333333333326,
+      "onnx_sha256": "0b8d296933442b9c9ae9c1a0ccb189e113e6a9ce5a6749e7ca8bc162338218ec",
+      "checkpoint_sha256": "24fe24ed0ac2cffee5634aad77aff838ade495e41e981a351e2a4740ccba2c49"
+    }
+  }
+}

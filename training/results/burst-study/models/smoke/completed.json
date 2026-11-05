@@ -1,0 +1,32 @@
+{
+  "seconds": 0.42453579185530543,
+  "env_steps": 256,
+  "labels": 640,
+  "models": {
+    "micro-s611": {
+      "architecture": [
+        8,
+        16,
+        5
+      ],
+      "params": 229,
+      "macs": 208,
+      "best_development_margin": -0.8666666666666667,
+      "onnx_sha256": "849f367fbe711d7319ec75d6798609738ed69df7eeffdb61eb98553f07eba558",
+      "checkpoint_sha256": "503e24f9caaf962057937b49ef5c9aea4fa6ec31a4d2fa7580da98892d535947"
+    },
+    "large-s611": {
+      "architecture": [
+        8,
+        128,
+        128,
+        5
+      ],
+      "params": 18309,
+      "macs": 18048,
+      "best_development_margin": -0.7999999999999999,
+      "onnx_sha256": "90b9e85dfb3358ddb172be230723b831302cf06f422fcc0387c61c88315ce908",
+      "checkpoint_sha256": "03d3dce9c6cd00225629a619751c6ce2934542727eb963d771beb2b65e8d433b"
+    }
+  }
+}

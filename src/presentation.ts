@@ -1,4 +1,4 @@
-import { endedRally, type Frame, type Pair, TICKS_PER_SECOND } from './game'
+import { endedRally, type Frame, type Pair, TICKS_PER_SECOND } from './rules'
 
 export const TICK_MS = 1000 / TICKS_PER_SECOND
 

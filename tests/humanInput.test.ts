@@ -1,6 +1,15 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { courtTargetAt, heldHumanAction, humanSideAt, type HeldDirection } from '../src/humanInput'
+import { courtTargetAt, heldHumanAction, humanSideAt, humanTargetAction, type HeldDirection } from '../src/humanInput'
+
+test('a burst drag finishes at its target without oscillating or wasting energy', () => {
+  assert.equal(humanTargetAction(60, 80, true), 4)
+  assert.equal(humanTargetAction(78, 80, true), 2)
+  assert.equal(humanTargetAction(80, 80, true), 1)
+  assert.equal(humanTargetAction(82, 80, true), 0)
+  assert.equal(humanTargetAction(90, 80, true), 3)
+  assert.equal(humanTargetAction(60, 80, false), 2)
+})
 
 test('a single human can drag anywhere while two humans keep their own court halves', () => {
   assert.equal(humanSideAt(290, 300, [true, false]), 0)

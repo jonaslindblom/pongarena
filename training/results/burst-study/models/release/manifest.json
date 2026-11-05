@@ -1,0 +1,234 @@
+{
+  "rules": {
+    "name": "burst96-cost8-half",
+    "paddle_speed": 2,
+    "boost_speed": 4,
+    "energy_max": 96,
+    "boost_cost": 8,
+    "recharge": 1,
+    "speed_step": 0.5,
+    "ball_cap": 13,
+    "vertical_max": 9,
+    "tick_limit": 1600
+  },
+  "models": {
+    "micro-s611": {
+      "name": "micro",
+      "seed": 611,
+      "path": "training/results/burst-study/models/screen/micro-s611",
+      "development_margin": -0.7999999999999999,
+      "selected_round": 24,
+      "architecture": [
+        8,
+        16,
+        5
+      ],
+      "params": 229,
+      "macs": 208
+    },
+    "micro-s617": {
+      "name": "micro",
+      "seed": 617,
+      "path": "training/results/burst-study/models/screen/micro-s617",
+      "development_margin": -0.8916666666666666,
+      "selected_round": 12,
+      "architecture": [
+        8,
+        16,
+        5
+      ],
+      "params": 229,
+      "macs": 208
+    },
+    "tiny-s611": {
+      "name": "tiny",
+      "seed": 611,
+      "path": "training/results/burst-study/models/screen/tiny-s611",
+      "development_margin": -0.5291666666666667,
+      "selected_round": 24,
+      "architecture": [
+        8,
+        16,
+        16,
+        5
+      ],
+      "params": 501,
+      "macs": 464
+    },
+    "tiny-s617": {
+      "name": "tiny",
+      "seed": 617,
+      "path": "training/results/burst-study/models/screen/tiny-s617",
+      "development_margin": -0.37916666666666665,
+      "selected_round": 24,
+      "architecture": [
+        8,
+        16,
+        16,
+        5
+      ],
+      "params": 501,
+      "macs": 464
+    },
+    "small-s611": {
+      "name": "small",
+      "seed": 611,
+      "path": "training/results/burst-study/models/screen/small-s611",
+      "development_margin": -0.3333333333333333,
+      "selected_round": 24,
+      "architecture": [
+        8,
+        32,
+        32,
+        5
+      ],
+      "params": 1509,
+      "macs": 1440
+    },
+    "small-s617": {
+      "name": "small",
+      "seed": 617,
+      "path": "training/results/burst-study/models/screen/small-s617",
+      "development_margin": -0.325,
+      "selected_round": 24,
+      "architecture": [
+        8,
+        32,
+        32,
+        5
+      ],
+      "params": 1509,
+      "macs": 1440
+    },
+    "medium-s611": {
+      "name": "medium",
+      "seed": 611,
+      "path": "training/results/burst-study/models/screen/medium-s611",
+      "development_margin": -0.13750000000000004,
+      "selected_round": 24,
+      "architecture": [
+        8,
+        64,
+        64,
+        5
+      ],
+      "params": 5061,
+      "macs": 4928
+    },
+    "medium-s617": {
+      "name": "medium",
+      "seed": 617,
+      "path": "training/results/burst-study/models/screen/medium-s617",
+      "development_margin": -0.10416666666666667,
+      "selected_round": 24,
+      "architecture": [
+        8,
+        64,
+        64,
+        5
+      ],
+      "params": 5061,
+      "macs": 4928
+    },
+    "large-s611": {
+      "name": "large",
+      "seed": 611,
+      "path": "training/results/burst-study/models/screen/large-s611",
+      "development_margin": 0.004166666666666652,
+      "selected_round": 24,
+      "architecture": [
+        8,
+        128,
+        128,
+        5
+      ],
+      "params": 18309,
+      "macs": 18048
+    },
+    "large-s617": {
+      "name": "large",
+      "seed": 617,
+      "path": "training/results/burst-study/models/screen/large-s617",
+      "development_margin": -0.05833333333333335,
+      "selected_round": 24,
+      "architecture": [
+        8,
+        128,
+        128,
+        5
+      ],
+      "params": 18309,
+      "macs": 18048
+    }
+  },
+  "selected": {
+    "micro": "micro-s611",
+    "tiny": "tiny-s617",
+    "small": "small-s617",
+    "medium": "medium-s617",
+    "large": "large-s611"
+  },
+  "test_seeds": [
+    2989986922,
+    2989791335,
+    2987306644,
+    2941646704,
+    2907872733,
+    2909631857,
+    2906391787,
+    2919620612,
+    2981030541,
+    2946470091,
+    2936616397,
+    2920313980,
+    2987705611,
+    2990693884,
+    2974330623,
+    2916043349,
+    2976430062,
+    2906742003,
+    2933674510,
+    2959627972,
+    2957975176,
+    2955370653,
+    2904712188,
+    2947746258,
+    2974809950,
+    2983974640,
+    2977415765,
+    2916839166,
+    2938425967,
+    2967029249,
+    2950340285,
+    2933144872
+  ],
+  "test_rng_seed": 20261221,
+  "files": {
+    "training/results/burst-study/models/screen/micro-s611/best.pt": "76cb847f9b5232d35cad00ea3ba3678a3480e2e5cbb960d0efdb9a2e891bd314",
+    "training/results/burst-study/models/screen/micro-s617/best.pt": "c3c7b7c07478a95f0c15c399a9346825b2bd21c0c86c52c8541ddfec064d5a4b",
+    "training/results/burst-study/models/release/micro/best.pt": "76cb847f9b5232d35cad00ea3ba3678a3480e2e5cbb960d0efdb9a2e891bd314",
+    "training/results/burst-study/models/release/micro/model.onnx": "b6eb9953663095996f5b57d8ea6df9cd0b51dc7005b1f59a39f6790244801730",
+    "training/results/burst-study/models/screen/tiny-s611/best.pt": "8f3ed3c650c44c51563528f9bf33a111a70ed1f01752b05a31651dd382a0ca9e",
+    "training/results/burst-study/models/screen/tiny-s617/best.pt": "e84dc7e3c41be657b11025549f4835189f34edf01c30e763b4ba3e5b0995b6d3",
+    "training/results/burst-study/models/release/tiny/best.pt": "e84dc7e3c41be657b11025549f4835189f34edf01c30e763b4ba3e5b0995b6d3",
+    "training/results/burst-study/models/release/tiny/model.onnx": "656c384f381792f1e1cd95750f0b988d043460c96de35ef8b4bb1569895381c5",
+    "training/results/burst-study/models/screen/small-s611/best.pt": "e511231586da343857eb7d9606d87c31253138cf4abae95ef1ce5bca30c73825",
+    "training/results/burst-study/models/screen/small-s617/best.pt": "c3c51b0dd29874a99a687f538db434793bab175127e3f4e8d457cd6a348e208a",
+    "training/results/burst-study/models/release/small/best.pt": "c3c51b0dd29874a99a687f538db434793bab175127e3f4e8d457cd6a348e208a",
+    "training/results/burst-study/models/release/small/model.onnx": "4c2c02965984324658ab6a84acfcf7e77d3ef04532a616cdb246ab5bf80a09cb",
+    "training/results/burst-study/models/screen/medium-s611/best.pt": "1e034d54f881689f0679f9d722f76e5a654afe198bd1e328532880f54f752fa8",
+    "training/results/burst-study/models/screen/medium-s617/best.pt": "1410f3153aff2e741fadeb0bdd025a2cae4e5a7e4bdb396b9127aebc195231f0",
+    "training/results/burst-study/models/release/medium/best.pt": "1410f3153aff2e741fadeb0bdd025a2cae4e5a7e4bdb396b9127aebc195231f0",
+    "training/results/burst-study/models/release/medium/model.onnx": "5c8225b352f1a2042a6693cd01bc6f9ea22597eef83785e710a58105f87ccf39",
+    "training/results/burst-study/models/screen/large-s611/best.pt": "d8b6741de77640ef80a8104c9f97264d46d9873d31eb177b811d2242fef08652",
+    "training/results/burst-study/models/screen/large-s617/best.pt": "99fc57bec4fb7bb6b0bd551ecf4fe33a5c540eb3aced3076cd63f5f3d7ef9c3b",
+    "training/results/burst-study/models/release/large/best.pt": "d8b6741de77640ef80a8104c9f97264d46d9873d31eb177b811d2242fef08652",
+    "training/results/burst-study/models/release/large/model.onnx": "a6380b6d4302fb67faa434108d98b629cd38d7a5d6d296bbf6f68645fa490eb1",
+    "training/results/burst-study/models/screen/config.json": "accc30185eafb26c79a81f2191c75c36d09370118f7193d981a3460587d5d24f",
+    "training/results/burst-study/models/screen/training-source.py": "f0c0565e170031f9bd20997b46a13e89dc6340e9aef7bac92232ed2982c5b466",
+    "training/results/burst-study/models/screen/rules-source.py": "ce0b5593e138ab7b8f5bc7ad17cd432c9e3c699786dedb979c0f7ae66b9838f2",
+    "training/scripts/evaluate_size_study.py": "b3c092d8e8ab82c129a4fdb6c6641fa3e9f7e3d8cbd2cb922788ca74dfac6833"
+  },
+  "selection": "Highest mean development point margin per architecture; seed order breaks exact ties",
+  "purpose": "Fresh model-size confirmation after freezing all checkpoint choices"
+}

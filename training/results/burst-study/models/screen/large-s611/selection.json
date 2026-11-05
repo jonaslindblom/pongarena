@@ -1,0 +1,1942 @@
+{
+  "round": 24,
+  "env_steps": 393216,
+  "labels": 983040,
+  "seconds": 93.14334008283913,
+  "development_margin": 0.004166666666666652,
+  "opponents": {
+    "tracker": {
+      "rallies": 80,
+      "wins": 79,
+      "losses": 1,
+      "draws": 0,
+      "loop_draws": 0,
+      "timeout_draws": 0,
+      "point_rate": 0.9875,
+      "score_rate": 0.9875,
+      "point_margin": 0.975,
+      "match_wins": 16,
+      "match_losses": 0,
+      "match_draws": 0,
+      "paired_match_wins": 8,
+      "paired_match_losses": 0,
+      "paired_match_draws": 0,
+      "paired_match_win_rate": 1.0,
+      "median_decisive_returns": 7.0,
+      "mean_returns": 7.7875,
+      "mean_ticks": 370.7125,
+      "early_finish_rate": 0.1625,
+      "sides": {
+        "0": {
+          "rallies": 40,
+          "wins": 40,
+          "losses": 0,
+          "draws": 0,
+          "loop_draws": 0,
+          "timeout_draws": 0,
+          "point_rate": 1.0,
+          "score_rate": 1.0,
+          "point_margin": 1.0
+        },
+        "1": {
+          "rallies": 40,
+          "wins": 39,
+          "losses": 1,
+          "draws": 0,
+          "loop_draws": 0,
+          "timeout_draws": 0,
+          "point_rate": 0.975,
+          "score_rate": 0.975,
+          "point_margin": 0.95
+        }
+      },
+      "point_margin_ci95": [
+        0.925,
+        1.0
+      ],
+      "score_rate_ci95": [
+        0.9625,
+        1.0
+      ],
+      "per_seed": [
+        {
+          "seed": 2819322764,
+          "paired_point_margin": 10,
+          "sides": {
+            "0": {
+              "rallies": 5,
+              "wins": 5,
+              "losses": 0,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 1.0,
+              "score_rate": 1.0,
+              "point_margin": 1.0,
+              "point_margin_total": 5,
+              "rally_outcomes": [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                333,
+                444,
+                753,
+                444,
+                539
+              ]
+            },
+            "1": {
+              "rallies": 5,
+              "wins": 5,
+              "losses": 0,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 1.0,
+              "score_rate": 1.0,
+              "point_margin": 1.0,
+              "point_margin_total": 5,
+              "rally_outcomes": [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                623,
+                33,
+                568,
+                409,
+                372
+              ]
+            }
+          }
+        },
+        {
+          "seed": 2812779204,
+          "paired_point_margin": 10,
+          "sides": {
+            "0": {
+              "rallies": 5,
+              "wins": 5,
+              "losses": 0,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 1.0,
+              "score_rate": 1.0,
+              "point_margin": 1.0,
+              "point_margin_total": 5,
+              "rally_outcomes": [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                409,
+                444,
+                333,
+                372,
+                477
+              ]
+            },
+            "1": {
+              "rallies": 5,
+              "wins": 5,
+              "losses": 0,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 1.0,
+              "score_rate": 1.0,
+              "point_margin": 1.0,
+              "point_margin_total": 5,
+              "rally_outcomes": [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                568,
+                539,
+                372,
+                247,
+                372
+              ]
+            }
+          }
+        },
+        {
+          "seed": 2818571956,
+          "paired_point_margin": 10,
+          "sides": {
+            "0": {
+              "rallies": 5,
+              "wins": 5,
+              "losses": 0,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 1.0,
+              "score_rate": 1.0,
+              "point_margin": 1.0,
+              "point_margin_total": 5,
+              "rally_outcomes": [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                148,
+                509,
+                333,
+                372,
+                333
+              ]
+            },
+            "1": {
+              "rallies": 5,
+              "wins": 5,
+              "losses": 0,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 1.0,
+              "score_rate": 1.0,
+              "point_margin": 1.0,
+              "point_margin_total": 5,
+              "rally_outcomes": [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                675,
+                33,
+                444,
+                701,
+                199
+              ]
+            }
+          }
+        },
+        {
+          "seed": 2813053359,
+          "paired_point_margin": 10,
+          "sides": {
+            "0": {
+              "rallies": 5,
+              "wins": 5,
+              "losses": 0,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 1.0,
+              "score_rate": 1.0,
+              "point_margin": 1.0,
+              "point_margin_total": 5,
+              "rally_outcomes": [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                247,
+                199,
+                33,
+                623,
+                333
+              ]
+            },
+            "1": {
+              "rallies": 5,
+              "wins": 5,
+              "losses": 0,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 1.0,
+              "score_rate": 1.0,
+              "point_margin": 1.0,
+              "point_margin_total": 5,
+              "rally_outcomes": [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                93,
+                247,
+                675,
+                33,
+                372
+              ]
+            }
+          }
+        },
+        {
+          "seed": 2818747976,
+          "paired_point_margin": 10,
+          "sides": {
+            "0": {
+              "rallies": 5,
+              "wins": 5,
+              "losses": 0,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 1.0,
+              "score_rate": 1.0,
+              "point_margin": 1.0,
+              "point_margin_total": 5,
+              "rally_outcomes": [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                539,
+                675,
+                247,
+                623,
+                148
+              ]
+            },
+            "1": {
+              "rallies": 5,
+              "wins": 5,
+              "losses": 0,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 1.0,
+              "score_rate": 1.0,
+              "point_margin": 1.0,
+              "point_margin_total": 5,
+              "rally_outcomes": [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                675,
+                409,
+                199,
+                649,
+                199
+              ]
+            }
+          }
+        },
+        {
+          "seed": 2819401592,
+          "paired_point_margin": 10,
+          "sides": {
+            "0": {
+              "rallies": 5,
+              "wins": 5,
+              "losses": 0,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 1.0,
+              "score_rate": 1.0,
+              "point_margin": 1.0,
+              "point_margin_total": 5,
+              "rally_outcomes": [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                675,
+                409,
+                444,
+                409,
+                372
+              ]
+            },
+            "1": {
+              "rallies": 5,
+              "wins": 5,
+              "losses": 0,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 1.0,
+              "score_rate": 1.0,
+              "point_margin": 1.0,
+              "point_margin_total": 5,
+              "rally_outcomes": [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                33,
+                444,
+                333,
+                623,
+                33
+              ]
+            }
+          }
+        },
+        {
+          "seed": 2811175850,
+          "paired_point_margin": 10,
+          "sides": {
+            "0": {
+              "rallies": 5,
+              "wins": 5,
+              "losses": 0,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 1.0,
+              "score_rate": 1.0,
+              "point_margin": 1.0,
+              "point_margin_total": 5,
+              "rally_outcomes": [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                727,
+                247,
+                372,
+                649,
+                199
+              ]
+            },
+            "1": {
+              "rallies": 5,
+              "wins": 5,
+              "losses": 0,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 1.0,
+              "score_rate": 1.0,
+              "point_margin": 1.0,
+              "point_margin_total": 5,
+              "rally_outcomes": [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                649,
+                93,
+                247,
+                372,
+                148
+              ]
+            }
+          }
+        },
+        {
+          "seed": 2819621283,
+          "paired_point_margin": 8,
+          "sides": {
+            "0": {
+              "rallies": 5,
+              "wins": 5,
+              "losses": 0,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 1.0,
+              "score_rate": 1.0,
+              "point_margin": 1.0,
+              "point_margin_total": 5,
+              "rally_outcomes": [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                372,
+                33,
+                93,
+                33,
+                444
+              ]
+            },
+            "1": {
+              "rallies": 5,
+              "wins": 4,
+              "losses": 1,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 0.8,
+              "score_rate": 0.8,
+              "point_margin": 0.6,
+              "point_margin_total": 3,
+              "rally_outcomes": [
+                1,
+                -1,
+                1,
+                1,
+                1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                477,
+                33,
+                33,
+                568,
+                477
+              ]
+            }
+          }
+        }
+      ],
+      "acceptance": {
+        "passed": true,
+        "criteria": {
+          "majority_paired_matches": true,
+          "positive_margin_ci": true,
+          "wins_exceed_losses_on_both_sides": true
+        }
+      },
+      "first_receiver_win_rate": 0.4875,
+      "mean_burst_ticks_per_rally": 0.9125,
+      "loop_detection_enabled": true
+    },
+    "interceptor": {
+      "rallies": 80,
+      "wins": 5,
+      "losses": 2,
+      "draws": 73,
+      "loop_draws": 70,
+      "timeout_draws": 3,
+      "point_rate": 0.0625,
+      "score_rate": 0.51875,
+      "point_margin": 0.0375,
+      "match_wins": 5,
+      "match_losses": 1,
+      "match_draws": 10,
+      "paired_match_wins": 3,
+      "paired_match_losses": 1,
+      "paired_match_draws": 4,
+      "paired_match_win_rate": 0.375,
+      "median_decisive_returns": 22.0,
+      "mean_returns": 25.7375,
+      "mean_ticks": 876.5125,
+      "early_finish_rate": 0.0125,
+      "sides": {
+        "0": {
+          "rallies": 40,
+          "wins": 2,
+          "losses": 0,
+          "draws": 38,
+          "loop_draws": 36,
+          "timeout_draws": 2,
+          "point_rate": 0.05,
+          "score_rate": 0.525,
+          "point_margin": 0.05
+        },
+        "1": {
+          "rallies": 40,
+          "wins": 3,
+          "losses": 2,
+          "draws": 35,
+          "loop_draws": 34,
+          "timeout_draws": 1,
+          "point_rate": 0.075,
+          "score_rate": 0.5125,
+          "point_margin": 0.025
+        }
+      },
+      "point_margin_ci95": [
+        -0.05,
+        0.11250000000000002
+      ],
+      "score_rate_ci95": [
+        0.475,
+        0.55625
+      ],
+      "per_seed": [
+        {
+          "seed": 2819322764,
+          "paired_point_margin": 2,
+          "sides": {
+            "0": {
+              "rallies": 5,
+              "wins": 1,
+              "losses": 0,
+              "draws": 4,
+              "loop_draws": 4,
+              "timeout_draws": 0,
+              "point_rate": 0.2,
+              "score_rate": 0.6,
+              "point_margin": 0.2,
+              "point_margin_total": 1,
+              "rally_outcomes": [
+                0,
+                1,
+                0,
+                0,
+                0
+              ],
+              "draw_reasons": [
+                1,
+                0,
+                1,
+                1,
+                1
+              ],
+              "ticks": [
+                727,
+                831,
+                831,
+                831,
+                1247
+              ]
+            },
+            "1": {
+              "rallies": 5,
+              "wins": 1,
+              "losses": 0,
+              "draws": 4,
+              "loop_draws": 4,
+              "timeout_draws": 0,
+              "point_rate": 0.2,
+              "score_rate": 0.6,
+              "point_margin": 0.2,
+              "point_margin_total": 1,
+              "rally_outcomes": [
+                0,
+                1,
+                0,
+                0,
+                0
+              ],
+              "draw_reasons": [
+                1,
+                0,
+                1,
+                1,
+                1
+              ],
+              "ticks": [
+                727,
+                805,
+                831,
+                805,
+                1221
+              ]
+            }
+          }
+        },
+        {
+          "seed": 2812779204,
+          "paired_point_margin": 0,
+          "sides": {
+            "0": {
+              "rallies": 5,
+              "wins": 0,
+              "losses": 0,
+              "draws": 5,
+              "loop_draws": 4,
+              "timeout_draws": 1,
+              "point_rate": 0.0,
+              "score_rate": 0.5,
+              "point_margin": 0.0,
+              "point_margin_total": 0,
+              "rally_outcomes": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "draw_reasons": [
+                2,
+                1,
+                1,
+                1,
+                1
+              ],
+              "ticks": [
+                1600,
+                727,
+                831,
+                701,
+                961
+              ]
+            },
+            "1": {
+              "rallies": 5,
+              "wins": 0,
+              "losses": 0,
+              "draws": 5,
+              "loop_draws": 5,
+              "timeout_draws": 0,
+              "point_rate": 0.0,
+              "score_rate": 0.5,
+              "point_margin": 0.0,
+              "point_margin_total": 0,
+              "rally_outcomes": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "draw_reasons": [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "ticks": [
+                1169,
+                727,
+                675,
+                831,
+                857
+              ]
+            }
+          }
+        },
+        {
+          "seed": 2818571956,
+          "paired_point_margin": 0,
+          "sides": {
+            "0": {
+              "rallies": 5,
+              "wins": 0,
+              "losses": 0,
+              "draws": 5,
+              "loop_draws": 5,
+              "timeout_draws": 0,
+              "point_rate": 0.0,
+              "score_rate": 0.5,
+              "point_margin": 0.0,
+              "point_margin_total": 0,
+              "rally_outcomes": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "draw_reasons": [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "ticks": [
+                857,
+                675,
+                909,
+                935,
+                805
+              ]
+            },
+            "1": {
+              "rallies": 5,
+              "wins": 0,
+              "losses": 0,
+              "draws": 5,
+              "loop_draws": 5,
+              "timeout_draws": 0,
+              "point_rate": 0.0,
+              "score_rate": 0.5,
+              "point_margin": 0.0,
+              "point_margin_total": 0,
+              "rally_outcomes": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "draw_reasons": [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "ticks": [
+                1195,
+                727,
+                727,
+                1247,
+                701
+              ]
+            }
+          }
+        },
+        {
+          "seed": 2813053359,
+          "paired_point_margin": 0,
+          "sides": {
+            "0": {
+              "rallies": 5,
+              "wins": 0,
+              "losses": 0,
+              "draws": 5,
+              "loop_draws": 5,
+              "timeout_draws": 0,
+              "point_rate": 0.0,
+              "score_rate": 0.5,
+              "point_margin": 0.0,
+              "point_margin_total": 0,
+              "rally_outcomes": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "draw_reasons": [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "ticks": [
+                1065,
+                675,
+                727,
+                779,
+                831
+              ]
+            },
+            "1": {
+              "rallies": 5,
+              "wins": 0,
+              "losses": 0,
+              "draws": 5,
+              "loop_draws": 5,
+              "timeout_draws": 0,
+              "point_rate": 0.0,
+              "score_rate": 0.5,
+              "point_margin": 0.0,
+              "point_margin_total": 0,
+              "rally_outcomes": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "draw_reasons": [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "ticks": [
+                727,
+                857,
+                1117,
+                675,
+                675
+              ]
+            }
+          }
+        },
+        {
+          "seed": 2818747976,
+          "paired_point_margin": 1,
+          "sides": {
+            "0": {
+              "rallies": 5,
+              "wins": 0,
+              "losses": 0,
+              "draws": 5,
+              "loop_draws": 5,
+              "timeout_draws": 0,
+              "point_rate": 0.0,
+              "score_rate": 0.5,
+              "point_margin": 0.0,
+              "point_margin_total": 0,
+              "rally_outcomes": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "draw_reasons": [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "ticks": [
+                675,
+                1117,
+                961,
+                1195,
+                857
+              ]
+            },
+            "1": {
+              "rallies": 5,
+              "wins": 1,
+              "losses": 0,
+              "draws": 4,
+              "loop_draws": 4,
+              "timeout_draws": 0,
+              "point_rate": 0.2,
+              "score_rate": 0.6,
+              "point_margin": 0.2,
+              "point_margin_total": 1,
+              "rally_outcomes": [
+                0,
+                0,
+                0,
+                1,
+                0
+              ],
+              "draw_reasons": [
+                1,
+                1,
+                1,
+                0,
+                1
+              ],
+              "ticks": [
+                779,
+                727,
+                675,
+                805,
+                701
+              ]
+            }
+          }
+        },
+        {
+          "seed": 2819401592,
+          "paired_point_margin": 0,
+          "sides": {
+            "0": {
+              "rallies": 5,
+              "wins": 0,
+              "losses": 0,
+              "draws": 5,
+              "loop_draws": 5,
+              "timeout_draws": 0,
+              "point_rate": 0.0,
+              "score_rate": 0.5,
+              "point_margin": 0.0,
+              "point_margin_total": 0,
+              "rally_outcomes": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "draw_reasons": [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "ticks": [
+                831,
+                727,
+                727,
+                857,
+                1195
+              ]
+            },
+            "1": {
+              "rallies": 5,
+              "wins": 0,
+              "losses": 0,
+              "draws": 5,
+              "loop_draws": 5,
+              "timeout_draws": 0,
+              "point_rate": 0.0,
+              "score_rate": 0.5,
+              "point_margin": 0.0,
+              "point_margin_total": 0,
+              "rally_outcomes": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "draw_reasons": [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "ticks": [
+                805,
+                675,
+                831,
+                675,
+                831
+              ]
+            }
+          }
+        },
+        {
+          "seed": 2811175850,
+          "paired_point_margin": 2,
+          "sides": {
+            "0": {
+              "rallies": 5,
+              "wins": 1,
+              "losses": 0,
+              "draws": 4,
+              "loop_draws": 4,
+              "timeout_draws": 0,
+              "point_rate": 0.2,
+              "score_rate": 0.6,
+              "point_margin": 0.2,
+              "point_margin_total": 1,
+              "rally_outcomes": [
+                0,
+                0,
+                1,
+                0,
+                0
+              ],
+              "draw_reasons": [
+                1,
+                1,
+                0,
+                1,
+                1
+              ],
+              "ticks": [
+                935,
+                857,
+                831,
+                1039,
+                909
+              ]
+            },
+            "1": {
+              "rallies": 5,
+              "wins": 1,
+              "losses": 0,
+              "draws": 4,
+              "loop_draws": 4,
+              "timeout_draws": 0,
+              "point_rate": 0.2,
+              "score_rate": 0.6,
+              "point_margin": 0.2,
+              "point_margin_total": 1,
+              "rally_outcomes": [
+                0,
+                0,
+                0,
+                1,
+                0
+              ],
+              "draw_reasons": [
+                1,
+                1,
+                1,
+                0,
+                1
+              ],
+              "ticks": [
+                727,
+                935,
+                727,
+                831,
+                831
+              ]
+            }
+          }
+        },
+        {
+          "seed": 2819621283,
+          "paired_point_margin": -2,
+          "sides": {
+            "0": {
+              "rallies": 5,
+              "wins": 0,
+              "losses": 0,
+              "draws": 5,
+              "loop_draws": 4,
+              "timeout_draws": 1,
+              "point_rate": 0.0,
+              "score_rate": 0.5,
+              "point_margin": 0.0,
+              "point_margin_total": 0,
+              "rally_outcomes": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "draw_reasons": [
+                1,
+                1,
+                1,
+                2,
+                1
+              ],
+              "ticks": [
+                1455,
+                1065,
+                701,
+                1600,
+                1117
+              ]
+            },
+            "1": {
+              "rallies": 5,
+              "wins": 0,
+              "losses": 2,
+              "draws": 3,
+              "loop_draws": 2,
+              "timeout_draws": 1,
+              "point_rate": 0.0,
+              "score_rate": 0.3,
+              "point_margin": -0.4,
+              "point_margin_total": -2,
+              "rally_outcomes": [
+                0,
+                -1,
+                -1,
+                0,
+                0
+              ],
+              "draw_reasons": [
+                1,
+                0,
+                0,
+                2,
+                1
+              ],
+              "ticks": [
+                883,
+                33,
+                727,
+                1600,
+                831
+              ]
+            }
+          }
+        }
+      ],
+      "acceptance": {
+        "passed": false,
+        "criteria": {
+          "majority_paired_matches": false,
+          "positive_margin_ci": false,
+          "wins_exceed_losses_on_both_sides": true
+        }
+      },
+      "first_receiver_win_rate": 0.5714285714285714,
+      "mean_burst_ticks_per_rally": 22.8,
+      "loop_detection_enabled": true
+    },
+    "attack": {
+      "rallies": 80,
+      "wins": 0,
+      "losses": 80,
+      "draws": 0,
+      "loop_draws": 0,
+      "timeout_draws": 0,
+      "point_rate": 0.0,
+      "score_rate": 0.0,
+      "point_margin": -1.0,
+      "match_wins": 0,
+      "match_losses": 16,
+      "match_draws": 0,
+      "paired_match_wins": 0,
+      "paired_match_losses": 8,
+      "paired_match_draws": 0,
+      "paired_match_win_rate": 0.0,
+      "median_decisive_returns": 19.0,
+      "mean_returns": 19.125,
+      "mean_ticks": 724.525,
+      "early_finish_rate": 0.025,
+      "sides": {
+        "0": {
+          "rallies": 40,
+          "wins": 0,
+          "losses": 40,
+          "draws": 0,
+          "loop_draws": 0,
+          "timeout_draws": 0,
+          "point_rate": 0.0,
+          "score_rate": 0.0,
+          "point_margin": -1.0
+        },
+        "1": {
+          "rallies": 40,
+          "wins": 0,
+          "losses": 40,
+          "draws": 0,
+          "loop_draws": 0,
+          "timeout_draws": 0,
+          "point_rate": 0.0,
+          "score_rate": 0.0,
+          "point_margin": -1.0
+        }
+      },
+      "point_margin_ci95": [
+        -1.0,
+        -1.0
+      ],
+      "score_rate_ci95": [
+        0.0,
+        0.0
+      ],
+      "per_seed": [
+        {
+          "seed": 2819322764,
+          "paired_point_margin": -10,
+          "sides": {
+            "0": {
+              "rallies": 5,
+              "wins": 0,
+              "losses": 5,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 0.0,
+              "score_rate": 0.0,
+              "point_margin": -1.0,
+              "point_margin_total": -5,
+              "rally_outcomes": [
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                727,
+                701,
+                779,
+                753,
+                444
+              ]
+            },
+            "1": {
+              "rallies": 5,
+              "wins": 0,
+              "losses": 5,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 0.0,
+              "score_rate": 0.0,
+              "point_margin": -1.0,
+              "point_margin_total": -5,
+              "rally_outcomes": [
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                701,
+                727,
+                909,
+                727,
+                753
+              ]
+            }
+          }
+        },
+        {
+          "seed": 2812779204,
+          "paired_point_margin": -10,
+          "sides": {
+            "0": {
+              "rallies": 5,
+              "wins": 0,
+              "losses": 5,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 0.0,
+              "score_rate": 0.0,
+              "point_margin": -1.0,
+              "point_margin_total": -5,
+              "rally_outcomes": [
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                727,
+                753,
+                727,
+                857,
+                727
+              ]
+            },
+            "1": {
+              "rallies": 5,
+              "wins": 0,
+              "losses": 5,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 0.0,
+              "score_rate": 0.0,
+              "point_margin": -1.0,
+              "point_margin_total": -5,
+              "rally_outcomes": [
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                753,
+                727,
+                753,
+                727,
+                753
+              ]
+            }
+          }
+        },
+        {
+          "seed": 2818571956,
+          "paired_point_margin": -10,
+          "sides": {
+            "0": {
+              "rallies": 5,
+              "wins": 0,
+              "losses": 5,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 0.0,
+              "score_rate": 0.0,
+              "point_margin": -1.0,
+              "point_margin_total": -5,
+              "rally_outcomes": [
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                727,
+                753,
+                93,
+                909,
+                779
+              ]
+            },
+            "1": {
+              "rallies": 5,
+              "wins": 0,
+              "losses": 5,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 0.0,
+              "score_rate": 0.0,
+              "point_margin": -1.0,
+              "point_margin_total": -5,
+              "rally_outcomes": [
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                753,
+                727,
+                753,
+                675,
+                909
+              ]
+            }
+          }
+        },
+        {
+          "seed": 2813053359,
+          "paired_point_margin": -10,
+          "sides": {
+            "0": {
+              "rallies": 5,
+              "wins": 0,
+              "losses": 5,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 0.0,
+              "score_rate": 0.0,
+              "point_margin": -1.0,
+              "point_margin_total": -5,
+              "rally_outcomes": [
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                1091,
+                753,
+                727,
+                909,
+                727
+              ]
+            },
+            "1": {
+              "rallies": 5,
+              "wins": 0,
+              "losses": 5,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 0.0,
+              "score_rate": 0.0,
+              "point_margin": -1.0,
+              "point_margin_total": -5,
+              "rally_outcomes": [
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                753,
+                727,
+                857,
+                779,
+                753
+              ]
+            }
+          }
+        },
+        {
+          "seed": 2818747976,
+          "paired_point_margin": -10,
+          "sides": {
+            "0": {
+              "rallies": 5,
+              "wins": 0,
+              "losses": 5,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 0.0,
+              "score_rate": 0.0,
+              "point_margin": -1.0,
+              "point_margin_total": -5,
+              "rally_outcomes": [
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                444,
+                857,
+                727,
+                753,
+                727
+              ]
+            },
+            "1": {
+              "rallies": 5,
+              "wins": 0,
+              "losses": 5,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 0.0,
+              "score_rate": 0.0,
+              "point_margin": -1.0,
+              "point_margin_total": -5,
+              "rally_outcomes": [
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                909,
+                727,
+                753,
+                727,
+                753
+              ]
+            }
+          }
+        },
+        {
+          "seed": 2819401592,
+          "paired_point_margin": -10,
+          "sides": {
+            "0": {
+              "rallies": 5,
+              "wins": 0,
+              "losses": 5,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 0.0,
+              "score_rate": 0.0,
+              "point_margin": -1.0,
+              "point_margin_total": -5,
+              "rally_outcomes": [
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                857,
+                444,
+                701,
+                675,
+                753
+              ]
+            },
+            "1": {
+              "rallies": 5,
+              "wins": 0,
+              "losses": 5,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 0.0,
+              "score_rate": 0.0,
+              "point_margin": -1.0,
+              "point_margin_total": -5,
+              "rally_outcomes": [
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                727,
+                701,
+                444,
+                753,
+                675
+              ]
+            }
+          }
+        },
+        {
+          "seed": 2811175850,
+          "paired_point_margin": -10,
+          "sides": {
+            "0": {
+              "rallies": 5,
+              "wins": 0,
+              "losses": 5,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 0.0,
+              "score_rate": 0.0,
+              "point_margin": -1.0,
+              "point_margin_total": -5,
+              "rally_outcomes": [
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                753,
+                727,
+                753,
+                727,
+                753
+              ]
+            },
+            "1": {
+              "rallies": 5,
+              "wins": 0,
+              "losses": 5,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 0.0,
+              "score_rate": 0.0,
+              "point_margin": -1.0,
+              "point_margin_total": -5,
+              "rally_outcomes": [
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                779,
+                753,
+                727,
+                753,
+                727
+              ]
+            }
+          }
+        },
+        {
+          "seed": 2819621283,
+          "paired_point_margin": -10,
+          "sides": {
+            "0": {
+              "rallies": 5,
+              "wins": 0,
+              "losses": 5,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 0.0,
+              "score_rate": 0.0,
+              "point_margin": -1.0,
+              "point_margin_total": -5,
+              "rally_outcomes": [
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                701,
+                727,
+                753,
+                675,
+                701
+              ]
+            },
+            "1": {
+              "rallies": 5,
+              "wins": 0,
+              "losses": 5,
+              "draws": 0,
+              "loop_draws": 0,
+              "timeout_draws": 0,
+              "point_rate": 0.0,
+              "score_rate": 0.0,
+              "point_margin": -1.0,
+              "point_margin_total": -5,
+              "rally_outcomes": [
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "draw_reasons": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ticks": [
+                727,
+                33,
+                727,
+                753,
+                727
+              ]
+            }
+          }
+        }
+      ],
+      "acceptance": {
+        "passed": false,
+        "criteria": {
+          "majority_paired_matches": false,
+          "positive_margin_ci": false,
+          "wins_exceed_losses_on_both_sides": false
+        }
+      },
+      "first_receiver_win_rate": 0.5,
+      "mean_burst_ticks_per_rally": 29.8875,
+      "loop_detection_enabled": true
+    }
+  },
+  "cross_entropy": 0.3037421995773911,
+  "training_accuracy": 0.871246337890625,
+  "teacher_action_probability": 0.05,
+  "optimization_examples": 655360
+}

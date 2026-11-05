@@ -25,7 +25,6 @@ import {
 } from 'lucide-react'
 import { useLayoutEffect, useRef, useState } from 'react'
 import {
-  ACTIONS,
   choice,
   endedMatch,
   endedRally,
@@ -34,7 +33,7 @@ import {
   type Pair,
   type Side,
   type Frame,
-} from './game'
+} from './rules'
 import { type Controller } from './models'
 import type { Match } from './useMatch'
 import { architectureLabel } from './Architecture'
@@ -219,6 +218,19 @@ function Court({ m, names, ready, humanSides }: {
         <circle className="moving-ball" cx="180" cy="80" r="3.7" fill="#dafa9c" opacity=".44" filter="url(#softball)" />
         <circle className="moving-ball" cx="180" cy="80" r="2.55" fill="#f1ffd9" />
       </svg>
+      {f.energy && m.rules.energyMax && (
+        <div className="court-energy" aria-label="Burst energy">
+          {([0, 1] as const).map((side) => (
+            <div key={side} className={'energy-player side-' + side}>
+              <span>P{side + 1} · BURST <b>{Math.round(f.energy![side] / m.rules.energyMax! * 100)}%</b></span>
+              <div role="meter" aria-label={'Player ' + (side + 1) + ' burst energy'}
+                aria-valuemin={0} aria-valuemax={m.rules.energyMax} aria-valuenow={f.energy![side]}>
+                <i style={{ width: f.energy![side] / m.rules.energyMax! * 100 + '%' }} />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
       <div className="court-foot">
         <span>
           <i />
@@ -466,8 +478,8 @@ export function Arena({ m, models, ids, pick, swap, ready }: Props) {
               {names[side]}
               <span>{ids[side] === 'keyboard' ? 'HUMAN INPUT' : 'RAW OUTPUT'}</span>
             </div>
-            {ACTIONS.map((a, i) => {
-              const Icon = [ArrowUp, Minus, ArrowDown][i],
+            {m.rules.actions.map((a, i) => {
+              const Icon = [ArrowUp, Minus, ArrowDown, ArrowUp, ArrowDown][i],
                 v = scores?.[i] ?? 0
               return (
                 <div className={'score-row ' + (chosen === i ? 'chosen' : '')} key={a}>
@@ -490,7 +502,7 @@ export function Arena({ m, models, ids, pick, swap, ready }: Props) {
             })}
             <div className="decision">
               <span>SELECTED MOVE</span>
-              <b>{chosen >= 0 ? ACTIONS[chosen] : 'Awaiting tick'}</b>
+              <b>{chosen >= 0 ? m.rules.actions[chosen] : 'Awaiting tick'}</b>
             </div>
             <div className="trace">
               <span>LAST 40 DECISIONS</span>
@@ -505,10 +517,10 @@ export function Arena({ m, models, ids, pick, swap, ready }: Props) {
                   return (
                     <i
                       key={f.tick}
-                      title={'Tick ' + f.tick + ' · ' + (move === null ? 'Serve' : ACTIONS[move])}
+                      title={'Tick ' + f.tick + ' · ' + (move === null ? 'Serve' : m.rules.actions[move])}
                       style={{
                         gridColumn: 41 - arr.length + i,
-                        gridRow: move === null ? 2 : move + 1,
+                        gridRow: move === null ? 2 : move === 3 ? 1 : move === 4 ? 3 : move + 1,
                         background:
                           move === null ? 'transparent' : side === 0 ? '#488866' : '#be7648',
                       }}

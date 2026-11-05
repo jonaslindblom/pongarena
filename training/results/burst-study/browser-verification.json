@@ -1,0 +1,43 @@
+{
+  "date": "2026-11-05",
+  "environment": "Chromium through Playwright, ONNX Runtime Web CPU/WASM",
+  "rules": "pong-burst-v1",
+  "full_replay_parity": {
+    "fixtures": ["/training/burst-onnx-replays.json", "/training/burst-focus-replays.json"],
+    "models": ["micro", "tiny", "small", "medium", "large", "focus"],
+    "matches": 8,
+    "frames": 28446,
+    "decisions": 56828,
+    "action_mismatches": 0,
+    "state_mismatches_including_energy": 0,
+    "maximum_absolute_score_difference": 0.0000152587890625
+  },
+  "integration_checks_passed": [
+    "Desktop Burst keyboard play, Shift boost depletion, pause and replay controls",
+    "Mobile emulated multi-touch court target plus held Burst, no target oscillation, pointer cancellation and energy recharge",
+    "Portrait 320x740 and 390x844, landscape 844x390: court and controls visually inspected",
+    "Rule and model reports at desktop and mobile widths, chart loading and tactical replay seek",
+    "Nano round robin, 2 models and 4 paired serve seeds: 8 games complete",
+    "Repeating a Nano benchmark produces byte-identical stored result JSON",
+    "Cancellation leaves incomplete results unranked; switching rules discards old run updates",
+    "Actual HTTP LAN origin without secure context or SubtleCrypto: play, import and Nano league complete",
+    "Delayed import finishing after a forced rules switch assigns its model under the correct contract",
+    "Production build: Burst and Classic play, Nano league completes, saved result survives reload, JSON export downloads, both reports and standalone package return HTTP 200",
+    "Production build: overlapping saved-model restoration and import of the same file preserves one model ID and a playable session"
+  ],
+  "isolated_test_context_page_errors": [],
+  "automated_checks": {
+    "node_tests_passed": 52,
+    "node_tests_failed": 0,
+    "node_tests_skipped": 0,
+    "typescript_and_vite_build": "passed",
+    "standalone_ts_python_boundaries": 102,
+    "standalone_ts_python_match_frames": 11905
+  },
+  "limitations": [
+    "Mobile checks use browser emulation; no physical phone playtest was performed.",
+    "Replay parity checks implementation agreement, not policy strength.",
+    "Local league results are not independently verified public rankings.",
+    "Two initial production-smoke harness attempts used incorrect playback selectors and timed out; corrected selectors completed successfully."
+  ]
+}

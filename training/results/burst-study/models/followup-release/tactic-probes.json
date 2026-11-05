@@ -1,0 +1,189 @@
+{
+  "source_sha256": "3c6da1e7eb15627b0c2517cb5051c897b54a17c92c7b8edc19ee2ac5c63d0b33",
+  "scope": "Local legal-state continuations, not an optimal-play proof",
+  "models": {
+    "micro": {
+      "depleted": {
+        "caught": false,
+        "outcome": 0,
+        "draw_reason": 0,
+        "first_burst_tick": 25,
+        "burst_ticks": 1,
+        "contact": null,
+        "end_returns": 26
+      },
+      "full": {
+        "caught": false,
+        "outcome": 0,
+        "draw_reason": 0,
+        "first_burst_tick": 25,
+        "burst_ticks": 1,
+        "contact": null,
+        "end_returns": 26
+      },
+      "earlier_counter": {
+        "caught": false,
+        "outcome": 0,
+        "draw_reason": 0,
+        "first_burst_tick": null,
+        "burst_ticks": 0,
+        "contact": null,
+        "end_returns": 20
+      }
+    },
+    "tiny": {
+      "depleted": {
+        "caught": false,
+        "outcome": 0,
+        "draw_reason": 0,
+        "first_burst_tick": 24,
+        "burst_ticks": 2,
+        "contact": null,
+        "end_returns": 26
+      },
+      "full": {
+        "caught": false,
+        "outcome": 0,
+        "draw_reason": 0,
+        "first_burst_tick": 25,
+        "burst_ticks": 1,
+        "contact": null,
+        "end_returns": 26
+      },
+      "earlier_counter": {
+        "caught": false,
+        "outcome": 0,
+        "draw_reason": 0,
+        "first_burst_tick": null,
+        "burst_ticks": 0,
+        "contact": null,
+        "end_returns": 20
+      }
+    },
+    "small": {
+      "depleted": {
+        "caught": false,
+        "outcome": 0,
+        "draw_reason": 0,
+        "first_burst_tick": 23,
+        "burst_ticks": 3,
+        "contact": null,
+        "end_returns": 26
+      },
+      "full": {
+        "caught": false,
+        "outcome": 0,
+        "draw_reason": 0,
+        "first_burst_tick": 23,
+        "burst_ticks": 3,
+        "contact": null,
+        "end_returns": 26
+      },
+      "earlier_counter": {
+        "caught": false,
+        "outcome": 0,
+        "draw_reason": 0,
+        "first_burst_tick": 25,
+        "burst_ticks": 1,
+        "contact": null,
+        "end_returns": 20
+      }
+    },
+    "medium": {
+      "depleted": {
+        "caught": false,
+        "outcome": 0,
+        "draw_reason": 0,
+        "first_burst_tick": 22,
+        "burst_ticks": 3,
+        "contact": null,
+        "end_returns": 26
+      },
+      "full": {
+        "caught": false,
+        "outcome": 0,
+        "draw_reason": 0,
+        "first_burst_tick": 23,
+        "burst_ticks": 3,
+        "contact": null,
+        "end_returns": 26
+      },
+      "earlier_counter": {
+        "caught": false,
+        "outcome": 0,
+        "draw_reason": 0,
+        "first_burst_tick": 23,
+        "burst_ticks": 3,
+        "contact": null,
+        "end_returns": 20
+      }
+    },
+    "large": {
+      "depleted": {
+        "caught": false,
+        "outcome": 0,
+        "draw_reason": 0,
+        "first_burst_tick": 21,
+        "burst_ticks": 3,
+        "contact": null,
+        "end_returns": 26
+      },
+      "full": {
+        "caught": false,
+        "outcome": 0,
+        "draw_reason": 0,
+        "first_burst_tick": 22,
+        "burst_ticks": 4,
+        "contact": null,
+        "end_returns": 26
+      },
+      "earlier_counter": {
+        "caught": true,
+        "outcome": 0,
+        "draw_reason": 0,
+        "first_burst_tick": 22,
+        "burst_ticks": 14,
+        "contact": {
+          "tick": 753,
+          "center": 18.0,
+          "energy": 44
+        },
+        "end_returns": 22
+      }
+    },
+    "focus": {
+      "depleted": {
+        "caught": false,
+        "outcome": 0,
+        "draw_reason": 0,
+        "first_burst_tick": 5,
+        "burst_ticks": 3,
+        "contact": null,
+        "end_returns": 26
+      },
+      "full": {
+        "caught": true,
+        "first_burst_tick": 18,
+        "burst_ticks": 8,
+        "contact": {
+          "tick": 909,
+          "center": 144.0,
+          "energy": 32
+        }
+      },
+      "earlier_counter": {
+        "caught": true,
+        "outcome": 0,
+        "draw_reason": 0,
+        "first_burst_tick": 20,
+        "burst_ticks": 14,
+        "contact": {
+          "tick": 753,
+          "center": 16.0,
+          "energy": 35
+        },
+        "end_returns": 22
+      }
+    }
+  }
+}

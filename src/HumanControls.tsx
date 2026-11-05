@@ -1,6 +1,6 @@
-import { ArrowDown, ArrowUp, Hand } from 'lucide-react'
+import { ArrowDown, ArrowUp, Hand, Zap } from 'lucide-react'
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
-import { endedMatch, type Pair, type Side } from './game'
+import { endedMatch, type Pair, type Side } from './rules'
 import { courtTargetAt, heldHumanAction, humanSideAt, type HeldDirection } from './humanInput'
 import type { Match } from './useMatch'
 
@@ -75,6 +75,7 @@ export function useCourtPointerControls(m: Match, humanSides: Pair<boolean>) {
 
 export function HumanControls({ m, humanSides }: Props) {
   const held = useRef(new Map<string, HeldDirection>())
+  const boosts = useRef(new Map<string, Side>())
   const pointers = useRef(new Map<number, Element>())
   const taps = useRef(new Map<string, ReturnType<typeof setTimeout>>())
   const latest = useRef(m)
@@ -84,9 +85,14 @@ export function HumanControls({ m, humanSides }: Props) {
   const left = humanSides[0], right = humanSides[1]
 
   function publish() {
-    for (const side of [0, 1] as const)
+    for (const side of [0, 1] as const) {
       latest.current.setHumanAction(side, heldHumanAction(held.current.values(), side))
-    setPressed(new Set([...held.current.values()].map((entry) => entry.side + ':' + entry.action)))
+      latest.current.setHumanBoost(side, [...boosts.current.values()].includes(side))
+    }
+    setPressed(new Set([
+      ...[...held.current.values()].map((entry) => entry.side + ':' + entry.action),
+      ...[...boosts.current.values()].map((side) => 'boost:' + side),
+    ]))
   }
   function start(key: string, side: Side, action: 0 | 2) {
     if (!enabled) return
@@ -95,7 +101,8 @@ export function HumanControls({ m, humanSides }: Props) {
     publish()
   }
   function stop(key: string) {
-    if (held.current.delete(key)) publish()
+    const direction = held.current.delete(key), boost = boosts.current.delete(key)
+    if (direction || boost) publish()
   }
   function releasePointer(event: ReactPointerEvent<HTMLButtonElement>) {
     stop('pointer:' + event.pointerId)
@@ -106,6 +113,7 @@ export function HumanControls({ m, humanSides }: Props) {
   useEffect(() => {
     function clear() {
       held.current.clear()
+      boosts.current.clear()
       for (const timer of taps.current.values()) clearTimeout(timer)
       taps.current.clear()
       const captures = [...pointers.current]
@@ -113,6 +121,8 @@ export function HumanControls({ m, humanSides }: Props) {
       for (const [id, element] of captures) releaseCapture(element, id)
       latest.current.setHumanAction(0, null)
       latest.current.setHumanAction(1, null)
+      latest.current.setHumanBoost(0, false)
+      latest.current.setHumanBoost(1, false)
       setPressed(new Set())
     }
     const hidden = () => { if (document.hidden) clear() }
@@ -196,6 +206,36 @@ export function HumanControls({ m, humanSides }: Props) {
                 )
               })}
             </div>
+            {m.rules.energyMax && (
+              <button className="human-boost" disabled={!enabled}
+                aria-label={'Burst player ' + (side + 1)} aria-pressed={pressed.has('boost:' + side)}
+                onPointerDown={(event) => {
+                  if (event.button !== 0 || !enabled) return
+                  event.preventDefault()
+                  event.currentTarget.setPointerCapture(event.pointerId)
+                  pointers.current.set(event.pointerId, event.currentTarget)
+                  boosts.current.set('pointer:' + event.pointerId, side)
+                  publish()
+                }}
+                onPointerUp={releasePointer} onPointerCancel={releasePointer} onLostPointerCapture={releasePointer}
+                onKeyDown={(event) => {
+                  if (event.key !== ' ' && event.key !== 'Enter') return
+                  event.preventDefault()
+                  boosts.current.set('key:boost:' + side, side)
+                  publish()
+                }}
+                onKeyUp={(event) => {
+                  if (event.key === ' ' || event.key === 'Enter') {
+                    event.preventDefault()
+                    stop('key:boost:' + side)
+                  }
+                }}
+                onBlur={() => stop('key:boost:' + side)}>
+                <Zap size={16} /> Hold Burst <small>{(m.frame.energy?.[side] ?? 96) < (m.rules.boostCost ?? 8)
+                  ? 'Release Burst to recharge'
+                  : (left && right ? side === 0 ? 'Left Shift' : 'Right Shift' : 'Shift') + ' + direction'}</small>
+              </button>
+            )}
           </div>
         ))}
       </div>

@@ -1,0 +1,7 @@
+{
+  "branches": 9,
+  "branch_transitions": 1092,
+  "independent_scalar_parity": true,
+  "full_prefix_loop_history_restored": true,
+  "counter_preserves_draw": true
+}

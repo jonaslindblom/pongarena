@@ -1,12 +1,28 @@
-# Train a Pong v4 paddle
+# Train a Rally Lab paddle
 
-Start with the self-contained [v4 contract](v4/README.md), also downloadable as `/training/pong-v4.zip`. It includes the current engine, headless example, dependency-free Python reference, fixtures and checker. The [v1](v1/README.md), [v2](v2/README.md) and [v3](v3/README.md) contracts remain immutable archives.
+The arena opens in **Burst preview** (`pong-burst-v1`), with Focus vs Large. Start with its self-contained [training contract](burst/README.md), also downloadable as `/training/pong-burst-v1.zip`. It includes the engine, a headless example, dependency-free Python reference, fixtures and checker. The frozen **Classic v4** game remains selectable with its own [six-input/three-action contract](v4/README.md), downloadable as `/training/pong-v4.zip`. The two games have separate compatible models and rankings.
 
-Pong v4 builds speed over a rally. On each successful contact, let `s = min(13, abs(incoming_vx) + 1)` and `d` be ball Y minus the updated paddle center. Outgoing horizontal velocity is `±s`, away from the paddle; vertical velocity is `floor(9 * s * d / 195 + 0.5)`. The first return has horizontal speed 6, independently of contact offset. Placement sets approximately the same aiming angle as the ball accelerates, and a center return cannot reset speed. The current velocity already exposes the progression, so all six input and three output meanings remain unchanged.
+## Burst preview workflow
 
-The [gradual-speed study](results/pace-study/README.md) documents tuning, rule-aware opponents, the current `pace_study.py` and `train_pace.py` workflow, and reproduction commands. Its report is `/training/pace-study.html`. **Pacer v4** and **Apprentice v4** are standalone, fully learned `6→128→128→3` Tanh actors trained through DAgger. The geometric teachers are training tools; their trajectory calculations are not included in the exported networks. These two models form the arena's default matchup.
+Burst has eight observations: the same six ball/paddle values as Classic, followed by own and opponent energy divided by 96. Its five scores select up, stay, down, burst up or burst down. Normal movement covers two units; an affordable burst covers four and costs eight energy. Normal actions recharge one energy, while an exhausted burst request moves at normal speed without recharging. Every serve resets energy to 96. Horizontal speed increases by half a unit per return, capped at 13. Exact loop detection includes both energy values. The [contract](burst/README.md) defines all update order, rounding and terminal precedence.
 
-For a human game, **Play yourself** starts Human vs Tracker. Keyboard, touch dragging and hold buttons all produce the same legal up/stay/down moves. Simulation remains at 30 decisions per second; display interpolation smooths animation without changing recorded states, collisions, inference inputs or training rules. Paused replay frames are exact. Human matches disable the deterministic loop shortcut and retain the 1,600-tick deadline.
+The [rule study](results/burst-study/rules-README.md), available at `/training/burst-rules.html`, measures longer rallies and a pressure sequence with reproducible defensive counterfactuals. The [model-size study](results/burst-study/models/README.md), available at `/training/burst-models.html`, contains the training commands, learning curves, frozen selection manifests and final evaluations. `train_size_study.py` trains plain Tanh networks through pooled DAgger; the geometric teachers are training tools and do not appear in exported inference graphs.
+
+| Model | Architecture | Parameters | MACs / decision | Smallest class |
+| --- | --- | ---: | ---: | --- |
+| Micro | `8→16→5` | 229 | 208 | Nano |
+| Tiny | `8→16→16→5` | 501 | 464 | Nano |
+| Small | `8→32→32→5` | 1,509 | 1,440 | Small |
+| Medium | `8→64→64→5` | 5,061 | 4,928 | Standard |
+| Large / Focus | `8→128→128→5` | 18,309 | 18,048 | Standard |
+
+The first five sizes share data and optimization-pass budgets, with two initialization seeds each. **Tiny's 501 parameters** are the smallest useful learned starter demonstrated in this recipe: both initializations beat Tracker. This is not a minimum-size proof or proof of tactical mastery. All five initial models lose every final rally to the attacking teacher.
+
+**Focus** is a separate continuation of Large that oversamples observed burst decisions. On a fresh 320-rally block it wins 44, loses 255 and draws 21 against that teacher, while Large loses all 320. Mapping Focus's burst actions to normal moves removes those wins. However, Focus loses to Large 25 / 197 / 98 and worsens against safer defense. It is a specialist, not an overall upgrade. The report distinguishes learned rescue timing from the multi-exchange placement counter that these networks have not learned.
+
+**Play yourself** starts Human vs Tiny in Burst, or Human vs Tracker in Classic. Hold Shift with a direction, or hold the touch Burst button while moving/dragging, to boost. All controls produce the same legal actions. Simulation remains at 30 decisions per second; display interpolation smooths animation without changing recorded states, collisions, inference inputs or rules. Human matches disable the deterministic loop shortcut and retain the 1,600-tick deadline. Browser emulation and HTTP LAN play/import/ranking have been checked; physical-phone performance and touch feel still need testing.
+
+The [competition protocol](COMPETITION.md) defines Nano, Small, Standard and Open limits, paired common-seed scoring and reproducible benchmark identities. Smaller models may enter larger classes, regardless of how their weights were created. The app runs and stores local leagues; public standings will require an independent evaluator and reserved evaluation seeds. Results from Burst and Classic cannot share a ranking.
 
 ## Current setup and verification
 
@@ -15,19 +31,27 @@ Run from the repository root. The PyTorch scripts use the pinned dependencies in
 ```sh
 python3.12 -m venv .venv
 .venv/bin/python -m pip install -r training/requirements.txt
+python3 training/burst/check.py
 python3 training/v4/check.py
-node --import tsx training/scripts/check_replays.ts
 npm test
 npm run build
 ```
 
-V4 fixtures contain 3,545 full-match transitions, 1,958 trace transitions, 20 boundary cases, five detector histories and a restart-reset check. `training/v4/game.ts` is the packaged current engine. The v4 contract specifies rounding, collision order, the speed progression and point-before-loop-before-timeout precedence precisely. Use its headless example with `--no-loops` for human or stochastic-controller semantics. Training and evaluation commands for the new models are maintained in the [pace study](results/pace-study/README.md).
+Burst's standalone fixtures contain 102 isolated transitions and three complete five-rally matches with 11,905 frames. Inside a standalone copy of `training/burst/`, `npm install && npm run check` also checks the TypeScript implementation. The size-study report retains native ONNX parity and full-match replay checks, with separate manifests for the controlled size comparison and Focus follow-up. See that report's reproduction commands before training; retained final test blocks must not be reused for model selection.
 
-**The older `env.py`, `train.py` and `release.py` scripts still target v3.** They are retained for historical reproduction and must not be used as the v4 simulator or release workflow. Earlier model files remain interface-compatible, but evaluate them again under v4 before comparing strength.
+Use `--no-loops` with either standalone headless example for human or stochastic-controller semantics. Only fixed deterministic stateless policy pairs may use the exact-loop shortcut. **The older `env.py`, `train.py` and `release.py` scripts target v3**, not Burst or Classic v4.
+
+## Frozen Classic v4 workflow
+
+Pong v4 builds speed over a rally. On each successful contact, let `s = min(13, abs(incoming_vx) + 1)` and `d` be ball Y minus the updated paddle center. Outgoing horizontal velocity is `±s`, away from the paddle; vertical velocity is `floor(9 * s * d / 195 + 0.5)`. The first return has horizontal speed 6, independently of contact offset. Placement sets approximately the same aiming angle as the ball accelerates, and a center return cannot reset speed. Its six-input/three-score interface has no burst resource.
+
+The [gradual-speed study](results/pace-study/README.md) documents tuning, rule-aware opponents and the `pace_study.py` / `train_pace.py` reproduction workflow. Its report is `/training/pace-study.html`. **Pacer v4** and **Apprentice v4** are standalone, fully learned `6→128→128→3` Tanh actors trained through DAgger. The geometric teachers' trajectory calculations are not included in the exported networks. These two models form the default matchup when selecting Classic v4.
+
+V4 fixtures contain 3,545 full-match transitions, 1,958 trace transitions, 20 boundary cases, five detector histories and a restart-reset check. `training/v4/game.ts` is its frozen packaged engine. Run `node --import tsx training/scripts/check_replays.ts` for its saved model replays. Earlier six-input weights remain interface-compatible, but evaluate them again under v4 before comparing strength. The [v1](v1/README.md), [v2](v2/README.md) and [v3](v3/README.md) contracts remain immutable archives.
 
 ## Archived v3 training and evaluation
 
-The remainder records the original v3 experiment. Its results and verification counts apply to v3, not the current arena. Reproducing its browser/release checks requires a separate checkout of the v3 source, for example commit `623e3a3`. The current replay checker can also verify its saved fixtures against the frozen v3 engine with `node --import tsx training/scripts/check_replays.ts --v3`.
+The remainder records the original v3 experiment. Its results and verification counts apply to v3, not Burst or Classic v4. Reproducing its browser/release checks requires a separate checkout of the v3 source, for example commit `623e3a3`. The current replay checker can also verify its saved fixtures against the frozen v3 engine with `node --import tsx training/scripts/check_replays.ts --v3`.
 
 Pong v3 keeps all v2 physics and the six-input/three-score interface. The rally deadline is now **1,600 ticks**. Fixed deterministic model pairs also draw when an exact post-contact ball/paddle state repeats. The arena labels loop and timeout draws separately; neither awards a point. Human matches use the full deadline.
 
@@ -144,6 +168,6 @@ At the v3 release, both actors agreed with native ONNX on every action across 8,
 
 ## Archives
 
-V1/v2/v3 contracts, ZIPs, original weights and original result directories are preserved. Their visual reports are `/training/v1/report.html`, `/training/v2/report.html` and `/training/report.html`. V2 source and original documentation are at Git commit `517a730`; use a separate checkout to reproduce that experiment. The pre-v3 rule-study source checkpoint is `0b0cba1`; its historical checker continues to use the explicit v2 reference. The legacy `env.py`, `train.py` and `release.py` target v3; current v4 work uses `pace_study.py` and `train_pace.py` as documented above.
+V1/v2/v3 contracts, ZIPs, original weights and original result directories are preserved. Their visual reports are `/training/v1/report.html`, `/training/v2/report.html` and `/training/report.html`. V2 source and original documentation are at Git commit `517a730`; use a separate checkout to reproduce that experiment. The pre-v3 rule-study source checkpoint is `0b0cba1`; its historical checker continues to use the explicit v2 reference. The legacy `env.py`, `train.py` and `release.py` target v3; Classic v4 uses `pace_study.py` and `train_pace.py`, and Burst uses `train_size_study.py` as documented above.
 
 Methods: [PPO](https://arxiv.org/abs/1707.06347), [DAgger](https://arxiv.org/abs/1011.0686), [CleanRL PPO notes](https://docs.cleanrl.dev/rl-algorithms/ppo/). All training, inference and logging are local.
