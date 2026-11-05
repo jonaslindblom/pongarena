@@ -1,9 +1,8 @@
 import {
   Activity,
-  ArrowDown,
+  ArrowLeft,
   ArrowLeftRight,
   ArrowRight,
-  ArrowUp,
   AudioLines,
   ChevronDown,
   CircleDot,
@@ -14,7 +13,9 @@ import {
   Gamepad2,
   Keyboard,
   List,
+  Maximize,
   Minus,
+  Minimize,
   Pause,
   Play,
   RotateCcw,
@@ -66,12 +67,60 @@ function eventText(f: Frame, names: Pair<string>) {
     return f.drawReason === 'loop' ? 'Rally drawn · repeating loop' : `Rally drawn at ${RALLY_TICK_LIMIT.toLocaleString()} ticks`
   return names[f.actor!] + ' returns the ball'
 }
-function Court({ m, names, controllers, ready, humanSides }: {
-  m: Match; names: Pair<string>; controllers: Pair<Controller | undefined>; ready: boolean; humanSides: Pair<boolean>
+function Court({ m, names, controllers, ready, humanSides, bottom }: {
+  m: Match; names: Pair<string>; controllers: Pair<Controller | undefined>; ready: boolean; humanSides: Pair<boolean>; bottom: Side
 }) {
   const f = m.frame
-  const input = useCourtPointerControls(m, humanSides)
+  const { active, ...input } = useCourtPointerControls(m, humanSides)
   const field = useRef<SVGSVGElement>(null)
+  const court = useRef<HTMLElement>(null)
+  const fullscreenControl = useRef<HTMLButtonElement>(null)
+  const [fullscreen, setFullscreen] = useState(false)
+  function exitFullscreen() {
+    if (document.fullscreenElement === court.current)
+      void document.exitFullscreen().catch(() => { /* The viewport mode can still be closed. */ })
+    setFullscreen(false)
+  }
+  function enterFullscreen() {
+    setFullscreen(true)
+    // Keep a viewport-filling mode when native fullscreen is unavailable or denied.
+    void court.current?.requestFullscreen?.().catch(() => {})
+  }
+  useLayoutEffect(() => {
+    if (!fullscreen) return
+    const scrollX = window.scrollX, scrollY = window.scrollY
+    const previousFocus = document.activeElement as HTMLElement | null
+    document.documentElement.classList.add('game-fullscreen')
+    fullscreenControl.current?.focus({ preventScroll: true })
+    function change() {
+      if (document.fullscreenElement !== court.current) setFullscreen(false)
+    }
+    function keydown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        exitFullscreen()
+      }
+      if (event.key !== 'Tab') return
+      const buttons = court.current!.querySelectorAll<HTMLButtonElement>('button:not(:disabled)')
+      const first = buttons[0], last = buttons[buttons.length - 1]
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
+    document.addEventListener('fullscreenchange', change)
+    document.addEventListener('keydown', keydown)
+    return () => {
+      document.removeEventListener('fullscreenchange', change)
+      document.removeEventListener('keydown', keydown)
+      document.documentElement.classList.remove('game-fullscreen')
+      previousFocus?.focus({ preventScroll: true })
+      window.scrollTo(scrollX, scrollY)
+    }
+  }, [fullscreen])
   useLayoutEffect(() => {
     const svg = field.current!
     const paddles = svg.querySelectorAll<SVGRectElement>('.paddle')
@@ -116,7 +165,9 @@ function Court({ m, names, controllers, ready, humanSides }: {
             ? 'Paused'
             : 'Ready'
   return (
-    <section className="court" aria-label="Pong court">
+    <section {...input} ref={court}
+      className={'court court-vertical' + (active ? ' human-controlled' : '') + (fullscreen ? ' court-fullscreen' : '')}
+      role={fullscreen ? 'dialog' : undefined} aria-modal={fullscreen || undefined} aria-label="Pong court">
       <div className="court-top">
         <span className="court-id">
           <span className="bracket">[</span> COURT 01 <span className="bracket">]</span>
@@ -127,12 +178,30 @@ function Court({ m, names, controllers, ready, humanSides }: {
           <i />
           {status}
         </span>
+        <div className="court-actions">
+          {fullscreen && <>
+            <button className="court-control" disabled={!ready} onClick={m.toggle}
+              aria-label={m.playing ? 'Pause match' : endedMatch(f) ? 'Replay match' : 'Play match'}
+              title={m.playing ? 'Pause match' : endedMatch(f) ? 'Replay match' : 'Play match'}>
+              {m.playing ? <Pause size={18} /> : <Play size={18} />}
+            </button>
+            <button className="court-control" onClick={() => m.reset()} aria-label="Restart match" title="Restart match">
+              <RotateCcw size={18} />
+            </button>
+          </>}
+          <button ref={fullscreenControl} className="court-control" onClick={fullscreen ? exitFullscreen : enterFullscreen}
+            aria-label={fullscreen ? 'Exit full screen' : 'Enter full screen'} aria-pressed={fullscreen}
+            title={fullscreen ? 'Exit full screen (Esc)' : 'Enter full screen'}>
+            {fullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
+            <span>{fullscreen ? 'Exit' : 'Full screen'}</span>
+          </button>
+        </div>
       </div>
       <div className="scoreboard">
         <div className="score-player">
           <small>
             <i className="p1-dot" />
-            PLAYER 01
+            PLAYER 01{bottom === 0 ? ' · BOTTOM' : ' · TOP'}
           </small>
           <strong>{names[0]}</strong>
           <ControllerBadge model={controllers[0]} compact />
@@ -144,87 +213,95 @@ function Court({ m, names, controllers, ready, humanSides }: {
         </div>
         <div className="score-player right">
           <small>
-            PLAYER 02
+            PLAYER 02{bottom === 1 ? ' · BOTTOM' : ' · TOP'}
             <i className="p2-dot" />
           </small>
           <strong>{names[1]}</strong>
           <ControllerBadge model={controllers[1]} compact />
         </div>
       </div>
-      <svg
-        {...input}
-        ref={field}
-        viewBox="0 0 360 160"
-        preserveAspectRatio="none"
-        role="img"
-        aria-label="Live court with a mint left paddle, orange right paddle and ball"
-      >
-        <defs>
-          <pattern id="grid" width="15" height="16" patternUnits="userSpaceOnUse">
-            <path d="M15 0H0V16" fill="none" stroke="#9ebdb2" strokeWidth=".28" opacity=".18" />
-            <circle r=".55" fill="#bdd1c5" opacity=".35" />
-          </pattern>
-          <filter id="softball" x="-100%" y="-100%" width="300%" height="300%">
-            <feGaussianBlur stdDeviation="2" />
-          </filter>
-        </defs>
-        <rect width="360" height="160" fill="url(#grid)" />
-        <rect
-          x=".4"
-          y=".4"
-          width="359.2"
-          height="159.2"
-          rx="1"
-          fill="none"
-          stroke="#aec7b6"
-          strokeWidth=".6"
-          opacity=".45"
-        />
-        <circle
-          cx="180"
-          cy="80"
-          r="26"
-          stroke="#bad2c2"
-          opacity=".18"
-          fill="none"
-          strokeWidth=".65"
-        />
-        <path
-          d="M180 0V160"
-          stroke="#bdd2c1"
-          strokeWidth=".8"
-          strokeDasharray="2.2 2.7"
-          opacity=".62"
-        />
-        <path
-          d="M.7 7V.7H7 M353 .7h6.3V7 M.7 153v6.3H7 M353 159.3h6.3V153"
-          fill="none"
-          stroke="#b4c7b7"
-          strokeWidth="1"
-        />
-        <rect x="6" y="68" width="5" height="24" rx="1.2" className="paddle left" />
-        <rect
-          x="349"
-          y="68"
-          width="5"
-          height="24"
-          rx="1.2"
-          className="paddle right"
-        />
-        {Array.from({ length: 7 }, (_, i) => (
-          <circle
-            key={i}
-            className="ball-trail"
-            cx="180"
-            cy="80"
-            r={0.7 + i * 0.18}
-            fill="#e8f8c9"
-            opacity="0"
-          />
-        ))}
-        <circle className="moving-ball" cx="180" cy="80" r="3.7" fill="#dafa9c" opacity=".44" filter="url(#softball)" />
-        <circle className="moving-ball" cx="180" cy="80" r="2.55" fill="#f1ffd9" />
-      </svg>
+      <div className="court-field">
+        <svg
+          className="field"
+          ref={field}
+          viewBox="0 0 160 360"
+          preserveAspectRatio="none"
+          role="img"
+          aria-label={`Live court: ${bottom === 0 ? 'mint' : 'orange'} bottom paddle, ${bottom === 0 ? 'orange' : 'mint'} top paddle and ball`}
+        >
+          <defs>
+            <pattern id="grid" width="15" height="16" patternUnits="userSpaceOnUse">
+              <path d="M15 0H0V16" fill="none" stroke="#9ebdb2" strokeWidth=".28" opacity=".18" />
+              <circle r=".55" fill="#bdd1c5" opacity=".35" />
+            </pattern>
+            <filter id="softball" x="-100%" y="-100%" width="300%" height="300%">
+              <feGaussianBlur stdDeviation="2" />
+            </filter>
+          </defs>
+          <g transform={bottom === 0 ? 'matrix(0 -1 1 0 0 360)' : 'matrix(0 1 1 0 0 0)'}>
+            <rect width="360" height="160" fill="url(#grid)" />
+            <rect
+              x=".4"
+              y=".4"
+              width="359.2"
+              height="159.2"
+              rx="1"
+              fill="none"
+              stroke="#aec7b6"
+              strokeWidth=".6"
+              opacity=".45"
+            />
+            <circle
+              cx="180"
+              cy="80"
+              r="26"
+              stroke="#bad2c2"
+              opacity=".18"
+              fill="none"
+              strokeWidth=".65"
+            />
+            <path
+              d="M180 0V160"
+              stroke="#bdd2c1"
+              strokeWidth=".8"
+              strokeDasharray="2.2 2.7"
+              opacity=".62"
+            />
+            <path
+              d="M.7 7V.7H7 M353 .7h6.3V7 M.7 153v6.3H7 M353 159.3h6.3V153"
+              fill="none"
+              stroke="#b4c7b7"
+              strokeWidth="1"
+            />
+            <rect x="6" y="68" width="5" height="24" rx="1.2" className="paddle left" />
+            <rect
+              x="349"
+              y="68"
+              width="5"
+              height="24"
+              rx="1.2"
+              className="paddle right"
+            />
+            {Array.from({ length: 7 }, (_, i) => (
+              <circle
+                key={i}
+                className="ball-trail"
+                cx="180"
+                cy="80"
+                r={0.7 + i * 0.18}
+                fill="#e8f8c9"
+                opacity="0"
+              />
+            ))}
+            <circle className="moving-ball" cx="180" cy="80" r="3.7" fill="#dafa9c" opacity=".44" filter="url(#softball)" />
+            <circle className="moving-ball" cx="180" cy="80" r="2.55" fill="#f1ffd9" />
+          </g>
+        </svg>
+      </div>
+      {fullscreen && (humanSides[0] || humanSides[1]) && <p className="court-instruction">
+        <span><ArrowLeft size={14} /> Hold left</span>
+        <span>Hold right <ArrowRight size={14} /></span>
+      </p>}
       {f.energy && m.rules.energyMax && (
         <div className="court-energy" aria-label="Burst energy">
           {([0, 1] as const).map((side) => (
@@ -352,6 +429,8 @@ interface Props {
 export function Arena({ m, models, ids, pick, swap, ready }: Props) {
   const [side, setSide] = useState<Side>(0)
   const humanSides: Pair<boolean> = [ids[0] === 'keyboard', ids[1] === 'keyboard']
+  const bottom: Side = humanSides[1] && !humanSides[0] ? 1 : 0
+  const actions = ['Left', 'Stay', 'Right', 'Burst left', 'Burst right'].slice(0, m.rules.outputSize)
   const controllers = ids.map((id) => models.find((model) => model.id === id)) as Pair<Controller | undefined>
   const names = ids.map(
     (id, i) => controllers[i]?.name ?? id[0].toUpperCase() + id.slice(1),
@@ -374,7 +453,7 @@ export function Arena({ m, models, ids, pick, swap, ready }: Props) {
   return (
     <div className="arena-grid">
       <div className="main-column">
-        <Court m={m} names={names} controllers={controllers} ready={ready} humanSides={humanSides} />
+        <Court m={m} names={names} controllers={controllers} ready={ready} humanSides={humanSides} bottom={bottom} />
         <HumanControls m={m} humanSides={humanSides} />
         <Transport m={m} ready={ready} />
         <section className="panel feed">
@@ -424,7 +503,7 @@ export function Arena({ m, models, ids, pick, swap, ready }: Props) {
                     <i />
                     PLAYER 0{i + 1}
                     <span>/</span>
-                    {i === 0 ? 'LEFT' : 'RIGHT'}
+                    {i === bottom ? 'BOTTOM' : 'TOP'}
                   </span>
                   <span className="pick-body">
                     <span className="model-icon">
@@ -437,7 +516,7 @@ export function Arena({ m, models, ids, pick, swap, ready }: Props) {
                     <ChevronDown size={15} />
                   </span>
                   <select
-                    aria-label={i === 0 ? 'Left controller' : 'Right controller'}
+                    aria-label={i === bottom ? 'Bottom controller' : 'Top controller'}
                     value={ids[i]}
                     onChange={(e) => pick(i, e.target.value)}
                   >
@@ -464,8 +543,8 @@ export function Arena({ m, models, ids, pick, swap, ready }: Props) {
             <Gamepad2 size={15} />
             {ids.includes('keyboard')
               ? ids.every((x) => x === 'keyboard')
-                ? 'Drag your half of the court · Left: W/S · Right: ↑/↓'
-                : 'Drag on the court, use the touch buttons, or press W/S or ↑/↓'
+                ? 'Hold left/right in your half · Bottom: A/D · Top: ←/→'
+                : 'Hold the left or right half to move · Lift to stop · A/D or ←/→'
               : 'Select Human to play against a script or weights.'}
           </div>
           <div className="seed-row">
@@ -500,8 +579,8 @@ export function Arena({ m, models, ids, pick, swap, ready }: Props) {
               <span>{discrete ? 'CHOSEN ACTION' : 'RAW OUTPUT'}</span>
             </div>
             <div className="inspect-controller"><ControllerBadge model={inspected} /></div>
-            {m.rules.actions.map((a, i) => {
-              const Icon = [ArrowUp, Minus, ArrowDown, ArrowUp, ArrowDown][i],
+            {actions.map((a, i) => {
+              const Icon = [ArrowLeft, Minus, ArrowRight, ArrowLeft, ArrowRight][i],
                 v = scores?.[i] ?? 0
               return (
                 <div className={'score-row ' + (chosen === i ? 'chosen' : '')} key={a}>
@@ -524,7 +603,7 @@ export function Arena({ m, models, ids, pick, swap, ready }: Props) {
             })}
             <div className="decision">
               <span>SELECTED MOVE</span>
-              <b>{chosen >= 0 ? m.rules.actions[chosen] : 'Awaiting tick'}</b>
+              <b>{chosen >= 0 ? actions[chosen] : 'Awaiting tick'}</b>
             </div>
             {inspected?.type === 'script' && <p className="controller-decision-note">One-hot decision: 1 marks the action chosen by the script; 0 marks the others.</p>}
             <div className="trace">
@@ -540,7 +619,7 @@ export function Arena({ m, models, ids, pick, swap, ready }: Props) {
                   return (
                     <i
                       key={f.tick}
-                      title={'Tick ' + f.tick + ' · ' + (move === null ? 'Serve' : m.rules.actions[move])}
+                      title={'Tick ' + f.tick + ' · ' + (move === null ? 'Serve' : actions[move])}
                       style={{
                         gridColumn: 41 - arr.length + i,
                         gridRow: move === null ? 2 : move === 3 ? 1 : move === 4 ? 3 : move + 1,

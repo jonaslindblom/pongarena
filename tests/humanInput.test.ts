@@ -1,29 +1,56 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { courtTargetAt, heldHumanAction, humanSideAt, humanTargetAction, type HeldDirection } from '../src/humanInput'
+import { courtActionAt, heldHumanAction, humanKeyAction, humanSideAt, type HeldDirection } from '../src/humanInput'
 
-test('a burst drag finishes at its target without oscillating or wasting energy', () => {
-  assert.equal(humanTargetAction(60, 80, true), 4)
-  assert.equal(humanTargetAction(78, 80, true), 2)
-  assert.equal(humanTargetAction(80, 80, true), 1)
-  assert.equal(humanTargetAction(82, 80, true), 0)
-  assert.equal(humanTargetAction(90, 80, true), 3)
-  assert.equal(humanTargetAction(60, 80, false), 2)
+test('screen halves request held directions instead of a target at the thumb position', () => {
+  assert.equal(courtActionAt(0, 300), 0)
+  assert.equal(courtActionAt(149, 300), 0)
+  assert.equal(courtActionAt(150, 300), 2)
+  assert.equal(courtActionAt(300, 300), 2)
+  assert.equal(courtActionAt(-20, 600), 0)
+  assert.equal(courtActionAt(700, 600), 2)
 })
 
-test('a single human can drag anywhere while two humans keep their own court halves', () => {
-  assert.equal(humanSideAt(290, 300, [true, false]), 0)
-  assert.equal(humanSideAt(10, 300, [false, true]), 1)
-  assert.equal(humanSideAt(149, 300, [true, true]), 0)
-  assert.equal(humanSideAt(150, 300, [true, true]), 1)
-  assert.equal(humanSideAt(90, 300, [false, false]), null)
+test('a solo human can use both thumbs anywhere on the screen', () => {
+  for (const height of [10, 590]) {
+    assert.equal(humanSideAt(height, 600, [true, false]), 0)
+    assert.equal(humanSideAt(height, 600, [false, true]), 1)
+    assert.equal(humanSideAt(height, 600, [false, false]), null)
+  }
 })
 
-test('a captured drag outside the court remains a reachable paddle target', () => {
-  assert.equal(courtTargetAt(-90, 200), 15)
-  assert.equal(courtTargetAt(100, 200), 80)
-  assert.equal(courtTargetAt(350, 200), 145)
-  assert.equal(courtTargetAt(0, 0), 15)
+test('releasing one of two thumbs on the same half keeps the other thumb moving', () => {
+  const held = new Map<number, HeldDirection>([
+    [1, { side: 0, action: 0 }],
+    [2, { side: 0, action: 0 }],
+  ])
+  assert.equal(heldHumanAction(held.values(), 0), 0)
+  held.delete(1)
+  assert.equal(heldHumanAction(held.values(), 0), 0)
+  held.delete(2)
+  assert.equal(heldHumanAction(held.values(), 0), null)
+})
+
+test('two humans have independent top and bottom touch zones', () => {
+  assert.equal(humanSideAt(10, 600, [true, true]), 1)
+  assert.equal(humanSideAt(299, 600, [true, true]), 1)
+  assert.equal(humanSideAt(300, 600, [true, true]), 0)
+  assert.equal(humanSideAt(590, 600, [true, true]), 0)
+})
+
+test('horizontal keys steer either solo paddle and keep two-human controls independent', () => {
+  for (const side of [0, 1] as const) {
+    for (const code of ['KeyA', 'ArrowLeft', 'KeyW', 'ArrowUp'])
+      assert.equal(humanKeyAction(new Set([code]), side, false), 0)
+    for (const code of ['KeyD', 'ArrowRight', 'KeyS', 'ArrowDown'])
+      assert.equal(humanKeyAction(new Set([code]), side, false), 2)
+    assert.equal(humanKeyAction(new Set(['ArrowLeft', 'ArrowRight']), side, false), 1)
+    assert.equal(humanKeyAction(new Set(), side, false), null)
+  }
+  assert.equal(humanKeyAction(new Set(['KeyA', 'ArrowRight']), 0, true), 0)
+  assert.equal(humanKeyAction(new Set(['KeyA', 'ArrowRight']), 1, true), 2)
+  assert.equal(humanKeyAction(new Set(['KeyD']), 1, true), null)
+  assert.equal(humanKeyAction(new Set(['ArrowLeft']), 0, true), null)
 })
 
 test('opposite held buttons cancel, releasing one restores the remaining direction', () => {
