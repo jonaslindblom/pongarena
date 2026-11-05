@@ -1,0 +1,23 @@
+{
+  "purpose": "NativeONNX parity on retained reachable audit states; implementation not selection",
+  "observations": 8192,
+  "action_mismatches": 0,
+  "maximum_score_error": 1.2159347534179688e-05,
+  "mean_score_error": 6.818688120802108e-07,
+  "first_mismatches": [],
+  "sha256": "64b6f14a604fd6d7ff72b91a2861b7a061f6568b6edde80d4697c2e2160e31ca",
+  "graph_nodes": [
+    "Gemm",
+    "Relu",
+    "Gemm",
+    "Relu",
+    "Gemm"
+  ],
+  "architecture": [
+    6,
+    42,
+    33,
+    3
+  ],
+  "embedded_weight_tensors": 6
+}

@@ -1,0 +1,122 @@
+{
+  "prism-small-v4.onnx": {
+    "sha256": "64b6f14a604fd6d7ff72b91a2861b7a061f6568b6edde80d4697c2e2160e31ca",
+    "widths": [
+      6,
+      42,
+      33,
+      3
+    ],
+    "params": 1815,
+    "macs": 1737,
+    "nodes": 5
+  },
+  "nano-cap-contact.onnx": {
+    "sha256": "5ec4a3ee353e6de81b403f48019fbdb489c7b7527ccdc0467d52f5fb96da2fa9",
+    "widths": [
+      6,
+      28,
+      8,
+      3
+    ],
+    "params": 455,
+    "macs": 416,
+    "nodes": 5
+  },
+  "small-cap-global.onnx": {
+    "sha256": "ff3ed743b57869a1ad3dce0c9476235cf565c2e1e4c2e966dd15064a663ae4a3",
+    "widths": [
+      6,
+      44,
+      8,
+      3
+    ],
+    "params": 695,
+    "macs": 640,
+    "nodes": 5
+  },
+  "small-coarse-risk.onnx": {
+    "sha256": "e2536a6b29b15d194ccd86715764dc3474e9b15a03675974f5fde29a43647f27",
+    "widths": [
+      6,
+      27,
+      58,
+      3
+    ],
+    "params": 1990,
+    "macs": 1902,
+    "nodes": 5
+  },
+  "standard-full-risk-cap-contact.onnx": {
+    "sha256": "39a83639ea44ba8827996c8c4073586c2203dcf78ec54d8fc1d7a3abf8886271",
+    "widths": [
+      6,
+      26,
+      307,
+      3
+    ],
+    "params": 9395,
+    "macs": 9059,
+    "nodes": 5
+  },
+  "standard-full-risk-cap-global.onnx": {
+    "sha256": "526fcab54d184fdba066e2b7877b77e7b95f32f168a93deef33ce496a8da233d",
+    "widths": [
+      6,
+      42,
+      307,
+      3
+    ],
+    "params": 14419,
+    "macs": 14067,
+    "nodes": 5
+  },
+  "standard-full-risk.onnx": {
+    "sha256": "de5704b60c71a9b89ab84578df99e282ba1aed2ea6beff8b92f6c3469decfe13",
+    "widths": [
+      6,
+      27,
+      308,
+      3
+    ],
+    "params": 9740,
+    "macs": 9402,
+    "nodes": 5
+  },
+  "standard-joint-cap-global.onnx": {
+    "sha256": "1f15476d91406fc1c029fbea0927c060b54e7ede7e6c239b0c49eae6273fab82",
+    "widths": [
+      6,
+      42,
+      319,
+      3
+    ],
+    "params": 14971,
+    "macs": 14607,
+    "nodes": 5
+  },
+  "variable-speed-lattice.onnx": {
+    "sha256": "69f469eceb6c628508012d04da4a5d0778caef7af834099685ddc0699ec9fc67",
+    "widths": [
+      6,
+      123,
+      9,
+      3
+    ],
+    "params": 2007,
+    "macs": 1872,
+    "nodes": 5
+  },
+  "variable-speed.onnx": {
+    "sha256": "f3c67805fd8b7a31b72259f33ba9a6a883068abc2ad85849f27069972442f6a5",
+    "widths": [
+      6,
+      125,
+      9,
+      3
+    ],
+    "params": 2039,
+    "macs": 1902,
+    "nodes": 5
+  }
+}

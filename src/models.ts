@@ -76,6 +76,13 @@ export const presets = [
     report: '/training/prism-nano-v4.html',
   },
   {
+    id: 'prism-small-v4',
+    name: 'Prism Small v4',
+    kind: 'Handcrafted dense · Small · v4',
+    description: 'A plain 6→42→33→3 ReLU network with 1,815 hand-constructed parameters and no training. Uses a cap-speed forecast and coherent contact targets. Beats Pacer and Prism Nano in fresh tests; adaptive scripts remain much stronger.',
+    report: '/training/prism-small-v4.html',
+  },
+  {
     id: 'contender-v3',
     name: 'Contender v3',
     kind: 'Fully learned · PPO + weight search',
