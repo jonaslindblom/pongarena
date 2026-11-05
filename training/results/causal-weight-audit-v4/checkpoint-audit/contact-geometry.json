@@ -1,0 +1,35 @@
+{
+  "purpose": "Offline explanation of contact geometry on source rollout states; not final gameplay evidence",
+  "groups": {
+    "risk_better": {
+      "count": 135,
+      "mean_abs_offset_before": 7.503703703703704,
+      "mean_abs_offset_after": 8.97037037037037,
+      "flatter": 18,
+      "steeper": 117,
+      "old_up": 42,
+      "old_down": 93,
+      "new_stay": 135
+    },
+    "risk_worse": {
+      "count": 30,
+      "mean_abs_offset_before": 8.833333333333334,
+      "mean_abs_offset_after": 8.3,
+      "flatter": 19,
+      "steeper": 11,
+      "old_up": 9,
+      "old_down": 21,
+      "new_stay": 30
+    },
+    "all_changed": {
+      "count": 228,
+      "mean_abs_offset_before": 8.052631578947368,
+      "mean_abs_offset_after": 8.763157894736842,
+      "flatter": 70,
+      "steeper": 151,
+      "old_up": 87,
+      "old_down": 141,
+      "new_stay": 228
+    }
+  }
+}

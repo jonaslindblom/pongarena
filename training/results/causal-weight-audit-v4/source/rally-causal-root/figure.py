@@ -31,4 +31,5 @@ for i,name in enumerate(names):
 ax[1,1].axvline(0,color='#555',ls='--',lw=1);ax[1,1].set(yticks=range(4),yticklabels=labels,xlabel='Point-margin change vs original Pacer',title='First four edits: no reliable strong-panel gain');ax[1,1].invert_yaxis()
 fig.suptitle('Pacer: what causal weight tests reveal',fontsize=17)
 fig.savefig(out/'causal-findings.png',dpi=160);fig.savefig(out/'causal-findings.svg');plt.close(fig)
+p=out/'causal-findings.svg';p.write_text('\n'.join(line.rstrip() for line in p.read_text().splitlines())+'\n')
 print('Saved causal figure',out/'causal-findings.png')

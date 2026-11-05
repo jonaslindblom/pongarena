@@ -26,6 +26,16 @@
       "action_mismatches": 0,
       "max_score_error": 1.049041748046875e-05,
       "sha256": "af300c52d61f12c75be7c40198002de9c02ac18a93e4f38dbe66b7389b459977"
+    },
+    "targeted-down68": {
+      "action_mismatches": 0,
+      "max_score_error": 1.049041748046875e-05,
+      "sha256": "abe5348df5b03693cff61902def452e688876be8f10da757e7e52482abe13774"
+    },
+    "contact-motion-56": {
+      "action_mismatches": 0,
+      "max_score_error": 1.049041748046875e-05,
+      "sha256": "88955fe7743d824c76c039d209885639d6889e49872c4741897a481f77a2d206"
     }
   }
 }

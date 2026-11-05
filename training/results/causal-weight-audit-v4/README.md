@@ -1,8 +1,8 @@
 # Causal dense-weight study
 
-Checkpoint status: **no demonstrated model upgrade in the first five interventions**. The fifth edit repairs the selected late-recovery errors but has no reliable overall gain. Exploration continues with a more selective learned path and an independent compact dense approximation. These are development experiments, not new catalog standings.
+Checkpoint status: **no demonstrated model upgrade in seven learned-weight interventions**. Local repairs do not establish an overall gain. Exploration continues with an independent compact dense approximation. These are development experiments, not new catalog standings.
 
-All five retained candidates are genuine `6→128→128→3` Tanh networks: three Gemm layers, two Tanh activations, 17,795 parameters and 17,536 MACs. They remain Standard class. There are no runtime geometric features, branches, trajectories, lookups, adapters or input/output changes. Geometry below diagnoses decisions offline; it is not exported. No formal training, parameter fitting, optimizer, gradient updates or random mutation search was used.
+All seven retained candidates are genuine `6→128→128→3` Tanh networks: three Gemm layers, two Tanh activations, 17,795 parameters and 17,536 MACs. They remain Standard class. There are no runtime geometric features, branches, trajectories, lookups, adapters or input/output changes. Geometry below diagnoses decisions offline; it is not exported. No formal training, parameter fitting, optimizer, gradient updates or random mutation search was used.
 
 ## What the weights mean, with causal evidence
 
@@ -35,7 +35,7 @@ A different single contact-tick action reduces positive geometric recovery risk 
 
 Verification checks 1,132,626 discrete reachability cases against the existing contact-path calculation and 8,203 native ONNX observations against the source network. See `failure-audit/verification.json`.
 
-## Five explicit interventions and every outcome
+## Seven explicit interventions and every outcome
 
 The four initial candidates were fixed from the feature audit before their match panel. The fifth follows the late-recovery diagnosis: unit 89 is near +1 on incoming states and −1 on the targeted outgoing states. Two numerical edits add a phase-selective stay vote:
 
@@ -54,12 +54,20 @@ This leaves all 90,076 incoming actions unchanged and changes 6,886/86,425 outgo
 | Restore upward path 96 | 29/200/11 | 23/170/47 | 106/129/5 | −0.0854 [−0.1292, −0.0438] |
 | Restore downward path 91 | 44/184/12 | 25/161/54 | 112/120/8 | +0.0021 [−0.0208, +0.0271] |
 | Phase braking 89 | 47/192/1 | 22/147/71 | 123/111/6 | +0.0146 [−0.0313, +0.0583] |
+| Remove centered down vote 68 | 32/208/0 | 25/161/54 | 108/125/7 | −0.0729 [−0.1104, −0.0354] |
+| Neutralize motion permission 56 | 53/180/7 | 18/155/67 | 109/128/3 | +0.0271 [−0.0438, +0.1042] |
+
+The sixth edit removes only unit 68's centered down vote: set `Wout[down,68]=0` and subtract its old value from `bout[down]`. Its fixed-observation footprint is much narrower than the broad brake: 0 incoming and 2,391 outgoing actions change. It repairs the same 19 retained safety errors, and no retained flip immediately discards a universal safety option. Nevertheless, 430/480 rallies diverge, typically 18 ticks before contact; full games get worse. An unchanged incoming mapping does not preserve incoming behavior once different recovery actions change later paddle positions and opponent replies. Local proofs do not establish global feature value.
+
+The seventh edit follows an independent contact analysis. Unit 56 contributes mainly permission to move: its output stay-versus-mean-move contrast is −0.58303, while its down-versus-up contrast is only +0.08135. Set its stay weight to the mean of its up/down weights and add that weight difference to the stay bias. This source-derived two-number edit preserves the saturated −1 reference and up/down steering. On the original 2,214 own contacts it improves geometric risk 135 times, worsens it 30 times and creates no immediate misses. Most improvements (117/135) make the shot steeper: staying near the previous paddle position can be safer than chasing a centered contact. Low-speed cases trade against high-speed gains. The full-game improvement interval still spans zero, so this is not promoted.
+
+Six unchanged earlier source checkpoints are additional controls in `checkpoint-audit/game-controls.json`. All are weaker than final Pacer on this strong panel. The closest, continuation round 18, has a margin change −0.0563 [−0.1542, +0.0521]. Round 12 narrowly beats final Pacer head-to-head (116/101/23) while losing badly to both scripts, illustrating nontransitivity. Several earlier checkpoints repair the same retained safety examples yet play substantially worse overall. A local repair is not evidence of a generally healthier source network.
 
 The strong panel is the equal-weight mean paired-seed point-margin change against attack and defense. Each seed retains both physical sides and all five rallies; 4,000 whole-seed bootstrap resamples give descriptive intervals. There are also full panels against Apprentice, Contender and Tracker in `development/`. These are development comparisons of adaptively explored hypotheses, not confirmatory p-values. No final holdout has been consumed because none qualifies.
 
 ## Reproduction and evidence
 
-`training/scripts/causal_dense_edits.py --out <fresh-directory>` recreates all five exact candidates from frozen source weights and runs the strict active dense validator. `validation.json` records hashes, architecture, resource counts and exactly which parameters changed. `native-verification.json` records zero action mismatches on 8,192 fresh observations per candidate (40,960 total). Maximum score differences are about 1.1e−5.
+`training/scripts/causal_dense_edits.py --out <fresh-directory>` recreates all seven exact candidates from frozen source weights and runs the strict active dense validator. `validation.json` records hashes, architecture, resource counts and exactly which parameters changed. `native-verification.json` records zero action mismatches on 8,192 fresh observations per candidate (57,344 total). Maximum score differences are about 1.1e−5.
 
 `failure-audit/pacer-failure-states.npz` retains the 176,501 observations and contextual labels. `critical-states.npz` retains the 11 distinct incoming/outgoing actionable states. `checkpoint-audit/` and `feature-audit/` contain attribution, controlled interventions and donor-path checks. `source/` preserves the original research scripts with their temporary paths; the 234 MB activation cache and duplicate observation array are omitted because they can be regenerated. The portable candidate constructor is the maintained reproduction entry point.
 

@@ -52,6 +52,18 @@ def candidates():
         model[-1].weight[1, 89] -= .5
         model[-1].bias[1] += .5
     result['phase-braking'] = model
+    model = copy.deepcopy(source)
+    with torch.no_grad():
+        model[-1].weight[2, 68] = 0
+        model[-1].bias[2] -= source[-1].weight[2, 68]
+    result['targeted-down68'] = model
+    model = copy.deepcopy(source)
+    with torch.no_grad():
+        old = source[-1].weight[1, 56]
+        new = source[-1].weight[[0, 2], 56].mean()
+        model[-1].weight[1, 56] = new
+        model[-1].bias[1] += new-old
+    result['contact-motion-56'] = model
     return source, result
 
 

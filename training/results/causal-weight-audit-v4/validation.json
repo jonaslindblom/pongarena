@@ -85,6 +85,38 @@
         128,
         3
       ]
+    },
+    "targeted-down68": {
+      "sha256": "abe5348df5b03693cff61902def452e688876be8f10da757e7e52482abe13774",
+      "changed_parameters": {
+        "4.weight": 1,
+        "4.bias": 1
+      },
+      "params": 17795,
+      "macs": 17536,
+      "nodes": 5,
+      "widths": [
+        6,
+        128,
+        128,
+        3
+      ]
+    },
+    "contact-motion-56": {
+      "sha256": "88955fe7743d824c76c039d209885639d6889e49872c4741897a481f77a2d206",
+      "changed_parameters": {
+        "4.weight": 1,
+        "4.bias": 1
+      },
+      "params": 17795,
+      "macs": 17536,
+      "nodes": 5,
+      "widths": [
+        6,
+        128,
+        128,
+        3
+      ]
     }
   }
 }
