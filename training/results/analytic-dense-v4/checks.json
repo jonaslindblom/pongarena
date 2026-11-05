@@ -1,0 +1,21 @@
+{
+  "catalog_presets_loaded": 10,
+  "browser_runtime": "onnxruntime-web WASM",
+  "browser_probes": 128,
+  "browser_action_mismatches": 0,
+  "browser_max_score_error": 2.0265579223632812e-06,
+  "source": "browser-probes.json",
+  "tests": {
+    "passed": 66,
+    "failed": 0,
+    "skipped": 0
+  },
+  "production_build": "passed",
+  "frozen_reproduction": "byte-identical SHA-256",
+  "note": "Development server font request hit its external-symlink filesystem restriction; production preview checked separately.",
+  "production_preview": {
+    "prism_visible": true,
+    "console_errors": 0,
+    "port": 5180
+  }
+}

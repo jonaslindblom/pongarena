@@ -1,0 +1,77 @@
+{
+  "5": {
+    "states": 7920,
+    "median_abs_total_forecast_error": 19.799957275390625,
+    "max_abs_total_forecast_error": 99.03854370117188,
+    "median_abs_dense_product_error": 0.4153348482572028,
+    "max_abs_dense_product_error": 1.2307962270883408
+  },
+  "6": {
+    "states": 13200,
+    "median_abs_total_forecast_error": 27.484567642211914,
+    "max_abs_total_forecast_error": 116.0,
+    "median_abs_dense_product_error": 0.4153712346003573,
+    "max_abs_dense_product_error": 1.1539705716646722
+  },
+  "7": {
+    "states": 9888,
+    "median_abs_total_forecast_error": 20.73073959350586,
+    "max_abs_total_forecast_error": 109.9307861328125,
+    "median_abs_dense_product_error": 0.4308060866135861,
+    "max_abs_dense_product_error": 1.230823223407441
+  },
+  "8": {
+    "states": 10080,
+    "median_abs_total_forecast_error": 15.299957275390625,
+    "max_abs_total_forecast_error": 79.9307861328125,
+    "median_abs_dense_product_error": 0.46154609093298404,
+    "max_abs_dense_product_error": 1.1693126971904917
+  },
+  "9": {
+    "states": 7474,
+    "median_abs_total_forecast_error": 12.96160888671875,
+    "max_abs_total_forecast_error": 65.66148376464844,
+    "median_abs_dense_product_error": 0.3694246732271722,
+    "max_abs_dense_product_error": 1.1539283165564882
+  },
+  "10": {
+    "states": 7920,
+    "median_abs_total_forecast_error": 10.4461669921875,
+    "max_abs_total_forecast_error": 50.0384521484375,
+    "median_abs_dense_product_error": 0.323096642127382,
+    "max_abs_dense_product_error": 1.0617141723632812
+  },
+  "11": {
+    "states": 6060,
+    "median_abs_total_forecast_error": 3.1383819580078125,
+    "max_abs_total_forecast_error": 29.038516998291016,
+    "median_abs_dense_product_error": 0.2615426870492783,
+    "max_abs_dense_product_error": 1.1077176607572028
+  },
+  "12": {
+    "states": 6720,
+    "median_abs_total_forecast_error": 4.476921081542969,
+    "max_abs_total_forecast_error": 16.23078155517578,
+    "median_abs_dense_product_error": 0.4153794508713986,
+    "max_abs_dense_product_error": 1.1539447490985708
+  },
+  "13": {
+    "states": 13052,
+    "median_abs_total_forecast_error": 0.5692214965820312,
+    "max_abs_total_forecast_error": 2.1538848876953125,
+    "median_abs_dense_product_error": 0.3230226956881097,
+    "max_abs_dense_product_error": 1.2308161808894056
+  },
+  "catchable_failure_onsets": {
+    "count": 38,
+    "remaining_ticks_median": 24.0,
+    "remaining_ticks_range": [
+      14,
+      33
+    ],
+    "median_abs_total_error": 68.2230224609375,
+    "median_abs_exact_cap13_error": 68.03846153846155,
+    "median_abs_dense_product_error": 0.5538335946889958
+  },
+  "outgoing_center80_max_error": 0.0
+}

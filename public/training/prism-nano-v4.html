@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rally Lab · Prism Nano v4</title>
+<link rel="icon" href="/mark.svg">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f5f6f0;color:#203c30;font:15px/1.65 system-ui,sans-serif}main{max-width:1080px;margin:auto;padding:36px 24px 64px}nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:40px}a{color:#376e43}h1{font-size:clamp(36px,6vw,64px);line-height:1.05;letter-spacing:-.05em;max-width:900px;margin:12px 0 22px}h2{font-size:26px;line-height:1.2;letter-spacing:-.025em;margin:0 0 16px}p{color:#5a6b5b;max-width:930px}.eyebrow{font:11px monospace;letter-spacing:.14em;color:#75935c}.notice{display:inline-block;font-size:12px;color:#466445;background:#e5eddc;padding:6px 12px;border-radius:30px}section{background:#fdfef9;border:1px solid #dce3d5;border-radius:12px;padding:24px;margin-top:22px}.table-wrap{overflow-x:auto;max-width:100%}table{border-collapse:collapse;width:100%;font-size:13px;text-align:left}th,td{padding:12px 10px;border-bottom:1px solid #e2e7dc;white-space:nowrap}th{font-weight:500;color:#70816c}.note,footer{font-size:12px;color:#70816c}.downloads{display:flex;flex-wrap:wrap;gap:12px}.download{display:inline-block;border:1px solid #b8c7ab;border-radius:8px;padding:10px 14px;text-decoration:none}code{background:#edf1e7;border-radius:4px;padding:2px 5px;overflow-wrap:anywhere}pre{background:#edf1e7;padding:16px;overflow:auto;font-size:12px;border-radius:8px}pre code{padding:0}footer{margin-top:30px}@media(max-width:650px){main{padding:26px 14px 44px}section{padding:18px}nav{margin-bottom:28px}h2{font-size:23px}}
+</style>
+<main>
+<nav><a href="/">← Arena</a><a href="pong-v4.zip">Classic v4 game specification ↓</a></nav>
+<div class="eyebrow">RALLY LAB / ANALYTIC DENSE WEIGHTS</div>
+<h1>Prism Nano v4.</h1>
+<span class="notice">503 parameters · ordinary dense ReLU · no training</span>
+<p>Prism is a hand-constructed <strong>6 → 29 → 9 → 3</strong> network. It beats the Nano references Tracker, Anticipator, and Challenger in all three fresh test blocks. It loses to Pacer and both adaptive scripts in every block. This is a useful Nano-class comparison; the stronger-model goal remains unmet.</p>
+<div class="downloads"><a class="download" href="/models/prism-nano-v4.onnx" download>Prism Nano v4 · 2.7 KiB ↓</a></div>
+<section>
+<h2>A plain dense network from six raw inputs</h2>
+<div class="table-wrap" tabindex="0"><table><thead><tr><th>Architecture</th><th>Parameters</th><th>MACs / decision</th><th>Nodes</th><th>Bytes</th><th>Class</th></tr></thead><tbody><tr><td>6 → 29 → 9 → 3 · ReLU</td><td>503</td><td>462</td><td>5</td><td>2,769</td><td>Nano</td></tr></tbody></table></div>
+<p>The graph is exactly <code>Gemm → Relu → Gemm → Relu → Gemm</code>: three distinct fixed weight matrices, their bias vectors, two hidden ReLU activations, and a linear three-score output. The six raw Classic v4 observations enter the first layer directly. All coefficients, including zero weights and biases, are counted. Nano permits 512 parameters and 2,048 MACs.</p>
+<p>These are hand-specified dense weights with no formal training, optimizer, or learned-source transfer. Physical heuristics inform the hidden-unit coefficients. Their features are ordinary responses of the two dense layers; no exact trajectory helper runs alongside inference.</p>
+<p class="note">The current <code>observation-6/action-scores-3/dense-mlp-v2</code> contract applies. Earlier scalar-arithmetic handcrafted graphs remain retired archives and are not the models measured here. Pacer versus Apprentice remains the default matchup.</p>
+</section>
+<section>
+<h2>What the hidden units approximate</h2>
+<p>The first layer uses fixed piecewise-square ridge responses to approximate a ball-position/vertical-velocity interaction. Signed linear carries preserve ball and paddle coordinates; other units respond to incoming/outgoing motion and the opponent’s side. The second layer combines those responses into an approximate reflected landing feature and paddle-position feedback.</p>
+<p>Anticipation assumes a horizontal speed of 13, including a half-tick correction. A conservative six-court-unit contact-placement cue depends on the opponent’s side. While the ball travels away, the network returns toward center. The output deadband is 1.101 court units; that small numerical guard was fixed before final testing.</p>
+<p>The coefficients encode transparent priors, not discovered or learned features. The anticipation is approximate: slower incoming flights, wall reflections, reachable aiming, and future recovery can differ from its prediction. This model does not calculate exact integer contact times or solve shot planning.</p>
+</section>
+<section>
+<h2>Three fresh blocks, every measured opponent</h2>
+<div class="table-wrap" tabindex="0"><table><thead><tr><th>Opponent</th><th>Block 1 W / L / D</th><th>Block 2 W / L / D</th><th>Block 3 W / L / D</th></tr></thead><tbody><tr><td>Tracker</td><td>587 / 53 / 0</td><td>585 / 55 / 0</td><td>577 / 63 / 0</td></tr><tr><td>Anticipator</td><td>568 / 70 / 2</td><td>567 / 73 / 0</td><td>555 / 84 / 1</td></tr><tr><td>Challenger</td><td>568 / 66 / 6</td><td>569 / 68 / 3</td><td>567 / 70 / 3</td></tr><tr><td>Pacer v4</td><td>245 / 369 / 26</td><td>213 / 399 / 28</td><td>216 / 402 / 22</td></tr><tr><td>Adaptive attack</td><td>0 / 606 / 34</td><td>0 / 600 / 40</td><td>0 / 605 / 35</td></tr><tr><td>Adaptive defense</td><td>12 / 547 / 81</td><td>10 / 554 / 76</td><td>9 / 556 / 75</td></tr></tbody></table></div>
+<p class="note">Each cell contains 64 unique seeds × five rallies × both side assignments = 640 rallies. Each opponent therefore receives 1,920 rallies across the three blocks. Actual frozen batch-one ONNX inference is used for Prism and the exported reference models; attack and defense are the unchanged adaptive v4 scripts. Rules, first-argmax action choice, the 1,600-tick deadline, and exact loop detection are unchanged.</p>
+<p>The candidate was frozen before final seeds were generated. The 192 seeds were drawn without replacement from [1,180,000,000, 1,190,000,000), using RNG 2026110527. The protocol’s archive scan found no overlap across 370 retained JSON/JSONL files. These final seeds are now consumed and must not be reused for model selection.</p>
+</section>
+<section>
+<h2>The Nano reference field</h2>
+<div class="table-wrap" tabindex="0"><table><thead><tr><th>Opponent</th><th>Total rally W / L / D</th><th>Total paired contest W / L / D</th></tr></thead><tbody><tr><td>Tracker</td><td>1749 / 171 / 0</td><td>191 / 0 / 1</td></tr><tr><td>Anticipator</td><td>1690 / 227 / 3</td><td>192 / 0 / 0</td></tr><tr><td>Challenger</td><td>1704 / 204 / 12</td><td>192 / 0 / 0</td></tr></tbody></table></div>
+<p>Against each of these three Nano references, every block passes the declared criteria: a majority of paired ten-rally contests won, a positive point-margin 95% confidence interval resampling whole seeds, and more rally wins than losses on both physical sides. This establishes the measured class improvement; it is not a complete round-robin championship or public leaderboard.</p>
+<p><strong>Pacer and attacker qualification fails.</strong> Prism loses to Pacer in every block, scores no rally wins against the adaptive attacker, and also loses heavily to adaptive defense. Those failures are part of the result. It should not be described as an attacker counter, an overall strongest model, or a tactical ceiling.</p>
+</section>
+<section>
+<h2>Frozen evidence and reproduction</h2>
+<p>The published file is the exact frozen candidate with SHA-256 <code>1eedf32a2fff0721aa101d4ba8a925a6fac7734f259daa9180ecb6523f65991a</code>. Strict arena validation checks its ordinary dense topology and Nano budget. Native numerical checks show zero action mismatches on 8,192 reachable observations, and browser WASM checks show zero mismatches on another 128 probes. The exact constructor reproduces the frozen file byte for byte; all 66 application tests pass with none skipped, and the production build passes.</p>
+<p>The complete investigation is documented in <code>training/results/analytic-dense-v4/README.md</code>. Final protocol and raw outcomes are retained in <code>training/results/analytic-dense-v4/native-final/</code>, and the exact export is retained at <code>training/results/analytic-dense-v4/models/prism-nano-v4.onnx</code>. The constructor is <code>training/scripts/analytic_dense_v4.py</code>.</p>
+<p>Use the model library to play or download Prism. Its inclusion adds an eligible Nano baseline; it does not promote the retired graph-program results back into dense-network standings.</p>
+</section>
+<footer>Rally Lab · Prism Nano v4 · <a href="/models/prism-nano-v4.onnx" download>Download weights</a> · <a href="/">Arena</a></footer>
+</main>
+</html>

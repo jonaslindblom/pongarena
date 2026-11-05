@@ -296,6 +296,21 @@ test('v4 releases use the evaluated learned weights and expose their larger arch
   }
 })
 
+test('Prism Nano publishes its frozen plain dense weights within the Nano budget', () => {
+  const bytes = readFileSync(new URL('../public/models/prism-nano-v4.onnx', import.meta.url))
+  assert.equal(createHash('sha256').update(bytes).digest('hex'),
+    '1eedf32a2fff0721aa101d4ba8a925a6fac7734f259daa9180ecb6523f65991a')
+  const stats = validateArenaModel(bytes)
+  assert.deepEqual([stats.inputSize, stats.outputSize], [6, 3])
+  assert.deepEqual(stats.architecture.widths, [6, 29, 9, 3])
+  assert.deepEqual(stats.architecture.operations.map((node) => node.op),
+    ['Gemm', 'Relu', 'Gemm', 'Relu', 'Gemm'])
+  assert.deepEqual([stats.params, stats.macs, stats.nodes], [503, 462, 5])
+  assert.equal(smallestDivision(stats), 'nano')
+  const model = pb.onnx.ModelProto.decode(bytes)
+  assert.match(model.metadataProps.find((p) => p.key === 'method')!.value!, /no training/)
+})
+
 test('the retired handcrafted policies remain inspectable archives but cannot enter dense-only play', () => {
   const frozen = JSON.parse(readFileSync(new URL('../training/results/compact-handcrafted-v4/freeze.json', import.meta.url), 'utf8'))
   for (const size of ['nano', 'small']) {

@@ -69,6 +69,13 @@ export const presets = [
     report: '/training/pace-study.html',
   },
   {
+    id: 'prism-nano-v4',
+    name: 'Prism Nano v4',
+    kind: 'Handcrafted dense · Nano · v4',
+    description: 'A plain 6→29→9→3 ReLU network with 503 hand-constructed parameters and no training. Uses approximate anticipation and conservative contact aiming. Beats Tracker, Anticipator, and Challenger in fresh Nano tests; loses to Pacer and adaptive scripts.',
+    report: '/training/prism-nano-v4.html',
+  },
+  {
     id: 'contender-v3',
     name: 'Contender v3',
     kind: 'Fully learned · PPO + weight search',
