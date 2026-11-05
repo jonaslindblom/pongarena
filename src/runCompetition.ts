@@ -5,7 +5,7 @@ import type { PlayCompetitionMatch } from './competition'
 export function browserCompetitionMatch(models: Controller[], rules: Ruleset): PlayCompetitionMatch {
   return async ({ left, right, seed, signal }) => {
     const players = [left, right].map((entry) => models.find((model) =>
-      model.sha256 === entry.sha256 && model.inputSize === rules.inputSize &&
+      model.type === 'weights' && model.sha256 === entry.sha256 && model.inputSize === rules.inputSize &&
       model.outputSize === rules.outputSize))
     if (players.some((player) => !player?.session)) throw new Error('A model is unavailable for these rules.')
     let frame = rules.serve(seed)

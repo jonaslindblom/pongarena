@@ -7,6 +7,7 @@ import {
   AudioLines,
   ChevronDown,
   CircleDot,
+  Code2,
   Cpu,
   Dna,
   FastForward,
@@ -39,19 +40,23 @@ import type { Match } from './useMatch'
 import { architectureLabel } from './Architecture'
 import { HumanControls, useCourtPointerControls } from './HumanControls'
 import { interpolate, progress } from './presentation'
+import { ControllerBadge, controllerOptionLabel } from './ControllerBadge'
+import { DIVISIONS, smallestDivision } from './competition'
 
 export const pad = (n: number) => String(n).padStart(2, '0')
 export function ModelIcon({ id, size = 20 }: { id: string; size?: number }) {
   const Icon =
     id === 'keyboard'
       ? Keyboard
-      : id === 'challenger'
-        ? Dna
-        : id === 'tracker'
-          ? CircleDot
-          : id === 'anticipator'
-            ? Waves
-            : Cpu
+      : id.startsWith('script-')
+        ? Code2
+        : id === 'challenger'
+          ? Dna
+          : id === 'tracker'
+            ? CircleDot
+            : id === 'anticipator'
+              ? Waves
+              : Cpu
   return <Icon size={size} strokeWidth={1.7} />
 }
 function eventText(f: Frame, names: Pair<string>) {
@@ -61,8 +66,8 @@ function eventText(f: Frame, names: Pair<string>) {
     return f.drawReason === 'loop' ? 'Rally drawn · repeating loop' : `Rally drawn at ${RALLY_TICK_LIMIT.toLocaleString()} ticks`
   return names[f.actor!] + ' returns the ball'
 }
-function Court({ m, names, ready, humanSides }: {
-  m: Match; names: Pair<string>; ready: boolean; humanSides: Pair<boolean>
+function Court({ m, names, controllers, ready, humanSides }: {
+  m: Match; names: Pair<string>; controllers: Pair<Controller | undefined>; ready: boolean; humanSides: Pair<boolean>
 }) {
   const f = m.frame
   const input = useCourtPointerControls(m, humanSides)
@@ -130,6 +135,7 @@ function Court({ m, names, ready, humanSides }: {
             PLAYER 01
           </small>
           <strong>{names[0]}</strong>
+          <ControllerBadge model={controllers[0]} compact />
         </div>
         <div className="big-score" aria-label={'Score ' + f.points.join(' to ')}>
           <b>{pad(f.points[0])}</b>
@@ -142,6 +148,7 @@ function Court({ m, names, ready, humanSides }: {
             <i className="p2-dot" />
           </small>
           <strong>{names[1]}</strong>
+          <ControllerBadge model={controllers[1]} compact />
         </div>
       </div>
       <svg
@@ -345,9 +352,19 @@ interface Props {
 export function Arena({ m, models, ids, pick, swap, ready }: Props) {
   const [side, setSide] = useState<Side>(0)
   const humanSides: Pair<boolean> = [ids[0] === 'keyboard', ids[1] === 'keyboard']
+  const controllers = ids.map((id) => models.find((model) => model.id === id)) as Pair<Controller | undefined>
   const names = ids.map(
-    (id) => models.find((x) => x.id === id)?.name ?? id[0].toUpperCase() + id.slice(1),
+    (id, i) => controllers[i]?.name ?? id[0].toUpperCase() + id.slice(1),
   ) as Pair<string>
+  const groups = [
+    { name: 'Human', models: models.filter((c) => c.type === 'human') },
+    { name: 'Scripts', models: models.filter((c) => c.type === 'script') },
+    ...DIVISIONS.map((d) => ({ name: d.name + ' weights',
+      models: models.filter((c) => c.type === 'weights' && smallestDivision(c) === d.id) })),
+    { name: 'Unclassified weights', models: models.filter((c) => c.type === 'weights' && !smallestDivision(c)) },
+  ].filter((group) => group.models.length)
+  const inspected = controllers[side]
+  const discrete = inspected?.type === 'human' || inspected?.type === 'script'
   const scores = m.frame.scores[side]
   const chosen = scores ? choice(scores) : -1
   const max = Math.max(0.001, ...(scores ?? []).map(Math.abs))
@@ -357,7 +374,7 @@ export function Arena({ m, models, ids, pick, swap, ready }: Props) {
   return (
     <div className="arena-grid">
       <div className="main-column">
-        <Court m={m} names={names} ready={ready} humanSides={humanSides} />
+        <Court m={m} names={names} controllers={controllers} ready={ready} humanSides={humanSides} />
         <HumanControls m={m} humanSides={humanSides} />
         <Transport m={m} ready={ready} />
         <section className="panel feed">
@@ -415,7 +432,7 @@ export function Arena({ m, models, ids, pick, swap, ready }: Props) {
                     </span>
                     <span className="pick-name">
                       <b>{names[i]}</b>
-                      <small>{models.find((x) => x.id === ids[i])?.kind ?? 'Neural model'}</small>
+                      <small>{controllers[i]?.kind ?? 'Loading controller'}</small>
                     </span>
                     <ChevronDown size={15} />
                   </span>
@@ -424,28 +441,32 @@ export function Arena({ m, models, ids, pick, swap, ready }: Props) {
                     value={ids[i]}
                     onChange={(e) => pick(i, e.target.value)}
                   >
-                    {models.map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.name}
-                      </option>
+                    {groups.map((group) => (
+                      <optgroup key={group.name} label={group.name}>
+                        {group.models.map((c) => (
+                          <option key={c.id} value={c.id}>{controllerOptionLabel(c)}</option>
+                        ))}
+                      </optgroup>
                     ))}
                   </select>
                 </label>
-                {ids[i] !== 'keyboard' && (
-                  <div className="pick-architecture">
-                    {architectureLabel(models.find((x) => x.id === ids[i]))}
-                  </div>
-                )}
+                <div className="pick-details">
+                  <ControllerBadge model={controllers[i]} />
+                  {controllers[i]?.type === 'weights' && (
+                    <div className="pick-architecture">{architectureLabel(controllers[i])}</div>
+                  )}
+                </div>
               </div>
             ))}
           </div>
+          <p className="controller-class-note">Weight classes follow parameter and compute budgets: Nano, Small, Standard, Open. Size is not a skill rating.</p>
           <div className="setup-note">
             <Gamepad2 size={15} />
             {ids.includes('keyboard')
               ? ids.every((x) => x === 'keyboard')
                 ? 'Drag your half of the court · Left: W/S · Right: ↑/↓'
                 : 'Drag on the court, use the touch buttons, or press W/S or ↑/↓'
-              : 'Select Human to play a model.'}
+              : 'Select Human to play against a script or weights.'}
           </div>
           <div className="seed-row">
             <span>SEED {String(m.seed).padStart(4, '0')}</span>
@@ -457,7 +478,7 @@ export function Arena({ m, models, ids, pick, swap, ready }: Props) {
         <section className="panel inspector">
           <div className="panel-heading">
             <h2>
-              <AudioLines size={17} /> Action scores
+              <AudioLines size={17} /> {inspected?.type === 'script' ? 'Script decision' : inspected?.type === 'human' ? 'Human input' : 'Action scores'}
             </h2>
             <div className="segmented">
               {([0, 1] as const).map((i) => (
@@ -476,8 +497,9 @@ export function Arena({ m, models, ids, pick, swap, ready }: Props) {
             <div className="inspect-source">
               <i className={side === 0 ? 'p1-dot' : 'p2-dot'} />
               {names[side]}
-              <span>{ids[side] === 'keyboard' ? 'HUMAN INPUT' : 'RAW OUTPUT'}</span>
+              <span>{discrete ? 'CHOSEN ACTION' : 'RAW OUTPUT'}</span>
             </div>
+            <div className="inspect-controller"><ControllerBadge model={inspected} /></div>
             {m.rules.actions.map((a, i) => {
               const Icon = [ArrowUp, Minus, ArrowDown, ArrowUp, ArrowDown][i],
                 v = scores?.[i] ?? 0
@@ -487,16 +509,16 @@ export function Arena({ m, models, ids, pick, swap, ready }: Props) {
                     <Icon size={14} />
                     {a}
                   </span>
-                  <div className="score-track">
+                  <div className={'score-track' + (discrete ? ' discrete' : '')}>
                     <i
                       style={{
-                        width: (Math.abs(v) / max) * 50 + '%',
-                        left: v < 0 ? 50 - (Math.abs(v) / max) * 50 + '%' : '50%',
+                        width: (Math.abs(v) / max) * (discrete ? 100 : 50) + '%',
+                        left: discrete ? '0%' : v < 0 ? 50 - (Math.abs(v) / max) * 50 + '%' : '50%',
                         background: side === 0 ? '#329c79' : '#d07849',
                       }}
                     />
                   </div>
-                  <output>{scores ? (v >= 0 ? '+' : '') + v.toFixed(2) : '—'}</output>
+                  <output>{scores ? discrete ? v.toFixed(0) : (v >= 0 ? '+' : '') + v.toFixed(2) : '—'}</output>
                 </div>
               )
             })}
@@ -504,6 +526,7 @@ export function Arena({ m, models, ids, pick, swap, ready }: Props) {
               <span>SELECTED MOVE</span>
               <b>{chosen >= 0 ? m.rules.actions[chosen] : 'Awaiting tick'}</b>
             </div>
+            {inspected?.type === 'script' && <p className="controller-decision-note">One-hot decision: 1 marks the action chosen by the script; 0 marks the others.</p>}
             <div className="trace">
               <span>LAST 40 DECISIONS</span>
               <div

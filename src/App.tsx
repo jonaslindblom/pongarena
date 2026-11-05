@@ -21,6 +21,7 @@ import { ArchivedModelError, MAX_BYTES } from './validate'
 import { savedModels, saveModel } from './storage'
 import { useMatch } from './useMatch'
 import { Architecture } from './Architecture'
+import { ControllerBadge } from './ControllerBadge'
 import { CLASSIC } from './rules'
 import { Ranking } from './Ranking'
 import { browserCompetitionMatch } from './runCompetition'
@@ -59,7 +60,7 @@ function Guide() {
           wins.
         </p>
         <p>
-          When two models repeat the same ball and paddle state after a return, their rally is
+          When two models or scripts repeat the same ball and paddle state after a return, their rally is
           drawn early: the same decisions would repeat forever. Matches with a human use the
           full time limit. Drawn rallies award no points.
         </p>
@@ -74,6 +75,12 @@ function Guide() {
           Choose Human to use W/S, arrow keys, the on-screen buttons, or drag the court. Touch and
           pointer controls steer through the same movement limit. Animation fills the space between
           decisions; paused frames and replays preserve the exact game state.
+        </p>
+        <p>
+          The amber Script badge marks a deterministic program: Attacker plans shot placement,
+          Defender plans catches and recovery, and Interceptor follows the predicted landing point.
+          They use the same six observations and movement limits as weight models. Pick one as
+          Player 02, then press Play yourself to face it.
         </p>
         <div className="section-code">02 / OBSERVATION</div>
         <h2>What your model sees</h2>
@@ -106,7 +113,8 @@ function Guide() {
         <p>
           The inspector shows the raw scores for the move that produced the displayed frame. Bars
           start at zero in the center and scale to the largest absolute score for that player and
-          tick.
+          tick. Scripts show a 1 for their chosen action and 0 for the others; these are decisions,
+          not confidence scores.
         </p>
       </article>
       <aside className="panel guide guide-side">
@@ -240,11 +248,11 @@ export default function App() {
     setImportSide(0)
     dialog.current?.showModal()
   }
-  function playYourself() {
+  function playAgainst(opponent: string) {
     initialView.current = false
     m.reset()
     m.setSpeed(1)
-    setIds(['keyboard', 'tracker'])
+    setIds(['keyboard', opponent])
     setPage('Arena')
     setError('')
     m.play()
@@ -331,7 +339,8 @@ export default function App() {
           </div>
           <div className="page-actions">
             {page === 'Arena' && (
-              <button className="secondary-btn" disabled={!ready} onClick={playYourself}>
+              <button className="secondary-btn" disabled={!ready}
+                onClick={() => playAgainst(ids[1] === 'keyboard' ? 'tracker' : ids[1])}>
                 <Gamepad2 size={17} /> Play yourself
               </button>
             )}
@@ -371,7 +380,7 @@ export default function App() {
           />
         )}
         {page === 'Rankings' && (
-          <Ranking key={rules.id} entrants={eligibleModels.filter((model) => model.sha256).map((model) => ({
+          <Ranking key={rules.id} entrants={eligibleModels.filter((model) => model.type === 'weights' && model.sha256).map((model) => ({
             id: model.id, name: model.name, sha256: model.sha256!, params: model.params, macs: model.macs,
           } satisfies CompetitionEntrant))} rulesId={rules.id} contractId={rules.contractId}
             playMatch={browserCompetitionMatch(eligibleModels, rules)} onStart={m.pause} />
@@ -392,15 +401,25 @@ export default function App() {
                   </div>
                   <small>{c.kind}</small>
                   <h2>{c.name}</h2>
+                  <ControllerBadge model={c} />
                   <p>{c.description}</p>
                   <Architecture model={c} />
                   <dl>
+                    {c.type === 'weights' ? <>
                     <dt>Parameters</dt>
                     <dd>{c.params.toLocaleString()}</dd>
                     <dt>MACs / tick</dt>
                     <dd>{c.macs.toLocaleString()}</dd>
                     <dt>Smallest class</dt>
                     <dd>{smallestDivision(c) ?? '—'}</dd>
+                    </> : <>
+                    <dt>Controller</dt>
+                    <dd>Scripted logic</dd>
+                    <dt>Weights</dt>
+                    <dd>None</dd>
+                    <dt>Observations / actions</dt>
+                    <dd>6 / 3</dd>
+                    </>}
                     <dt>Game contract</dt>
                     <dd>Classic v4</dd>
                   </dl>
@@ -410,6 +429,9 @@ export default function App() {
                     </a>
                   )}
                   <div className="library-actions">
+                    <button className="secondary-btn" onClick={() => playAgainst(c.id)}>
+                      <Gamepad2 size={14} /> Play against
+                    </button>
                     <button
                       className="secondary-btn"
                       onClick={() => {

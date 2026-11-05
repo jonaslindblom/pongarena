@@ -4,6 +4,7 @@ import moduleUrl from '../node_modules/onnxruntime-web/dist/ort-wasm-simd-thread
 import { validateArenaModel, validateModel } from './validate'
 import { choice, type Scores } from './rules'
 import { sha256 } from './competition'
+import { scriptScores, type ScriptKind } from './scripted'
 
 ort.env.wasm.numThreads = 1
 ort.env.wasm.wasmPaths = {
@@ -11,6 +12,7 @@ ort.env.wasm.wasmPaths = {
   mjs: new URL(moduleUrl, document.baseURI).href,
 }
 export interface Controller {
+  type: 'human' | 'script' | 'weights'
   id: string
   name: string
   kind: string
@@ -23,8 +25,10 @@ export interface Controller {
   architecture?: ReturnType<typeof validateModel>['architecture']
   report?: string
   session?: ort.InferenceSession
+  script?: ScriptKind
 }
 export const keyboard: Controller = {
+  type: 'human',
   id: 'keyboard',
   name: 'Human',
   kind: 'Human',
@@ -32,6 +36,23 @@ export const keyboard: Controller = {
   params: 0,
   macs: 0,
 }
+export const scripts: Controller[] = [
+  {
+    id: 'script-attack', name: 'Attacker', script: 'attack',
+    description: 'Predicts contact and aims at the hardest reachable return for the opposing paddle. The adaptive attacker used in our Classic v4 evaluations.',
+  },
+  {
+    id: 'script-defend', name: 'Defender', script: 'defend',
+    description: 'Plans a catch and recovers toward a position that covers the next return. The adaptive defender used in our Classic v4 evaluations.',
+  },
+  {
+    id: 'script-interceptor', name: 'Interceptor', script: 'interceptor',
+    description: 'Predicts the incoming ball’s height and moves to intercept it. Recovers to cover possible returns while the ball travels away.',
+  },
+].map((script) => ({
+  ...script, script: script.script as ScriptKind, type: 'script', kind: 'Deterministic script',
+  params: 0, macs: 0, inputSize: 6, outputSize: 3,
+}))
 export const presets = [
   {
     id: 'pacer-v4',
@@ -103,12 +124,12 @@ export const presets = [
 ]
 export async function loadModel(
   bytes: Uint8Array,
-  info: Omit<Controller, 'params' | 'macs' | 'session'>,
+  info: Omit<Controller, 'type' | 'params' | 'macs' | 'session' | 'script'>,
 ): Promise<Controller> {
   const stats = validateArenaModel(bytes)
   const digest = await sha256(bytes)
   const session = await ort.InferenceSession.create(bytes, { executionProviders: ['wasm'] })
-  const controller = { ...info, ...stats, sha256: digest, session }
+  const controller: Controller = { ...info, ...stats, type: 'weights', sha256: digest, session }
   try {
     await infer(controller, new Float32Array(stats.inputSize))
   } catch (error) {
@@ -119,6 +140,7 @@ export async function loadModel(
 }
 export async function infer(model: Controller, input: Float32Array): Promise<Scores> {
   if (input.length !== model.inputSize) throw new Error('This model belongs to a different game contract.')
+  if (model.type === 'script') return scriptScores(model.script!, input)
   const result = await model.session!.run({ observation: new ort.Tensor('float32', input, [1, input.length]) })
   const output = result.action_scores
   const scores = Array.from(output.data as Float32Array) as Scores
@@ -126,7 +148,7 @@ export async function infer(model: Controller, input: Float32Array): Promise<Sco
   return scores
 }
 export async function loadPresets() {
-  const controllers: Controller[] = []
+  const controllers: Controller[] = [...scripts]
   for (const p of presets) {
     const response = await fetch('/models/' + p.id + '.onnx')
     if (!response.ok) throw new Error('Could not load ' + p.name + '.')

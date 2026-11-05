@@ -151,8 +151,8 @@ export function useMatch(
               if (revision.current !== version) return false
             }
             if (players.some((player, side) => player !== currentPlayers.current[side])) return false
-            const modelMatch = players.every((player) => player?.session && player.id !== 'keyboard')
-            next = rules.advance(previous, scores as Pair<Scores>, modelMatch ? loops.current : undefined)
+            const automaticMatch = players.every((player) => player && player.type !== 'human')
+            next = rules.advance(previous, scores as Pair<Scores>, automaticMatch ? loops.current : undefined)
           }
           if (revision.current !== version) return false
           history.current.push(next)

@@ -23,11 +23,13 @@ Open the **Network** URL printed by Vite on the phone. The default `127.0.0.1` U
 
 ## Play and inspect
 
-- Press **Play yourself** to start Human vs Tracker, or set either paddle to **Human** and press **Play match**. Use W/S or the up/down arrows. With two humans, the left player uses W/S and the right uses the arrows.
+- Pick an opponent for **Player 02**, then press **Play yourself** to face it (if P2 is Human, this uses Tracker). Or press **Play against** on any library card. Use W/S or the up/down arrows. With two humans, the left player uses W/S and the right uses the arrows.
+- **Attacker**, **Defender**, and **Interceptor** are deterministic scripts, marked in amber. They are browser ports of the Classic v4 evaluation opponents in `training/scripts/pace_study.py` (`pace13-v9-scaled`), using the same six observations, physics, and action limits as models. Scripts can play either side against a human, model, or another script. Their inspector shows the chosen action as 1, with the others 0; these are not learned confidence scores.
+- Weight models have distinct **Nano**, **Small**, **Standard**, or **Open** badges with parameter counts. These are the same budget classes used by Rankings. Cards retain architecture and training-method details, so a hand-edited network and a learned network are both identifiable as weight models.
 - On touch screens, drag the court to steer your paddle or hold the Up/Down buttons. One human can drag anywhere on the court; two humans use their respective halves. Releasing, cancelling, pausing or restarting clears held controls.
 - Use **P1** or **P2** in Action scores to inspect that player's last decision. Pause, step, or scrub the timeline to see the exact scores and actions recorded during play. Selecting an event in the match log jumps to its frame.
 - The simulation makes 30 decisions per second; court animation interpolates between those states at the display's refresh rate. Paused and stepped frames show exact recorded states. Animation does not change physics or model decisions, and switching away from the page pauses play.
-- Opening or reloading the arena draws a fresh seed. Its five rallies start in five different height bands, and both paddles receive rising and falling serves. A point is worth one; a draw scores zero. Rallies have a 1,600-tick limit. Model-only matches also end a rally when its exact ball/paddle state repeats after a return. Human matches use the full limit. The log distinguishes loops from timeouts. **Restart** repeats the set. **New serves** draws a fresh seed. Choosing different players keeps the current set for comparison.
+- Opening or reloading the arena draws a fresh seed. Its five rallies start in five different height bands, and both paddles receive rising and falling serves. A point is worth one; a draw scores zero. Rallies have a 1,600-tick limit. Matches between models and/or scripts also end a rally when its exact ball/paddle state repeats after a return. Human matches use the full limit. The log distinguishes loops from timeouts. **Restart** repeats the set. **New serves** draws a fresh seed. Choosing different players keeps the current set for comparison.
 - **Import model** assigns a local ONNX file to either paddle. Imported models are kept in this browser's IndexedDB when available. The model library contains downloadable baseline files. The field guide documents the submission contract.
 
 ## Rally balance
@@ -56,6 +58,8 @@ The supported stateless graphs use Gemm, MatMul, Add, Relu, and Tanh. The import
 
 **Rankings** runs a local round robin with a selected roster, common serve seeds and both side assignments. Each pair of five-rally games awards one league point for a win, half for a tie, and zero for a loss. Equal totals share rank; unfinished leagues remain unranked. Cancel, export the result, or repeat the exact benchmark. Rules, contracts, roster hashes and seeds identify each result; results from different benchmarks are not interchangeable ratings.
 
+Scripts are available as reference opponents in the Arena, but do not enter weight-budget leagues or receive a model size class.
+
 Classes require both limits: **Nano** ≤512 parameters / 2,048 MACs, **Small** ≤2,048 / 8,192, **Standard** ≤20,480 / 65,536, and **Open** ≤65,536 / 65,536. Smaller models may compete up. Training method is irrelevant. These are provisional budgets, and existing graph/file limits still apply. The [competition protocol](training/COMPETITION.md) explains scoring and reproducibility. A public leaderboard will need an independent evaluator; local browser results are not verified public standings.
 
 ## Verify
@@ -67,6 +71,8 @@ npm run preview
 ```
 
 The tests cover the game rules, perspective symmetry, finite output and tie handling, and the upload contract. The production build is written to `dist/`.
+
+Script conformance tests compare every reachable contact path, observation probes, and 15 complete matches against independently generated Python fixtures. Regenerate them with `.venv/bin/python training/scripts/export_scripted_fixtures.py` after reviewing any change to the evaluated policies.
 
 ## Train your own weights
 

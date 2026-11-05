@@ -113,6 +113,7 @@ export function Ranking({ entrants, rulesId, contractId, playMatch, onStart }: {
       <section className="panel ranking-intro">
         <div className="ranking-heading"><Trophy size={20} /><h2>Make the weights compete</h2><span className="mini-tag">LOCAL LEAGUE</span></div>
         <p>Every model faces the same opponents and serves, playing both sides. Training method does not affect eligibility or score.</p>
+        <p className="ranking-note">Scripts are reference opponents in the Arena. These leagues rank weight files only.</p>
         <p className="ranking-note">Class limits are provisional. Smaller models can enter larger classes. Each class run has its own roster and results.</p>
       </section>
       <section className="panel ranking-config">
