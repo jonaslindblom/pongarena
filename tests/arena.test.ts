@@ -296,6 +296,21 @@ test('v4 releases use the evaluated learned weights and expose their larger arch
   }
 })
 
+test('Vector Nano publishes its frozen plain dense weights within the Nano budget', () => {
+  const bytes = readFileSync(new URL('../public/models/vector-nano-v4.onnx', import.meta.url))
+  assert.equal(createHash('sha256').update(bytes).digest('hex'),
+    'ad41b0b8b9be1264c7b3daea95aec2341ab14f4802038ef175aea5d4898ac551')
+  const stats = validateArenaModel(bytes)
+  assert.deepEqual([stats.inputSize, stats.outputSize], [6, 3])
+  assert.deepEqual(stats.architecture.widths, [6, 28, 9, 3])
+  assert.deepEqual(stats.architecture.operations.map((node) => node.op),
+    ['Gemm', 'Relu', 'Gemm', 'Relu', 'Gemm'])
+  assert.deepEqual([stats.params, stats.macs, stats.nodes], [487, 447, 5])
+  assert.equal(smallestDivision(stats), 'nano')
+  const model = pb.onnx.ModelProto.decode(bytes)
+  assert.match(model.metadataProps.find((p) => p.key === 'method')!.value!, /no fitting\/training/)
+})
+
 test('Prism Nano publishes its frozen plain dense weights within the Nano budget', () => {
   const bytes = readFileSync(new URL('../public/models/prism-nano-v4.onnx', import.meta.url))
   assert.equal(createHash('sha256').update(bytes).digest('hex'),

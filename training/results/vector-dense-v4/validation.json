@@ -1,0 +1,26 @@
+{
+  "vector-nano-v4.onnx": {
+    "sha256": "ad41b0b8b9be1264c7b3daea95aec2341ab14f4802038ef175aea5d4898ac551",
+    "widths": [
+      6,
+      28,
+      9,
+      3
+    ],
+    "params": 487,
+    "macs": 447,
+    "nodes": 5
+  },
+  "opposite-end-743.onnx": {
+    "sha256": "8cdec89ce14453762866bcdb83fd167fa710f4307392f77bd40d30853491d43b",
+    "widths": [
+      6,
+      44,
+      9,
+      3
+    ],
+    "params": 743,
+    "macs": 687,
+    "nodes": 5
+  }
+}

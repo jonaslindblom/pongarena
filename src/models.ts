@@ -69,6 +69,13 @@ export const presets = [
     report: '/training/pace-study.html',
   },
   {
+    id: 'vector-nano-v4',
+    name: 'Vector Nano v4',
+    kind: 'Handcrafted dense · Nano · v4',
+    description: 'A plain 6→28→9→3 ReLU network with 487 hand-constructed parameters and no training. Uses opponent-side court-end aiming. Beats Pacer and Prism Nano in fresh tests; loses to Prism Small and adaptive scripts.',
+    report: '/training/vector-nano-v4.html',
+  },
+  {
     id: 'prism-nano-v4',
     name: 'Prism Nano v4',
     kind: 'Handcrafted dense · Nano · v4',

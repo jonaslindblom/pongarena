@@ -1,0 +1,25 @@
+{
+  "tests": {
+    "passed": 68,
+    "failed": 0,
+    "skipped": 0
+  },
+  "production_build": "passed",
+  "frozen_reproduction": "byte-identical SHA-256",
+  "browser": {
+    "runtime": "ONNX Runtime WASM",
+    "loaded_presets": 12,
+    "probes": 256,
+    "action_mismatches": 0,
+    "maximum_score_error": 2.086162567138672e-06,
+    "source": "browser-probes.json"
+  },
+  "production_preview": {
+    "vector_visible": true,
+    "prism_small_visible": true,
+    "prism_nano_visible": true,
+    "console_errors": 0,
+    "report_download": "/models/vector-nano-v4.onnx"
+  },
+  "development_preview_note": "External dependency symlink blocks the font request; bundled production fonts load without errors."
+}
