@@ -1,0 +1,35 @@
+import test from 'node:test'
+import assert from 'node:assert/strict'
+import { courtTargetAt, heldHumanAction, humanSideAt, type HeldDirection } from '../src/humanInput'
+
+test('a single human can drag anywhere while two humans keep their own court halves', () => {
+  assert.equal(humanSideAt(290, 300, [true, false]), 0)
+  assert.equal(humanSideAt(10, 300, [false, true]), 1)
+  assert.equal(humanSideAt(149, 300, [true, true]), 0)
+  assert.equal(humanSideAt(150, 300, [true, true]), 1)
+  assert.equal(humanSideAt(90, 300, [false, false]), null)
+})
+
+test('a captured drag outside the court remains a reachable paddle target', () => {
+  assert.equal(courtTargetAt(-90, 200), 15)
+  assert.equal(courtTargetAt(100, 200), 80)
+  assert.equal(courtTargetAt(350, 200), 145)
+  assert.equal(courtTargetAt(0, 0), 15)
+})
+
+test('opposite held buttons cancel, releasing one restores the remaining direction', () => {
+  const held = new Map<string, HeldDirection>([
+    ['first-finger', { side: 0, action: 0 }],
+    ['second-finger', { side: 0, action: 2 }],
+    ['other-player', { side: 1, action: 2 }],
+  ])
+  assert.equal(heldHumanAction(held.values(), 0), 1)
+  assert.equal(heldHumanAction(held.values(), 1), 2)
+  held.delete('second-finger')
+  assert.equal(heldHumanAction(held.values(), 0), 0)
+  held.delete('first-finger')
+  assert.equal(heldHumanAction(held.values(), 0), null)
+  assert.equal(heldHumanAction(held.values(), 1), 2)
+  held.clear()
+  assert.equal(heldHumanAction(held.values(), 1), null)
+})

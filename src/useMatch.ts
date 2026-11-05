@@ -6,13 +6,13 @@ import {
   LoopDetector,
   observation,
   serve,
-  TICKS_PER_SECOND,
   type Frame,
   type Pair,
   type Scores,
   type Side,
 } from './game'
 import { infer, type Controller } from './models'
+import { boundedDeadline, frameDuration, TICK_MS, type Presentation } from './presentation'
 
 function newSeed() {
   return crypto.getRandomValues(new Uint32Array(1))[0] % 1000000
@@ -29,42 +29,85 @@ export function useMatch(
   if (history.current.length === 0) history.current.push(serve(seed))
   const cursor = useRef(0),
     revision = useRef(0),
-    keys = useRef(new Set<string>())
-  const [tick, setTick] = useState(0),
+    keys = useRef(new Set<string>()),
+    running = useRef(false),
+    pending = useRef<Promise<boolean> | null>(null)
+  const currentPlayers = useRef(players)
+  currentPlayers.current = players
+  const humanActions = useRef<Pair<number | null>>([null, null])
+  const humanTargets = useRef<Pair<number | null>>([null, null])
+  const [position, setPosition] = useState({ tick: 0 }),
     [playing, setPlaying] = useState(false),
+    [runVersion, setRunVersion] = useState(0),
     [speed, setSpeed] = useState(1)
-  const busy = useRef(false)
+  const tick = position.tick
+  const setTick = (tick: number) => setPosition({ tick })
+  const presentation = useRef<Presentation>({
+    from: history.current[0], to: history.current[0], startedAt: 0,
+    duration: TICK_MS, animate: false, trail: [],
+  })
+
+  function clearHumanInput() {
+    keys.current.clear()
+    humanActions.current = [null, null]
+    humanTargets.current = [null, null]
+  }
+  function present(animate = false, duration = TICK_MS / speed) {
+    const at = cursor.current
+    const to = history.current[at]
+    const from = history.current[Math.max(0, at - 1)]
+    presentation.current = {
+      from, to, startedAt: performance.now(), duration,
+      animate: animate && from.rally === to.rally && to.event !== 'serve',
+      trail: history.current.slice(Math.max(0, at - 8), at + 1),
+    }
+  }
   function pause() {
     revision.current++
+    // React can batch reset()+play() into an unchanged playing=true value.
+    // A separate run identity must still discard the old timing deadline.
+    setRunVersion((version) => version + 1)
+    running.current = false
     setPlaying(false)
+    clearHumanInput()
+    present()
   }
-  function reset(newSeed = seed) {
+  function reset(nextSeed = seed) {
     pause()
-    setSeed(newSeed)
-    history.current = [serve(newSeed)]
+    setSeed(nextSeed)
+    history.current = [serve(nextSeed)]
     loops.current = new LoopDetector()
     cursor.current = 0
     setTick(0)
-    keys.current.clear()
+    present()
   }
   function seek(at: number) {
     pause()
     cursor.current = Math.max(0, Math.min(at, history.current.length - 1))
     setTick(cursor.current)
+    present()
   }
-  function toggle() {
-    if (playing) {
-      pause()
-      return
-    }
-    if (!players[0] || !players[1]) return
+  function play() {
     if (endedMatch(history.current[cursor.current])) {
       cursor.current = 0
       setTick(0)
+      present()
     }
+    running.current = true
     setPlaying(true)
   }
-  function human(side: Side): Scores {
+  function toggle() {
+    if (running.current) pause()
+    else if (players[0] && players[1]) play()
+  }
+  function setHumanAction(side: Side, action: 0 | 1 | 2 | null) {
+    humanActions.current[side] = running.current ? action : null
+  }
+  function setHumanTarget(side: Side, y: number | null) {
+    humanTargets.current[side] = running.current && y !== null && Number.isFinite(y)
+      ? Math.max(15, Math.min(145, y)) : null
+  }
+  function human(side: Side, previous: Frame): Scores {
     const held = keys.current
     const both = players[0]?.id === 'keyboard' && players[1]?.id === 'keyboard'
     const up =
@@ -72,110 +115,153 @@ export function useMatch(
     const down =
       ((!both || side === 0) && held.has('KeyS')) ||
       ((!both || side === 1) && held.has('ArrowDown'))
-    return up === down ? [0, 1, 0] : up ? [1, 0, 0] : [0, 0, 1]
+    let action = up || down ? (up === down ? 1 : up ? 0 : 2) : humanActions.current[side]
+    const target = humanTargets.current[side]
+    if (action === null && target !== null) {
+      const error = target - previous.paddles[side]
+      action = error < -1 ? 0 : error > 1 ? 2 : 1
+    }
+    return action === 0 ? [1, 0, 0] : action === 2 ? [0, 0, 1] : [0, 1, 0]
   }
-  async function step() {
-    if (busy.current || !players[0] || !players[1]) return
-    const version = revision.current,
-      at = cursor.current
+  function advanceOne(animate = false, duration = TICK_MS / speed): Promise<boolean> {
+    if (pending.current || !players[0] || !players[1]) return Promise.resolve(false)
+    const version = revision.current, at = cursor.current
     const previous = history.current[at]
-    if (endedMatch(previous)) {
-      setPlaying(false)
-      return
-    }
-    busy.current = true
-    try {
-      if (at === history.current.length - 1) {
-        let next: Frame
-        if (endedRally(previous)) next = serve(seed, previous)
-        else {
-          const scores: Scores[] = []
-          for (const side of [0, 1] as const) {
-            const player = players[side]!
-            scores.push(
-              player.id === 'keyboard'
-                ? human(side)
-                : await infer(player, observation(previous, side)),
-            )
+    if (endedMatch(previous)) return Promise.resolve(false)
+    const job = (async () => {
+      try {
+        if (at === history.current.length - 1) {
+          let next: Frame
+          if (endedRally(previous)) next = serve(seed, previous)
+          else {
+            // Human input is sampled with the same pre-tick state as both models,
+            // before either asynchronous inference has a chance to finish.
+            const scores = players.map((player, side) => player!.id === 'keyboard'
+              ? human(side as Side, previous) : null) as Pair<Scores | null>
+            for (const side of [0, 1] as const) {
+              if (!scores[side]) scores[side] = await infer(players[side]!, observation(previous, side))
+              if (revision.current !== version) return false
+            }
+            if (players.some((player, side) => player !== currentPlayers.current[side])) return false
+            const modelMatch = players.every((player) => player?.session && player.id !== 'keyboard')
+            next = advance(previous, scores as Pair<Scores>, modelMatch ? loops.current : undefined)
           }
-          if (revision.current !== version) return
-          const modelMatch = players.every((player) => player?.session && player.id !== 'keyboard')
-          next = advance(previous, scores as Pair<Scores>, modelMatch ? loops.current : undefined)
+          if (revision.current !== version) return false
+          history.current.push(next)
         }
-        if (revision.current !== version) return
-        history.current.push(next)
+        if (revision.current !== version) return false
+        cursor.current = at + 1
+        present(animate, duration)
+        setTick(at + 1)
+        if (endedMatch(history.current[at + 1])) {
+          running.current = false
+          setPlaying(false)
+          clearHumanInput()
+        }
+        return true
+      } catch (e) {
+        if (revision.current === version) {
+          pause()
+          onError(e instanceof Error ? e.message : 'Model inference failed.')
+        }
+        return false
       }
-      cursor.current = at + 1
-      setTick(at + 1)
-      if (endedMatch(history.current[at + 1])) setPlaying(false)
-    } catch (e) {
-      if (revision.current === version) {
-        pause()
-        onError(e instanceof Error ? e.message : 'Model inference failed.')
-      }
-    } finally {
-      busy.current = false
-    }
+    })()
+    pending.current = job
+    void job.then(() => { if (pending.current === job) pending.current = null })
+    return job
   }
-  // Schedule from the displayed frame; inference is never queued behind a slow frame.
+
   useEffect(() => {
-    if (!playing) return
-    let alive = true
-    let timer: number
-    async function next() {
-      await step()
-      if (alive && !endedMatch(history.current[cursor.current])) schedule()
+    if (!playing || !arenaActive || !players[0] || !players[1]) return
+    let alive = true, pumping = false, raf = 0
+    let due = performance.now() + frameDuration(history.current[cursor.current], speed)
+    async function pump(now: number) {
+      if (pumping || pending.current) return
+      pumping = true
+      // Deadlines follow the simulation cadence rather than inference completion.
+      // At most four states are advanced per animation callback after a stall.
+      due = boundedDeadline(due, now, speed)
+      for (let count = 0; count < 4 && alive && running.current && now >= due; count++) {
+        if (!await advanceOne(true, TICK_MS / speed)) break
+        due += frameDuration(history.current[cursor.current], speed)
+      }
+      pumping = false
     }
-    function schedule() {
-      const ms = endedRally(history.current[cursor.current]) ? 650 : 1000 / TICKS_PER_SECOND
-      timer = window.setTimeout(next, ms / speed)
+    function animate(now: number) {
+      if (!alive || !running.current) return
+      raf = requestAnimationFrame(animate)
+      void pump(now)
     }
-    schedule()
+    raf = requestAnimationFrame(animate)
     return () => {
       alive = false
-      clearTimeout(timer)
+      cancelAnimationFrame(raf)
     }
-  }, [playing, speed, players[0], players[1], seed])
+  }, [playing, runVersion, speed, players[0], players[1], seed, arenaActive])
+
   const usesKeyboard = arenaActive && players.some((p) => p?.id === 'keyboard')
   useEffect(() => {
     if (!usesKeyboard) return
     function keydown(e: KeyboardEvent) {
       const target = e.target as HTMLElement
-      if (target.closest('input, select, textarea, dialog')) return
+      if (target.closest('input, select, textarea, dialog, [contenteditable="true"]')) return
       if (['ArrowUp', 'ArrowDown', 'KeyW', 'KeyS'].includes(e.code)) {
         e.preventDefault()
         keys.current.add(e.code)
       }
     }
     const keyup = (e: KeyboardEvent) => keys.current.delete(e.code)
-    const blur = () => keys.current.clear()
     window.addEventListener('keydown', keydown)
     window.addEventListener('keyup', keyup)
-    window.addEventListener('blur', blur)
     return () => {
       window.removeEventListener('keydown', keydown)
       window.removeEventListener('keyup', keyup)
-      window.removeEventListener('blur', blur)
-      keys.current.clear()
+      clearHumanInput()
     }
   }, [usesKeyboard])
+  useEffect(() => {
+    const visibility = () => { if (document.hidden) pause() }
+    const blur = () => {
+      clearHumanInput()
+      if (currentPlayers.current.some((p) => p?.id === 'keyboard')) pause()
+    }
+    document.addEventListener('visibilitychange', visibility)
+    window.addEventListener('blur', blur)
+    return () => {
+      document.removeEventListener('visibilitychange', visibility)
+      window.removeEventListener('blur', blur)
+    }
+  }, [])
+  useEffect(() => () => {
+    revision.current++
+    running.current = false
+    clearHumanInput()
+  }, [])
   return {
     history: history.current,
     frame: history.current[tick],
+    presentation,
     tick,
     seed,
     playing,
     speed,
     setSpeed,
+    setHumanAction,
+    setHumanTarget,
     toggle,
     pause,
-    play: () => setPlaying(true),
+    play,
     seek,
     reset,
     newServes: () => reset(newSeed()),
     step: () => {
       pause()
-      void step()
+      const version = revision.current
+      void (async () => {
+        await pending.current
+        if (version === revision.current) await advanceOne()
+      })()
     },
   }
 }

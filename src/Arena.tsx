@@ -23,7 +23,7 @@ import {
   SlidersHorizontal,
   Waves,
 } from 'lucide-react'
-import { useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import {
   ACTIONS,
   choice,
@@ -38,6 +38,8 @@ import {
 import { type Controller } from './models'
 import type { Match } from './useMatch'
 import { architectureLabel } from './Architecture'
+import { HumanControls, useCourtPointerControls } from './HumanControls'
+import { interpolate, progress } from './presentation'
 
 export const pad = (n: number) => String(n).padStart(2, '0')
 export function ModelIcon({ id, size = 20 }: { id: string; size?: number }) {
@@ -60,8 +62,43 @@ function eventText(f: Frame, names: Pair<string>) {
     return f.drawReason === 'loop' ? 'Rally drawn · repeating loop' : `Rally drawn at ${RALLY_TICK_LIMIT.toLocaleString()} ticks`
   return names[f.actor!] + ' returns the ball'
 }
-function Court({ m, names, ready }: { m: Match; names: Pair<string>; ready: boolean }) {
+function Court({ m, names, ready, humanSides }: {
+  m: Match; names: Pair<string>; ready: boolean; humanSides: Pair<boolean>
+}) {
   const f = m.frame
+  const input = useCourtPointerControls(m, humanSides)
+  const field = useRef<SVGSVGElement>(null)
+  useLayoutEffect(() => {
+    const svg = field.current!
+    const paddles = svg.querySelectorAll<SVGRectElement>('.paddle')
+    const balls = svg.querySelectorAll<SVGCircleElement>('.moving-ball')
+    const trail = svg.querySelectorAll<SVGCircleElement>('.ball-trail')
+    let raf = 0
+    function draw(now: number) {
+      const p = m.presentation.current, amount = progress(p, now)
+      const position = interpolate(p.from, p.to, amount)
+      for (const side of [0, 1] as const)
+        paddles[side].setAttribute('y', String(position.paddles[side] - 12))
+      for (const ball of balls) {
+        ball.setAttribute('cx', String(position.x))
+        ball.setAttribute('cy', String(position.y))
+      }
+      for (let i = 0; i < trail.length; i++) {
+        const at = p.trail.length - 8 + i
+        const from = p.trail[at], to = p.trail[at + 1]
+        const visible = from && to && from.rally === p.to.rally && to.rally === p.to.rally
+        trail[i].setAttribute('opacity', visible ? String(0.06 + i * 0.066) : '0')
+        if (visible) {
+          const point = interpolate(from, to, amount)
+          trail[i].setAttribute('cx', String(point.x))
+          trail[i].setAttribute('cy', String(point.y))
+        }
+      }
+      if (p.animate && amount < 1) raf = requestAnimationFrame(draw)
+    }
+    draw(performance.now())
+    return () => cancelAnimationFrame(raf)
+  }, [m.presentation, m.tick, m.seed, m.playing, m.speed])
   const replay = m.tick < m.history.length - 1
   const status = !ready
     ? 'Loading'
@@ -74,7 +111,6 @@ function Court({ m, names, ready }: { m: Match; names: Pair<string>; ready: bool
           : f.tick
             ? 'Paused'
             : 'Ready'
-  const trail = m.history.slice(Math.max(0, m.tick - 7), m.tick).filter((p) => p.rally === f.rally)
   return (
     <section className="court" aria-label="Pong court">
       <div className="court-top">
@@ -110,7 +146,8 @@ function Court({ m, names, ready }: { m: Match; names: Pair<string>; ready: bool
         </div>
       </div>
       <svg
-        className="field"
+        {...input}
+        ref={field}
         viewBox="0 0 360 160"
         preserveAspectRatio="none"
         role="img"
@@ -159,27 +196,28 @@ function Court({ m, names, ready }: { m: Match; names: Pair<string>; ready: bool
           stroke="#b4c7b7"
           strokeWidth="1"
         />
-        <rect x="6" y={f.paddles[0] - 12} width="5" height="24" rx="1.2" className="paddle left" />
+        <rect x="6" y="68" width="5" height="24" rx="1.2" className="paddle left" />
         <rect
           x="349"
-          y={f.paddles[1] - 12}
+          y="68"
           width="5"
           height="24"
           rx="1.2"
           className="paddle right"
         />
-        {trail.map((p, i) => (
+        {Array.from({ length: 7 }, (_, i) => (
           <circle
-            key={p.tick}
-            cx={p.x}
-            cy={p.y}
+            key={i}
+            className="ball-trail"
+            cx="180"
+            cy="80"
             r={0.7 + i * 0.18}
             fill="#e8f8c9"
-            opacity={0.06 + i * 0.066}
+            opacity="0"
           />
         ))}
-        <circle cx={f.x} cy={f.y} r="3.7" fill="#dafa9c" opacity=".44" filter="url(#softball)" />
-        <circle cx={f.x} cy={f.y} r="2.55" fill="#f1ffd9" />
+        <circle className="moving-ball" cx="180" cy="80" r="3.7" fill="#dafa9c" opacity=".44" filter="url(#softball)" />
+        <circle className="moving-ball" cx="180" cy="80" r="2.55" fill="#f1ffd9" />
       </svg>
       <div className="court-foot">
         <span>
@@ -223,7 +261,7 @@ function Transport({ m, ready }: { m: Match; ready: boolean }) {
         disabled={end === 0}
         onChange={(e) => m.seek(Number(e.target.value))}
         style={{
-          background:
+          backgroundImage:
             'linear-gradient(to right, var(--forest) ' +
             (end ? (100 * m.tick) / end : 0) +
             '%, var(--line) 0%)',
@@ -294,21 +332,21 @@ interface Props {
 }
 export function Arena({ m, models, ids, pick, swap, ready }: Props) {
   const [side, setSide] = useState<Side>(0)
+  const humanSides: Pair<boolean> = [ids[0] === 'keyboard', ids[1] === 'keyboard']
   const names = ids.map(
     (id) => models.find((x) => x.id === id)?.name ?? id[0].toUpperCase() + id.slice(1),
   ) as Pair<string>
   const scores = m.frame.scores[side]
   const chosen = scores ? choice(scores) : -1
   const max = Math.max(0.001, ...(scores ?? []).map(Math.abs))
-  const recent = m.history
-    .slice(0, m.tick + 1)
-    .filter((f) => f.event)
-    .slice(-5)
-    .reverse()
+  const recent: Frame[] = []
+  for (let at = m.tick; at >= 0 && recent.length < 5; at--)
+    if (m.history[at].event) recent.push(m.history[at])
   return (
     <div className="arena-grid">
       <div className="main-column">
-        <Court m={m} names={names} ready={ready} />
+        <Court m={m} names={names} ready={ready} humanSides={humanSides} />
+        <HumanControls m={m} humanSides={humanSides} />
         <Transport m={m} ready={ready} />
         <section className="panel feed">
           <div className="panel-heading">
@@ -393,9 +431,9 @@ export function Arena({ m, models, ids, pick, swap, ready }: Props) {
             <Gamepad2 size={15} />
             {ids.includes('keyboard')
               ? ids.every((x) => x === 'keyboard')
-                ? 'Left: W/S · Right: ↑/↓'
-                : 'Move your paddle with W/S or ↑/↓'
-              : 'Select Keyboard to play a model.'}
+                ? 'Drag your half of the court · Left: W/S · Right: ↑/↓'
+                : 'Drag on the court, use the touch buttons, or press W/S or ↑/↓'
+              : 'Select Human to play a model.'}
           </div>
           <div className="seed-row">
             <span>SEED {String(m.seed).padStart(4, '0')}</span>
@@ -426,7 +464,7 @@ export function Arena({ m, models, ids, pick, swap, ready }: Props) {
             <div className="inspect-source">
               <i className={side === 0 ? 'p1-dot' : 'p2-dot'} />
               {names[side]}
-              <span>{ids[side] === 'keyboard' ? 'KEY INPUT' : 'RAW OUTPUT'}</span>
+              <span>{ids[side] === 'keyboard' ? 'HUMAN INPUT' : 'RAW OUTPUT'}</span>
             </div>
             {ACTIONS.map((a, i) => {
               const Icon = [ArrowUp, Minus, ArrowDown][i],
