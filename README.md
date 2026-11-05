@@ -11,7 +11,7 @@ npm ci
 npm run dev
 ```
 
-Open the localhost URL printed by Vite. The default match pairs the Selfplay and Apprentice policies under Pong v3 rules.
+Open the localhost URL printed by Vite. The default match pairs Strategist and Selfplay v2 under the unchanged Pong v3 rules.
 
 ## Play and inspect
 
@@ -47,6 +47,8 @@ The tests cover the game rules, perspective symmetry, finite output and tie hand
 The standalone [Pong v3 training contract](training/v3/README.md) includes the frozen engine, a headless TypeScript example, a dependency-free Python reference, and full deterministic match fixtures. Copy `training/v3/` to train independently of the app. Run `python3 training/v3/check.py` to verify the Python port. Enable loop detection only for fixed deterministic stateless policies; sampled training actions can escape a repeated position.
 
 [PyTorch training and results](training/README.md) includes runnable DAgger + PPO self-play scripts, learning curves, held-out tests, and standalone ONNX exports. **Apprentice** and **Selfplay** are available in the Model library. Cards show the actual network architecture and link to the local training report. Pong v3 preserves all v2 physics and the six-input/three-score model interface, extends the rally limit from 800 to 1,600 ticks, and adds early loop draws for model matches. The frozen v1/v2 packages, weights and results remain available.
+
+**Strategist** is the newer training-only improvement: a learned target network with disclosed fixed trajectory features, all embedded in one ONNX file. It passed three reserved evaluation blocks against both original v2 and the unchanged attacker, with many draws. The [investigation](training/results/training-improvement/README.md) records the v3 diagnosis, unsuccessful experiments, reproduction commands and final tests. Open `/training/improvement.html` for its learning curves and comparisons. The rules and upload limits are unchanged.
 
 The [balance study](training/results/balance-v2/README.md) explains the matched-serve comparison and why cap 13 was chosen. The report includes both scored-rally lengths and draw rates.
 

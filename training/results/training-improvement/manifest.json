@@ -1,0 +1,97 @@
+{
+  "rules": "pong-v3",
+  "status": "complete",
+  "runs": [
+    {
+      "label": "PPO \u00b7 return bonus",
+      "family": "ppo",
+      "path": "training/results/training-improvement/runs/focus-control-s71",
+      "note": "Gamma .99; return bonus .02; v2 warm start."
+    },
+    {
+      "label": "PPO \u00b7 terminal only",
+      "family": "ppo",
+      "path": "training/results/training-improvement/runs/focus-terminal-s71",
+      "note": "Gamma .99; no return bonus; v2 warm start."
+    },
+    {
+      "label": "PPO \u00b7 undiscounted",
+      "family": "ppo",
+      "path": "training/results/training-improvement/runs/focus-outcome-s71",
+      "note": "Gamma 1; no return bonus; v2 warm start."
+    },
+    {
+      "label": "PPO stage 2 \u00b7 .99",
+      "family": "ppo",
+      "path": "training/results/training-improvement/runs/focus-terminal-stage2-s73",
+      "note": "600 more updates from terminal-only stage 1; fresh critic/optimizer."
+    },
+    {
+      "label": "PPO stage 2 \u00b7 1.0",
+      "family": "ppo",
+      "path": "training/results/training-improvement/runs/focus-outcome-stage2-s73",
+      "note": "600 more updates from terminal-only stage 1; best update 275 passed shared development comparison, not final tested."
+    },
+    {
+      "label": "Action DAgger \u00b7 71",
+      "family": "distillation",
+      "path": "training/results/training-improvement/runs/distill-71",
+      "note": "Raw six inputs; failed to beat both targets."
+    },
+    {
+      "label": "Action DAgger \u00b7 73",
+      "family": "distillation",
+      "path": "training/results/training-improvement/runs/distill-73",
+      "note": "Longer raw-input action imitation; failed to beat both targets."
+    },
+    {
+      "label": "Raw target DAgger",
+      "family": "distillation",
+      "path": "training/results/training-improvement/runs/target-81",
+      "note": "Raw six inputs; target regression plus CE; failed to beat both targets."
+    },
+    {
+      "label": "Geometry + target \u00b7 83",
+      "family": "distillation",
+      "path": "training/results/training-improvement/runs/target-feature-83",
+      "note": "Selected round 12. Intended 24 rounds; interrupted after 16 to investigate pure MSE. Original24-round learning-rate schedule retained."
+    },
+    {
+      "label": "Geometry + target \u00b7 89",
+      "family": "distillation",
+      "path": "training/results/training-improvement/runs/target-feature-89",
+      "note": "24 completed rounds; selected 14; behind seed 83 in shared development test."
+    },
+    {
+      "label": "Geometry + pure MSE",
+      "family": "distillation",
+      "path": "training/results/training-improvement/runs/target-mse-83",
+      "note": "24 completed rounds; better target precision did not improve competition score."
+    }
+  ],
+  "candidate": {
+    "name": "Strategist",
+    "model_path": "public/models/strategist-v3.onnx",
+    "freeze_file": "training/results/training-improvement/candidate/freeze.json",
+    "architecture": "Fixed ReLU trajectory features from the original six inputs; learned 8\u2192128\u2192128\u219264\u21921 Tanh target head; fixed linear paddle feedback emits up/stay/down scores.",
+    "selection_note": "Selected before final testing. Of three candidates compared on the same 128 fresh development seeds, this export had the highest weaker-target score, no rally losses to either target, and the highest paired match win rate against the attacker (111/128). All final seeds were untouched.",
+    "design_note": "Frozen, hand-designed trajectory features and fixed paddle feedback are embedded alongside the PyTorch-trained target head. This is a hybrid model, not a network that discovered all geometry from raw inputs."
+  },
+  "final_candidates_tested": 1,
+  "holdouts": [
+    {
+      "name": "holdout-1",
+      "file": "training/results/training-improvement/holdouts/holdout-1.json"
+    },
+    {
+      "name": "holdout-2",
+      "file": "training/results/training-improvement/holdouts/holdout-2.json"
+    },
+    {
+      "name": "holdout-3",
+      "file": "training/results/training-improvement/holdouts/holdout-3.json"
+    }
+  ],
+  "development_result": "training/results/training-improvement/development/target-feature-83/evaluation.json",
+  "verification_note": "The exported candidate and v2 were evaluated through native ONNX Runtime in all final blocks. PyTorch/native ONNX actions agree on 8,192 reachable observations. Six complete matches reproduce in the live TypeScript engine and browser WASM: 26,838 decisions, 13,443 frames, 16 loop draws and 3 timeouts, with 100% action agreement. Fixed engine, training contract, v2 weights and attacker hashes remain unchanged."
+}

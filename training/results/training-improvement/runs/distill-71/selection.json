@@ -1,0 +1,40 @@
+{
+  "round": 17,
+  "env_steps": 1114112,
+  "seconds": 55.864781541749835,
+  "teacher_probability": 0.0,
+  "training_accuracy": 0.850830078125,
+  "loss": 0.44943371415138245,
+  "selection_min": 0.278125,
+  "selection_mean": 0.35625,
+  "opponents": {
+    "attacker": {
+      "rallies": 320,
+      "wins": 56,
+      "losses": 198,
+      "draws": 66,
+      "loop_draws": 66,
+      "timeout_draws": 0,
+      "match_wins": 3,
+      "match_losses": 55,
+      "match_draws": 6,
+      "paired_wins": 1,
+      "paired_losses": 30,
+      "paired_draws": 1
+    },
+    "v2": {
+      "rallies": 320,
+      "wins": 90,
+      "losses": 132,
+      "draws": 98,
+      "loop_draws": 98,
+      "timeout_draws": 0,
+      "match_wins": 19,
+      "match_losses": 35,
+      "match_draws": 10,
+      "paired_wins": 10,
+      "paired_losses": 18,
+      "paired_draws": 4
+    }
+  }
+}

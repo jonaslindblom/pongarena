@@ -101,7 +101,7 @@ def summarize(outcome, sides, lengths, durations, reasons, seeds, bootstrap_indi
                   paired_match_wins=int((paired_margin > 0).sum()), paired_match_losses=int((paired_margin < 0).sum()),
                   paired_match_draws=int((paired_margin == 0).sum()),
                   paired_match_win_rate=float((paired_margin > 0).mean()),
-                  median_decisive_returns=float(np.median(decisive)) if decisive.any() else None,
+                  median_decisive_returns=float(np.median(decisive)) if len(decisive) else None,
                   mean_returns=float(lengths.mean()), mean_ticks=float(durations.mean()),
                   early_finish_rate=float(((lengths < 2) & ~drawn).mean()))
     result['sides'] = {str(side): counts(won[sides == side], lost[sides == side], drawn[sides == side],

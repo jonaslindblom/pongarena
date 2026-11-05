@@ -1,0 +1,72 @@
+{
+  "candidate": "training/results/training-improvement/candidate",
+  "onnx": "training/results/training-improvement/candidate/best.onnx",
+  "checkpoint_sha256": "d9ac9747e3dc074f6d3e439e05b42c097e44a046732543e6aa7bcf2afb924671",
+  "onnx_sha256": "a68b96685a7305102b183d357200eb35b59c23d0c09bc832efd827bc7311d435",
+  "source_sha256": {
+    "trajectory_features.py": "e0eb16f29a1c6fcddb0663388a63a4a2b4768225dae03b2881e3a95475e493d1",
+    "train_target.py": "a2dc9c4091f676f1f01eb3adc7cbdebc042a9a68bc7fe70642851fafd57ce6c2",
+    "verify_trajectory_model.py": "f81506414d759733258413cf314bdef11f07636306a0b5071e08572ab7d5ac00"
+  },
+  "rules_and_reference_opponents_unchanged": true,
+  "graph_matches_checkpoint": true,
+  "fixed_weights_equal_original_construction": true,
+  "parameters": {
+    "fixed_trajectory": 22054,
+    "learned_target_head": 25985,
+    "fixed_feedback": 24
+  },
+  "arena_validator": {
+    "bytes": 208140,
+    "params": 48063,
+    "macs": 45152,
+    "nodes": 157,
+    "branched": true
+  },
+  "inference_contract": "raw6 -> fixed trajectory ReLU features -> learned scalar target -> fixed own-paddle feedback ->3scores",
+  "geometry": {
+    "observations": 393226,
+    "reachable_observations": 65536,
+    "max_time_error_ticks": 3.0040740966297275e-05,
+    "max_landing_error_units": 0.0001811981201171875,
+    "native_observations": 8192,
+    "native_max_feature_error": 1.025199890147821e-06,
+    "target_probe_bytes": 208140,
+    "target_probe_nodes": 157,
+    "target_probe_macs": 45152,
+    "fixed_features": "frozen disclosed next-contact geometry"
+  },
+  "observations": 8192,
+  "source_reachable_observations": 55728,
+  "probe_seeds": [
+    1205706500,
+    1258671164,
+    1299670366,
+    1247441332,
+    1203969193,
+    1205453852,
+    1209462104,
+    1290696067,
+    1257276968,
+    1233698024,
+    1200686857,
+    1250083404,
+    1260078136,
+    1277485271,
+    1224498785,
+    1222002620,
+    1299010428,
+    1282330664,
+    1208078239,
+    1232360487,
+    1216618518,
+    1204106495,
+    1232485776,
+    1236199033
+  ],
+  "probe_purpose": "Development-only reachable-state parity, not final model evaluation",
+  "action_agreement": 1.0,
+  "action_mismatches": 0,
+  "max_abs_score_error": 1.1280179023742676e-05,
+  "classification_weight_reproduction": 0.01
+}

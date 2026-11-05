@@ -1,0 +1,13 @@
+{
+  "runtime": "onnxruntime-web WASM, one thread; actual browser scores advance live v3 engine",
+  "matches": 6,
+  "frames": 13443,
+  "decisions": 26838,
+  "actionAgreement": 1,
+  "maxAbsScoreError": 7.62939453125e-06,
+  "loopDraws": 16,
+  "timeoutDraws": 3,
+  "inferenceMs": 695.5999999046326,
+  "meanPairInferenceMs": 0.051836947604488606,
+  "timing_note": "Local browser measurement over these replay decisions; includes both players, excludes rendering, not a cross-device performance guarantee."
+}

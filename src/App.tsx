@@ -140,7 +140,7 @@ function Guide() {
 export default function App() {
   const [page, setPage] = useState<Page>('Arena')
   const [models, setModels] = useState<Controller[]>([keyboard])
-  const [ids, setIds] = useState<Pair<string>>(['selfplay-v3', 'apprentice-v3'])
+  const [ids, setIds] = useState<Pair<string>>(['strategist-v3', 'selfplay-v2'])
   const [error, setError] = useState(''),
     [notice, setNotice] = useState('')
   const [importSide, setImportSide] = useState<Side>(0),

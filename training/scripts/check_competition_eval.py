@@ -57,6 +57,16 @@ def main():
     assert row == again
     print('PASS: bootstrap preserves whole-seed dependence; draw-inclusive majority and interval criteria reject insufficient evidence.')
 
+    # A point before the first return is still decisive. Reserve null for games
+    # with no decisive rallies, rather than hiding genuine first-shot finishes.
+    zero_return = summarize(outcome, sides, np.zeros(20, int), np.full(20, 10),
+                            np.zeros(20, int), [3, 7], indices)
+    all_drawn = summarize(np.full(20, 2), sides, np.zeros(20, int), np.full(20, 1600),
+                          np.full(20, 2), [3, 7], indices)
+    assert zero_return['median_decisive_returns'] == 0
+    assert all_drawn['median_decisive_returns'] is None
+    print('PASS: zero-return decisive rallies report median 0; entirely drawn games report no decisive median.')
+
 
 if __name__ == '__main__':
     main()

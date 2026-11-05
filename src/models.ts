@@ -30,6 +30,13 @@ export const keyboard: Controller = {
 }
 export const presets = [
   {
+    id: 'strategist-v3',
+    name: 'Strategist',
+    kind: 'PyTorch · DAgger · v3',
+    description: 'Fixed trajectory features → trained 8→128→128→64→1 Tanh target head → paddle feedback. Six inputs, three action scores.',
+    report: '/training/improvement.html',
+  },
+  {
     id: 'selfplay-v3',
     name: 'Selfplay',
     kind: 'PyTorch · PPO · v3',

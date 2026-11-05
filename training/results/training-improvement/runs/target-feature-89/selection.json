@@ -1,0 +1,41 @@
+{
+  "round": 14,
+  "env_steps": 917504,
+  "seconds": 113.43709020782262,
+  "loss": 0.007003167178481817,
+  "selection_min": 0.5453125,
+  "selection_mean": 0.59609375,
+  "teacher_probe_mae": 1.7247651130892336,
+  "near_contact_mae": 1.943367997434898,
+  "teacher_probe_action_agreement": 0.7479248046875,
+  "opponents": {
+    "attacker": {
+      "rallies": 320,
+      "wins": 29,
+      "losses": 0,
+      "draws": 291,
+      "loop_draws": 291,
+      "timeout_draws": 0,
+      "match_wins": 26,
+      "match_losses": 0,
+      "match_draws": 38,
+      "paired_wins": 19,
+      "paired_losses": 0,
+      "paired_draws": 13
+    },
+    "v2": {
+      "rallies": 320,
+      "wins": 113,
+      "losses": 19,
+      "draws": 188,
+      "loop_draws": 188,
+      "timeout_draws": 0,
+      "match_wins": 48,
+      "match_losses": 6,
+      "match_draws": 10,
+      "paired_wins": 27,
+      "paired_losses": 3,
+      "paired_draws": 2
+    }
+  }
+}

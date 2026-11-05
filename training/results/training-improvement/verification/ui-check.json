@@ -1,0 +1,26 @@
+{
+  "default_players": [
+    "strategist-v3",
+    "selfplay-v2"
+  ],
+  "built_in_card": {
+    "parameters": 48063,
+    "macs": 45152,
+    "graph_nodes": 157,
+    "hybrid_architecture_disclosed": true,
+    "graph_scroll_height_limit": 320,
+    "keyboard_scrolling_verified": true
+  },
+  "play_pause_step_restart": true,
+  "local_import": true,
+  "import_id": "local-a68b96685a7305102b183d357200eb35b59c23d0c09bc832efd827bc7311d435",
+  "indexeddb_restored_after_reload": true,
+  "report": {
+    "desktop_width": 1360,
+    "mobile_width": 320,
+    "page_overflow": false,
+    "table_scroll": true,
+    "broken_images": 0
+  },
+  "visible_errors": []
+}

@@ -4,6 +4,8 @@ Pong v3 keeps all v2 physics and the six-input/three-score interface. The rally 
 
 Start with the self-contained [v3 contract](v3/README.md), also downloadable as `/training/pong-v3.zip`. It includes the engine, headless example, dependency-free Python reference, fixtures and checker. [V1](v1/README.md) and [v2](v2/README.md) remain frozen.
 
+The newer [fixed-rules training investigation](results/training-improvement/README.md) diagnoses the v3 regression and introduces **Strategist**, which passed three reserved test blocks against both original v2 and the unchanged attacker. It includes focused PPO variants, teacher distillation, failed experiments and exact reproduction commands. Strategist combines disclosed fixed trajectory features with a learned target head inside one ONNX file. Its curves and final results are at `/training/improvement.html`. The original v3 recipe and results below remain as historical evidence.
+
 ## Why these rules
 
 The [rule study](results/rule-study/README.md) compared 800/1,600/3,200-tick limits and ten physics configurations on matched serves. Longer limits let some genuinely unfinished contests score; exact cycles otherwise consume time without changing the outcome. The study favored retaining paddle speed 2 and horizontal shot speed 5–13. Its original report is `/training/rule-study.html`.

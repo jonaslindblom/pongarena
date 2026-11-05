@@ -1321,6 +1321,8 @@ legend {
 .architecture-details ol {
   padding-left: 17px;
   font-size: 10px;
+  max-height: 320px;
+  overflow-y: auto;
 }
 .architecture-details li {
   margin-top: 10px;

@@ -39,7 +39,7 @@ export function Architecture({ model }: { model: Controller }) {
       </div>
       <details className="architecture-details">
         <summary>Inspect ONNX graph</summary>
-        <ol>
+        <ol tabIndex={0} aria-label={`${model.name} ONNX operators`}>
           {graph.operations.map((node) => (
             <li key={node.output}>
               <b>
