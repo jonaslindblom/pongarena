@@ -1,0 +1,118 @@
+{
+  "copy-bias-16.onnx": {
+    "sha256": "b2289d49f6d22cef3aa05fbafe5b875f5eaba0bc9203a30036866f1afdf926c9",
+    "params": 435,
+    "macs": 400,
+    "nodes": 5,
+    "widths": [
+      6,
+      16,
+      16,
+      3
+    ],
+    "division": "nano"
+  },
+  "copy-bias-32.onnx": {
+    "sha256": "ecfa5a6f031fd24b59386176552dc0e658f2784222aa66e6811788e2894374ae",
+    "params": 1379,
+    "macs": 1312,
+    "nodes": 5,
+    "widths": [
+      6,
+      32,
+      32,
+      3
+    ],
+    "division": "small"
+  },
+  "merge-16.onnx": {
+    "sha256": "6a0f3bacab08c561f442aeb59597ff6104ece2805d338b7afa0970fdf40b2983",
+    "params": 435,
+    "macs": 400,
+    "nodes": 5,
+    "widths": [
+      6,
+      16,
+      16,
+      3
+    ],
+    "division": "nano"
+  },
+  "merge-32.onnx": {
+    "sha256": "945036e66abc3ac1753e84a7d5a1f61195ce18603c8d056b931f2d513428a31f",
+    "params": 1379,
+    "macs": 1312,
+    "nodes": 5,
+    "widths": [
+      6,
+      32,
+      32,
+      3
+    ],
+    "division": "small"
+  },
+  "prune-16.onnx": {
+    "sha256": "28c24a737f73e231f7aa37d7c57448e246cb5cfa1f8007cf22c4cc7885f57fd6",
+    "params": 435,
+    "macs": 400,
+    "nodes": 5,
+    "widths": [
+      6,
+      16,
+      16,
+      3
+    ],
+    "division": "nano"
+  },
+  "prune-32.onnx": {
+    "sha256": "6718562ac454b5dcbe5f4a28cdfb3b3bbb0ac5c08d8de6f9a822a0550ab672f2",
+    "params": 1379,
+    "macs": 1312,
+    "nodes": 5,
+    "widths": [
+      6,
+      32,
+      32,
+      3
+    ],
+    "division": "small"
+  },
+  "taylor-16.onnx": {
+    "sha256": "440236ac144d2f0bb4fcad96bc653d98fb369912034e8415df53ab6698eb9104",
+    "params": 435,
+    "macs": 400,
+    "nodes": 5,
+    "widths": [
+      6,
+      16,
+      16,
+      3
+    ],
+    "division": "nano"
+  },
+  "taylor-32.onnx": {
+    "sha256": "115b07d26d7c41b2705299690fb46fedb9b28fe4b9f19837fc41a8f7c60becee",
+    "params": 1379,
+    "macs": 1312,
+    "nodes": 5,
+    "widths": [
+      6,
+      32,
+      32,
+      3
+    ],
+    "division": "small"
+  },
+  "symmetric-challenger.onnx": {
+    "sha256": "b7d7d7c0d4945f38dba3da319eb4e5f910e13353d962d9c97bfa400a76e4e1e3",
+    "params": 323,
+    "macs": 288,
+    "nodes": 3,
+    "widths": [
+      6,
+      32,
+      3
+    ],
+    "division": "nano"
+  }
+}

@@ -18,6 +18,8 @@ The [compact handcrafted study](results/compact-handcrafted-v4/README.md) and [a
 
 V4 fixtures contain 3,545 full-match transitions, 1,958 trace transitions, 20 boundary cases, five detector histories and a restart-reset check. `training/v4/game.ts` is its frozen packaged engine. Run `node --import tsx training/scripts/check_replays.ts` for its saved model replays. Earlier plain dense six-input weights remain eligible, but evaluate them again under v4 before comparing strength. The [v1](v1/README.md), [v2](v2/README.md) and [v3](v3/README.md) contracts remain immutable archives.
 
+The [dense weights-only restart](results/dense-weight-transfer-v4/README.md) audits learned feature sensitivities and tests direct pruning, feature merging, and source-weight linearization in fixed Nano/Small MLPs without additional training. None of those candidates is an upgrade; all failed controls and strict dense exports are retained, and none was added to the catalog.
+
 ## Current setup and verification
 
 Run from the repository root. The PyTorch scripts use the pinned dependencies in `requirements.txt`; `requirements-lock.txt` records the environment.

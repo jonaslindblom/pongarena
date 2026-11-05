@@ -1,0 +1,47 @@
+{
+  "copy-bias-16": {
+    "numeric_probes": 8192,
+    "max_score_error": 3.337860107421875e-06,
+    "action_mismatches": 0
+  },
+  "copy-bias-32": {
+    "numeric_probes": 8192,
+    "max_score_error": 4.76837158203125e-06,
+    "action_mismatches": 0
+  },
+  "merge-16": {
+    "numeric_probes": 8192,
+    "max_score_error": 2.47955322265625e-05,
+    "action_mismatches": 0
+  },
+  "merge-32": {
+    "numeric_probes": 8192,
+    "max_score_error": 2.6226043701171875e-05,
+    "action_mismatches": 0
+  },
+  "prune-16": {
+    "numeric_probes": 8192,
+    "max_score_error": 4.887580871582031e-06,
+    "action_mismatches": 0
+  },
+  "prune-32": {
+    "numeric_probes": 8192,
+    "max_score_error": 7.867813110351562e-06,
+    "action_mismatches": 0
+  },
+  "symmetric-challenger": {
+    "numeric_probes": 8192,
+    "max_score_error": 6.435438990592957e-07,
+    "action_mismatches": 0
+  },
+  "taylor-16": {
+    "numeric_probes": 8192,
+    "max_score_error": 7.62939453125e-06,
+    "action_mismatches": 0
+  },
+  "taylor-32": {
+    "numeric_probes": 8192,
+    "max_score_error": 9.5367431640625e-06,
+    "action_mismatches": 0
+  }
+}
