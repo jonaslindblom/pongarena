@@ -1,0 +1,11 @@
+{
+  "name": "rally-lab-pong-v4-reference",
+  "version": "3.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "example": "node --import tsx headless.ts",
+    "fixtures": "node --import tsx fixtures.ts"
+  },
+  "devDependencies": { "tsx": "4.20.6" }
+}

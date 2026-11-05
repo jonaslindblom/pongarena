@@ -4,6 +4,7 @@ export type Pair<T> = [T, T]
 export const ACTIONS = ['Up', 'Stay', 'Down'] as const
 export const RALLIES = 5
 export const MAX_BALL_VX = 13
+export const MAX_BALL_VY = 9
 export const TICKS_PER_SECOND = 30
 export const RALLY_TICK_LIMIT = 1600
 export type Event = 'serve' | 'return' | 'point' | 'draw' | null
@@ -139,8 +140,9 @@ export function advance(prior: Frame, scores: Pair<Scores>, loops?: LoopDetector
       f.event = 'point'
     } else {
       f.x = side === 0 ? 15 : 345
-      f.vx = (side === 0 ? 1 : -1) * (5 + Math.round(((MAX_BALL_VX - 5) * Math.abs(offset)) / 15))
-      f.vy = clamp(Math.round(offset / 3), -5, 5)
+      const speed = Math.min(MAX_BALL_VX, Math.abs(f.vx) + 1)
+      f.vx = (side === 0 ? 1 : -1) * speed
+      f.vy = Math.round((MAX_BALL_VY * speed * offset) / (15 * MAX_BALL_VX))
       f.returns++
       f.actor = side
       f.event = 'return'

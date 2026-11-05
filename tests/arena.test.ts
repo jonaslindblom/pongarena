@@ -18,6 +18,7 @@ import {
 import { validateModel } from '../src/validate'
 import { advance as advanceV1, serve as serveV1 } from '../training/v1/game'
 import { advance as advanceV2 } from '../training/v2/game'
+import { advance as advanceV3, LoopDetector as LoopDetectorV3 } from '../training/v3/game'
 
 const still: Pair<Scores> = [
   [0, 1, 0],
@@ -28,11 +29,36 @@ test('a policy can play either side using the same observation', () => {
   const b = { ...a, x: 360 - a.x, vx: -a.vx, paddles: [62, 28] as Pair<number> }
   assert.deepEqual(observation(a, 0), observation(b, 1))
 })
-test('edge contact gives a defender less time to reach the corner', () => {
+test('opening placement changes direction without an immediate maximum-speed return', () => {
   const before = { ...serve(24), x: 20, y: 80, vy: 0, vx: -5 }
-  assert.equal(advance(before, still).vx, 5)
-  assert.equal(advance({ ...before, y: 95 }, still).vx, 13)
+  assert.equal(advance(before, still).vx, 6)
+  const edge = advance({ ...before, y: 95 }, still)
+  assert.equal(edge.vx, 6)
+  assert.equal(edge.vy, 4)
   assert.equal(before.points[0] + before.points[1], 0)
+})
+test('successful returns build pressure to a cap; a center hit cannot reset it', () => {
+  let f = { ...serve(24), x: 20, y: 80, vy: 0, vx: -5 }
+  for (let returns = 1; returns <= 12; returns++) {
+    f = advance({ ...f, x: 20, vx: -Math.abs(f.vx), y: 80, vy: 0 }, still)
+    assert.equal(f.vx, Math.min(13, 5 + returns))
+    assert.equal(f.vy, 0)
+  }
+  const next = serve(24, { ...f, event: 'point' })
+  assert.equal(Math.abs(next.vx), 5)
+})
+test('the next shot depends only on observed state, with the same aiming law on both sides', () => {
+  for (const side of [0, 1] as const) for (let speed = 5; speed <= 13; speed++) {
+    for (let offset = -15; offset <= 15; offset++) {
+      const before = { ...serve(24), x: side === 0 ? 20 : 340, y: 80 + offset,
+        vx: (side === 0 ? -1 : 1) * speed, vy: 0 }
+      const next = advance(before, still)
+      assert.equal(Math.abs(next.vx), Math.min(13, speed + 1))
+      assert.equal(next.vy, Math.round(9 * Math.min(13, speed + 1) * offset / 195))
+      const counted = advance({ ...before, returns: 100, rallyTick: 700 }, still)
+      assert.deepEqual([next.x, next.y, next.vx, next.vy], [counted.x, counted.y, counted.vx, counted.vy])
+    }
+  }
 })
 test('v2 softens edge speed while preserving aiming, paddle motion and seeded serves', () => {
   for (const seed of [0, 24, 902, 4294967295]) assert.deepEqual(serve(seed), serveV1(seed))
@@ -46,14 +72,13 @@ test('v2 softens edge speed while preserving aiming, paddle motion and seeded se
         vy: 0,
       }
       const old = advanceV1(before, still)
-      const { drawReason, ...next } = advance(before, still)
-      assert.equal(drawReason, undefined)
+      const next = advanceV2(before, still)
       assert.deepEqual({ ...next, vx: old.vx }, old)
       assert.ok(Math.abs(next.vx) <= 13)
     }
   }
   const edge = { ...serve(24), x: 20, y: 94, vx: -5, vy: 0 }
-  assert.equal(advance(edge, still).vx, 12)
+  assert.equal(advanceV2(edge, still).vx, 12)
   assert.equal(advanceV1(edge, still).vx, 14)
 })
 test('five seeded rallies reproduce and a missed ball awards exactly one point', () => {
@@ -98,10 +123,10 @@ test('a rally timeout is a draw and a last-tick point takes precedence', () => {
 test('v3 keeps v2 physics and observes a loop without moving either player differently', () => {
   const start = { ...serve(24), x: 20, y: 80, vx: -5, vy: 0 }
   let model = start, human = start, old = start
-  const loops = new LoopDetector()
+  const loops = new LoopDetectorV3()
   for (let tick = 1; tick <= 133; tick++) {
-    model = advance(model, still, loops)
-    human = advance(human, still)
+    model = advanceV3(model, still, loops)
+    human = advanceV3(human, still)
     old = advanceV2(old, still)
     const { drawReason, ...physical } = human
     assert.equal(drawReason, undefined)
@@ -113,7 +138,7 @@ test('v3 keeps v2 physics and observes a loop without moving either player diffe
   assert.equal(model.actor, undefined)
   assert.deepEqual(model.points, [0, 0])
   assert.equal(human.event, 'return')
-  while (human.rallyTick < RALLY_TICK_LIMIT) human = advance(human, still)
+  while (human.rallyTick < RALLY_TICK_LIMIT) human = advanceV3(human, still)
   assert.equal(human.drawReason, 'timeout')
 })
 test('only the complete post-contact state proves a deterministic loop', () => {
@@ -189,11 +214,17 @@ test('the MAC limit counts repeated use of an embedded matrix', () => {
   assert.throws(() => validateModel(pb.onnx.ModelProto.encode(m).finish()), /compute budget/)
 })
 
-test('the published v3 training reference stays identical to the live rules', () => {
+test('the published v4 training reference stays identical to the live rules', () => {
   assert.equal(
-    readFileSync(new URL('../training/v3/game.ts', import.meta.url), 'utf8'),
+    readFileSync(new URL('../training/v4/game.ts', import.meta.url), 'utf8'),
     readFileSync(new URL('../src/game.ts', import.meta.url), 'utf8'),
   )
+})
+
+test('the archived v3 engine stays frozen for earlier models and rule studies', () => {
+  const bytes = readFileSync(new URL('../training/v3/game.ts', import.meta.url))
+  assert.equal(createHash('sha256').update(bytes).digest('hex'),
+    '74e4e0eae1e5ec54bca0b9926a8b0cf9d6a973115371e4df4351599bf188dc6a')
 })
 
 test('the archived v1 engine stays frozen for old submissions and training results', () => {
