@@ -1,0 +1,7 @@
+{
+  "cases": 44,
+  "completeTrajectories": 12,
+  "transitions": 2156,
+  "pythonTypeScriptExact": true,
+  "baselineMatchesReleasedV3": true
+}
