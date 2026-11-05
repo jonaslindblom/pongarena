@@ -1,0 +1,95 @@
+{
+  "rules": "pong-v3",
+  "status": "predeclared; final holdout not evaluated",
+  "objective": "A fully learned six-input/three-score MLP consistently beats original Selfplay v2 and unchanged scripted attacker, without fixed geometry or paddle-feedback branches.",
+  "rules_unchanged": {
+    "engine": "src/game.ts",
+    "sha256": "74e4e0eae1e5ec54bca0b9926a8b0cf9d6a973115371e4df4351599bf188dc6a",
+    "contract": "training/v3/game.ts",
+    "contract_sha256": "74e4e0eae1e5ec54bca0b9926a8b0cf9d6a973115371e4df4351599bf188dc6a"
+  },
+  "primary_targets": {
+    "selfplay-v2": {
+      "file": "public/models/selfplay-v2.onnx",
+      "sha256": "71e04e300d02aa968a376f599cd5c1a5c04734c714794d7d7b5f3ab078ef6f63"
+    },
+    "attacker": {
+      "implementation": "training/scripts/env.py:scripted(obs, attack=True)",
+      "source_sha256": "af2d14a9f20ec7a7d95be1e890b1cbb9ef19eb91aaf4b249c75280b815d90762"
+    }
+  },
+  "guardrail_opponents": {
+    "interceptor": "training/scripts/env.py:scripted(obs, attack=False); reported, not a primary acceptance target"
+  },
+  "candidate_selection": {
+    "data": "Training seeds below 1,000,000,000; development seeds in [1,300,000,000,1,400,000,000). Prior public final tests are historical evidence, never fresh evaluation.",
+    "freeze": "Before final evaluation, save candidate checkpoint and exported ONNX SHA256 plus the development selection evidence. Do not select or retune using holdout outcomes.",
+    "previous_tests": "Published v1/v2/v3 and hybrid Strategist tests are historical, not fresh evidence for this candidate."
+  },
+  "holdout": {
+    "file": "holdout-seeds.json",
+    "sha256": "3302c2a5f031d98f55f5c5810c79007e8fad4d1d0871b0f4cb41cda918ae33f3",
+    "blocks": 3,
+    "seeds_per_block": 200,
+    "trajectories_per_opponent_per_block": 2000,
+    "paired_ten_rally_matches_per_block": 200,
+    "sampling": "Three disjoint uint32 intervals;200 unique dispersed seeds per block;Python random.Random samplers611/612/613.",
+    "ranges": [
+      [
+        3000000000,
+        3100000000
+      ],
+      [
+        3100000000,
+        3200000000
+      ],
+      [
+        3200000000,
+        3300000000
+      ]
+    ]
+  },
+  "evaluation": {
+    "candidate": "Actual exported ONNX through native ONNX Runtime, deterministic first argmax.",
+    "learned_reference": "Actual frozen selfplay-v2.onnx through native ONNX Runtime.",
+    "scripted_reference": "Unmodified deterministic attacker using only the six policy inputs.",
+    "matches": "Each seed: all five serves, both physical side assignments; aggregate ten-rally point margins.",
+    "termination": "Fixed v3 1,600-tick limit and exact post-contact loop detection for these fixed deterministic stateless controllers.",
+    "bootstrap": {
+      "unit": "whole seed: both sides and all five rallies remain together",
+      "samples": 2000,
+      "seed": 1741,
+      "confidence": 0.95,
+      "method": "percentile",
+      "intervals": [
+        "mean rally point margin (wins minus losses per rally)",
+        "score_rate = wins plus half draws per rally"
+      ]
+    },
+    "report": [
+      "rally wins/losses/draws",
+      "loop and timeout draws",
+      "each-side rally outcomes",
+      "paired ten-rally match outcomes including draws",
+      "per-seed outcomes",
+      "score and point-margin confidence intervals",
+      "interceptor guardrail outcomes",
+      "ordinary five-rally game W/L/D and win rate including draws"
+    ]
+  },
+  "acceptance": {
+    "scope": "All previous paired-match/positive-margin/both-side criteria PLUS majority ordinary five-rally game wins must pass against both primary targets in each of three fresh blocks.",
+    "paired_match_win_rate": "Strictly greater than 0.5, counting drawn matches in the denominator.",
+    "point_margin_interval": "Lower endpoint of seed-cluster 95% bootstrap confidence interval strictly greater than zero.",
+    "side_fairness": "Rally wins strictly exceed rally losses separately on left and right.",
+    "failure": "Report failure or mixed evidence honestly. Do not silently select another candidate on these same holdouts.",
+    "interpretation": "These are predeclared empirical acceptance thresholds, not a proof of optimal play or a family-wise statistical guarantee.",
+    "ordinary_match_win_rate": "Strictly greater than0.5 for ordinary five-rally games, counting drawn games in the denominator, against each primary opponent in every block."
+  },
+  "architecture_requirement": {
+    "input": "Original six float32 observations only; no engineered geometry features.",
+    "output": "Three learned action scores, deterministic first argmax.",
+    "network": "Plain feed-forward MLP with learned affine weights/biases and Tanh/ReLU hidden nonlinearities. Every affine tensor must correspond to a trainable checkpoint parameter. No fixed feature branches, paddle-error feedback, external planner, opponent identity or time inputs to the actor.",
+    "initialization": "May fine-tune a fully learned existing actor. Training opponents and training-only critic are unrestricted; submitted policy has no privileged inputs."
+  }
+}
