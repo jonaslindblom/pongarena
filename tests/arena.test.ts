@@ -315,3 +315,21 @@ test('the catalog publishes the evaluated Nano and Small handcrafted policies wi
     assert.equal(stats.architecture.widths, null)
   }
 })
+
+test('Counter Small publishes the exact frozen attacker comparison within the Small budget', () => {
+  const bytes = readFileSync(new URL('../public/models/counter-attacker-v4.onnx', import.meta.url))
+  const frozen = JSON.parse(readFileSync(new URL('../training/results/counter-attacker-v4/freeze.json', import.meta.url), 'utf8'))
+  const verification = JSON.parse(readFileSync(new URL('../training/results/counter-attacker-v4/verification.json', import.meta.url), 'utf8'))
+  assert.equal(createHash('sha256').update(bytes).digest('hex'), frozen.model_sha256)
+  const model = pb.onnx.ModelProto.decode(bytes)
+  const metadata = new Map(model.metadataProps.map((p) => [p.key, p.value]))
+  assert.equal(metadata.get('rules'), 'pong-v4')
+  assert.match(metadata.get('method')!, /no training/)
+  assert.match(metadata.get('limitation')!, /cap13/)
+  const stats = validateModel(bytes)
+  assert.deepEqual([stats.inputSize, stats.outputSize], [6, 3])
+  assert.deepEqual([stats.params, stats.macs, stats.nodes],
+    [verification.arena.params, verification.arena.macs, verification.arena.nodes])
+  assert.equal(smallestDivision(stats), 'small')
+  assert.equal(stats.architecture.widths, null)
+})

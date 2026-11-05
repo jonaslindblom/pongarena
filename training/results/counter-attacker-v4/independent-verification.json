@@ -1,0 +1,150 @@
+{
+  "complete": true,
+  "model": "/tmp/rally-counter-root/fixed-grid/counter-attacker-v4.onnx",
+  "model_sha256": "aeb3531d64f5ec06f4be4acf6d62474a5c8e6d420e0fec621945aaff7af78e86",
+  "verification_seeds": [
+    4255000007,
+    4255000043
+  ],
+  "matches": [
+    {
+      "seed": 4255000007,
+      "players": [
+        "counter",
+        "attack"
+      ],
+      "frames": 1664,
+      "points": [
+        5,
+        0
+      ]
+    },
+    {
+      "seed": 4255000007,
+      "players": [
+        "attack",
+        "counter"
+      ],
+      "frames": 1612,
+      "points": [
+        3,
+        2
+      ]
+    },
+    {
+      "seed": 4255000007,
+      "players": [
+        "counter",
+        "pacer"
+      ],
+      "frames": 1612,
+      "points": [
+        5,
+        0
+      ]
+    },
+    {
+      "seed": 4255000007,
+      "players": [
+        "counter",
+        "counter"
+      ],
+      "frames": 2028,
+      "points": [
+        1,
+        4
+      ]
+    },
+    {
+      "seed": 4255000043,
+      "players": [
+        "counter",
+        "attack"
+      ],
+      "frames": 1716,
+      "points": [
+        5,
+        0
+      ]
+    },
+    {
+      "seed": 4255000043,
+      "players": [
+        "attack",
+        "counter"
+      ],
+      "frames": 1664,
+      "points": [
+        2,
+        2
+      ]
+    }
+  ],
+  "frames": 10296,
+  "native_decisions": 13904,
+  "adaptive_attack_decisions": 6640,
+  "high_vy_frames": 1663,
+  "scalar_reference": "training/v4/reference.py",
+  "typescript": {
+    "engines": [
+      "training/v4/game.ts",
+      "src/game.ts"
+    ],
+    "complete_matches_per_engine": 6,
+    "matched_transition_states": 20592,
+    "matched_observation_pairs": 20544,
+    "action_or_state_mismatches": 0,
+    "signed_zero_observation_differences": 1420,
+    "observation_equality": "Exact numeric equality; signed zeros recorded separately for native inference parity",
+    "signed_zero_native_checks": 950,
+    "signed_zero_script_checks": 470,
+    "signed_zero_max_score_error": 0.0,
+    "signed_zero_action_mismatches": 0
+  },
+  "frozen_integrity": {
+    "all_sources_unchanged": true,
+    "all_references_unchanged": true,
+    "model_matches_frozen_hash": true,
+    "whole_onnx_regeneration_byte_identical": true
+  },
+  "full_match_formula_check": {
+    "counter_decisions": 12296,
+    "action_mismatches": 0,
+    "max_score_error": 2.3841857821338408e-08,
+    "incoming_half_integer_scores": true
+  },
+  "seed_audit": {
+    "files_scanned": 328,
+    "json_integer_leaves": 7028793,
+    "unique_uint32_values": 10374,
+    "unique_seed_context_values": 5296,
+    "final_seeds": 192,
+    "overlaps": [],
+    "parse_errors": [],
+    "development_disjoint": true,
+    "verification_disjoint": true,
+    "method": "Conservative all integer leaves plus seed-context digit strings; training/results and public/training JSON/JSONL excluding current experiment"
+  },
+  "numeric_probes": {
+    "incoming_scores_on_half_integer_grid": true,
+    "model_sha256": "aeb3531d64f5ec06f4be4acf6d62474a5c8e6d420e0fec621945aaff7af78e86",
+    "numeric_probes": 8192,
+    "max_score_error": 2.3841857821338408e-08,
+    "action_mismatches": 0,
+    "non_tie_action_mismatches": 0,
+    "mismatches": []
+  },
+  "action_boundary_probes": {
+    "sha256": "aeb3531d64f5ec06f4be4acf6d62474a5c8e6d420e0fec621945aaff7af78e86",
+    "boundary_probes": 22032,
+    "action_mismatches": 0,
+    "max_score_error": 2.3841857821338408e-08,
+    "mismatches": []
+  },
+  "lattice_probes": {
+    "lattice_band_cases": 52326,
+    "nonempty_lattice_bands": 31602,
+    "failures": [],
+    "empty_band_gap_preserved": "Must use lower\u2212raw_upper before quantizing upper"
+  }
+}

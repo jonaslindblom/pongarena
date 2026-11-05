@@ -83,6 +83,13 @@ export const presets = [
     report: '/training/handcrafted-v4.html',
   },
   {
+    id: 'counter-attacker-v4',
+    name: 'Counter Small v4',
+    kind: 'Handcrafted · Small · v4',
+    description: '1,330 fixed parameters, built without training. Scores reachable shots and forecasts attacking replies. Beats the adaptive attacker on three fresh blocks; cap-speed safety and future clamp paths remain approximations.',
+    report: '/training/counter-attacker-v4.html',
+  },
+  {
     id: 'contender-v3',
     name: 'Contender v3',
     kind: 'Fully learned · PPO + weight search',
