@@ -1,0 +1,327 @@
+{
+  "summary": {
+    "attack": {
+      "losses": 182,
+      "counts": {
+        "incoming_interception_error": 0,
+        "lost_reachable_universal_recovery": 22,
+        "no_universal_one_reply_safe_center": 95,
+        "safe_region_not_reachable_after_own_shot": 65
+      },
+      "final_flight_contains_wall": 106,
+      "actual_contact_positive_risk": 159,
+      "positive_risk_reduced_by_one_contact_action": 131,
+      "positive_risk_to_nonpositive_by_one_contact_action": 66,
+      "median_positive_risk_reduction": 4.0
+    },
+    "defend": {
+      "losses": 164,
+      "counts": {
+        "incoming_interception_error": 5,
+        "lost_reachable_universal_recovery": 17,
+        "no_universal_one_reply_safe_center": 126,
+        "safe_region_not_reachable_after_own_shot": 16
+      },
+      "final_flight_contains_wall": 86,
+      "actual_contact_positive_risk": 141,
+      "positive_risk_reduced_by_one_contact_action": 101,
+      "positive_risk_to_nonpositive_by_one_contact_action": 45,
+      "median_positive_risk_reduction": 4.0
+    }
+  },
+  "critical_states": [
+    {
+      "kind": "incoming",
+      "row": 174217,
+      "observations": [
+        -0.8888888955116272,
+        0.03750000149011612,
+        -2.1666667461395264,
+        -1.5,
+        0.10000000149011612,
+        -0.13750000298023224
+      ],
+      "scores": [
+        0.22608640789985657,
+        -0.24305909872055054,
+        0.5824500322341919
+      ],
+      "chosen": 2,
+      "teacher": 1,
+      "safe_actions": [
+        0,
+        1
+      ],
+      "occurrences": 3,
+      "opponents": {
+        "defend": 3
+      }
+    },
+    {
+      "kind": "incoming",
+      "row": 140244,
+      "observations": [
+        -0.8833333253860474,
+        -0.2750000059604645,
+        -1.5,
+        -0.5,
+        -0.10000000149011612,
+        0.07500000298023224
+      ],
+      "scores": [
+        0.15622089803218842,
+        1.576610803604126,
+        -1.4141130447387695
+      ],
+      "chosen": 1,
+      "teacher": 0,
+      "safe_actions": [
+        0
+      ],
+      "occurrences": 1,
+      "opponents": {
+        "defend": 1
+      }
+    },
+    {
+      "kind": "incoming",
+      "row": 155417,
+      "observations": [
+        -0.855555534362793,
+        0.9375,
+        -1.8333333730697632,
+        1.3333333730697632,
+        0.6499999761581421,
+        -0.25
+      ],
+      "scores": [
+        -0.46440720558166504,
+        -0.050068698823451996,
+        -0.3624192178249359
+      ],
+      "chosen": 1,
+      "teacher": 2,
+      "safe_actions": [
+        2
+      ],
+      "occurrences": 1,
+      "opponents": {
+        "defend": 1
+      }
+    },
+    {
+      "kind": "outgoing",
+      "row": 73180,
+      "observations": [
+        0.8833333253860474,
+        0.9125000238418579,
+        2.0,
+        -1.0,
+        -0.05000000074505806,
+        0.737500011920929
+      ],
+      "scores": [
+        -0.2688446640968323,
+        -0.34916889667510986,
+        0.4598865509033203
+      ],
+      "chosen": 2,
+      "teacher": 0,
+      "safe_actions": [
+        0,
+        1
+      ],
+      "occurrences": 11,
+      "opponents": {
+        "attack": 8,
+        "defend": 3
+      }
+    },
+    {
+      "kind": "outgoing",
+      "row": 66513,
+      "observations": [
+        0.855555534362793,
+        0.75,
+        1.8333333730697632,
+        -1.0,
+        0.0,
+        0.550000011920929
+      ],
+      "scores": [
+        -1.0701103210449219,
+        0.06612756848335266,
+        0.9137986898422241
+      ],
+      "chosen": 2,
+      "teacher": 1,
+      "safe_actions": [
+        1
+      ],
+      "occurrences": 8,
+      "opponents": {
+        "attack": 6,
+        "defend": 2
+      }
+    },
+    {
+      "kind": "outgoing",
+      "row": 155238,
+      "observations": [
+        0.855555534362793,
+        -0.4000000059604645,
+        1.8333333730697632,
+        -0.6666666865348816,
+        0.05000000074505806,
+        -0.550000011920929
+      ],
+      "scores": [
+        -0.0064920783042907715,
+        0.6896165609359741,
+        -0.5046963691711426
+      ],
+      "chosen": 1,
+      "teacher": 2,
+      "safe_actions": [
+        2
+      ],
+      "occurrences": 7,
+      "opponents": {
+        "defend": 7
+      }
+    },
+    {
+      "kind": "outgoing",
+      "row": 66311,
+      "observations": [
+        0.7944444417953491,
+        -0.8999999761581421,
+        1.8333333730697632,
+        1.0,
+        0.02500000037252903,
+        -0.625
+      ],
+      "scores": [
+        0.2452678084373474,
+        0.10546138882637024,
+        -0.19562029838562012
+      ],
+      "chosen": 0,
+      "teacher": 2,
+      "safe_actions": [
+        2
+      ],
+      "occurrences": 6,
+      "opponents": {
+        "attack": 6
+      }
+    },
+    {
+      "kind": "outgoing",
+      "row": 155262,
+      "observations": [
+        0.855555534362793,
+        -0.0625,
+        1.8333333730697632,
+        -0.5,
+        0.07500000298023224,
+        -0.17499999701976776
+      ],
+      "scores": [
+        3.1965630054473877,
+        -0.7771883010864258,
+        -2.0775439739227295
+      ],
+      "chosen": 0,
+      "teacher": 1,
+      "safe_actions": [
+        1
+      ],
+      "occurrences": 3,
+      "opponents": {
+        "defend": 3
+      }
+    },
+    {
+      "kind": "outgoing",
+      "row": 155290,
+      "observations": [
+        0.855555534362793,
+        0.0625,
+        1.8333333730697632,
+        0.5,
+        -0.07500000298023224,
+        0.17499999701976776
+      ],
+      "scores": [
+        -2.017024040222168,
+        -0.7997852563858032,
+        3.1107091903686523
+      ],
+      "chosen": 2,
+      "teacher": 1,
+      "safe_actions": [
+        1
+      ],
+      "occurrences": 2,
+      "opponents": {
+        "defend": 2
+      }
+    },
+    {
+      "kind": "outgoing",
+      "row": 66522,
+      "observations": [
+        0.855555534362793,
+        -0.36250001192092896,
+        1.8333333730697632,
+        -0.6666666865348816,
+        0.02500000037252903,
+        -0.25
+      ],
+      "scores": [
+        -0.9415594935417175,
+        0.8781067132949829,
+        0.06933999061584473
+      ],
+      "chosen": 1,
+      "teacher": 2,
+      "safe_actions": [
+        2
+      ],
+      "occurrences": 1,
+      "opponents": {
+        "attack": 1
+      }
+    },
+    {
+      "kind": "outgoing",
+      "row": 66637,
+      "observations": [
+        0.855555534362793,
+        -0.3375000059604645,
+        1.8333333730697632,
+        -0.6666666865348816,
+        0.02500000037252903,
+        -0.22499999403953552
+      ],
+      "scores": [
+        -0.9770134091377258,
+        0.7678757905960083,
+        0.1831890344619751
+      ],
+      "chosen": 1,
+      "teacher": 2,
+      "safe_actions": [
+        2
+      ],
+      "occurrences": 1,
+      "opponents": {
+        "attack": 1
+      }
+    }
+  ],
+  "unique_critical_states": 11,
+  "critical_occurrences": 44,
+  "limitations": "Repeated states are not independent examples. Geometric alternatives are offline diagnostics; neither geometry nor labels are used in Pacer inference. No universal safe region does not prove a forced loss."
+}

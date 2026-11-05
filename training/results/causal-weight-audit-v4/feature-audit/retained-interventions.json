@@ -1,0 +1,848 @@
+{
+  "purpose": "Predeclared group causal intervention on fixed observations; not gameplay fitness or final evaluation",
+  "group": [
+    34,
+    62,
+    68
+  ],
+  "incoming_constants": [
+    -1.0,
+    1.0,
+    -1.0
+  ],
+  "gain_formula": "W4[:,G]*=lambda; b4+=(1-lambda)*originalW4[:,G]@c; delta=(lambda-1)*(h2_G-c)@originalW4_G.T",
+  "feature_names": [
+    "x",
+    "ball_y",
+    "vx",
+    "vy",
+    "own_y",
+    "other_y"
+  ],
+  "source_checkpoint_sha256": "57cd566fd8a0ddecb19dd2d20cce54a6bd1d18fb9784c37e5f5e2d8fd6790371",
+  "observations": 19012,
+  "phases": {
+    "incoming": {
+      "states": 9506,
+      "baseline_teacher_agreement": 0.7160740584893751,
+      "baseline_action_shares": [
+        0.3945928887018725,
+        0.19440353460972018,
+        0.4110035766884073
+      ],
+      "units": [
+        {
+          "neuron": 34,
+          "mean": -1.0,
+          "std": 4.1173493059432076e-08,
+          "max_abs_deviation_from_incoming_constant": 2.4437904357910156e-06,
+          "signed_own_path_derivative": 3.857281427599446e-08,
+          "abs_own_path_derivative": 3.857281427599446e-08
+        },
+        {
+          "neuron": 62,
+          "mean": 1.0,
+          "std": 1.85830586474367e-08,
+          "max_abs_deviation_from_incoming_constant": 1.1324882507324219e-06,
+          "signed_own_path_derivative": 9.32180022061857e-09,
+          "abs_own_path_derivative": 9.32180022061857e-09
+        },
+        {
+          "neuron": 68,
+          "mean": -1.0,
+          "std": 5.5433197587717586e-08,
+          "max_abs_deviation_from_incoming_constant": 2.7418136596679688e-06,
+          "signed_own_path_derivative": -2.5149780924493825e-08,
+          "abs_own_path_derivative": 2.5149780924493825e-08
+        }
+      ],
+      "group_signed_feature_derivatives": [
+        2.2161241730600523e-09,
+        2.5544797388477036e-09,
+        3.3732012738596495e-09,
+        1.7840998678408937e-09,
+        2.2744837124832884e-08,
+        -1.2695455797739896e-09
+      ],
+      "group_mean_abs_feature_derivatives": [
+        6.751398995419322e-09,
+        8.633357140297448e-09,
+        1.3033664814088297e-08,
+        3.4818261607227896e-09,
+        2.754469896615319e-08,
+        2.3614279420769435e-09
+      ],
+      "controls": {
+        "centered_gain_0.9": {
+          "changed_actions": 0,
+          "action_flip_rate": 0.0,
+          "teacher_agreement": 0.7160740584893751,
+          "teacher_corrected": 0,
+          "teacher_harmed": 0,
+          "changed_neither_teacher": 0,
+          "mean_teacher_margin_change": 5.133736838414116e-11,
+          "median_teacher_margin_change": 0.0,
+          "mean_abs_score_change": 1.5105255934955153e-10,
+          "maximum_abs_score_change": 1.8351452979459282e-07,
+          "action_shares": [
+            0.3945928887018725,
+            0.19440353460972018,
+            0.4110035766884073
+          ],
+          "changed_cost_improved": 0,
+          "changed_cost_worsened": 0,
+          "changed_cost_equal": 0,
+          "mean_changed_worst_reply_cost_delta": null
+        },
+        "centered_gain_1.1": {
+          "changed_actions": 0,
+          "action_flip_rate": 0.0,
+          "teacher_agreement": 0.7160740584893751,
+          "teacher_corrected": 0,
+          "teacher_harmed": 0,
+          "changed_neither_teacher": 0,
+          "mean_teacher_margin_change": -4.9769816740097284e-11,
+          "median_teacher_margin_change": 0.0,
+          "mean_abs_score_change": 1.5105255934955153e-10,
+          "maximum_abs_score_change": 1.8351452979459282e-07,
+          "action_shares": [
+            0.3945928887018725,
+            0.19440353460972018,
+            0.4110035766884073
+          ],
+          "changed_cost_improved": 0,
+          "changed_cost_worsened": 0,
+          "changed_cost_equal": 0,
+          "mean_changed_worst_reply_cost_delta": null
+        },
+        "centered_ablation_0": {
+          "changed_actions": 0,
+          "action_flip_rate": 0.0,
+          "teacher_agreement": 0.7160740584893751,
+          "teacher_corrected": 0,
+          "teacher_harmed": 0,
+          "changed_neither_teacher": 0,
+          "mean_teacher_margin_change": 1.7203896640616279e-10,
+          "median_teacher_margin_change": 0.0,
+          "mean_abs_score_change": 1.5105257045178178e-09,
+          "maximum_abs_score_change": 1.8351452126807999e-06,
+          "action_shares": [
+            0.3945928887018725,
+            0.19440353460972018,
+            0.4110035766884073
+          ],
+          "changed_cost_improved": 0,
+          "changed_cost_worsened": 0,
+          "changed_cost_equal": 0,
+          "mean_changed_worst_reply_cost_delta": null
+        },
+        "raw_ablation_0": {
+          "changed_actions": 1218,
+          "action_flip_rate": 0.12812960235640647,
+          "teacher_agreement": 0.7263833368398906,
+          "teacher_corrected": 506,
+          "teacher_harmed": 408,
+          "changed_neither_teacher": 304,
+          "mean_teacher_margin_change": 0.3337877094745636,
+          "median_teacher_margin_change": 0.7375504970550537,
+          "mean_abs_score_change": 0.364942729473114,
+          "maximum_abs_score_change": 0.5019314289093018,
+          "action_shares": [
+            0.40742688828108564,
+            0.09067957079739113,
+            0.5018935409215233
+          ],
+          "changed_cost_improved": 539,
+          "changed_cost_worsened": 670,
+          "changed_cost_equal": 9,
+          "mean_changed_worst_reply_cost_delta": 0.23070607553366174
+        }
+      }
+    },
+    "outgoing": {
+      "states": 9506,
+      "baseline_teacher_agreement": 0.7533136966126657,
+      "baseline_action_shares": [
+        0.3402061855670103,
+        0.3233747107090259,
+        0.33641910372396383
+      ],
+      "units": [
+        {
+          "neuron": 34,
+          "mean": 0.14578737318515778,
+          "std": 0.8760048151016235,
+          "max_abs_deviation_from_incoming_constant": 1.9999890327453613,
+          "signed_own_path_derivative": 0.38292574882507324,
+          "abs_own_path_derivative": 0.4259035885334015
+        },
+        {
+          "neuron": 62,
+          "mean": 0.058752622455358505,
+          "std": 0.9478265643119812,
+          "max_abs_deviation_from_incoming_constant": 2.0,
+          "signed_own_path_derivative": 0.5177025198936462,
+          "abs_own_path_derivative": 0.5177025198936462
+        },
+        {
+          "neuron": 68,
+          "mean": 0.46735459566116333,
+          "std": 0.8261877298355103,
+          "max_abs_deviation_from_incoming_constant": 2.0,
+          "signed_own_path_derivative": -0.28145694732666016,
+          "abs_own_path_derivative": 0.28461769223213196
+        }
+      ],
+      "group_signed_feature_derivatives": [
+        -0.23914624750614166,
+        -0.25715842843055725,
+        -0.18553799390792847,
+        -0.2519463300704956,
+        0.619170606136322,
+        -0.03649004176259041
+      ],
+      "group_mean_abs_feature_derivatives": [
+        0.45177367329597473,
+        0.40107473731040955,
+        1.172493577003479,
+        0.3928598463535309,
+        1.0010182857513428,
+        0.18788999319076538
+      ],
+      "controls": {
+        "centered_gain_0.9": {
+          "changed_actions": 128,
+          "action_flip_rate": 0.013465179886387544,
+          "teacher_agreement": 0.7493162213338944,
+          "teacher_corrected": 37,
+          "teacher_harmed": 75,
+          "changed_neither_teacher": 16,
+          "mean_teacher_margin_change": -0.0528065450489521,
+          "median_teacher_margin_change": -0.054236412048339844,
+          "mean_abs_score_change": 0.05556325241923332,
+          "maximum_abs_score_change": 0.1439422369003296,
+          "action_shares": [
+            0.3374710709025878,
+            0.3348411529560278,
+            0.3276877761413844
+          ],
+          "changed_cost_improved": 37,
+          "changed_cost_worsened": 76,
+          "changed_cost_equal": 15,
+          "mean_changed_worst_reply_cost_delta": 0.765625
+        },
+        "centered_gain_1.1": {
+          "changed_actions": 144,
+          "action_flip_rate": 0.015148327372185988,
+          "teacher_agreement": 0.7548916473806018,
+          "teacher_corrected": 71,
+          "teacher_harmed": 56,
+          "changed_neither_teacher": 17,
+          "mean_teacher_margin_change": 0.05140707641839981,
+          "median_teacher_margin_change": 0.04715903103351593,
+          "mean_abs_score_change": 0.05556325241923332,
+          "maximum_abs_score_change": 0.1439422369003296,
+          "action_shares": [
+            0.3430464969492952,
+            0.30990953082263833,
+            0.3470439722280665
+          ],
+          "changed_cost_improved": 71,
+          "changed_cost_worsened": 62,
+          "changed_cost_equal": 11,
+          "mean_changed_worst_reply_cost_delta": -0.14583333333333334
+        },
+        "centered_ablation_0": {
+          "changed_actions": 832,
+          "action_flip_rate": 0.08752366926151904,
+          "teacher_agreement": 0.7252261729434042,
+          "teacher_corrected": 211,
+          "teacher_harmed": 478,
+          "changed_neither_teacher": 143,
+          "mean_teacher_margin_change": -0.5791127681732178,
+          "median_teacher_margin_change": -0.7787726521492004,
+          "mean_abs_score_change": 0.5556325316429138,
+          "maximum_abs_score_change": 1.439422369003296,
+          "action_shares": [
+            0.31390700610140965,
+            0.4013254786450663,
+            0.2847675152535241
+          ],
+          "changed_cost_improved": 277,
+          "changed_cost_worsened": 484,
+          "changed_cost_equal": 71,
+          "mean_changed_worst_reply_cost_delta": 0.5673076923076923
+        },
+        "raw_ablation_0": {
+          "changed_actions": 1126,
+          "action_flip_rate": 0.11845150431306543,
+          "teacher_agreement": 0.7409004839049022,
+          "teacher_corrected": 404,
+          "teacher_harmed": 522,
+          "changed_neither_teacher": 200,
+          "mean_teacher_margin_change": -0.18752771615982056,
+          "median_teacher_margin_change": -0.5361870527267456,
+          "mean_abs_score_change": 0.38900771737098694,
+          "maximum_abs_score_change": 1.2617026567459106,
+          "action_shares": [
+            0.3662949715968862,
+            0.29854828529349886,
+            0.33515674310961496
+          ],
+          "changed_cost_improved": 435,
+          "changed_cost_worsened": 577,
+          "changed_cost_equal": 114,
+          "mean_changed_worst_reply_cost_delta": 0.31438721136767317
+        }
+      }
+    },
+    "incoming_straight": {
+      "states": 5710,
+      "baseline_teacher_agreement": 0.6525394045534151,
+      "baseline_action_shares": [
+        0.3733800350262697,
+        0.2457092819614711,
+        0.3809106830122592
+      ],
+      "units": [
+        {
+          "neuron": 34,
+          "mean": -1.0,
+          "std": 4.4843318391940556e-08,
+          "max_abs_deviation_from_incoming_constant": 2.4437904357910156e-06,
+          "signed_own_path_derivative": 3.9462179302063305e-08,
+          "abs_own_path_derivative": 3.9462179302063305e-08
+        },
+        {
+          "neuron": 62,
+          "mean": 1.0,
+          "std": 2.0202911343858432e-08,
+          "max_abs_deviation_from_incoming_constant": 1.1324882507324219e-06,
+          "signed_own_path_derivative": 1.1251743536888625e-08,
+          "abs_own_path_derivative": 1.1251743536888625e-08
+        },
+        {
+          "neuron": 68,
+          "mean": -1.0,
+          "std": 5.787276435853528e-08,
+          "max_abs_deviation_from_incoming_constant": 2.7418136596679688e-06,
+          "signed_own_path_derivative": -2.4113463226171916e-08,
+          "abs_own_path_derivative": 2.4113463226171916e-08
+        }
+      ],
+      "group_signed_feature_derivatives": [
+        2.172630519936547e-09,
+        5.170602168647065e-09,
+        3.6535408032278838e-09,
+        1.7472588931255473e-09,
+        2.6600462277315273e-08,
+        -2.310726054943757e-09
+      ],
+      "group_mean_abs_feature_derivatives": [
+        7.243710076210164e-09,
+        9.424193869733699e-09,
+        1.372932967314e-08,
+        4.2594376914451004e-09,
+        3.075707510902248e-08,
+        2.482330785369413e-09
+      ],
+      "controls": {
+        "centered_gain_0.9": {
+          "changed_actions": 0,
+          "action_flip_rate": 0.0,
+          "teacher_agreement": 0.6525394045534151,
+          "teacher_corrected": 0,
+          "teacher_harmed": 0,
+          "changed_neither_teacher": 0,
+          "mean_teacher_margin_change": 1.3765959205880307e-10,
+          "median_teacher_margin_change": 0.0,
+          "mean_abs_score_change": 1.53313070572203e-10,
+          "maximum_abs_score_change": 1.8351452979459282e-07,
+          "action_shares": [
+            0.3733800350262697,
+            0.2457092819614711,
+            0.3809106830122592
+          ],
+          "changed_cost_improved": 0,
+          "changed_cost_worsened": 0,
+          "changed_cost_equal": 0,
+          "mean_changed_worst_reply_cost_delta": null
+        },
+        "centered_gain_1.1": {
+          "changed_actions": 0,
+          "action_flip_rate": 0.0,
+          "teacher_agreement": 0.6525394045534151,
+          "teacher_corrected": 0,
+          "teacher_harmed": 0,
+          "changed_neither_teacher": 0,
+          "mean_teacher_margin_change": -6.458909795892254e-11,
+          "median_teacher_margin_change": 0.0,
+          "mean_abs_score_change": 1.53313070572203e-10,
+          "maximum_abs_score_change": 1.8351452979459282e-07,
+          "action_shares": [
+            0.3733800350262697,
+            0.2457092819614711,
+            0.3809106830122592
+          ],
+          "changed_cost_improved": 0,
+          "changed_cost_worsened": 0,
+          "changed_cost_equal": 0,
+          "mean_changed_worst_reply_cost_delta": null
+        },
+        "centered_ablation_0": {
+          "changed_actions": 0,
+          "action_flip_rate": 0.0,
+          "teacher_agreement": 0.6525394045534151,
+          "teacher_corrected": 0,
+          "teacher_harmed": 0,
+          "changed_neither_teacher": 0,
+          "mean_teacher_margin_change": 4.534285169555119e-10,
+          "median_teacher_margin_change": 0.0,
+          "mean_abs_score_change": 1.5331307334776056e-09,
+          "maximum_abs_score_change": 1.8351452126807999e-06,
+          "action_shares": [
+            0.3733800350262697,
+            0.2457092819614711,
+            0.3809106830122592
+          ],
+          "changed_cost_improved": 0,
+          "changed_cost_worsened": 0,
+          "changed_cost_equal": 0,
+          "mean_changed_worst_reply_cost_delta": null
+        },
+        "raw_ablation_0": {
+          "changed_actions": 913,
+          "action_flip_rate": 0.15989492119089316,
+          "teacher_agreement": 0.6658493870402802,
+          "teacher_corrected": 379,
+          "teacher_harmed": 303,
+          "changed_neither_teacher": 231,
+          "mean_teacher_margin_change": 0.26256662607192993,
+          "median_teacher_margin_change": 0.4767114818096161,
+          "mean_abs_score_change": 0.364942729473114,
+          "maximum_abs_score_change": 0.5019314289093018,
+          "action_shares": [
+            0.38966725043782835,
+            0.11558669001751314,
+            0.4947460595446585
+          ],
+          "changed_cost_improved": 390,
+          "changed_cost_worsened": 518,
+          "changed_cost_equal": 5,
+          "mean_changed_worst_reply_cost_delta": 0.32858707557502737
+        }
+      }
+    },
+    "incoming_reflected": {
+      "states": 3796,
+      "baseline_teacher_agreement": 0.8116438356164384,
+      "baseline_action_shares": [
+        0.42650158061116966,
+        0.11722866174920969,
+        0.45626975763962063
+      ],
+      "units": [
+        {
+          "neuron": 34,
+          "mean": -1.0,
+          "std": 3.4934600989799947e-08,
+          "max_abs_deviation_from_incoming_constant": 1.0132789611816406e-06,
+          "signed_own_path_derivative": 3.723502217667374e-08,
+          "abs_own_path_derivative": 3.723502217667374e-08
+        },
+        {
+          "neuron": 62,
+          "mean": 1.0,
+          "std": 1.583741848776299e-08,
+          "max_abs_deviation_from_incoming_constant": 9.5367431640625e-07,
+          "signed_own_path_derivative": 6.4187486437106145e-09,
+          "abs_own_path_derivative": 6.4187486437106145e-09
+        },
+        {
+          "neuron": 68,
+          "mean": -1.0,
+          "std": 5.154656079753295e-08,
+          "max_abs_deviation_from_incoming_constant": 1.7881393432617188e-06,
+          "signed_own_path_derivative": -2.6708622868909515e-08,
+          "abs_own_path_derivative": 2.6708622868909515e-08
+        }
+      ],
+      "group_signed_feature_derivatives": [
+        2.281548505678188e-09,
+        -1.380730307865008e-09,
+        2.9515079269515354e-09,
+        1.8395167611373608e-09,
+        1.6945149283742467e-08,
+        2.9661378908585334e-10
+      ],
+      "group_mean_abs_feature_derivatives": [
+        6.010855368998591e-09,
+        7.443765159820259e-09,
+        1.1987231651744423e-08,
+        2.312133151605167e-09,
+        2.2712599800911448e-08,
+        2.1795656390821705e-09
+      ],
+      "controls": {
+        "centered_gain_0.9": {
+          "changed_actions": 0,
+          "action_flip_rate": 0.0,
+          "teacher_agreement": 0.8116438356164384,
+          "teacher_corrected": 0,
+          "teacher_harmed": 0,
+          "changed_neither_teacher": 0,
+          "mean_teacher_margin_change": -7.850980282553266e-11,
+          "median_teacher_margin_change": 0.0,
+          "mean_abs_score_change": 1.4765225153645645e-10,
+          "maximum_abs_score_change": 8.81620536574701e-08,
+          "action_shares": [
+            0.42650158061116966,
+            0.11722866174920969,
+            0.45626975763962063
+          ],
+          "changed_cost_improved": 0,
+          "changed_cost_worsened": 0,
+          "changed_cost_equal": 0,
+          "mean_changed_worst_reply_cost_delta": null
+        },
+        "centered_gain_1.1": {
+          "changed_actions": 0,
+          "action_flip_rate": 0.0,
+          "teacher_agreement": 0.8116438356164384,
+          "teacher_corrected": 0,
+          "teacher_harmed": 0,
+          "changed_neither_teacher": 0,
+          "mean_teacher_margin_change": -2.7478432723659907e-11,
+          "median_teacher_margin_change": 0.0,
+          "mean_abs_score_change": 1.4765225153645645e-10,
+          "maximum_abs_score_change": 8.81620536574701e-08,
+          "action_shares": [
+            0.42650158061116966,
+            0.11722866174920969,
+            0.45626975763962063
+          ],
+          "changed_cost_improved": 0,
+          "changed_cost_worsened": 0,
+          "changed_cost_equal": 0,
+          "mean_changed_worst_reply_cost_delta": null
+        },
+        "centered_ablation_0": {
+          "changed_actions": 0,
+          "action_flip_rate": 0.0,
+          "teacher_agreement": 0.8116438356164384,
+          "teacher_corrected": 0,
+          "teacher_harmed": 0,
+          "changed_neither_teacher": 0,
+          "mean_teacher_margin_change": -2.512313690417045e-10,
+          "median_teacher_margin_change": 0.0,
+          "mean_abs_score_change": 1.4765224598534132e-09,
+          "maximum_abs_score_change": 8.816205081529915e-07,
+          "action_shares": [
+            0.42650158061116966,
+            0.11722866174920969,
+            0.45626975763962063
+          ],
+          "changed_cost_improved": 0,
+          "changed_cost_worsened": 0,
+          "changed_cost_equal": 0,
+          "mean_changed_worst_reply_cost_delta": null
+        },
+        "raw_ablation_0": {
+          "changed_actions": 305,
+          "action_flip_rate": 0.0803477344573235,
+          "teacher_agreement": 0.8174394099051633,
+          "teacher_corrected": 127,
+          "teacher_harmed": 105,
+          "changed_neither_teacher": 73,
+          "mean_teacher_margin_change": 0.44091951847076416,
+          "median_teacher_margin_change": 0.7375507354736328,
+          "mean_abs_score_change": 0.36494266986846924,
+          "maximum_abs_score_change": 0.5019314289093018,
+          "action_shares": [
+            0.43414120126448896,
+            0.05321390937829294,
+            0.5126448893572181
+          ],
+          "changed_cost_improved": 149,
+          "changed_cost_worsened": 152,
+          "changed_cost_equal": 4,
+          "mean_changed_worst_reply_cost_delta": -0.06229508196721312
+        }
+      }
+    },
+    "outgoing_straight": {
+      "states": 5710,
+      "baseline_teacher_agreement": 0.7094570928196147,
+      "baseline_action_shares": [
+        0.32907180385288964,
+        0.37285464098073556,
+        0.2980735551663748
+      ],
+      "units": [
+        {
+          "neuron": 34,
+          "mean": 0.06084458902478218,
+          "std": 0.8844357132911682,
+          "max_abs_deviation_from_incoming_constant": 1.9999425411224365,
+          "signed_own_path_derivative": 0.31891751289367676,
+          "abs_own_path_derivative": 0.3833262324333191
+        },
+        {
+          "neuron": 62,
+          "mean": 0.1212315559387207,
+          "std": 0.9380303025245667,
+          "max_abs_deviation_from_incoming_constant": 1.9999998807907104,
+          "signed_own_path_derivative": 0.5758424997329712,
+          "abs_own_path_derivative": 0.5758424997329712
+        },
+        {
+          "neuron": 68,
+          "mean": 0.2841789424419403,
+          "std": 0.8955932259559631,
+          "max_abs_deviation_from_incoming_constant": 2.0,
+          "signed_own_path_derivative": -0.32587504386901855,
+          "abs_own_path_derivative": 0.3280937373638153
+        }
+      ],
+      "group_signed_feature_derivatives": [
+        -0.23806323111057281,
+        -0.2799474596977234,
+        -0.07756946980953217,
+        -0.3303883671760559,
+        0.5688848495483398,
+        -0.008652027696371078
+      ],
+      "group_mean_abs_feature_derivatives": [
+        0.4427576959133148,
+        0.4321165382862091,
+        1.0966607332229614,
+        0.41231396794319153,
+        0.9793255925178528,
+        0.1727382391691208
+      ],
+      "controls": {
+        "centered_gain_0.9": {
+          "changed_actions": 68,
+          "action_flip_rate": 0.011908931698774081,
+          "teacher_agreement": 0.7078809106830123,
+          "teacher_corrected": 26,
+          "teacher_harmed": 35,
+          "changed_neither_teacher": 7,
+          "mean_teacher_margin_change": -0.04453689604997635,
+          "median_teacher_margin_change": -0.012183398008346558,
+          "mean_abs_score_change": 0.04889565706253052,
+          "maximum_abs_score_change": 0.14392395317554474,
+          "action_shares": [
+            0.32504378283712787,
+            0.3838879159369527,
+            0.2910683012259194
+          ],
+          "changed_cost_improved": 23,
+          "changed_cost_worsened": 35,
+          "changed_cost_equal": 10,
+          "mean_changed_worst_reply_cost_delta": 0.4264705882352941
+        },
+        "centered_gain_1.1": {
+          "changed_actions": 78,
+          "action_flip_rate": 0.013660245183887917,
+          "teacher_agreement": 0.7101576182136602,
+          "teacher_corrected": 36,
+          "teacher_harmed": 32,
+          "changed_neither_teacher": 10,
+          "mean_teacher_margin_change": 0.043382421135902405,
+          "median_teacher_margin_change": 0.010703742504119873,
+          "mean_abs_score_change": 0.04889565706253052,
+          "maximum_abs_score_change": 0.14392395317554474,
+          "action_shares": [
+            0.3330998248686515,
+            0.36024518388791593,
+            0.3066549912434326
+          ],
+          "changed_cost_improved": 36,
+          "changed_cost_worsened": 35,
+          "changed_cost_equal": 7,
+          "mean_changed_worst_reply_cost_delta": -0.038461538461538464
+        },
+        "centered_ablation_0": {
+          "changed_actions": 457,
+          "action_flip_rate": 0.08003502626970228,
+          "teacher_agreement": 0.689492119089317,
+          "teacher_corrected": 134,
+          "teacher_harmed": 248,
+          "changed_neither_teacher": 75,
+          "mean_teacher_margin_change": -0.483394593000412,
+          "median_teacher_margin_change": -0.23672258853912354,
+          "mean_abs_score_change": 0.4889565706253052,
+          "maximum_abs_score_change": 1.439239501953125,
+          "action_shares": [
+            0.2966725043782837,
+            0.4479859894921191,
+            0.2553415061295972
+          ],
+          "changed_cost_improved": 163,
+          "changed_cost_worsened": 248,
+          "changed_cost_equal": 46,
+          "mean_changed_worst_reply_cost_delta": 0.4026258205689278
+        },
+        "raw_ablation_0": {
+          "changed_actions": 776,
+          "action_flip_rate": 0.13590192644483362,
+          "teacher_agreement": 0.7056042031523643,
+          "teacher_corrected": 311,
+          "teacher_harmed": 333,
+          "changed_neither_teacher": 132,
+          "mean_teacher_margin_change": -0.13567987084388733,
+          "median_teacher_margin_change": -0.4257928133010864,
+          "mean_abs_score_change": 0.3713921010494232,
+          "maximum_abs_score_change": 1.2320911884307861,
+          "action_shares": [
+            0.35919439579684764,
+            0.32539404553415063,
+            0.3154115586690017
+          ],
+          "changed_cost_improved": 330,
+          "changed_cost_worsened": 372,
+          "changed_cost_equal": 74,
+          "mean_changed_worst_reply_cost_delta": 0.10438144329896908
+        }
+      }
+    },
+    "outgoing_reflected": {
+      "states": 3796,
+      "baseline_teacher_agreement": 0.8192834562697576,
+      "baseline_action_shares": [
+        0.35695468914647,
+        0.24894625922023184,
+        0.3940990516332982
+      ],
+      "units": [
+        {
+          "neuron": 34,
+          "mean": 0.2735595405101776,
+          "std": 0.8472777009010315,
+          "max_abs_deviation_from_incoming_constant": 1.9999890327453613,
+          "signed_own_path_derivative": 0.47920793294906616,
+          "abs_own_path_derivative": 0.48994913697242737
+        },
+        {
+          "neuron": 62,
+          "mean": -0.035229217261075974,
+          "std": 0.9547040462493896,
+          "max_abs_deviation_from_incoming_constant": 2.0,
+          "signed_own_path_derivative": 0.43024757504463196,
+          "abs_own_path_derivative": 0.43024757504463196
+        },
+        {
+          "neuron": 68,
+          "mean": 0.7428901195526123,
+          "std": 0.6135468482971191,
+          "max_abs_deviation_from_incoming_constant": 2.0,
+          "signed_own_path_derivative": -0.21464258432388306,
+          "abs_own_path_derivative": 0.219220370054245
+        }
+      ],
+      "group_signed_feature_derivatives": [
+        -0.24077384173870087,
+        -0.2228790819644928,
+        -0.34794652462005615,
+        -0.13395312428474426,
+        0.6948129534721375,
+        -0.07836432754993439
+      ],
+      "group_mean_abs_feature_derivatives": [
+        0.46533963084220886,
+        0.3543812036514282,
+        1.2865655422210693,
+        0.3635970950126648,
+        1.033651351928711,
+        0.21068063378334045
+      ],
+      "controls": {
+        "centered_gain_0.9": {
+          "changed_actions": 60,
+          "action_flip_rate": 0.015806111696522657,
+          "teacher_agreement": 0.8116438356164384,
+          "teacher_corrected": 11,
+          "teacher_harmed": 40,
+          "changed_neither_teacher": 9,
+          "mean_teacher_margin_change": -0.06524587422609329,
+          "median_teacher_margin_change": -0.13034069538116455,
+          "mean_abs_score_change": 0.06559275835752487,
+          "maximum_abs_score_change": 0.1439422369003296,
+          "action_shares": [
+            0.3561643835616438,
+            0.26106427818756583,
+            0.3827713382507903
+          ],
+          "changed_cost_improved": 14,
+          "changed_cost_worsened": 41,
+          "changed_cost_equal": 5,
+          "mean_changed_worst_reply_cost_delta": 1.15
+        },
+        "centered_gain_1.1": {
+          "changed_actions": 66,
+          "action_flip_rate": 0.01738672286617492,
+          "teacher_agreement": 0.8221812434141201,
+          "teacher_corrected": 35,
+          "teacher_harmed": 24,
+          "changed_neither_teacher": 7,
+          "mean_teacher_margin_change": 0.06347788125276566,
+          "median_teacher_margin_change": 0.12498384714126587,
+          "mean_abs_score_change": 0.06559275835752487,
+          "maximum_abs_score_change": 0.1439422369003296,
+          "action_shares": [
+            0.35800842992623816,
+            0.23419388830347734,
+            0.4077976817702845
+          ],
+          "changed_cost_improved": 35,
+          "changed_cost_worsened": 27,
+          "changed_cost_equal": 4,
+          "mean_changed_worst_reply_cost_delta": -0.2727272727272727
+        },
+        "centered_ablation_0": {
+          "changed_actions": 375,
+          "action_flip_rate": 0.0987881981032666,
+          "teacher_agreement": 0.7789778714436248,
+          "teacher_corrected": 77,
+          "teacher_harmed": 230,
+          "changed_neither_teacher": 68,
+          "mean_teacher_margin_change": -0.7230934500694275,
+          "median_teacher_margin_change": -1.347531795501709,
+          "mean_abs_score_change": 0.6559275388717651,
+          "maximum_abs_score_change": 1.439422369003296,
+          "action_shares": [
+            0.3398314014752371,
+            0.33113804004214964,
+            0.32903055848261326
+          ],
+          "changed_cost_improved": 114,
+          "changed_cost_worsened": 236,
+          "changed_cost_equal": 25,
+          "mean_changed_worst_reply_cost_delta": 0.768
+        },
+        "raw_ablation_0": {
+          "changed_actions": 350,
+          "action_flip_rate": 0.09220231822971549,
+          "teacher_agreement": 0.7939936775553214,
+          "teacher_corrected": 93,
+          "teacher_harmed": 189,
+          "changed_neither_teacher": 68,
+          "mean_teacher_margin_change": -0.2655180096626282,
+          "median_teacher_margin_change": -0.6242785453796387,
+          "mean_abs_score_change": 0.4155053198337555,
+          "maximum_abs_score_change": 1.2617026567459106,
+          "action_shares": [
+            0.37697576396206534,
+            0.2581664910432034,
+            0.3648577449947313
+          ],
+          "changed_cost_improved": 105,
+          "changed_cost_worsened": 205,
+          "changed_cost_equal": 40,
+          "mean_changed_worst_reply_cost_delta": 0.78
+        }
+      }
+    }
+  }
+}

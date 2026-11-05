@@ -1,0 +1,325 @@
+{
+  "purpose": "Two semantically chosen donor-path interventions; no game selection or fitting",
+  "observation_source": "retained development states from /tmp/rally-dense-transfer/observations.npy, interpretation only",
+  "states": 19012,
+  "candidates": {
+    "restore-upward-96-r24": {
+      "unit": 96,
+      "donor_round": 24,
+      "incoming_constant": -1.0,
+      "graph": "6\u2192128\u2192128\u21923 Tanh; unchanged",
+      "changed_parameters": [
+        "2.weight row",
+        "2.bias element",
+        "4.weight column",
+        "4.bias incoming constant compensation"
+      ],
+      "bias_correction": [
+        0.11858688294887543,
+        -0.0945315957069397,
+        -0.02199721336364746
+      ],
+      "phase": {
+        "incoming": {
+          "hybrid_activation_mean": -1.0,
+          "hybrid_activation_std": 4.482569124775182e-07,
+          "source_activation_mean": -0.9999998807907104,
+          "hybrid_near_incoming_constant_max": 2.956390380859375e-05,
+          "source_near_incoming_constant_max": 0.0004712343215942383,
+          "correlation_hybrid_to_donor": 0.9997484087944031,
+          "correlation_hybrid_to_current": 0.9948675036430359,
+          "hybrid_unit_own_margin_derivative": -3.2395044513577886e-07,
+          "current_unit_own_margin_derivative": -3.9699611988908146e-06,
+          "source_action_change": 0.0,
+          "max_centered_logit_delta": 0.00026345252990722656,
+          "mean_centered_logit_delta": 3.7552587173195207e-07
+        },
+        "outgoing": {
+          "hybrid_activation_mean": 0.7571261525154114,
+          "hybrid_activation_std": 0.6001684069633484,
+          "source_activation_mean": 0.7836836576461792,
+          "hybrid_near_incoming_constant_max": 2.0,
+          "source_near_incoming_constant_max": 2.0,
+          "correlation_hybrid_to_donor": 0.9935466051101685,
+          "correlation_hybrid_to_current": 0.9679334759712219,
+          "hybrid_unit_own_margin_derivative": -1.7054738998413086,
+          "current_unit_own_margin_derivative": -1.2314765453338623,
+          "source_action_change": 0.07605722701451714,
+          "max_centered_logit_delta": 0.850172221660614,
+          "mean_centered_logit_delta": 0.1481332778930664
+        }
+      },
+      "upstream": [
+        {
+          "unit": 45,
+          "donor_connection": -1.3089799880981445,
+          "current_connection": -1.325654149055481,
+          "activation_correlation": 0.9970226883888245,
+          "mean_activation_drift": 0.020923029631376266
+        },
+        {
+          "unit": 96,
+          "donor_connection": 1.3005577325820923,
+          "current_connection": 1.3908488750457764,
+          "activation_correlation": 0.9972466230392456,
+          "mean_activation_drift": -0.041449155658483505
+        },
+        {
+          "unit": 101,
+          "donor_connection": 1.3598411083221436,
+          "current_connection": 1.4660983085632324,
+          "activation_correlation": 0.9971373081207275,
+          "mean_activation_drift": 0.0036688032560050488
+        },
+        {
+          "unit": 78,
+          "donor_connection": 1.06642746925354,
+          "current_connection": 0.7982013821601868,
+          "activation_correlation": 0.9984157085418701,
+          "mean_activation_drift": 0.00019647448789328337
+        },
+        {
+          "unit": 106,
+          "donor_connection": 0.8495374917984009,
+          "current_connection": 0.805177628993988,
+          "activation_correlation": 0.9979218244552612,
+          "mean_activation_drift": 0.000435051042586565
+        },
+        {
+          "unit": 51,
+          "donor_connection": 0.7622745633125305,
+          "current_connection": 0.6707983613014221,
+          "activation_correlation": 0.99919593334198,
+          "mean_activation_drift": -0.015690850093960762
+        },
+        {
+          "unit": 55,
+          "donor_connection": -0.9072455763816833,
+          "current_connection": -0.959279477596283,
+          "activation_correlation": 0.9959481954574585,
+          "mean_activation_drift": -0.0014310054248198867
+        },
+        {
+          "unit": 65,
+          "donor_connection": 0.7541537284851074,
+          "current_connection": 0.758771538734436,
+          "activation_correlation": 0.9995027780532837,
+          "mean_activation_drift": -0.008316246792674065
+        },
+        {
+          "unit": 66,
+          "donor_connection": 1.1866413354873657,
+          "current_connection": 1.1099765300750732,
+          "activation_correlation": 0.9753398299217224,
+          "mean_activation_drift": -0.007987109012901783
+        },
+        {
+          "unit": 80,
+          "donor_connection": -0.7000287771224976,
+          "current_connection": -0.7950882315635681,
+          "activation_correlation": 0.9973593354225159,
+          "mean_activation_drift": -0.012656978331506252
+        },
+        {
+          "unit": 120,
+          "donor_connection": 0.6571850180625916,
+          "current_connection": 0.6052952408790588,
+          "activation_correlation": 0.9989297986030579,
+          "mean_activation_drift": 0.016353201121091843
+        },
+        {
+          "unit": 25,
+          "donor_connection": -0.9323774576187134,
+          "current_connection": -0.8939677476882935,
+          "activation_correlation": 0.998849093914032,
+          "mean_activation_drift": 0.0073819393292069435
+        }
+      ],
+      "own_position_zero_crossings": [
+        {
+          "kind": "current",
+          "cases": 951,
+          "total": 1057,
+          "midpoint_quantiles": [
+            16.0,
+            36.0,
+            54.0,
+            70.0,
+            86.0
+          ]
+        },
+        {
+          "kind": "hybrid",
+          "cases": 909,
+          "total": 1057,
+          "midpoint_quantiles": [
+            16.0,
+            38.0,
+            56.0,
+            70.0,
+            92.0
+          ]
+        }
+      ]
+    },
+    "restore-downward-91-r18": {
+      "unit": 91,
+      "donor_round": 18,
+      "incoming_constant": 1.0,
+      "graph": "6\u2192128\u2192128\u21923 Tanh; unchanged",
+      "changed_parameters": [
+        "2.weight row",
+        "2.bias element",
+        "4.weight column",
+        "4.bias incoming constant compensation"
+      ],
+      "bias_correction": [
+        -0.0034197866916656494,
+        -0.0035913288593292236,
+        0.006790339946746826
+      ],
+      "phase": {
+        "incoming": {
+          "hybrid_activation_mean": 0.9999271631240845,
+          "hybrid_activation_std": 0.0010946921538561583,
+          "source_activation_mean": 0.9999864101409912,
+          "hybrid_near_incoming_constant_max": 0.06766581535339355,
+          "source_near_incoming_constant_max": 0.008516907691955566,
+          "correlation_hybrid_to_donor": 0.7860240936279297,
+          "correlation_hybrid_to_current": 0.43665143847465515,
+          "hybrid_unit_own_margin_derivative": -0.0012559957103803754,
+          "current_unit_own_margin_derivative": -8.60069485497661e-05,
+          "source_action_change": 0.0,
+          "max_centered_logit_delta": 0.03869199752807617,
+          "mean_centered_logit_delta": 2.7816842703032307e-05
+        },
+        "outgoing": {
+          "hybrid_activation_mean": 0.033019814640283585,
+          "hybrid_activation_std": 0.9191679954528809,
+          "source_activation_mean": -0.1550549864768982,
+          "hybrid_near_incoming_constant_max": 2.0,
+          "source_near_incoming_constant_max": 2.0,
+          "correlation_hybrid_to_donor": 0.9860999584197998,
+          "correlation_hybrid_to_current": 0.9005892872810364,
+          "hybrid_unit_own_margin_derivative": -2.759695053100586,
+          "current_unit_own_margin_derivative": -2.0012269020080566,
+          "source_action_change": 0.026930359772775088,
+          "max_centered_logit_delta": 1.0233838558197021,
+          "mean_centered_logit_delta": 0.08624031394720078
+        }
+      },
+      "upstream": [
+        {
+          "unit": 14,
+          "donor_connection": -1.1719359159469604,
+          "current_connection": -1.0853604078292847,
+          "activation_correlation": 0.9998227953910828,
+          "mean_activation_drift": -0.00046766584273427725
+        },
+        {
+          "unit": 91,
+          "donor_connection": -0.8159418106079102,
+          "current_connection": -0.8051926493644714,
+          "activation_correlation": 0.996027410030365,
+          "mean_activation_drift": 0.006665951106697321
+        },
+        {
+          "unit": 49,
+          "donor_connection": -0.7478986382484436,
+          "current_connection": -0.9670156240463257,
+          "activation_correlation": 0.9950341582298279,
+          "mean_activation_drift": -0.02504531480371952
+        },
+        {
+          "unit": 80,
+          "donor_connection": 0.7360966205596924,
+          "current_connection": 0.6927401423454285,
+          "activation_correlation": 0.9971575140953064,
+          "mean_activation_drift": -0.016771575435996056
+        },
+        {
+          "unit": 120,
+          "donor_connection": -0.7079144716262817,
+          "current_connection": -1.1898030042648315,
+          "activation_correlation": 0.9977878332138062,
+          "mean_activation_drift": -0.0069211674854159355
+        },
+        {
+          "unit": 26,
+          "donor_connection": -0.8909774422645569,
+          "current_connection": -0.3009530007839203,
+          "activation_correlation": 0.9876849055290222,
+          "mean_activation_drift": 0.045209016650915146
+        },
+        {
+          "unit": 106,
+          "donor_connection": -0.6744146943092346,
+          "current_connection": -0.8371920585632324,
+          "activation_correlation": 0.9938791990280151,
+          "mean_activation_drift": 0.015663454309105873
+        },
+        {
+          "unit": 102,
+          "donor_connection": 0.730151355266571,
+          "current_connection": 0.8056548833847046,
+          "activation_correlation": 0.9978775382041931,
+          "mean_activation_drift": -0.0025906453374773264
+        },
+        {
+          "unit": 65,
+          "donor_connection": -0.6590774655342102,
+          "current_connection": -0.9292926788330078,
+          "activation_correlation": 0.9990132451057434,
+          "mean_activation_drift": -0.0051965671591460705
+        },
+        {
+          "unit": 19,
+          "donor_connection": 0.5613454580307007,
+          "current_connection": 0.6437813639640808,
+          "activation_correlation": 0.9996140599250793,
+          "mean_activation_drift": 0.006618482526391745
+        },
+        {
+          "unit": 51,
+          "donor_connection": -0.5837532877922058,
+          "current_connection": -0.43318870663642883,
+          "activation_correlation": 0.9984906911849976,
+          "mean_activation_drift": -0.003672878025099635
+        },
+        {
+          "unit": 61,
+          "donor_connection": -0.5971640944480896,
+          "current_connection": -0.7859251499176025,
+          "activation_correlation": 0.9957311749458313,
+          "mean_activation_drift": -0.03786707669496536
+        }
+      ],
+      "own_position_zero_crossings": [
+        {
+          "kind": "current",
+          "cases": 1035,
+          "total": 1057,
+          "midpoint_quantiles": [
+            38.0,
+            76.0,
+            88.0,
+            104.0,
+            144.0
+          ]
+        },
+        {
+          "kind": "hybrid",
+          "cases": 1057,
+          "total": 1057,
+          "midpoint_quantiles": [
+            46.0,
+            74.0,
+            80.0,
+            90.0,
+            134.0
+          ]
+        }
+      ]
+    }
+  }
+}

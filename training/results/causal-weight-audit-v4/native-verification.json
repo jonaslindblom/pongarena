@@ -1,0 +1,31 @@
+{
+  "observations": 8192,
+  "source": "fresh failure-audit reachable states",
+  "models": {
+    "centered-gain-0.9": {
+      "action_mismatches": 0,
+      "max_score_error": 1.049041748046875e-05,
+      "sha256": "2c24300aaf67b43f7bd7a5b26a603c88146d36378abbf5bf6b042bf5e14e45f2"
+    },
+    "centered-gain-1.1": {
+      "action_mismatches": 0,
+      "max_score_error": 1.0967254638671875e-05,
+      "sha256": "38eedcd9d2553930fb607a49aa4916bf3e9d7909019e83a75193780102a74a0e"
+    },
+    "restore-up-96-r24": {
+      "action_mismatches": 0,
+      "max_score_error": 1.049041748046875e-05,
+      "sha256": "67779bfd8142ffc66a32c491c60cbacd52ee8a92b80c676f323ab2e52cc148cc"
+    },
+    "restore-down-91-r18": {
+      "action_mismatches": 0,
+      "max_score_error": 1.049041748046875e-05,
+      "sha256": "c955ef255d7a501e501069568112cbe39e954d4d9c48a6df4c096f32cb83762d"
+    },
+    "phase-braking": {
+      "action_mismatches": 0,
+      "max_score_error": 1.049041748046875e-05,
+      "sha256": "af300c52d61f12c75be7c40198002de9c02ac18a93e4f38dbe66b7389b459977"
+    }
+  }
+}

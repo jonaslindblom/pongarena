@@ -1,0 +1,261 @@
+{
+  "purpose": "Individual centered-ablation attribution only; these ablations are NOT proposed weight improvements",
+  "observations": 176501,
+  "incoming": 90076,
+  "outgoing": 86425,
+  "critical_outgoing_events": 39,
+  "units": [
+    {
+      "unit": 68,
+      "incoming_constant": -1.0,
+      "incoming_activation_std": 1.0753360157877978e-07,
+      "incoming_max_deviation": 1.0013580322265625e-05,
+      "incoming_action_flips": 0,
+      "outgoing_action_flips": 3510,
+      "outgoing_flip_rate": 0.04061324848134221,
+      "critical_outgoing_events_fixed": 19,
+      "critical_states_fixed": [
+        3,
+        4
+      ],
+      "critical_new_actions": [
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        2,
+        1,
+        1
+      ],
+      "output_votes": [
+        -0.17674337327480316,
+        -0.25547683238983154,
+        0.4322965145111084
+      ]
+    },
+    {
+      "unit": 91,
+      "incoming_constant": 1.0,
+      "incoming_activation_std": 0.00023600658460054547,
+      "incoming_max_deviation": 0.01873558759689331,
+      "incoming_action_flips": 0,
+      "outgoing_action_flips": 4928,
+      "outgoing_flip_rate": 0.057020538038761934,
+      "critical_outgoing_events_fixed": 19,
+      "critical_states_fixed": [
+        3,
+        4
+      ],
+      "critical_new_actions": [
+        2,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        0,
+        2,
+        1,
+        1
+      ],
+      "output_votes": [
+        0.3571798801422119,
+        0.2305987924337387,
+        -0.557008683681488
+      ]
+    },
+    {
+      "unit": 96,
+      "incoming_constant": -1.0,
+      "incoming_activation_std": 1.9226010294914886e-07,
+      "incoming_max_deviation": 3.737211227416992e-05,
+      "incoming_action_flips": 0,
+      "outgoing_action_flips": 19161,
+      "outgoing_flip_rate": 0.22170668209430142,
+      "critical_outgoing_events_fixed": 15,
+      "critical_states_fixed": [
+        5,
+        6,
+        9,
+        10
+      ],
+      "critical_new_actions": [
+        2,
+        1,
+        1,
+        2,
+        2,
+        2,
+        2,
+        0,
+        2,
+        2,
+        2
+      ],
+      "output_votes": [
+        0.21447499096393585,
+        0.3924073874950409,
+        -0.5947179198265076
+      ]
+    },
+    {
+      "unit": 89,
+      "incoming_constant": 1.0,
+      "incoming_activation_std": 6.910850203212249e-08,
+      "incoming_max_deviation": 1.3530254364013672e-05,
+      "incoming_action_flips": 0,
+      "outgoing_action_flips": 24593,
+      "outgoing_flip_rate": 0.28455886606884584,
+      "critical_outgoing_events_fixed": 15,
+      "critical_states_fixed": [
+        5,
+        6,
+        9,
+        10
+      ],
+      "critical_new_actions": [
+        2,
+        1,
+        1,
+        2,
+        2,
+        2,
+        2,
+        0,
+        2,
+        2,
+        2
+      ],
+      "output_votes": [
+        -0.3235892951488495,
+        -0.5129283666610718,
+        0.8844357132911682
+      ]
+    },
+    {
+      "unit": 62,
+      "incoming_constant": 1.0,
+      "incoming_activation_std": 1.0030689168161189e-08,
+      "incoming_max_deviation": 1.0132789611816406e-06,
+      "incoming_action_flips": 0,
+      "outgoing_action_flips": 2038,
+      "outgoing_flip_rate": 0.02358113971651721,
+      "critical_outgoing_events_fixed": 11,
+      "critical_states_fixed": [
+        3
+      ],
+      "critical_new_actions": [
+        2,
+        1,
+        1,
+        0,
+        2,
+        0,
+        0,
+        0,
+        2,
+        1,
+        1
+      ],
+      "output_votes": [
+        0.34972041845321655,
+        -0.21785524487495422,
+        -0.14979097247123718
+      ]
+    },
+    {
+      "unit": 116,
+      "incoming_constant": 1.0,
+      "incoming_activation_std": 0.0001742051390465349,
+      "incoming_max_deviation": 0.013662278652191162,
+      "incoming_action_flips": 0,
+      "outgoing_action_flips": 33003,
+      "outgoing_flip_rate": 0.38186867225918425,
+      "critical_outgoing_events_fixed": 11,
+      "critical_states_fixed": [
+        3
+      ],
+      "critical_new_actions": [
+        2,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0
+      ],
+      "output_votes": [
+        1.4986381530761719,
+        -0.738203763961792,
+        -0.7170577049255371
+      ]
+    },
+    {
+      "unit": 122,
+      "incoming_constant": -1.0,
+      "incoming_activation_std": 0.00019406527280807495,
+      "incoming_max_deviation": 0.01775991916656494,
+      "incoming_action_flips": 0,
+      "outgoing_action_flips": 84,
+      "outgoing_flip_rate": 0.0009719409892970784,
+      "critical_outgoing_events_fixed": 0,
+      "critical_states_fixed": [],
+      "critical_new_actions": [
+        2,
+        1,
+        1,
+        2,
+        2,
+        1,
+        0,
+        0,
+        2,
+        1,
+        1
+      ],
+      "output_votes": [
+        0.6424718499183655,
+        0.3946138322353363,
+        -1.2035695314407349
+      ]
+    },
+    {
+      "unit": 34,
+      "incoming_constant": -1.0,
+      "incoming_activation_std": 6.090495929811368e-08,
+      "incoming_max_deviation": 3.159046173095703e-06,
+      "incoming_action_flips": 0,
+      "outgoing_action_flips": 3410,
+      "outgoing_flip_rate": 0.03945617587503616,
+      "critical_outgoing_events_fixed": 0,
+      "critical_states_fixed": [],
+      "critical_new_actions": [
+        2,
+        1,
+        1,
+        2,
+        2,
+        1,
+        1,
+        0,
+        2,
+        1,
+        1
+      ],
+      "output_votes": [
+        0.762083113193512,
+        -0.46430960297584534,
+        -0.2248098999261856
+      ]
+    }
+  ]
+}

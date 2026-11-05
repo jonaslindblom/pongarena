@@ -1,0 +1,11 @@
+{
+  "incoming": {
+    "count": 90076,
+    "changed_actions": 0,
+    "max_unit89_distance_from_one": 1.3530254364013672e-05
+  },
+  "outgoing": {
+    "count": 86425,
+    "changed_actions": 6886
+  }
+}
