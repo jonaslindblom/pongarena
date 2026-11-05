@@ -7,14 +7,17 @@ import {
   advance,
   choice,
   endedMatch,
+  LoopDetector,
   observation,
   RALLIES,
+  RALLY_TICK_LIMIT,
   serve,
   type Pair,
   type Scores,
 } from '../src/game'
 import { validateModel } from '../src/validate'
 import { advance as advanceV1, serve as serveV1 } from '../training/v1/game'
+import { advance as advanceV2 } from '../training/v2/game'
 
 const still: Pair<Scores> = [
   [0, 1, 0],
@@ -43,7 +46,8 @@ test('v2 softens edge speed while preserving aiming, paddle motion and seeded se
         vy: 0,
       }
       const old = advanceV1(before, still)
-      const next = advance(before, still)
+      const { drawReason, ...next } = advance(before, still)
+      assert.equal(drawReason, undefined)
       assert.deepEqual({ ...next, vx: old.vx }, old)
       assert.ok(Math.abs(next.vx) <= 13)
     }
@@ -86,9 +90,55 @@ test('both paddles face rising and falling serves across five distinct height ba
   assert.equal(openingSides.size, 2)
 })
 test('a rally timeout is a draw and a last-tick point takes precedence', () => {
-  const f = { ...serve(24), rallyTick: 799 }
-  assert.equal(advance(f, still).event, 'draw')
+  const f = { ...serve(24), rallyTick: RALLY_TICK_LIMIT - 1 }
+  assert.notEqual(advance({ ...f, rallyTick: 799 }, still).event, 'draw')
+  assert.equal(advance(f, still).drawReason, 'timeout')
   assert.equal(advance({ ...f, x: 17, y: 30, vx: -5, vy: 0 }, still).event, 'point')
+})
+test('v3 keeps v2 physics and observes a loop without moving either player differently', () => {
+  const start = { ...serve(24), x: 20, y: 80, vx: -5, vy: 0 }
+  let model = start, human = start, old = start
+  const loops = new LoopDetector()
+  for (let tick = 1; tick <= 133; tick++) {
+    model = advance(model, still, loops)
+    human = advance(human, still)
+    old = advanceV2(old, still)
+    const { drawReason, ...physical } = human
+    assert.equal(drawReason, undefined)
+    assert.deepEqual(physical, old)
+    if (tick < 133) assert.deepEqual(model, human)
+  }
+  assert.equal(model.event, 'draw')
+  assert.equal(model.drawReason, 'loop')
+  assert.equal(model.actor, undefined)
+  assert.deepEqual(model.points, [0, 0])
+  assert.equal(human.event, 'return')
+  while (human.rallyTick < RALLY_TICK_LIMIT) human = advance(human, still)
+  assert.equal(human.drawReason, 'timeout')
+})
+test('only the complete post-contact state proves a deterministic loop', () => {
+  const contact = advance({ ...serve(24), x: 20, y: 80, vx: -5, vy: 0 }, still)
+  const loops = new LoopDetector()
+  assert.equal(loops.observe({ ...contact, event: null }), false)
+  assert.equal(loops.observe(contact), false)
+  for (const key of ['x', 'y', 'vx', 'vy'] as const)
+    assert.equal(loops.observe({ ...contact, [key]: contact[key] + 1 }), false)
+  assert.equal(loops.observe({ ...contact, paddles: [82, 80] }), false)
+  assert.equal(loops.observe({ ...contact, paddles: [80, 82] }), false)
+  assert.equal(loops.observe({ ...contact, tick: 99, rallyTick: 99, returns: 5, points: [1, 1] }), true)
+  assert.equal(loops.observe({ ...contact, rally: 2 }), false)
+  loops.reset()
+  assert.equal(loops.observe({ ...contact, rally: 2 }), false)
+})
+test('a proven loop at the deadline is labelled as a loop; points still win', () => {
+  const before = { ...serve(24), x: 20, y: 80, vx: -5, vy: 0 }
+  const loops = new LoopDetector()
+  loops.observe(advance(before, still))
+  assert.equal(advance({ ...before, rallyTick: RALLY_TICK_LIMIT - 1 }, still, loops).drawReason, 'loop')
+  const point = advance({ ...before, y: 30, rallyTick: RALLY_TICK_LIMIT - 1 }, still, loops)
+  assert.equal(point.event, 'point')
+  assert.equal(point.drawReason, undefined)
+  assert.equal(serve(24, point).drawReason, undefined)
 })
 test('ties go to the first action and unusable output fails explicitly', () => {
   assert.equal(choice([2, 2, -1]), 0)
@@ -139,9 +189,9 @@ test('the MAC limit counts repeated use of an embedded matrix', () => {
   assert.throws(() => validateModel(pb.onnx.ModelProto.encode(m).finish()), /compute budget/)
 })
 
-test('the published v2 training reference stays identical to the live rules', () => {
+test('the published v3 training reference stays identical to the live rules', () => {
   assert.equal(
-    readFileSync(new URL('../training/v2/game.ts', import.meta.url), 'utf8'),
+    readFileSync(new URL('../training/v3/game.ts', import.meta.url), 'utf8'),
     readFileSync(new URL('../src/game.ts', import.meta.url), 'utf8'),
   )
 })
@@ -152,6 +202,12 @@ test('the archived v1 engine stays frozen for old submissions and training resul
     createHash('sha256').update(bytes).digest('hex'),
     '1404bea9c6a840cdb917c977cafc65fd830fa023dc599094bf4924aa39f7cb21',
   )
+})
+
+test('the archived v2 engine stays frozen for earlier models and balance studies', () => {
+  const bytes = readFileSync(new URL('../training/v2/game.ts', import.meta.url))
+  assert.equal(createHash('sha256').update(bytes).digest('hex'),
+    '70fb842396dcd67b01693763bc98497206dad1ca4668a61535db22311fb0d45d')
 })
 
 test('trained exports reveal their actual widths and remain within the upload contract', () => {

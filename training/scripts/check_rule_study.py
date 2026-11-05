@@ -3,15 +3,34 @@
 Run with the training virtual environment. No game, model or result files change.
 """
 import json
+import importlib.util
 
 import numpy as np
 import torch
 
-from check_env import verify
 from env import scripted
 from policy import ROOT, OnnxPolicy, actions
-from reference import ended_rally, serve
 from rule_study import CONFIGS, Rules, StudyArena, load_policies, run, script, shot, summarize
+
+# This historical study keeps the v2 reference even when current training moves on.
+spec = importlib.util.spec_from_file_location('study_v2', ROOT / 'training/v2/reference.py')
+reference = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(reference)
+serve, ended_rally = reference.serve, reference.ended_rally
+
+
+def verify(env, frames, selected):
+    env.load(frames)
+    for side in (0, 1):
+        np.testing.assert_array_equal(env.obs(side), np.array([reference.observation(f, side) for f in frames], dtype=np.float32))
+    out, _ = env.step(selected)
+    expected = [reference.advance(f, [[int(a == i) for i in range(3)] for a in pair]) for f, pair in zip(frames, selected)]
+    np.testing.assert_array_equal(env.ball, [[f[k] for k in ('x', 'y', 'vx', 'vy')] for f in expected])
+    np.testing.assert_array_equal(env.paddles, [f['paddles'] for f in expected])
+    np.testing.assert_array_equal(env.ticks, [f['rallyTick'] for f in expected])
+    np.testing.assert_array_equal(env.returns, [f['returns'] for f in expected])
+    np.testing.assert_array_equal(out, [f['actor'] if f['event'] == 'point' else 2 if f['event'] == 'draw' else -1 for f in expected])
+    return expected
 
 
 class DeadlineArena(StudyArena):

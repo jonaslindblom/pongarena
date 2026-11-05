@@ -15,7 +15,7 @@ from evaluate import evaluate
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument('--out', type=Path, default=Path('training/runs/v2-seed7'))
+    p.add_argument('--out', type=Path, default=Path('training/runs/v3-seed7'))
     p.add_argument('--seed', type=int, default=7)
     p.add_argument('--dagger-rounds', type=int, default=10)
     p.add_argument('--updates', type=int, default=250)
@@ -34,15 +34,19 @@ def main():
     rng = np.random.default_rng(args.seed)
     config = vars(args).copy()
     config.update(out=str(args.out), torch=torch.__version__, numpy=np.__version__,
-                  architecture=[6, 64, 64, 3], activation='Tanh', rules='pong-v2', max_ball_vx=13, gamma=.99, gae_lambda=.95,
+                  architecture=[6, 64, 64, 3], activation='Tanh', rules='pong-v3', max_ball_vx=13,
+                  rally_tick_limit=1600, training_loop_detection=False, evaluation_loop_detection=True,
+                  gamma=.99, gae_lambda=.95,
                   clip=.2, epochs=4, minibatch=2048, entropy=.01, return_reward=.02,
-                  seed_ranges={'train': [0, 999999999], 'validation': [1000000000, 1000000023],
-                               'test': [2100000000, 2100000099]})
+                  seed_ranges={'train': [0, 999999999], 'validation': [1100000000, 1100000023],
+                               'test': [2200000000, 2200000099]})
     (args.out / 'config.json').write_text(json.dumps(config, indent=2) + '\n')
     actor = Actor()
     optimizer = torch.optim.Adam(actor.parameters(), lr=1e-3)
     baselines = [load_builtin(n) for n in ['tracker', 'anticipator', 'challenger']]
-    env = Arena(args.envs, args.seed)
+    # PPO samples actions, and DAgger mixes/changing controllers: repetition does
+    # not prove their next decision repeats. Only deterministic evaluation exits loops.
+    env = Arena(args.envs, args.seed, loop_detection=False)
     opponent_ids = rng.integers(0, 5, args.envs)
     pool = []
     started = time.monotonic()

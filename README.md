@@ -11,18 +11,18 @@ npm ci
 npm run dev
 ```
 
-Open the localhost URL printed by Vite. The default match pairs the retrained Selfplay and Apprentice policies under Pong v2 rules.
+Open the localhost URL printed by Vite. The default match pairs the Selfplay and Apprentice policies under Pong v3 rules.
 
 ## Play and inspect
 
 - Set either paddle to **Keyboard**, then press **Play match**. Use W/S or the up/down arrows. With two humans, the left player uses W/S and the right uses the arrows.
 - Use **P1** or **P2** in Action scores to inspect that player's last decision. Pause, step, or scrub the timeline to see the exact scores and actions recorded during play. Selecting an event in the match log jumps to its frame.
-- Opening or reloading the arena draws a fresh seed. Its five rallies start in five different height bands, and both paddles receive rising and falling serves. A point is worth one and a timed-out rally scores zero. **Restart** repeats the set. **New serves** draws a fresh seed. Choosing different players keeps the current set for comparison.
+- Opening or reloading the arena draws a fresh seed. Its five rallies start in five different height bands, and both paddles receive rising and falling serves. A point is worth one; a draw scores zero. Rallies have a 1,600-tick limit. Model-only matches also end a rally when its exact ball/paddle state repeats after a return. Human matches use the full limit. The log distinguishes loops from timeouts. **Restart** repeats the set. **New serves** draws a fresh seed. Choosing different players keeps the current set for comparison.
 - **Import model** assigns a local ONNX file to either paddle. Imported models are kept in this browser's IndexedDB when available. The model library contains downloadable baseline files. The field guide documents the submission contract.
 
 ## Rally balance
 
-Two competitive paddles should be able to sustain a rally under pressure and still win the point through shot placement. To check a rules change, keep the attacking opponent and serve seeds fixed, swap sides, and compare a baseline defender with one that wins more often across several opponents. Track how often a rally ends before the second return, the median number of returns in rallies that end in a point, and the share that reach the 800-tick draw. Match score determines the winner.
+Two competitive paddles should be able to sustain a rally under pressure and still win the point through shot placement. To check a rules change, keep the attacking opponent and serve seeds fixed, swap sides, and compare a baseline defender with one that wins more often across several opponents. Track how often a rally ends before the second return, the median number of returns in rallies that end in a point, and both loop and timeout draws. Match score determines the winner.
 
 ## Model interface
 
@@ -44,8 +44,10 @@ The tests cover the game rules, perspective symmetry, finite output and tie hand
 
 ## Train your own weights
 
-The standalone [Pong v2 training contract](training/v2/README.md) includes the frozen engine, a headless TypeScript example, a dependency-free Python reference, and full deterministic match fixtures. Copy `training/v2/` to train independently of the app. Run `python3 training/v2/check.py` to verify the Python port.
+The standalone [Pong v3 training contract](training/v3/README.md) includes the frozen engine, a headless TypeScript example, a dependency-free Python reference, and full deterministic match fixtures. Copy `training/v3/` to train independently of the app. Run `python3 training/v3/check.py` to verify the Python port. Enable loop detection only for fixed deterministic stateless policies; sampled training actions can escape a repeated position.
 
-[PyTorch training and results](training/README.md) includes runnable DAgger + PPO self-play scripts, learning curves, held-out tests, and standalone ONNX exports. **Apprentice** and **Selfplay** are available in the Model library. Cards show the actual network architecture and link to the local training report. Pong v2 reduces the maximum horizontal return speed from 15 to 13, with all other physics and the model interface unchanged. The frozen v1 package, weights and results remain available.
+[PyTorch training and results](training/README.md) includes runnable DAgger + PPO self-play scripts, learning curves, held-out tests, and standalone ONNX exports. **Apprentice** and **Selfplay** are available in the Model library. Cards show the actual network architecture and link to the local training report. Pong v3 preserves all v2 physics and the six-input/three-score model interface, extends the rally limit from 800 to 1,600 ticks, and adds early loop draws for model matches. The frozen v1/v2 packages, weights and results remain available.
 
 The [balance study](training/results/balance-v2/README.md) explains the matched-serve comparison and why cap 13 was chosen. The report includes both scored-rally lengths and draw rates.
+
+The [timeout and rule study](training/results/rule-study/README.md) provides the measurements behind the v3 deadline and loop decisions, plus comparisons with faster paddles, different ball speeds, and larger paddles. Its original experimental report remains at `/training/rule-study.html`.

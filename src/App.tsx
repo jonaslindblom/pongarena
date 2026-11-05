@@ -29,7 +29,7 @@ const tabs: { page: Page; icon: typeof Gamepad2 }[] = [
 const descriptions: Record<Page, string> = {
   Arena: 'Pit two controllers against each other and watch every decision unfold.',
   'Model library': 'Choose a controller, download a baseline, or bring your own weights.',
-  'Field guide': 'Everything your paddle needs to compete in Pong v2.',
+  'Field guide': 'Everything your paddle needs to compete in Pong v3.',
 }
 const inputs = [
   ['Ball X', 'Centered at 0. Negative toward your end, positive toward your opponent.'],
@@ -47,8 +47,13 @@ function Guide() {
         <h2>Play the match</h2>
         <p>
           Each match runs five seeded rallies at 30 decisions per second. A miss gives the other
-          paddle one point. After 800 ticks a rally is drawn. The higher score after five rallies
+          paddle one point. After 1,600 ticks a rally is drawn. The higher score after five rallies
           wins.
+        </p>
+        <p>
+          When two models repeat the same ball and paddle state after a return, their rally is
+          drawn early: the same decisions would repeat forever. Matches with a human use the
+          full time limit. Drawn rallies award no points.
         </p>
         <p>
           Hit near the edge of your paddle to send a faster, steeper return. Horizontal ball speed
@@ -116,10 +121,10 @@ function Guide() {
         </a>
         <h3>Train independently</h3>
         <p>
-          The v2 package includes exact rules, a headless example, a Python reference, and
+          The v3 package includes exact rules, a headless example, a Python reference, and
           deterministic test cases.
         </p>
-        <a className="secondary-btn" href="/training/pong-v2.zip" download>
+        <a className="secondary-btn" href="/training/pong-v3.zip" download>
           <ArrowDownToLine size={16} /> Training package
         </a>
         <h3>First weight edit</h3>

@@ -5,6 +5,7 @@ export const ACTIONS = ['Up', 'Stay', 'Down'] as const
 export const RALLIES = 5
 export const MAX_BALL_VX = 13
 export const TICKS_PER_SECOND = 30
+export const RALLY_TICK_LIMIT = 1600
 export type Event = 'serve' | 'return' | 'point' | 'draw' | null
 
 export interface Frame {
@@ -19,6 +20,7 @@ export interface Frame {
   points: Pair<number>
   returns: number
   event: Event
+  drawReason?: 'loop' | 'timeout'
   actor?: Side
   scores: Pair<Scores | null>
 }
@@ -26,6 +28,30 @@ export interface Frame {
 const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(max, n))
 export const endedRally = (f: Frame) => f.event === 'point' || f.event === 'draw'
 export const endedMatch = (f: Frame) => f.rally === RALLIES && endedRally(f)
+
+// Only use for two fixed, deterministic, stateless policies. Human decisions and
+// sampled training actions can escape a repeated physical state.
+export class LoopDetector {
+  private seen = new Set<string>()
+  private rally = 0
+
+  reset() {
+    this.seen.clear()
+    this.rally = 0
+  }
+
+  observe(f: Frame) {
+    if (f.rally !== this.rally) {
+      this.seen.clear()
+      this.rally = f.rally
+    }
+    if (f.event !== 'return') return false
+    const key = [f.x, f.y, f.vx, f.vy, ...f.paddles].join(',')
+    if (this.seen.has(key)) return true
+    this.seen.add(key)
+    return false
+  }
+}
 
 export function serve(seed: number, prior?: Frame): Frame {
   const rally = prior ? prior.rally + 1 : 1
@@ -83,7 +109,7 @@ export function choice(scores: Scores) {
   return scores.indexOf(Math.max(...scores))
 }
 
-export function advance(prior: Frame, scores: Pair<Scores>): Frame {
+export function advance(prior: Frame, scores: Pair<Scores>, loops?: LoopDetector): Frame {
   const paddles = prior.paddles.map((p, i) =>
     clamp(p + 2 * (choice(scores[i]) - 1), 15, 145),
   ) as Pair<number>
@@ -96,6 +122,7 @@ export function advance(prior: Frame, scores: Pair<Scores>): Frame {
     paddles,
     points: [...prior.points],
     event: null,
+    drawReason: undefined,
     actor: undefined,
     scores,
   }
@@ -119,8 +146,14 @@ export function advance(prior: Frame, scores: Pair<Scores>): Frame {
       f.event = 'return'
     }
   }
-  if (f.rallyTick >= 800 && f.event !== 'point') {
+  if (loops?.observe(f)) {
     f.event = 'draw'
+    f.drawReason = 'loop'
+    f.actor = undefined
+  }
+  if (f.rallyTick >= RALLY_TICK_LIMIT && f.event !== 'point' && f.event !== 'draw') {
+    f.event = 'draw'
+    f.drawReason = 'timeout'
     f.actor = undefined
   }
   return f

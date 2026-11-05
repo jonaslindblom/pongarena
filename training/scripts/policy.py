@@ -68,10 +68,10 @@ def export(actor, path):
         else:
             raise ValueError(f'Unsupported layer: {layer}')
         current = output
-    graph = helper.make_graph(nodes, 'Rally Lab Pong v2 actor',
+    graph = helper.make_graph(nodes, 'Rally Lab Pong v3 actor',
                               [helper.make_tensor_value_info('observation', 1, [1, 6])],
                               [helper.make_tensor_value_info('action_scores', 1, [1, 3])], weights)
     model = helper.make_model(graph, opset_imports=[helper.make_opsetid('', 18)], ir_version=10)
-    helper.set_model_props(model, {'rules': 'pong-v2', 'architecture': '6-64-64-3 Tanh', 'training': 'PyTorch'})
+    helper.set_model_props(model, {'rules': 'pong-v3', 'architecture': '6-64-64-3 Tanh', 'training': 'PyTorch'})
     onnx.checker.check_model(model)
     onnx.save(model, str(path))

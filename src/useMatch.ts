@@ -3,6 +3,7 @@ import {
   advance,
   endedMatch,
   endedRally,
+  LoopDetector,
   observation,
   serve,
   TICKS_PER_SECOND,
@@ -24,6 +25,7 @@ export function useMatch(
 ) {
   const [seed, setSeed] = useState(newSeed)
   const history = useRef<Frame[]>([])
+  const loops = useRef(new LoopDetector())
   if (history.current.length === 0) history.current.push(serve(seed))
   const cursor = useRef(0),
     revision = useRef(0),
@@ -40,6 +42,7 @@ export function useMatch(
     pause()
     setSeed(newSeed)
     history.current = [serve(newSeed)]
+    loops.current = new LoopDetector()
     cursor.current = 0
     setTick(0)
     keys.current.clear()
@@ -95,7 +98,9 @@ export function useMatch(
                 : await infer(player, observation(previous, side)),
             )
           }
-          next = advance(previous, scores as Pair<Scores>)
+          if (revision.current !== version) return
+          const modelMatch = players.every((player) => player?.session && player.id !== 'keyboard')
+          next = advance(previous, scores as Pair<Scores>, modelMatch ? loops.current : undefined)
         }
         if (revision.current !== version) return
         history.current.push(next)

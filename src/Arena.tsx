@@ -30,6 +30,7 @@ import {
   endedMatch,
   endedRally,
   RALLIES,
+  RALLY_TICK_LIMIT,
   type Pair,
   type Side,
   type Frame,
@@ -55,7 +56,8 @@ export function ModelIcon({ id, size = 20 }: { id: string; size?: number }) {
 function eventText(f: Frame, names: Pair<string>) {
   if (f.event === 'serve') return 'Rally ' + pad(f.rally) + ' served'
   if (f.event === 'point') return names[f.actor!] + ' scores'
-  if (f.event === 'draw') return 'Rally drawn at 800 ticks'
+  if (f.event === 'draw')
+    return f.drawReason === 'loop' ? 'Rally drawn · repeating loop' : `Rally drawn at ${RALLY_TICK_LIMIT.toLocaleString()} ticks`
   return names[f.actor!] + ' returns the ball'
 }
 function Court({ m, names, ready }: { m: Match; names: Pair<string>; ready: boolean }) {
