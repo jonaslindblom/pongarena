@@ -1,0 +1,20 @@
+{
+  "purpose": "Actual browser WASM inference parity before catalog publication",
+  "matches": 12,
+  "frames": 22196,
+  "compact_decisions": 29844,
+  "by_model": {
+    "nano": 14120,
+    "small": 15724
+  },
+  "action_mismatches": 0,
+  "state_mismatches": 0,
+  "max_score_error": 0,
+  "runtime": "ONNX Runtime Web WASM, one thread; live TypeScript v4 engine",
+  "reference": "independent-replays.json.gz; compact scores recomputed in browser, Pacer scores retained from native replay",
+  "model_sha256": {
+    "nano": "f059e3acaf5a475740ef50a36cbe4e5652e2f981bbef09de43095d27379f4568",
+    "small": "0e1b8b4d6edaa7e1edd46f58ebe24da1590ef0ec4dfc14dc80249a709ced8641"
+  },
+  "harness_note": "Vite serves the gzip fixture with automatic HTTP decoding; the final harness reads response.json() directly. An initial double-decompression attempt failed before any model comparisons."
+}

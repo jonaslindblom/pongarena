@@ -1,0 +1,28 @@
+{
+  "nano": {
+    "sha256": "f059e3acaf5a475740ef50a36cbe4e5652e2f981bbef09de43095d27379f4568",
+    "arena": {
+      "bytes": 3672,
+      "params": 418,
+      "macs": 262,
+      "nodes": 44,
+      "division": "nano"
+    },
+    "numeric_probes": 8192,
+    "action_mismatches": 0,
+    "max_score_error_units": 2.3841857821338408e-08
+  },
+  "small": {
+    "sha256": "0e1b8b4d6edaa7e1edd46f58ebe24da1590ef0ec4dfc14dc80249a709ced8641",
+    "arena": {
+      "bytes": 12017,
+      "params": 1835,
+      "macs": 1015,
+      "nodes": 127,
+      "division": "small"
+    },
+    "numeric_probes": 8192,
+    "action_mismatches": 0,
+    "max_score_error_units": 2.3841857821338408e-08
+  }
+}

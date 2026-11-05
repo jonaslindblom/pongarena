@@ -1,0 +1,1 @@
+Exact independent verification and development source snapshots for this run. They retain their original workspace and /tmp paths. Complete native match traces are retained in ../independent-replays.json.gz; combined audit results are in ../independent-verification.json. The portable construction/evaluation entry point is training/scripts/compact_handcrafted_v4.py.

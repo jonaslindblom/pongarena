@@ -69,6 +69,20 @@ export const presets = [
     report: '/training/pace-study.html',
   },
   {
+    id: 'handcrafted-nano-v4',
+    name: 'Handcrafted Nano v4',
+    kind: 'Handcrafted · Nano · v4',
+    description: '418 fixed physics parameters, built without training. Predicts exact landing heights, aims with cap-speed contact targets, and recovers to center. Beats Pacer in fresh tests; remains weak against adaptive scripts.',
+    report: '/training/handcrafted-v4.html',
+  },
+  {
+    id: 'handcrafted-small-v4',
+    name: 'Handcrafted Small v4',
+    kind: 'Handcrafted · Small · v4',
+    description: '1,835 fixed physics parameters, built without training. Uses stage-aware placement and recovery tables. Preserves the larger handcrafted policy and beats Pacer in fresh tests; adaptive scripts remain stronger.',
+    report: '/training/handcrafted-v4.html',
+  },
+  {
     id: 'contender-v3',
     name: 'Contender v3',
     kind: 'Fully learned · PPO + weight search',

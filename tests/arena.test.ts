@@ -16,6 +16,7 @@ import {
   type Scores,
 } from '../src/game'
 import { validateModel } from '../src/validate'
+import { smallestDivision } from '../src/competition'
 import { advance as advanceV1, serve as serveV1 } from '../training/v1/game'
 import { advance as advanceV2 } from '../training/v2/game'
 import { advance as advanceV3, LoopDetector as LoopDetectorV3 } from '../training/v3/game'
@@ -292,5 +293,25 @@ test('v4 releases use the evaluated learned weights and expose their larger arch
     assert.deepEqual(stats.architecture.widths, [6, 128, 128, 3])
     assert.equal(stats.params, 17795)
     assert.deepEqual(stats.architecture.operations.map((node) => node.op), ['Gemm', 'Tanh', 'Gemm', 'Tanh', 'Gemm'])
+  }
+})
+
+test('the catalog publishes the evaluated Nano and Small handcrafted policies within their declared classes', () => {
+  const frozen = JSON.parse(readFileSync(new URL('../training/results/compact-handcrafted-v4/freeze.json', import.meta.url), 'utf8'))
+  for (const size of ['nano', 'small']) {
+    const bytes = readFileSync(new URL(`../public/models/handcrafted-${size}-v4.onnx`, import.meta.url))
+    const expected = frozen.models[size]
+    assert.equal(createHash('sha256').update(bytes).digest('hex'), expected.sha256)
+    const model = pb.onnx.ModelProto.decode(bytes)
+    const metadata = new Map(model.metadataProps.map((p) => [p.key, p.value]))
+    assert.equal(metadata.get('rules'), 'pong-v4')
+    assert.equal(metadata.get('division'), size)
+    assert.match(metadata.get('method')!, /no training/)
+    const stats = validateModel(bytes)
+    assert.deepEqual([stats.inputSize, stats.outputSize], [6, 3])
+    assert.deepEqual([stats.params, stats.macs, stats.nodes],
+      [expected.arena.params, expected.arena.macs, expected.arena.nodes])
+    assert.equal(smallestDivision(stats), size)
+    assert.equal(stats.architecture.widths, null)
   }
 })
