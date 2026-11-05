@@ -11,7 +11,7 @@ npm ci
 npm run dev
 ```
 
-Open the localhost URL printed by Vite. The default match pairs Strategist and Selfplay v2 under the unchanged Pong v3 rules.
+Open the localhost URL printed by Vite. The default match pairs Contender and Selfplay v2 under the unchanged Pong v3 rules.
 
 ## Play and inspect
 
@@ -48,7 +48,9 @@ The standalone [Pong v3 training contract](training/v3/README.md) includes the f
 
 [PyTorch training and results](training/README.md) includes runnable DAgger + PPO self-play scripts, learning curves, held-out tests, and standalone ONNX exports. **Apprentice** and **Selfplay** are available in the Model library. Cards show the actual network architecture and link to the local training report. Pong v3 preserves all v2 physics and the six-input/three-score model interface, extends the rally limit from 800 to 1,600 ticks, and adds early loop draws for model matches. The frozen v1/v2 packages, weights and results remain available.
 
-**Strategist** is the newer training-only improvement: a learned target network with disclosed fixed trajectory features, all embedded in one ONNX file. It passed three reserved evaluation blocks against both original v2 and the unchanged attacker, with many draws. The [investigation](training/results/training-improvement/README.md) records the v3 diagnosis, unsuccessful experiments, reproduction commands and final tests. Open `/training/improvement.html` for its learning curves and comparisons. The rules and upload limits are unchanged.
+**Contender** is fully learned: a plain `6→64→64→3` Tanh network with 4,803 learned parameters and no fixed trajectory or feedback layers. PPO followed by direct weight search produced an export that passed three reserved blocks against v2 and the attacker, including winning a majority of ordinary five-rally games in every block. The [fully learned investigation](training/results/fully-learned/README.md) includes reproducible scripts, unsuccessful variants and final results; open `/training/fully-learned.html` for its curves. Rules and upload limits are unchanged.
+
+**Strategist** remains a clearly labelled hybrid comparison, with fixed trajectory features. It does not meet the fully learned requirement. Its [earlier investigation](training/results/training-improvement/README.md) and `/training/improvement.html` retain the v3 diagnosis, separate results and learning curves.
 
 The [balance study](training/results/balance-v2/README.md) explains the matched-serve comparison and why cap 13 was chosen. The report includes both scored-rally lengths and draw rates.
 

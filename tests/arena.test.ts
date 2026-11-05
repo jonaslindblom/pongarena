@@ -238,3 +238,13 @@ test('a branched upload is shown as a graph rather than an invented sequential a
   assert.deepEqual(stats.architecture.operations[2].inputs, [hidden, activated])
   assert.deepEqual(stats.architecture.operations[2].shape, [1, 16])
 })
+
+test('the fully learned release is the evaluated plain MLP, without fixed feature branches', () => {
+  const bytes = readFileSync(new URL('../public/models/contender-v3.onnx', import.meta.url))
+  const frozen = JSON.parse(readFileSync(new URL('../training/results/fully-learned/candidate/freeze.json', import.meta.url), 'utf8'))
+  assert.equal(createHash('sha256').update(bytes).digest('hex'), frozen.onnx_sha256)
+  const stats = validateModel(bytes)
+  assert.deepEqual(stats.architecture.widths, [6, 64, 64, 3])
+  assert.equal(stats.params, frozen.trainable_parameters)
+  assert.deepEqual(stats.architecture.operations.map((node) => node.op), ['Gemm', 'Tanh', 'Gemm', 'Tanh', 'Gemm'])
+})

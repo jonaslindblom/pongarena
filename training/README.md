@@ -4,7 +4,9 @@ Pong v3 keeps all v2 physics and the six-input/three-score interface. The rally 
 
 Start with the self-contained [v3 contract](v3/README.md), also downloadable as `/training/pong-v3.zip`. It includes the engine, headless example, dependency-free Python reference, fixtures and checker. [V1](v1/README.md) and [v2](v2/README.md) remain frozen.
 
-The newer [fixed-rules training investigation](results/training-improvement/README.md) diagnoses the v3 regression and introduces **Strategist**, which passed three reserved test blocks against both original v2 and the unchanged attacker. It includes focused PPO variants, teacher distillation, failed experiments and exact reproduction commands. Strategist combines disclosed fixed trajectory features with a learned target head inside one ONNX file. Its curves and final results are at `/training/improvement.html`. The original v3 recipe and results below remain as historical evidence.
+The latest [fully learned investigation](results/fully-learned/README.md) introduces **Contender**, a plain `6→64→64→3` Tanh actor trained through PPO and direct weight search. It passes three fresh test blocks against original v2 and the unchanged attacker, including majority ordinary five-rally game wins in each block. Its curves and final results are at `/training/fully-learned.html`. There are no fixed geometry or paddle-feedback layers in this export.
+
+The [earlier fixed-rules investigation](results/training-improvement/README.md) diagnoses the v3 regression and records **Strategist**, a hybrid with fixed trajectory features and a learned target head. It does not satisfy the fully learned requirement. Its separate curves and results remain at `/training/improvement.html`; the original v3 recipe below also remains historical evidence.
 
 ## Why these rules
 

@@ -30,9 +30,16 @@ export const keyboard: Controller = {
 }
 export const presets = [
   {
+    id: 'contender-v3',
+    name: 'Contender',
+    kind: 'Fully learned · PPO + weight search',
+    description: 'A learned 6→64→64→3 Tanh policy, refined through PPO and direct weight search. No fixed trajectory or paddle-feedback layers.',
+    report: '/training/fully-learned.html',
+  },
+  {
     id: 'strategist-v3',
     name: 'Strategist',
-    kind: 'PyTorch · DAgger · v3',
+    kind: 'Hybrid · Fixed geometry + DAgger',
     description: 'Fixed trajectory features → trained 8→128→128→64→1 Tanh target head → paddle feedback. Six inputs, three action scores.',
     report: '/training/improvement.html',
   },
