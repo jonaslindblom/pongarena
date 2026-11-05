@@ -1,5 +1,7 @@
 # Training improvement with Pong v3 rules fixed
 
+> **Archived and ineligible:** this study used physics/planning graph operations that do not satisfy the current plain dense-network contract (`dense-mlp-v2`). Its models are removed from the active catalog and cannot be imported for active play. Scores below are historical results under the former general-graph contract, not current dense-network standings.
+
 **Strategist passes the predeclared success criteria against both original Selfplay v2 and the unchanged scripted attacker in each of three reserved test blocks.** Only one candidate was tested on these final seeds. Its checkpoint and ONNX hash were frozen in commit `683c40f` before evaluation. Physics, observations, output meanings, deadlines, loop detection and upload limits are unchanged.
 
 Open `/training/improvement.html` in the local app for learning curves, development comparisons, the diagnosis and final results. The model is selectable as **Strategist** and defaults to playing Selfplay v2. Download `public/models/strategist-v3.onnx` or use the library's download button.

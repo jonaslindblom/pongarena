@@ -1,5 +1,7 @@
 # Compact handcrafted Classic v4 weights
 
+> **Archived and ineligible:** this study used physics/planning graph operations that do not satisfy the current plain dense-network contract (`dense-mlp-v2`). Its models are removed from the active catalog and cannot be imported for active play. Scores below are historical results under the former general-graph contract, not current dense-network standings.
+
 Both new no-training models beat all ten active presets in the recorded head-to-head comparisons. Against Pacer over three fresh 64-seed blocks, **Nano wins 1,397, loses 480, draws 43**; **Small wins 1,428, loses 422, draws 70**. Both pass the declared criteria in every block.
 
 Small preserves the full original handcrafted policy's target tables with **94.6% fewer parameters**. Nano uses a simplified incoming placement and recovery policy. These are fixed physics networks built analytically, with no gradient updates, optimizer, distillation, or mutation search. Seven manually specified compact target designs, including failed controls, are retained in `development.json`.

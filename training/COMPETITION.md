@@ -1,6 +1,19 @@
 # Local weight competition
 
-The arena accepts weights without prescribing how they were created. Hand-edited weights, imitation, self-play and evolutionary search compete under the same rules. The game specification, observation/action contract and allowed inference graph determine eligibility; training provenance does not award points.
+The active arena accepts **plain dense neural networks** mapping the six raw observations directly to three action scores. Weight values may be hand-edited, transferred, or learned; an entrant may not encode a separate physics or planning program in its ONNX architecture. Eligibility is determined by the validated dense graph and resource budgets, not metadata or a training-method label.
+
+## Dense-network contract
+
+The active contract identifier is `observation-6/action-scores-3/dense-mlp-v2`. Classic v4 physics remains `pong-v4`; changing the model contract invalidates previously stored general-graph rankings. This contract supersedes the export-graph section of the immutable v4 training package, which remains an archive of the earlier submission format.
+
+- Use a single feed-forward chain of one to three affine layers (`Gemm`): zero, one, or two hidden layers, followed by a linear three-score output. Hidden widths may vary within the resource budgets.
+- Apply the same ordinary `Relu` or `Tanh` activation after every hidden affine layer. There is no activation after the output layer.
+- Every affine layer consumes only the immediately preceding activation and its own unique embedded float32 weight matrix and bias. Weights and biases must be finite and used exactly once. Dense coefficients are fixed parameters: `alpha = beta = 1`, `transA = 0`, and `transB` may only select matrix storage orientation.
+- Supply the six observations unchanged. No branches, skip connections, scalar instruction chains, runtime input products, computed parameters, shared tensors, auxiliary input features, separate lookup/physics operations, or input/output processing are allowed in the submitted graph. Only the canonical dense/activation serialization is accepted; standalone `MatMul` or `Add` nodes are rejected.
+
+Ordinary hidden neurons may represent useful features through their dense weights. A plain dense network can encode knowledge through its numerical weights and biases. This contract limits the architecture; it does not require formal training. The current weight-transfer work fixes `6→16→16→3` for Nano and `6→32→32→3` for Small before editing weights.
+
+The earlier Handcrafted Nano, Handcrafted Small, Counter Small, and Strategist exports are ineligible archives. Their recorded outcomes remain historical evidence under their old graph contract, not current dense-network standings.
 
 The current ranking feature is a **local round-robin benchmark**. It is useful for comparing uploaded weights against a fixed field and inspecting size/strength tradeoffs. It is not a verified public leaderboard. Browser results and downloaded JSON files are under the local user's control.
 
@@ -17,7 +30,7 @@ Both limits must be satisfied. Smaller models may compete in any larger class. A
 
 These are initial engineering budgets, not measured capability boundaries. The model-size study should inform future class revisions. A changed class budget changes the benchmark identity.
 
-The existing file, operator and intermediate-tensor limits also apply. A small parameter count does not excuse excessive computation. Count every embedded float32 initializer scalar, including biases and any fixed handcrafted transforms; do not rely on the author's claimed number of trainable parameters. Count a matrix multiplication every time the graph executes it, including reused matrices. Parameters and MACs are derived from the validated graph, not filename or metadata.
+The existing file and intermediate-tensor limits also apply. The canonical dense structure permits at most five operators: three affine layers and two hidden activations. Count every embedded weight and bias, including zeros; shared or unused tensors are ineligible. Parameters and dense multiply–accumulates are derived from the validated graph, not filename or a claimed trainable-parameter count.
 
 For the active six-input/three-action interface, these plain network architectures illustrate the budgets. Sizes alone do not establish trained performance:
 
@@ -35,7 +48,7 @@ Parameter count measures capacity; it does not promise a tactical or entertainin
 
 Each entrant's identity is the SHA-256 of its complete ONNX bytes. A renamed file remains the same entrant. Byte-identical files cannot enter twice, even under different display names. Different serializations of the same function can still have different hashes; a public system would additionally need submission and duplicate-policy controls.
 
-Before entering a run, every model must pass the game's six-input/three-action validator. Archived eight-input/five-action Burst weights are not eligible for the active arena, and their historical rankings cannot be restored as Classic results. Any explicit compatibility adapter would be part of a separate declared contract and its compute/parameter budget. A controller's human label or training method cannot replace graph validation.
+Before entering a run, every model must pass the game's six-input/three-action **dense-only** validator. Archived eight-input/five-action Burst weights are not eligible for the active arena, and their historical rankings cannot be restored as Classic results. Physics-feature hybrids and the retired handcrafted programs are also rejected, even when they expose the correct ports. Compatibility adapters would require a separate contract. A controller's human label or training method cannot replace graph validation.
 
 The benchmark fingerprint includes:
 

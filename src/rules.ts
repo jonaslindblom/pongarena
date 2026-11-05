@@ -25,7 +25,7 @@ export interface Ruleset {
 }
 
 export const CLASSIC: Ruleset = {
-  id: 'pong-v4', name: 'Classic v4', contractId: 'observation-6/action-scores-3/v1',
+  id: 'pong-v4', name: 'Classic v4', contractId: 'observation-6/action-scores-3/dense-mlp-v2',
   inputSize: 6, outputSize: 3, actions: classic.ACTIONS,
   serve: (seed, prior) => classic.serve(seed, prior as classic.Frame | undefined),
   observation: (frame, side) => classic.observation(frame as classic.Frame, side),

@@ -1,5 +1,7 @@
 # Compact predictive counter to the v4 attacker
 
+> **Archived and ineligible:** this study used physics/planning graph operations that do not satisfy the current plain dense-network contract (`dense-mlp-v2`). Its models are removed from the active catalog and cannot be imported for active play. Scores below are historical results under the former general-graph contract, not current dense-network standings.
+
 This study constructs one fixed Small-class policy that approximates the adaptive attacker's shot selection and anticipates its recovery. It uses only the unchanged six observations and produces the ordinary up/stay/down scores. The weights are hand-constructed: no gradient updates, optimizer, distillation, or mutation search are used. Simulated matches are development and evaluation evidence.
 
 Commit `a4772c3` added the earlier **Handcrafted Nano v4** and **Handcrafted Small v4** to the app catalog. The counter described here is catalogued separately as **Counter Small v4**, after passing its own three fresh blocks against the unchanged attacker. Its strength is assessed from that frozen evaluation; the earlier models' Pacer results do not establish its performance against the attacker. Pacer versus Apprentice remains the default matchup.

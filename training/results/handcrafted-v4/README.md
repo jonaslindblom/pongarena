@@ -1,5 +1,7 @@
 # Handcrafted v4 weights, without training
 
+> **Archived and ineligible:** this study used physics/planning graph operations that do not satisfy the current plain dense-network contract (`dense-mlp-v2`). Its models are removed from the active catalog and cannot be imported for active play. Scores below are historical results under the former general-graph contract, not current dense-network standings.
+
 `handcrafted-v4.onnx` beats every current arena preset in the recorded fresh-seed comparisons. Against Pacer, it wins **1,412**, loses **455**, and draws **53** rallies across three separate 64-seed blocks. It passes the declared head-to-head criteria in every block. It is not universally stronger: it performs worse than Pacer against the adaptive attacking script.
 
 This is a new **hand-constructed physics network**, rather than an improved learned Pacer checkpoint. No gradient updates, optimizer, distillation, or evolutionary weight search were used. Simulated matches were used for development and evaluation. Eight manually specified designs or diagnostic policies were examined; their successes and failures are retained in `development.json`.

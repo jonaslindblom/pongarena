@@ -64,7 +64,7 @@ The earlier [offensive-balance experiment](training/results/offense-study/README
 
 The simulation and ONNX contract keep their original coordinates so existing models and training results remain compatible. The display rotates the court: simulation X runs between the top and bottom paddles, and simulation Y runs left to right. The legacy action names **up, stay, down** mean **left, stay, right** on screen. The standalone training package and historical studies describe simulation coordinates.
 
-Submit one opset 18 ONNX file (up to 256 KiB) with embedded float32 weights:
+Submit one opset 18 ONNX file (up to 256 KiB) containing a plain dense neural network with embedded float32 weights and biases:
 
 | Rules | `observation` input | `action_scores` output |
 | --- | --- | --- |
@@ -72,13 +72,15 @@ Submit one opset 18 ONNX file (up to 256 KiB) with embedded float32 weights:
 
 The six observations are centered ball X and Y, horizontal and vertical velocity divided by six, own paddle Y, and opponent paddle Y. The observing player's court is mirrored horizontally to place its paddle on the left. Output scores must be finite; the first maximum wins ties. Both players decide from the same pre-move state. Archived eight-input/five-output Burst files cannot be imported into the active game; previously saved Burst files remain in browser storage but are not loaded.
 
-The supported stateless graphs use Gemm, MatMul, Add, Relu, and Tanh. The importer checks tensor shapes and embedded weights, with limits of 65,536 multiply–accumulates, 256 operators, and 262,144 total intermediate output elements per decision. Cards show the actual architecture, parameter count and compute budget.
+The active contract permits one to three sequential dense `Gemm` layers: zero, one, or two hidden layers and a linear three-score output. Every hidden layer uses the same standard `Relu` or `Tanh` activation. Each dense layer has its own embedded fixed weight matrix and bias; `alpha` and `beta` are one, and the input is not transposed. MatMul/Add instruction graphs, branches, skip connections, shared parameters, computed weights, feature extraction, and input/output processing are rejected. Knowledge must reside in the dense weights and biases. The importer validates this structure as well as shapes, finite parameters, the 65,536-MAC budget, and file limits. Cards show the actual architecture and validated resource counts.
 
 ## Compare weights
 
 **Rankings** runs a local round robin with a selected roster, common serve seeds and both side assignments. Each pair of five-rally games awards one league point for a win, half for a tie, and zero for a loss. Equal totals share rank; unfinished leagues remain unranked. Cancel, export the result, or repeat the exact benchmark. Rules, contracts, roster hashes and seeds identify each result; results from different benchmarks are not interchangeable ratings.
 
 Scripts are available as reference opponents in the Arena, but do not enter weight-budget leagues or receive a model size class.
+
+The active neural-network contract is `observation-6/action-scores-3/dense-mlp-v2`. Rankings saved under the earlier general-graph contract are not restored. Classic v4 physics is unchanged.
 
 Classes require both limits: **Nano** ≤512 parameters / 2,048 MACs, **Small** ≤2,048 / 8,192, **Standard** ≤20,480 / 65,536, and **Open** ≤65,536 / 65,536. Smaller models may compete up. Training method is irrelevant. These are provisional budgets, and existing graph/file limits still apply. The [competition protocol](training/COMPETITION.md) explains scoring and reproducibility. A public leaderboard will need an independent evaluator; local browser results are not verified public standings.
 
@@ -96,23 +98,21 @@ Script conformance tests compare every reachable contact path, observation probe
 
 ## Train your own weights
 
-Start with the standalone [Classic v4 contract](training/v4/README.md), downloadable as `/training/pong-v4.zip`. It includes the engine, a headless TypeScript example, a dependency-free Python reference, and deterministic match fixtures. Copy `training/v4/` to train independently of the app; run `python3 training/v4/check.py` to check the Python port. Enable loop detection only for fixed deterministic stateless policies; sampled training actions can escape a repeated position.
+Start with the standalone [Classic v4 game specification](training/v4/README.md), downloadable as `/training/pong-v4.zip`. The immutable package retains its historical general-graph export section; the current [dense-network competition contract](training/COMPETITION.md) supersedes that section for active submissions. It includes the engine, a headless TypeScript example, a dependency-free Python reference, and deterministic match fixtures. Copy `training/v4/` to train independently of the app; run `python3 training/v4/check.py` to check the Python port. Enable loop detection only for fixed deterministic stateless policies; sampled training actions can escape a repeated position.
 
 [PyTorch training and results](training/README.md) documents the current Classic workflow and archived experiments. Candidate compact Classic networks include `6→16→3` (163 parameters), `6→16→16→3` (435), and `6→32→32→3` (1,379). These are architecture budgets, not freshly trained or evaluated policies. Removing energy management and extra actions simplifies the learning problem; tactical capability still needs measurement.
 
-The `pace_study.py` and `train_pace.py` workflow produced **Pacer v4** and **Apprentice v4**, fully learned `6→128→128→3` Tanh networks trained through DAgger. The v1/v2/v3 packages, weights and results remain frozen; those older weights are interface-compatible with Classic, but previous results do not establish strength under v4.
+The `pace_study.py` and `train_pace.py` workflow produced **Pacer v4** and **Apprentice v4**, fully learned `6→128→128→3` Tanh networks trained through DAgger. The v1/v2/v3 packages, weights and results remain frozen; those older plain dense weights remain eligible for Classic, but previous results do not establish strength under v4.
 
 The [Classic placement test](training/results/classic-tactics/README.md), visualized at `/training/classic-tactics.html`, finds legal alternatives that turn scripted losses into wins. Matched learned continuations do not turn those local opportunities into an overall stronger player: the selected model improves against the defender but regresses against the attacker. Both failed and selected training attempts, independent replay checks and fresh evaluations are retained; the active models remain unchanged.
 
-The catalog also includes **Handcrafted Nano v4** (418 parameters) and **Handcrafted Small v4** (1,835), constructed from fixed physics and shot/recovery tables without training. Both beat Pacer across three fresh 640-rally blocks, but still lose to the adaptive attacking and defending scripts. Small preserves the original larger handcrafted policy; Nano simplifies recovery. Their [construction, frozen results and verification](training/results/compact-handcrafted-v4/README.md) are available in the repository, with the catalog report at `/training/handcrafted-v4.html`.
-
-**Counter Small v4** adds opponent-aware placement and predicted attacking replies in 1,330 fixed parameters. It beats the unchanged adaptive attacker across three fresh 640-rally blocks without training. Its cap-speed safety prior and future wall-clamp paths remain approximations; see the [counter investigation](training/results/counter-attacker-v4/README.md) and `/training/counter-attacker-v4.html`.
+The [handcrafted graph investigation](training/results/compact-handcrafted-v4/README.md) and [attacker-counter investigation](training/results/counter-attacker-v4/README.md) are retained as ineligible archives. Their ONNX graphs encoded physics and planning operations rather than plain dense neural networks. Handcrafted Nano, Handcrafted Small, Counter Small, and the older hybrid Strategist are removed from the active catalog; their historical scores are not active dense-network standings.
 
 The archived [Burst size comparison](training/results/burst-study/models/README.md), with curves at `/training/burst-models.html`, trained networks from 229 to 18,309 parameters. Its 501-parameter Tiny beat Tracker under Burst rules, and Focus learned useful rescue timing but not the full placement counter. Those results do not transfer to Classic, and the eight-input/five-output exports are no longer arena presets. Reports, training scripts, weights and the standalone Burst package remain available for reproducing that experiment.
 
 The earlier **Contender** is fully learned: a plain `6→64→64→3` Tanh network with 4,803 learned parameters and no fixed trajectory or feedback layers. Under v3, PPO followed by direct weight search produced an export that passed three reserved blocks against v2 and the attacker, including winning a majority of ordinary five-rally games in every block. The [fully learned investigation](training/results/fully-learned/README.md) retains those historical results; open `/training/fully-learned.html` for its curves.
 
-**Strategist** remains a clearly labelled hybrid comparison, with fixed trajectory features. It does not meet the fully learned requirement. Its [earlier investigation](training/results/training-improvement/README.md) and `/training/improvement.html` retain the v3 diagnosis, separate results and learning curves.
+**Strategist** is an archived hybrid with fixed trajectory features and is ineligible under the dense-only contract. Its [earlier investigation](training/results/training-improvement/README.md) and `/training/improvement.html` retain the v3 diagnosis, separate results and learning curves.
 
 The [balance study](training/results/balance-v2/README.md) explains the matched-serve comparison and why cap 13 was chosen. The report includes both scored-rally lengths and draw rates.
 

@@ -15,7 +15,7 @@ import {
   type Pair,
   type Scores,
 } from '../src/game'
-import { validateModel } from '../src/validate'
+import { DenseModelError, validateArenaModel, validateModel } from '../src/validate'
 import { smallestDivision } from '../src/competition'
 import { advance as advanceV1, serve as serveV1 } from '../training/v1/game'
 import { advance as advanceV2 } from '../training/v2/game'
@@ -180,7 +180,7 @@ test('the starter fits the documented contract and compute budget', () => {
     ['Gemm', 'Relu', 'Gemm'],
   )
 })
-test('uploads may change hidden architecture but must respect graph and file limits', () => {
+test('the archive inspector checks graph and file limits without granting active eligibility', () => {
   const model = pb.onnx.ModelProto.decode(starter)
   model.graph!.node![1].opType = 'Tanh'
   const encode = () => pb.onnx.ModelProto.encode(model).finish()
@@ -258,7 +258,7 @@ test('trained exports reveal their actual widths and remain within the upload co
   }
 })
 
-test('a branched upload is shown as a graph rather than an invented sequential architecture', () => {
+test('the archive inspector describes a branched model without inventing a dense architecture', () => {
   const model = pb.onnx.ModelProto.decode(starter)
   const nodes = model.graph!.node!
   const hidden = nodes[0].output![0]
@@ -296,7 +296,7 @@ test('v4 releases use the evaluated learned weights and expose their larger arch
   }
 })
 
-test('the catalog publishes the evaluated Nano and Small handcrafted policies within their declared classes', () => {
+test('the retired handcrafted policies remain inspectable archives but cannot enter dense-only play', () => {
   const frozen = JSON.parse(readFileSync(new URL('../training/results/compact-handcrafted-v4/freeze.json', import.meta.url), 'utf8'))
   for (const size of ['nano', 'small']) {
     const bytes = readFileSync(new URL(`../public/models/handcrafted-${size}-v4.onnx`, import.meta.url))
@@ -313,10 +313,12 @@ test('the catalog publishes the evaluated Nano and Small handcrafted policies wi
       [expected.arena.params, expected.arena.macs, expected.arena.nodes])
     assert.equal(smallestDivision(stats), size)
     assert.equal(stats.architecture.widths, null)
+    assert.throws(() => validateArenaModel(bytes), DenseModelError,
+      'Correct ports and an old Nano/Small label must not admit a physics graph')
   }
 })
 
-test('Counter Small publishes the exact frozen attacker comparison within the Small budget', () => {
+test('the archived counter retains its frozen bytes but is ineligible under the dense contract', () => {
   const bytes = readFileSync(new URL('../public/models/counter-attacker-v4.onnx', import.meta.url))
   const frozen = JSON.parse(readFileSync(new URL('../training/results/counter-attacker-v4/freeze.json', import.meta.url), 'utf8'))
   const verification = JSON.parse(readFileSync(new URL('../training/results/counter-attacker-v4/verification.json', import.meta.url), 'utf8'))
@@ -332,4 +334,11 @@ test('Counter Small publishes the exact frozen attacker comparison within the Sm
     [verification.arena.params, verification.arena.macs, verification.arena.nodes])
   assert.equal(smallestDivision(stats), 'small')
   assert.equal(stats.architecture.widths, null)
+  assert.throws(() => validateArenaModel(bytes), DenseModelError)
+})
+
+test('the earlier Strategist hybrid cannot bypass dense-only eligibility with six inputs and three outputs', () => {
+  const bytes = readFileSync(new URL('../public/models/strategist-v3.onnx', import.meta.url))
+  assert.deepEqual([validateModel(bytes).inputSize, validateModel(bytes).outputSize], [6, 3])
+  assert.throws(() => validateArenaModel(bytes), DenseModelError)
 })

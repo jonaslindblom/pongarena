@@ -18,7 +18,7 @@ import {
 import { Arena, ModelIcon } from './Arena'
 import { keyboard, loadModel, loadPresets, presets, type Controller } from './models'
 import type { Pair, Side } from './game'
-import { ArchivedModelError, MAX_BYTES } from './validate'
+import { ArchivedModelError, DenseModelError, MAX_BYTES } from './validate'
 import { savedModels, saveModel } from './storage'
 import { useMatch } from './useMatch'
 import { Architecture } from './Architecture'
@@ -131,7 +131,7 @@ function Guide() {
       <aside className="panel guide guide-side">
         <div className="section-code">FILE CONTRACT</div>
         <h2>Bring your weights</h2>
-        <p>Use a single stateless, fixed-shape ONNX file with embedded float32 weights.</p>
+        <p>Use a plain dense neural network with embedded float32 weights and biases.</p>
         <dl>
           <dt>Operator set</dt>
           <dd>ONNX 18</dd>
@@ -140,13 +140,19 @@ function Guide() {
           <dt>MACs per decision</dt>
           <dd>65,536</dd>
           <dt>Ops per graph</dt>
-          <dd>256</dd>
+          <dd>5</dd>
           <dt>Intermediate elements, total</dt>
           <dd>262,144</dd>
         </dl>
         <p>
-          Supported operations include <code>Gemm</code>, <code>MatMul</code>, <code>Add</code>,{' '}
-          <code>Relu</code>, and <code>Tanh</code>.
+          Map the six observations directly to three scores through one to three <code>Gemm</code>
+          {' '}layers. Use zero, one, or two hidden layers, with the same <code>Relu</code> or{' '}
+          <code>Tanh</code> activation after every hidden layer. The output layer is linear.
+        </p>
+        <p>
+          Each dense layer uses its own fixed matrix and bias. Branches, skip connections,
+          feature calculations, input products, and output processing are rejected. Put
+          model knowledge in the dense weights and biases.
         </p>
         <a className="secondary-btn" href="/models/tracker.onnx" download>
           <ArrowDownToLine size={16} />
@@ -155,7 +161,8 @@ function Guide() {
         <h3>Train independently</h3>
         <p>
           The v4 package includes exact rules, a headless example, a Python reference, and
-          deterministic test cases.
+          deterministic test cases. Follow the dense-network contract above when exporting;
+          the frozen package retains the older general-graph export description.
         </p>
         <a className="secondary-btn" href="/training/pong-v4.zip" download>
           <ArrowDownToLine size={16} /> Training package
@@ -221,6 +228,7 @@ export default function App() {
         const restoreStartedAt = performance.now()
         try {
           const restored: Controller[] = []
+          let retiredModels = false
           for (const item of await savedModels()) {
             try {
               restored.push(
@@ -232,13 +240,16 @@ export default function App() {
                 }),
               )
             } catch (error) {
-              if (active && !(error instanceof ArchivedModelError)) {
+              if (error instanceof DenseModelError) retiredModels = true
+              else if (active && !(error instanceof ArchivedModelError)) {
                 recordStartupFailure('A previously saved model could not be loaded.')
                 setError('A previously saved model could not be loaded.')
               }
             }
           }
           if (active && restored.length) appendModels(restored)
+          if (active && retiredModels)
+            setNotice('Some saved models do not meet the dense network contract and were not restored. Import a plain dense network with six inputs and three outputs.')
         } catch {
           if (active) {
             recordStartupFailure('Browser storage was unavailable.')
