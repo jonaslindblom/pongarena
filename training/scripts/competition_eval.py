@@ -73,6 +73,10 @@ def decisions(policy, obs, active):
     return selected.astype(np.int64)
 
 
+def runtime(policy):
+    return 'native_onnxruntime' if isinstance(policy, OnnxPolicy) else 'pytorch' if isinstance(policy, nn.Module) else 'python_callable'
+
+
 def counts(won, lost, drawn, reasons):
     n = len(won)
     return dict(rallies=n, wins=int(won.sum()), losses=int(lost.sum()), draws=int(drawn.sum()),
@@ -167,6 +171,7 @@ def evaluate_competition(actor, seeds, opponents=None, bootstrap_seed=1741, boot
     targets_present = all(name in results for name in PRIMARY_TARGETS)
     return dict(rules='pong-v3', seeds=seeds, seed_count=len(seeds),
                 inference='Deterministic first argmax; exact contact-state loop draws; both sides/all five serves',
+                candidate_runtime=runtime(actor), opponent_runtimes={name: runtime(opponent) for name, opponent in opponents.items()},
                 bootstrap=dict(unit='whole seed including both sides and five serves', seed=bootstrap_seed,
                                samples=bootstrap_samples, confidence=.95, method='percentile'),
                 acceptance_protocol=ACCEPTANCE, primary_targets=list(PRIMARY_TARGETS),
