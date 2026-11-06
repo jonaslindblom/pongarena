@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import pb from 'onnx-proto'
 import { DenseModelError, validateArenaModel, validateModel } from '../src/validate'
+import { fitsDivision, smallestDivision } from '../src/competition'
 
 function tensor(name: string, dims: number[]) {
   return { name, dims, dataType: 1, rawData: new Uint8Array(dims.reduce((a, b) => a * b, 1) * 4) }
@@ -33,8 +34,8 @@ function network(widths = [6, 4, 4, 3], activation = 'Tanh') {
 
 const encode = (model: ReturnType<typeof network>) => pb.onnx.ModelProto.encode(model).finish()
 
-test('the active contract accepts plain linear, one-hidden, and two-hidden dense networks', () => {
-  for (const widths of [[6, 3], [6, 16, 3], [6, 7, 11, 3]]) {
+test('the active contract allows width and depth tradeoffs through four hidden layers', () => {
+  for (const widths of [[6, 3], [6, 16, 3], [6, 7, 11, 3], [6, 16, 12, 8, 3], [6, 8, 8, 8, 8, 3]]) {
     for (const activation of ['Relu', 'Tanh']) {
       const stats = validateArenaModel(encode(network(widths, activation)))
       assert.deepEqual(stats.architecture.widths, widths)
@@ -45,6 +46,21 @@ test('the active contract accepts plain linear, one-hidden, and two-hidden dense
     { name: 'transA', type: 2, i: 0 }, { name: 'alpha', type: 1, f: 1 }, { name: 'beta', type: 1, f: 1 },
   )
   assert.deepEqual(validateArenaModel(encode(ordinary)).architecture.widths, [6, 4, 4, 3])
+})
+
+test('deeper dense networks stay Nano only within the same parameter and compute budgets', () => {
+  const nano = validateArenaModel(encode(network([6, 16, 12, 8, 3], 'Relu')))
+  assert.deepEqual([nano.params, nano.macs, smallestDivision(nano)], [447, 408, 'nano'])
+  const wider = validateArenaModel(encode(network([6, 16, 16, 8, 3], 'Relu')))
+  assert.equal(wider.params, 547)
+  assert.equal(fitsDivision(wider, 'nano'), false, 'Extra depth does not grant a larger parameter budget')
+})
+
+test('five hidden layers exceed the structural limit even within Nano resource budgets', () => {
+  const bytes = encode(network([6, 2, 2, 2, 2, 2, 3]))
+  assert.equal(smallestDivision(validateModel(bytes)), 'nano')
+  assert.throws(() => validateArenaModel(bytes), DenseModelError,
+    'A small parameter count does not permit an unbounded instruction chain')
 })
 
 test('matrix orientation does not change eligibility when every layer is dense', () => {
@@ -132,9 +148,6 @@ test('hidden activations are uniform and the final action scores are linear', ()
   activatedOutput.graph!.node[4].output = ['linearOutput']
   activatedOutput.graph!.node.push({ opType: 'Tanh', input: ['linearOutput'], output: ['action_scores'] })
   assert.throws(() => validateArenaModel(encode(activatedOutput)), DenseModelError)
-
-  assert.throws(() => validateArenaModel(encode(network([6, 2, 2, 2, 3]))), DenseModelError,
-    'Extra hidden stages must not become an arithmetic instruction chain')
 })
 
 test('every parameter must be finite and stored only once in its float32 tensor', () => {

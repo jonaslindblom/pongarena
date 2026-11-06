@@ -19,7 +19,7 @@
 <div class="table-wrap" tabindex="0"><table><thead><tr><th>Architecture</th><th>Parameters</th><th>MACs / decision</th><th>Nodes</th><th>Bytes</th><th>Class</th></tr></thead><tbody><tr><td>6 → 29 → 9 → 3 · ReLU</td><td>503</td><td>462</td><td>5</td><td>2,769</td><td>Nano</td></tr></tbody></table></div>
 <p>The graph is exactly <code>Gemm → Relu → Gemm → Relu → Gemm</code>: three distinct fixed weight matrices, their bias vectors, two hidden ReLU activations, and a linear three-score output. The six raw Classic v4 observations enter the first layer directly. All coefficients, including zero weights and biases, are counted. Nano permits 512 parameters and 2,048 MACs.</p>
 <p>These are hand-specified dense weights with no formal training, optimizer, or learned-source transfer. Physical heuristics inform the hidden-unit coefficients. Their features are ordinary responses of the two dense layers; no exact trajectory helper runs alongside inference.</p>
-<p class="note">The current <code>observation-6/action-scores-3/dense-mlp-v2</code> contract applies. Earlier scalar-arithmetic handcrafted graphs remain retired archives and are not the models measured here. Pacer versus Apprentice remains the default matchup.</p>
+<p class="note">The current <code>observation-6/action-scores-3/dense-mlp-v3</code> contract applies. Earlier scalar-arithmetic handcrafted graphs remain retired archives and are not the models measured here. Pacer versus Apprentice remains the default matchup.</p>
 </section>
 <section>
 <h2>What the hidden units approximate</h2>

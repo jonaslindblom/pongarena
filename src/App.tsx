@@ -18,7 +18,7 @@ import {
 import { Arena, ModelIcon } from './Arena'
 import { keyboard, loadModel, loadPresets, presets, type Controller } from './models'
 import type { Pair, Side } from './game'
-import { ArchivedModelError, DenseModelError, MAX_BYTES } from './validate'
+import { ArchivedModelError, DenseModelError, MAX_BYTES, MAX_DENSE_HIDDEN_LAYERS } from './validate'
 import { savedModels, saveModel } from './storage'
 import { useMatch } from './useMatch'
 import { Architecture } from './Architecture'
@@ -145,13 +145,13 @@ function Guide() {
           <dt>MACs per decision</dt>
           <dd>65,536</dd>
           <dt>Ops per graph</dt>
-          <dd>5</dd>
+          <dd>{2 * MAX_DENSE_HIDDEN_LAYERS + 1}</dd>
           <dt>Intermediate elements, total</dt>
           <dd>262,144</dd>
         </dl>
         <p>
-          Map the six observations directly to three scores through one to three <code>Gemm</code>
-          {' '}layers. Use zero, one, or two hidden layers, with the same <code>Relu</code> or{' '}
+          Map the six observations directly to three scores through one to {MAX_DENSE_HIDDEN_LAYERS + 1} <code>Gemm</code>
+          {' '}layers. Use zero to {MAX_DENSE_HIDDEN_LAYERS} hidden layers, with the same <code>Relu</code> or{' '}
           <code>Tanh</code> activation after every hidden layer. The output layer is linear.
         </p>
         <p>

@@ -18,7 +18,7 @@
 <h2>Fixed weights, six raw observations</h2>
 <div class="table-wrap" tabindex="0"><table><thead><tr><th>Architecture</th><th>Parameters</th><th>MACs / decision</th><th>Nodes</th><th>Bytes</th><th>Class</th></tr></thead><tbody><tr><td>6 → 28 → 9 → 3 · ReLU</td><td>487</td><td>447</td><td>5</td><td>2,600</td><td>Nano</td></tr></tbody></table></div>
 <p>The graph is exactly <code>Gemm → Relu → Gemm → Relu → Gemm</code>. Three distinct weight matrices and bias vectors form one sequential dense network from the six raw Classic v4 observations to three linear action scores. All coefficients, including zeros, count toward the budget. Nano permits 512 parameters and 2,048 MACs.</p>
-<p>The coefficients encode physical priors by hand. There was no formal training, fitting, optimizer, or learned-source weight transfer. All runtime computation is the ordinary dense network; no trajectory or aiming helper operates outside it. The active <code>observation-6/action-scores-3/dense-mlp-v2</code> contract applies. Pacer versus Apprentice remains the default matchup.</p>
+<p>The coefficients encode physical priors by hand. There was no formal training, fitting, optimizer, or learned-source weight transfer. All runtime computation is the ordinary dense network; no trajectory or aiming helper operates outside it. The active <code>observation-6/action-scores-3/dense-mlp-v3</code> contract applies. Pacer versus Apprentice remains the default matchup.</p>
 </section>
 <section>
 <h2>A physically derived court-end aim</h2>

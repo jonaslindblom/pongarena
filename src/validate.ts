@@ -3,7 +3,7 @@ import type { onnx } from 'onnx-proto'
 
 export const MAX_BYTES = 256 * 1024
 export const MAX_MACS = 65536
-export const MAX_DENSE_HIDDEN_LAYERS = 2
+export const MAX_DENSE_HIDDEN_LAYERS = 4
 export class ArchivedModelError extends Error {
   constructor() {
     super('This model uses the archived Burst contract. Import a Classic v4 model with six inputs and three action scores: up, stay, down.')
@@ -32,7 +32,7 @@ function denseCheck(ok: unknown, message: string): asserts ok {
 function validateDenseGraph(graph: onnx.IGraphProto) {
   const nodes = graph.node ?? []
   denseCheck(nodes.length % 2 === 1 && nodes.length <= 2 * MAX_DENSE_HIDDEN_LAYERS + 1,
-    'use zero, one, or two hidden layers, each followed by the same ReLU or Tanh activation.')
+    `use zero to ${MAX_DENSE_HIDDEN_LAYERS} hidden layers, each followed by the same ReLU or Tanh activation.`)
   const initializers = new Map((graph.initializer ?? []).map((tensor) => [tensor.name, tensor]))
   const used = new Set<string>()
   let previous = 'observation', width = 6, activation: string | undefined

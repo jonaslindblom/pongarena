@@ -74,7 +74,7 @@ Submit one opset 18 ONNX file (up to 256 KiB) containing a plain dense neural ne
 
 The six observations are centered ball X and Y, horizontal and vertical velocity divided by six, own paddle Y, and opponent paddle Y. The observing player's court is mirrored horizontally to place its paddle on the left. Output scores must be finite; the first maximum wins ties. Both players decide from the same pre-move state. Archived eight-input/five-output Burst files cannot be imported into the active game; previously saved Burst files remain in browser storage but are not loaded.
 
-The active contract permits one to three sequential dense `Gemm` layers: zero, one, or two hidden layers and a linear three-score output. Every hidden layer uses the same standard `Relu` or `Tanh` activation. Each dense layer has its own embedded fixed weight matrix and bias; `alpha` and `beta` are one, and the input is not transposed. MatMul/Add instruction graphs, branches, skip connections, shared parameters, computed weights, feature extraction, and input/output processing are rejected. Knowledge must reside in the dense weights and biases. The importer validates this structure as well as shapes, finite parameters, the 65,536-MAC budget, and file limits. Cards show the actual architecture and validated resource counts.
+The active contract permits one to five sequential dense `Gemm` layers: zero to four hidden layers and a linear three-score output. Every hidden layer uses the same standard `Relu` or `Tanh` activation. Each dense layer has its own embedded fixed weight matrix and bias; `alpha` and `beta` are one, and the input is not transposed. MatMul/Add instruction graphs, branches, skip connections, shared parameters, computed weights, feature extraction, and input/output processing are rejected. Knowledge must reside in the dense weights and biases. The importer validates this structure as well as shapes, finite parameters, the 65,536-MAC budget, and file limits. Cards show the actual architecture and validated resource counts.
 
 ## Compare weights
 
@@ -82,7 +82,7 @@ The active contract permits one to three sequential dense `Gemm` layers: zero, o
 
 Scripts are available as reference opponents in the Arena, but do not enter weight-budget leagues or receive a model size class.
 
-The active neural-network contract is `observation-6/action-scores-3/dense-mlp-v2`. Rankings saved under the earlier general-graph contract are not restored. Classic v4 physics is unchanged.
+The active neural-network contract is `observation-6/action-scores-3/dense-mlp-v3`. Rankings saved under the earlier two-hidden-layer or general-graph contracts are not restored. Classic v4 physics is unchanged.
 
 Classes require both limits: **Nano** ≤512 parameters / 2,048 MACs, **Small** ≤2,048 / 8,192, **Standard** ≤20,480 / 65,536, and **Open** ≤65,536 / 65,536. Smaller models may compete up. Training method is irrelevant. These are provisional budgets, and existing graph/file limits still apply. The [competition protocol](training/COMPETITION.md) explains scoring and reproducibility. A public leaderboard will need an independent evaluator; local browser results are not verified public standings.
 

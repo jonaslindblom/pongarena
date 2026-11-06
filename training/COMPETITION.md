@@ -4,9 +4,9 @@ The active arena accepts **plain dense neural networks** mapping the six raw obs
 
 ## Dense-network contract
 
-The active contract identifier is `observation-6/action-scores-3/dense-mlp-v2`. Classic v4 physics remains `pong-v4`; changing the model contract invalidates previously stored general-graph rankings. This contract supersedes the export-graph section of the immutable v4 training package, which remains an archive of the earlier submission format.
+The active contract identifier is `observation-6/action-scores-3/dense-mlp-v3`. It raises the hidden-layer limit from two to four for every class while retaining the same parameter and compute budgets. Classic v4 physics remains `pong-v4`; rankings saved under the earlier two-hidden-layer or general-graph contracts are not restored. This contract supersedes the export-graph section of the immutable v4 training package, which remains an archive of the earlier submission format.
 
-- Use a single feed-forward chain of one to three affine layers (`Gemm`): zero, one, or two hidden layers, followed by a linear three-score output. Hidden widths may vary within the resource budgets.
+- Use a single feed-forward chain of one to five affine layers (`Gemm`): zero to four hidden layers, followed by a linear three-score output. Hidden widths may vary within the resource budgets.
 - Apply the same ordinary `Relu` or `Tanh` activation after every hidden affine layer. There is no activation after the output layer.
 - Every affine layer consumes only the immediately preceding activation and its own unique embedded float32 weight matrix and bias. Weights and biases must be finite and used exactly once. Dense coefficients are fixed parameters: `alpha = beta = 1`, `transA = 0`, and `transB` may only select matrix storage orientation.
 - Supply the six observations unchanged. No branches, skip connections, scalar instruction chains, runtime input products, computed parameters, shared tensors, auxiliary input features, separate lookup/physics operations, or input/output processing are allowed in the submitted graph. Only the canonical dense/activation serialization is accepted; standalone `MatMul` or `Add` nodes are rejected.
@@ -30,7 +30,7 @@ Both limits must be satisfied. Smaller models may compete in any larger class. A
 
 These are initial engineering budgets, not measured capability boundaries. The model-size study should inform future class revisions. A changed class budget changes the benchmark identity.
 
-The existing file and intermediate-tensor limits also apply. The canonical dense structure permits at most five operators: three affine layers and two hidden activations. Count every embedded weight and bias, including zeros; shared or unused tensors are ineligible. Parameters and dense multiply–accumulates are derived from the validated graph, not filename or a claimed trainable-parameter count.
+The existing file and intermediate-tensor limits also apply. The canonical dense structure permits at most nine operators: five affine layers and four hidden activations. Count every embedded weight and bias, including zeros; shared or unused tensors are ineligible. Parameters and dense multiply–accumulates are derived from the validated graph, not filename or a claimed trainable-parameter count.
 
 For the active six-input/three-action interface, these plain network architectures illustrate the budgets. Sizes alone do not establish trained performance:
 
@@ -38,6 +38,7 @@ For the active six-input/three-action interface, these plain network architectur
 | --- | ---: | ---: | --- |
 | `6 → 16 → 3` | 163 | 144 | Nano |
 | `6 → 16 → 16 → 3` | 435 | 400 | Nano |
+| `6 → 16 → 12 → 8 → 3` | 447 | 408 | Nano |
 | `6 → 32 → 32 → 3` | 1,379 | 1,312 | Small |
 | `6 → 64 → 64 → 3` | 4,803 | 4,672 | Standard |
 | `6 → 128 → 128 → 3` | 17,795 | 17,536 | Standard |

@@ -31,7 +31,7 @@ test('each rules wrapper exposes the correct ports and preserves the frozen clas
   assert.notEqual(CLASSIC.contractId, BURST.contractId)
   assert.notEqual(CLASSIC.contractId, 'observation-6/action-scores-3/v1',
     'A league accepting arbitrary graphs must not restore under dense-only eligibility')
-  assert.equal(CLASSIC.contractId, 'observation-6/action-scores-3/dense-mlp-v2')
+  assert.equal(CLASSIC.contractId, 'observation-6/action-scores-3/dense-mlp-v3')
   assert.equal(CLASSIC.id, 'pong-v4', 'Model eligibility changes do not revise frozen game physics')
   const raw = classic.serve(24)
   const wrapped = CLASSIC.serve(24)

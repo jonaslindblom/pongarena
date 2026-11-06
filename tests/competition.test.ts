@@ -1,5 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
+import { CLASSIC } from '../src/rules'
 import {
   benchmarkIdentity, fitsDivision, restoreCompetition, runCompetition, smallestDivision, standings,
   type CompetitionEntrant, type CompetitionSpec,
@@ -10,7 +11,7 @@ const entrant = (digit: string, extra: Partial<CompetitionEntrant> = {}): Compet
 })
 const a = entrant('a'), b = entrant('b'), c = entrant('c')
 const spec: CompetitionSpec = {
-  rulesId: 'pong-v4', contractId: 'float32-observation-6-action-scores-3',
+  rulesId: CLASSIC.id, contractId: CLASSIC.contractId,
   division: 'nano', entrants: [a, b], seeds: [24, 902],
 }
 
@@ -29,6 +30,7 @@ test('benchmark identity fixes rules, ports, class, file roster and seeds, not n
   assert.equal(await benchmarkIdentity({ ...spec, seeds: [902, 24],
     entrants: [{ ...b, name: 'Renamed', id: 'other-id' }, a] }), expected)
   for (const change of [{ rulesId: 'pong-v5' }, { contractId: 'observation-8-action-scores-5' },
+    { contractId: 'observation-6/action-scores-3/dense-mlp-v2' },
     { division: 'small' as const }, { seeds: [24, 903] }, { entrants: [a, c] }])
     assert.notEqual(await benchmarkIdentity({ ...spec, ...change }), expected)
 })

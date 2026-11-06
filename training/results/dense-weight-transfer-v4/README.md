@@ -2,7 +2,7 @@
 
 Status: **no improved compact policy found in these experiments**. No candidate in this directory is promoted to the active catalog. The earlier arithmetic/physics ONNX programs and Strategist are ineligible under the corrected dense-only contract; their old results do not establish dense-network strength.
 
-The active contract is `observation-6/action-scores-3/dense-mlp-v2`. It accepts only a sequential chain of one to three dense affine layers, with uniform ordinary ReLU or Tanh between hidden layers and a linear three-score output. Every layer owns finite, embedded weights and biases. Dynamic input products, branches, feature/lookup stages, computed parameters, nonunit Gemm scaling, unused constants, and extra processing are rejected. The change is recorded in commit `16805c9`; game physics is unchanged.
+This study used `observation-6/action-scores-3/dense-mlp-v2`. That contract accepts only a sequential chain of one to three dense affine layers, with uniform ordinary ReLU or Tanh between hidden layers and a linear three-score output. Every layer owns finite, embedded weights and biases. Dynamic input products, branches, feature/lookup stages, computed parameters, nonunit Gemm scaling, unused constants, and extra processing are rejected. The change is recorded in commit `16805c9`; game physics is unchanged. The current [competition contract](../../COMPETITION.md) raises the hidden-layer limit to four with the same resource budgets.
 
 ## Interpreting actual learned weights
 
