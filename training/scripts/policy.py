@@ -1,4 +1,5 @@
 from pathlib import Path
+import json
 import numpy as np
 import torch
 from torch import nn
@@ -21,9 +22,14 @@ class OnnxPolicy:
         return np.array([self.session.run(None, {'observation': row[None]})[0][0].argmax() for row in obs])
 
 
+def builtin_path(name):
+    catalog = json.loads((ROOT/'training/catalog.json').read_text())
+    return ROOT/next(model['file'] for model in catalog['models'] if model['id'] == name)
+
+
 def load_builtin(name):
-    """Load a current plain dense ONNX policy into Torch for batched training."""
-    model = onnx.load(ROOT / 'public/models' / (name + '.onnx'))
+    """Load a cataloged plain dense policy, including archived training references."""
+    model = onnx.load(builtin_path(name))
     weights = {w.name: torch.from_numpy(numpy_helper.to_array(w).copy()) for w in model.graph.initializer}
     layers = []
     for node in model.graph.node:

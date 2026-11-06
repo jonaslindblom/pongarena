@@ -23,7 +23,7 @@ def main():
     catalog = json.loads((ROOT/'training/catalog.json').read_text())
     models = {model['id']: ROOT/model['file'] for model in catalog['models']}
     if len(set(args.opponents)) != len(args.opponents) or any(name not in models and name not in ('attack','defend','interceptor') for name in args.opponents):
-        parser.error('Choose distinct current model IDs or attack, defend, interceptor.')
+        parser.error('Choose distinct catalog model IDs or attack, defend, interceptor.')
     paths = [args.model.resolve()] + [models[name] for name in args.opponents if name in models]
     subprocess.run(['node','--import','tsx','training/scripts/check_models.ts',*map(str,paths)],cwd=ROOT,check=True,stdout=subprocess.DEVNULL)
     torch.set_num_threads(1)

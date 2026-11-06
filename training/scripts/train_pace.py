@@ -16,7 +16,7 @@ from torch import nn
 
 from competition_eval import validate_seeds
 from pace_study import CONFIGS, PaceArena, make_policy, run_pair
-from policy import ROOT, actions, export, load_builtin
+from policy import ROOT, actions, builtin_path, export, load_builtin
 
 
 def actor(width):
@@ -92,7 +92,7 @@ def main():
         development_seeds=dev,training_seed_interval=[0,1_000_000_000],
         loss='cross entropy on geometric teacher labels; training-only teacher, plain inference',
         selection='mean point margin versus adaptive attack, adaptive defense, Robust Strong, Tracker',
-        reference_hashes={name:hashlib.sha256((ROOT/f'public/models/{name}.onnx').read_bytes()).hexdigest()
+        reference_hashes={name:hashlib.sha256(builtin_path(name).read_bytes()).hexdigest()
             for name in ('robust-strong-v4','tracker','pacer-v4')},
         sources={str(path.relative_to(ROOT)):hashlib.sha256(path.read_bytes()).hexdigest()
             for path in (Path(__file__).resolve(),ROOT/'training/scripts/pace_study.py')})

@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import { sha256 } from '../src/competition'
+import { modelFile } from './modelFiles'
 
 test('model identities use standard SHA-256 on secure origins', async () => {
   assert.equal(await sha256(new Uint8Array()), 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855')
@@ -10,7 +11,7 @@ test('model identities use standard SHA-256 on secure origins', async () => {
 })
 
 test('phone HTTP fallback preserves the same file and benchmark identities without SubtleCrypto', async () => {
-  const bytes = readFileSync(new URL('../public/models/pacer-v4.onnx', import.meta.url))
+  const bytes = readFileSync(modelFile('pacer-v4'))
   const native = await sha256(bytes)
   const descriptor = Object.getOwnPropertyDescriptor(globalThis, 'crypto')!
   Object.defineProperty(globalThis, 'crypto', { configurable: true, value: { getRandomValues: crypto.getRandomValues.bind(crypto) } })

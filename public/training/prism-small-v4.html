@@ -18,7 +18,7 @@
 <h2>The unchanged dense contract</h2>
 <div class="table-wrap" tabindex="0"><table><thead><tr><th>Architecture</th><th>Parameters</th><th>MACs / decision</th><th>Nodes</th><th>Bytes</th><th>Class</th></tr></thead><tbody><tr><td>6 → 42 → 33 → 3 · ReLU</td><td>1,815</td><td>1,737</td><td>5</td><td>7,939</td><td>Small</td></tr></tbody></table></div>
 <p>The ONNX graph is exactly <code>Gemm → Relu → Gemm → Relu → Gemm</code>. Each affine layer owns its fixed weights and biases, and the final layer directly emits the three linear action scores. All six raw observation dimensions enter the first dense layer. Every coefficient, including zeros, counts toward the budget. Small permits 2,048 parameters and 8,192 MACs.</p>
-<p>The opponent-paddle column of the first weight matrix is all zero: the current contact branch does not adapt its aiming to the opponent’s position. Six-dimensional port compatibility does not mean every input is informative. Pacer versus Apprentice remains the default matchup.</p>
+<p>The opponent-paddle column of the first weight matrix is all zero: the current contact branch does not adapt its aiming to the opponent’s position. Six-dimensional port compatibility does not mean every input is informative. Pacer versus Apprentice was the default matchup for this study.</p>
 <p>These are hand-constructed physical priors in ordinary dense weights, with no formal training, optimizer, learned-source transfer, or inference helper. The active <code>observation-6/action-scores-3/dense-mlp-v3</code> contract applies. Earlier general-graph planning programs remain retired archives.</p>
 </section>
 <section>

@@ -14,7 +14,7 @@
 <span class="notice">6→16→3 Tanh · 163 parameters · 144 MACs</span>
 <p>Refined Nano improves the previous trained 163-parameter model from <strong>26.62% to 30.46% mean rally score</strong> against six unchanged reference opponents. The improvement holds on an independent confirmation set. It remains weaker than Plain Nano 447 and, in a separate fresh comparison, handwritten Quill Plus.</p>
 <p>The submitted player is an ordinary dense network with one hidden layer, six raw observations and three action scores. All weights and biases count toward the 163 parameters. There is no weight sharing, runtime augmentation or added physics logic.</p>
-<div class="downloads"><a class="download" href="/models/refined-nano-v4.onnx" download>Refined Nano weights ↓</a><a class="download" href="refined-nano-v4-evidence.zip" download>Protocols, code and evidence ↓</a></div>
+<div class="downloads"><a class="download" href="/training/retired-v4-models.zip" download>Archived Refined Nano weights (ZIP) ↓</a><a class="download" href="refined-nano-v4-evidence.zip" download>Protocols, code and evidence ↓</a></div>
 <section>
 <h2>Improvement over the trained baseline</h2>
 <p>The selected model was frozen before <strong>256 paired seeds × both sides × five rallies = 2,560 rallies per matchup</strong>. Rally score counts a win as one and a draw as half. Each of the six opponents contributes equally to the field mean.</p>

@@ -9,7 +9,7 @@ if (paths.length) {
   for (const path of paths) console.log(JSON.stringify({ file: path, sha256: digest(path), ...validateArenaModel(readFileSync(path)) }))
 } else {
   const catalog = JSON.parse(readFileSync('training/catalog.json', 'utf8'))
-  assert.deepEqual(catalog.models.map((m: { id: string }) => m.id).sort(),
+  assert.deepEqual(catalog.models.filter((m: { retired?: boolean }) => !m.retired).map((m: { id: string }) => m.id).sort(),
     readdirSync('public/models').filter((name) => name.endsWith('.onnx')).map((name) => name.slice(0, -5)).sort())
   for (const model of catalog.models) {
     assert.equal(digest(model.file), model.sha256, model.id)
@@ -18,6 +18,6 @@ if (paths.length) {
       else console.log(`${model.id}: local checkpoint check skipped (file not present)` )
     }
     const stats = validateArenaModel(readFileSync(model.file))
-    console.log(`${model.id}: ${stats.params} parameters, ${stats.macs} MACs`)
+    console.log(`${model.id}${model.retired ? ' (archived)' : ''}: ${stats.params} parameters, ${stats.macs} MACs`)
   }
 }

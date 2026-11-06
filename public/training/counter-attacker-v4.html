@@ -18,7 +18,7 @@
 <h2>A fixed policy within the Small budget</h2>
 <div class="table-wrap" tabindex="0"><table><thead><tr><th>Parameters</th><th>MACs / decision</th><th>Nodes</th><th>ONNX bytes</th><th>Class</th></tr></thead><tbody><tr><td>1,330</td><td>8,137</td><td>253</td><td>15,341</td><td>Small</td></tr></tbody></table></div>
 <p>The arena counts all embedded float32 constants and every matrix multiplication. Small permits 2,048 parameters and 8,192 MACs; the shared graph limit is 256 operators. This graph fits closely within the compute and operator budgets. It does not fit Nano. The same six observations and three action scores apply; all decisions remain inside the ONNX file.</p>
-<p class="note">The weights are constructed analytically. No gradients, optimizer, distillation, or mutation search were used. Match simulations were development and evaluation evidence. Pacer versus Apprentice remains the default matchup.</p>
+<p class="note">The weights are constructed analytically. No gradients, optimizer, distillation, or mutation search were used. Match simulations were development and evaluation evidence. Pacer versus Apprentice was the default matchup for this study.</p>
 </section>
 <section>
 <h2>What it predicts</h2>

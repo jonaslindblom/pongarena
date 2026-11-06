@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import * as live from '../../src/game.ts'
 import { validateModel } from '../../src/validate.ts'
+import { modelFile } from '../../tests/modelFiles.ts'
 
 const { advance, LoopDetector, endedMatch, endedRally, serve } = live
 const file = process.argv[2] ?? 'public/training/pace-onnx-replays.json'
@@ -19,7 +20,7 @@ for (const match of matches) {
   assert.ok(endedMatch(frame))
 }
 for (const name of ['pacer-v4', 'apprentice-v4']) {
-  const stats = validateModel(readFileSync(`public/models/${name}.onnx`))
+  const stats = validateModel(readFileSync(modelFile(name)))
   assert.deepEqual(stats.architecture.widths, [6, 128, 128, 3])
   console.log(name, stats.params, 'parameters;', stats.macs, 'MACs')
 }

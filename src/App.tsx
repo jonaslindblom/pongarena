@@ -188,7 +188,7 @@ export default function App() {
   const [loadingComplete, setLoadingComplete] = useState(false)
   const [models, setModels] = useState<Controller[]>([keyboard])
   const currentModels = useRef(models)
-  const [ids, setIds] = useState<Pair<string>>(['pacer-v4', 'apprentice-v4'])
+  const [ids, setIds] = useState<Pair<string>>(['prism-small-v4', 'quill-plus-v4'])
   const [error, setError] = useState(''),
     [notice, setNotice] = useState('')
   const [importSide, setImportSide] = useState<Side>(0),

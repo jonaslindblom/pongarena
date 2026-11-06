@@ -64,31 +64,10 @@ export const presets = [
     description: 'A plain 6→128→128→3 Tanh policy with 17,795 parameters. The robustness study’s selected full-size player beats the previous winner on fresh confirmation seeds; adaptive Attacker and Defender remain stronger.',
   },
   {
-    id: 'pacer-v4',
-    name: 'Pacer v4',
-    kind: 'Fully learned · DAgger · v4',
-    description: 'A plain 6→128→128→3 Tanh policy trained on gradual-speed Pong. Learns placement and recovery from an adaptive teacher; no fixed trajectory layers.',
-    report: '/training/pace-study.html',
-  },
-  {
-    id: 'apprentice-v4',
-    name: 'Apprentice v4',
-    kind: 'Fully learned · Early DAgger · v4',
-    description: 'An earlier checkpoint of the same plain 6→128→128→3 network. A gentler opponent trained on the current v4 rules.',
-    report: '/training/pace-study.html',
-  },
-  {
     id: 'plain-nano-v4',
     name: 'Plain Nano v4',
     kind: 'Learned weights · Distillation + CMA refinement',
     description: 'A trained 6→16→12→8→3 ReLU policy with 447 parameters and 408 MACs. Beats unchanged Pacer in the retained confirmation study; Defender remains a major weakness. Uses only dense layers with distinct weights and biases.',
-  },
-  {
-    id: 'refined-nano-v4',
-    name: 'Refined Nano v4',
-    kind: 'Learned weights · Distillation + CMA refinement',
-    description: 'A trained 6→16→3 Tanh policy with 163 parameters and 144 MACs. Small-step weight search improves its unchanged starting model on fresh confirmation games. Plain Nano and Quill Plus remain stronger overall.',
-    report: '/training/refined-nano-v4.html',
   },
   {
     id: 'quill-plus-v4',

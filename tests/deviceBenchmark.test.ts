@@ -8,9 +8,10 @@ import {
 import type { Controller } from '../src/models'
 import { validateArenaModel } from '../src/validate'
 
-test('device workload v2 uses eligible dense models instead of the retired hybrid', () => {
-  assert.equal(DEVICE_TEST.version, 'rally-device-v2')
-  assert.deepEqual(DEVICE_TEST.modelIds, ['tracker', 'pacer-v4', 'prism-small-v4'])
+test('device workload v3 uses retained models and distinguishes timings from the retired Pacer workload', () => {
+  assert.equal(DEVICE_TEST.version, 'rally-device-v3')
+  assert.deepEqual(DEVICE_TEST.modelIds, ['tracker', 'robust-strong-v4', 'prism-small-v4'])
+  assert.deepEqual(DEVICE_TEST.matchIds, ['prism-small-v4', 'quill-plus-v4'])
   for (const id of new Set([...DEVICE_TEST.modelIds, ...DEVICE_TEST.matchIds])) {
     const stats = validateArenaModel(readFileSync(new URL(`../public/models/${id}.onnx`, import.meta.url)))
     assert.deepEqual([stats.inputSize, stats.outputSize], [6, 3])
