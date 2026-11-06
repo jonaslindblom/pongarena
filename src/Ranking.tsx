@@ -1,4 +1,4 @@
-import { ArrowDownToLine, Play, RotateCcw, Shuffle, Square, Trophy } from 'lucide-react'
+import { ArrowDownToLine, Pencil, Play, RotateCcw, Shuffle, Square, Trophy } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import {
   DIVISIONS, fitsDivision, restoreCompetition, runCompetition, smallestDivision, standings,
@@ -15,8 +15,9 @@ function freshSeeds() {
   return [...seeds]
 }
 
-export function Ranking({ entrants, rulesId, contractId, playMatch, onStart }: {
+export function Ranking({ entrants, handcraftedHashes, rulesId, contractId, playMatch, onStart }: {
   entrants: CompetitionEntrant[]
+  handcraftedHashes: readonly string[]
   rulesId: string
   contractId: string
   playMatch: PlayCompetitionMatch
@@ -107,6 +108,10 @@ export function Ranking({ entrants, rulesId, contractId, playMatch, onStart }: {
     link.click()
     setTimeout(() => URL.revokeObjectURL(url), 1000)
   }
+  function handcraftedLabel(hash: string) {
+    if (!handcraftedHashes.includes(hash)) return null
+    return <span className="ranking-handcrafted"><Pencil size={10} aria-hidden="true" />Handcrafted · No training</span>
+  }
 
   return (
     <div className="ranking-page">
@@ -138,7 +143,7 @@ export function Ranking({ entrants, rulesId, contractId, playMatch, onStart }: {
           <div className="ranking-roster">
             {eligible.map((e) => <label className="ranking-entry" key={e.sha256}>
               <input type="checkbox" checked={chosen.some((c) => c.id === e.id)} onChange={() => toggle(e.id)} aria-label={'Include ' + e.name} />
-              <span><strong>{e.name}</strong><small>{numbers(e.params)} parameters · {numbers(e.macs)} MACs</small></span>
+              <span><strong>{e.name}</strong>{handcraftedLabel(e.sha256)}<small>{numbers(e.params)} parameters · {numbers(e.macs)} MACs</small></span>
               <span className="ranking-class">{smallestDivision(e)}</span>
             </label>)}
           </div>
@@ -165,7 +170,7 @@ export function Ranking({ entrants, rulesId, contractId, playMatch, onStart }: {
           <table className="ranking-table">
             <thead><tr><th>Rank</th><th>Model</th><th>League points</th><th>W / D / L</th><th>Rally points</th><th>Parameters</th></tr></thead>
             <tbody>{rows.map((row) => <tr key={row.entrant.sha256}>
-              <td>{row.rank ?? '—'}</td><td><strong>{row.entrant.name}</strong><small>{row.entrant.sha256.slice(0, 10)} · {smallestDivision(row.entrant)}</small></td>
+              <td>{row.rank ?? '—'}</td><td><strong>{row.entrant.name}</strong>{handcraftedLabel(row.entrant.sha256)}<small>{row.entrant.sha256.slice(0, 10)} · {smallestDivision(row.entrant)}</small></td>
               <td>{row.leaguePoints.toLocaleString()}<small>of {row.played} contests</small></td>
               <td>{row.wins} / {row.draws} / {row.losses}</td><td>{row.rallyPointsFor} : {row.rallyPointsAgainst}<small>{row.rallyDraws} drawn rallies</small></td>
               <td>{numbers(row.entrant.params)}</td>

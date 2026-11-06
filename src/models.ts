@@ -16,6 +16,7 @@ export interface Controller {
   id: string
   name: string
   kind: string
+  handcrafted?: boolean
   description: string
   params: number
   macs: number
@@ -71,22 +72,25 @@ export const presets = [
   {
     id: 'vector-nano-v4',
     name: 'Vector Nano v4',
-    kind: 'Handcrafted dense · Nano · v4',
-    description: 'A plain 6→28→9→3 ReLU network with 487 hand-constructed parameters and no training. Uses opponent-side court-end aiming. Beats Pacer and Prism Nano in fresh tests; loses to Prism Small and adaptive scripts.',
+    kind: 'Handcrafted weights · No training',
+    handcrafted: true,
+    description: 'Manually designed weights, generated from fixed formulas without training. This 487-parameter dense ReLU network uses opponent-side court-end aiming. Beats Pacer and Prism Nano in fresh tests; loses to Prism Small and adaptive scripts.',
     report: '/training/vector-nano-v4.html',
   },
   {
     id: 'prism-nano-v4',
     name: 'Prism Nano v4',
-    kind: 'Handcrafted dense · Nano · v4',
-    description: 'A plain 6→29→9→3 ReLU network with 503 hand-constructed parameters and no training. Uses approximate anticipation and conservative contact aiming. Beats Tracker, Anticipator, and Challenger in fresh Nano tests; loses to Pacer and adaptive scripts.',
+    kind: 'Handcrafted weights · No training',
+    handcrafted: true,
+    description: 'Manually designed weights, generated from fixed formulas without training. This 503-parameter dense ReLU network uses approximate anticipation and conservative contact aiming. Beats Tracker, Anticipator, and Challenger in fresh Nano tests; loses to Pacer and adaptive scripts.',
     report: '/training/prism-nano-v4.html',
   },
   {
     id: 'prism-small-v4',
     name: 'Prism Small v4',
-    kind: 'Handcrafted dense · Small · v4',
-    description: 'A plain 6→42→33→3 ReLU network with 1,815 hand-constructed parameters and no training. Uses a cap-speed forecast and coherent contact targets. Beats Pacer and Prism Nano in fresh tests; adaptive scripts remain much stronger.',
+    kind: 'Handcrafted weights · No training',
+    handcrafted: true,
+    description: 'Manually designed weights, generated from fixed formulas without training. This 1,815-parameter dense ReLU network uses a cap-speed forecast and coherent contact targets. Beats Pacer and Prism Nano in fresh tests; adaptive scripts remain much stronger.',
     report: '/training/prism-small-v4.html',
   },
   {

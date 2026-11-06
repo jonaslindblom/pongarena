@@ -3,6 +3,7 @@
 .controller-badge svg { flex: none; }
 [data-controller-type='script'] > .controller-badge { color: #885513; background: #fff0cd; border-color: #eacb86; }
 [data-controller-type='human'] > .controller-badge { color: #56636a; background: #eef0ef; border-color: #d3dbd8; }
+[data-weight-origin='handcrafted'] > .controller-badge { color: #315f9a; background: #edf3ff; border-color: #bacde9; }
 .controller-size { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 3px 6px; }
 .controller-class { font-weight: 700; color: #596b58; }
 .controller-class[data-division='nano'] { color: #49711f; }
@@ -15,6 +16,7 @@
 .court .controller-badge { color: #d5e8cb; border-color: #92ad7e40; background: #a5c99213; }
 .court [data-controller-type='script'] > .controller-badge { color: #f5d28b; border-color: #d1a65261; background: #e9b94b14; }
 .court [data-controller-type='human'] > .controller-badge { color: #c5d4cd; border-color: #b6c8be40; background: #baccc313; }
+.court [data-weight-origin='handcrafted'] > .controller-badge { color: #b3d0ff; border-color: #80a5df70; background: #759ee31a; }
 .court .controller-class[data-division='nano'] { color: #d1e79a; }
 .court .controller-class[data-division='small'] { color: #93d8cb; }
 .court .controller-class[data-division='standard'] { color: #d4bce9; }

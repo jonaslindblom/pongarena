@@ -9,6 +9,7 @@ import {
   Gamepad2,
   Layers3,
   Monitor,
+  Pencil,
   Smartphone,
   Plus,
   Upload,
@@ -89,6 +90,11 @@ function Guide() {
           Defender plans catches and recovery, and Interceptor follows the predicted landing point.
           They use the same six observations and movement limits as weight models. Pick one as
           Player 02, then press Play yourself to face it.
+        </p>
+        <p>
+          The blue Handcrafted weights badge marks a dense neural network whose weights were
+          designed manually and generated from fixed formulas, without training. Vector and
+          Prism use this method. Their decisions run through the neural network.
         </p>
         <div className="section-code">02 / OBSERVATION</div>
         <h2>What your model sees</h2>
@@ -426,6 +432,7 @@ export default function App() {
           <Ranking key={rules.id} entrants={eligibleModels.filter((model) => model.type === 'weights' && model.sha256).map((model) => ({
             id: model.id, name: model.name, sha256: model.sha256!, params: model.params, macs: model.macs,
           } satisfies CompetitionEntrant))} rulesId={rules.id} contractId={rules.contractId}
+            handcraftedHashes={eligibleModels.filter((model) => model.handcrafted && model.sha256).map((model) => model.sha256!)}
             playMatch={browserCompetitionMatch(eligibleModels, rules)} onStart={m.pause} />
         )}
         {page === 'Model library' && (
@@ -433,10 +440,11 @@ export default function App() {
             {eligibleModels
               .filter((c) => c.id !== 'keyboard')
               .map((c) => (
-                <article className="panel library-card" key={c.id}>
+                <article className="panel library-card" key={c.id}
+                  data-weight-origin={c.handcrafted ? 'handcrafted' : undefined}>
                   <div className="library-top">
                     <span className="library-icon">
-                      <ModelIcon id={c.id} size={27} />
+                      {c.handcrafted ? <Pencil size={27} aria-hidden="true" /> : <ModelIcon id={c.id} size={27} />}
                     </span>
                     <span className="mini-tag">
                       {c.id.startsWith('local-') ? 'IMPORTED' : 'BUILT-IN'}
@@ -468,7 +476,7 @@ export default function App() {
                   </dl>
                   {c.report && (
                     <a className="training-link" href={c.report} target="_blank" rel="noreferrer">
-                      Learning curves & evaluation ↗
+                      {c.handcrafted ? 'Weight design & evaluation ↗' : 'Learning curves & evaluation ↗'}
                     </a>
                   )}
                   <div className="library-actions">

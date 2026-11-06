@@ -964,6 +964,13 @@ footer b {
   text-transform: uppercase;
   color: #687c66;
 }
+.library-card[data-weight-origin='handcrafted'] .library-icon {
+  color: #315f9a;
+  background: #e4edfb;
+}
+.library-card[data-weight-origin='handcrafted'] > small {
+  color: #315f9a;
+}
 .library-card h2,
 .guide h2,
 .import-modal h2 {
@@ -1867,8 +1874,15 @@ html.game-fullscreen #root {
   .court-fullscreen .scoreboard {
     margin-block: 3px 6px;
   }
-  .court-fullscreen .scoreboard .controller-identity,
   .court-fullscreen .court-instruction {
+    display: none;
+  }
+  .court-fullscreen .scoreboard .controller-identity {
+    min-height: 0;
+    margin-top: 1px;
+    font-size: 8px;
+  }
+  .court-fullscreen .scoreboard .controller-size {
     display: none;
   }
 }
