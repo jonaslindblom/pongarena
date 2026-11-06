@@ -170,6 +170,6 @@ test('the shipped collection contains only current eligible models', () => {
   const directory = new URL('../public/models/', import.meta.url)
   const files = readdirSync(directory).filter((name) => name.endsWith('.onnx')).sort()
   assert.deepEqual(files, ['apprentice-v4.onnx', 'pacer-v4.onnx', 'plain-nano-v4.onnx',
-    'prism-small-v4.onnx', 'robust-strong-v4.onnx', 'tracker.onnx', 'vector-nano-v4.onnx'])
+    'prism-small-v4.onnx', 'quill-plus-v4.onnx', 'robust-strong-v4.onnx', 'tracker.onnx', 'vector-nano-v4.onnx'])
   for (const file of files) assert.ok(validateArenaModel(readFileSync(new URL(file, directory))).architecture.widths)
 })

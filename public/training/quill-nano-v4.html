@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PongArena · Archived Quill Nano v4</title>
+<link rel="icon" href="/mark.svg">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f5f6f0;color:#203c30;font:15px/1.65 system-ui,sans-serif}main{max-width:1080px;margin:auto;padding:36px 24px 64px}nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:40px}a{color:#376e43}h1{font-size:clamp(36px,6vw,64px);line-height:1.05;letter-spacing:-.05em;max-width:900px;margin:12px 0 22px}h2{font-size:26px;line-height:1.2;letter-spacing:-.025em;margin:0 0 16px}p{color:#5a6b5b;max-width:930px}.eyebrow{font:11px monospace;letter-spacing:.14em;color:#75935c}.notice{display:inline-block;font-size:12px;color:#466445;background:#e5eddc;padding:6px 12px;border-radius:30px}section{background:#fdfef9;border:1px solid #dce3d5;border-radius:12px;padding:24px;margin-top:22px}.table-wrap{overflow-x:auto;max-width:100%}table{border-collapse:collapse;width:100%;font-size:13px;text-align:left}th,td{padding:12px 10px;border-bottom:1px solid #e2e7dc;white-space:nowrap}th{font-weight:500;color:#70816c}.note,footer{font-size:12px;color:#70816c}.downloads{display:flex;flex-wrap:wrap;gap:12px}.download{display:inline-block;border:1px solid #b8c7ab;border-radius:8px;padding:10px 14px;text-decoration:none}code{background:#edf1e7;border-radius:4px;padding:2px 5px;overflow-wrap:anywhere}pre{background:#edf1e7;padding:16px;overflow:auto;font-size:12px;border-radius:8px}pre code{padding:0}footer{margin-top:30px}@media(max-width:650px){main{padding:26px 14px 44px}section{padding:18px}nav{margin-bottom:28px}h2{font-size:23px}}
+</style>
+<main>
+<section aria-label="Archive notice"><h2>Archived baseline</h2><p>Quill Plus is the retained active model because it scored higher across the ten-opponent confirmation field. Original Quill remains eligible under the dense contract, but has been retired from the library. Its exact weights and constructor remain in the evidence download and regression fixtures. <a href="quill-plus-v4.html">Read the retained model's report →</a></p></section>
+<nav><a href="/">← Arena</a><a href="quill-nano-v4-evidence.zip" download>Reproducible evidence ↓</a></nav>
+<div class="eyebrow">PONGARENA / HANDWRITTEN CLASSIC V4</div>
+<h1>163 parameters.<br>Written by hand.</h1>
+<span class="notice">No training · 141 MACs · 128 held-out paired seeds</span>
+<p>Quill Nano v4 is a plain <strong>6→12→4→3→3 ReLU network</strong>. Its fixed formulas anticipate flight, reflect wall bounces and aim away from the opponent. It beats Pacer, Robust Strong and both larger Nano presets in this evaluation, with the same parameter count as Tracker.</p>
+<div class="downloads"><a class="download" href="quill-nano-v4-evidence.zip" download>Constructor, seeds and evidence ↓</a></div>
+<section>
+<h2>What “handwritten” means</h2>
+<p>Every weight and bias is generated from an explicit mathematical formula. No gradient descent, supervised distillation, regression, evolutionary search, CMA, or automated parameter fitting was used. We inspected Tracker's weights and the Vector Nano and Prism Small constructors, then manually compressed the physical ideas. No learned tensors were copied.</p>
+<p>Manual development used 32 seeds. The retained proposals were a short constant forecast, a clipped flight approximation, a square-curve flight approximation, and a refinement that uses five square segments. A final numerical safety adjustment widened positive relay offsets without changing any development match result. The early constant-forecast implementation also had a corrected intercept error. The model and the separate 128-seed list were hashed before the final evaluation; no weights changed afterward.</p>
+<p>Parameters include every stored zero and bias: 84 + 52 + 15 + 12 = <strong>163</strong>. The four dense matrices execute 72 + 48 + 12 + 9 = <strong>141 MACs</strong>. The graph contains only four Gemm layers and three ReLUs, with no branches, shared weights, preprocessing or hidden physics program.</p>
+</section>
+<section>
+<h2>Independent matchup results</h2>
+<p>Each row contains 128 distinct seeds × five rallies × both sides: <strong>1,280 rallies and 128 paired contests</strong>. A paired contest sums both five-rally games. Inference used the frozen ONNX file, native CPU batch-one execution, first-maximum action selection and exact-loop detection. All opponents and Classic v4 rules were unchanged.</p>
+<div class="table-wrap" tabindex="0"><table><thead><tr><th>Opponent</th><th>Rally W / L / D</th><th>Paired W / L / D</th><th>Point-margin 95% CI</th></tr></thead><tbody>
+<tr><th scope="row">Tracker</th><td>1,157 / 116 / 7</td><td>128 / 0 / 0</td><td>+0.784 to +0.841</td></tr>
+<tr><th scope="row">Pacer v4</th><td>782 / 448 / 50</td><td>95 / 15 / 18</td><td>+0.212 to +0.312</td></tr>
+<tr><th scope="row">Plain Nano v4</th><td>882 / 375 / 23</td><td>118 / 3 / 7</td><td>+0.355 to +0.438</td></tr>
+<tr><th scope="row">Vector Nano v4</th><td>778 / 464 / 38</td><td>95 / 18 / 15</td><td>+0.197 to +0.295</td></tr>
+<tr><th scope="row">Prism Small v4</th><td>333 / 760 / 187</td><td>13 / 108 / 7</td><td>-0.380 to -0.284</td></tr>
+<tr><th scope="row">Robust Strong v4</th><td>670 / 554 / 56</td><td>74 / 40 / 14</td><td>+0.034 to +0.148</td></tr>
+<tr><th scope="row">Apprentice v4</th><td>1,078 / 143 / 59</td><td>128 / 0 / 0</td><td>+0.695 to +0.763</td></tr>
+<tr><th scope="row">Attacker</th><td>35 / 1,245 / 0</td><td>0 / 128 / 0</td><td>-0.964 to -0.925</td></tr>
+<tr><th scope="row">Defender</th><td>35 / 1,013 / 232</td><td>0 / 128 / 0</td><td>-0.790 to -0.740</td></tr>
+<tr><th scope="row">Interceptor</th><td>910 / 348 / 22</td><td>115 / 4 / 9</td><td>+0.395 to +0.483</td></tr>
+</tbody></table></div>
+<p class="note">Intervals bootstrap whole serve seeds, keeping both sides and all five rallies together. They are per-matchup intervals without a multiple-comparison correction. These results are not a complete round robin or a public leaderboard. Final seeds are consumed and must not be reused to choose new weights.</p>
+</section>
+<section>
+<h2>How the small network works</h2>
+<p>The first layer represents a piecewise-linear square curve at four fixed knots. The difference of two squares approximates distance multiplied by vertical velocity. Shifting distance to zero at our paddle preserves a useful contact-time anchor despite the coarse approximation.</p>
+<p>The next layers gate the forecast when the ball travels away, fold a single wall bounce, subtract our paddle position and encode the opponent's side of center. The final three scores are negative target error, a 1.1-unit movement deadband, and positive target error. Opposite-end aiming follows Vector Nano's closed-form physical prior.</p>
+<p>Quill uses the maximum horizontal speed of 13 to approximate flight time and a small discrete-contact correction. It cannot calculate exact flight time at every speed, plan multiple returns or reproduce the adaptive scripts' recovery choices. Far-away forecasts can cross more than one wall, beyond its accurate reflection range. Outgoing recovery stays near center with a small opponent-dependent offset.</p>
+</section>
+<section>
+<h2>Where it loses</h2>
+<p><strong>Prism Small, Attacker and Defender remain stronger.</strong> Quill lost 760 rallies to Prism Small while winning 333. Attacker won 1,245 of 1,280 rallies; Defender won 1,013, with another 232 draws. Its small size and favorable learned-model matchups do not establish general tactical mastery or universal strength.</p>
+</section>
+<section>
+<h2>Reproduction and runtime checks</h2>
+<p>The constructor regenerates the exact deployed bytes. The active arena validator confirms the dense contract, all 163 parameters and 141 MACs. Native ONNX and ONNX Runtime Web WASM agree on <strong>30,766 actions</strong>: 4,110 observation probes plus all decisions in eight complete matches against Pacer and Robust Strong. All <strong>13,360 recorded frames</strong> reproduce in the live TypeScript engine, with zero action or state mismatches. Maximum score difference was 0.000010491, below the 0.00002 tolerance.</p>
+<p>All 90 automated tests pass without skips, including checks for anticipation, wall reflection, opposite-side aiming, recovery and the movement deadband using the actual WASM network. The production build passes. The evidence download includes raw results, all seeds, opponent hashes, development candidates, construction and verification scripts, native probes and complete replays.</p>
+<pre><code>.venv/bin/python training/scripts/quill_dense_v4.py --out training/runs/my-quill.onnx
+node --import tsx training/scripts/check_models.ts training/runs/my-quill.onnx</code></pre>
+<p class="note">SHA-256: <code>5442d7fb451b6f6e3abc520d2943f774cac119586164ffd6da0b1a95b228cb17</code></p>
+</section>
+<footer>PongArena · Quill Nano v4 · <a href="/">Arena</a></footer>
+</main>
+</html>

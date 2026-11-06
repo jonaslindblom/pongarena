@@ -83,6 +83,14 @@ export const presets = [
     description: 'A trained 6→16→12→8→3 ReLU policy with 447 parameters and 408 MACs. Beats unchanged Pacer in the retained confirmation study; Defender remains a major weakness. Uses only dense layers with distinct weights and biases.',
   },
   {
+    id: 'quill-plus-v4',
+    name: 'Quill Plus v4',
+    kind: 'Handcrafted weights · No training',
+    handcrafted: true,
+    description: 'Four handwritten refinements to Quill, still 163 parameters and 141 MACs. Better long-flight prediction and speed-dependent recovery improve the ten-opponent held-out average. Weaker against Plain Nano and Vector Nano; no clear head-to-head advantage over original Quill.',
+    report: '/training/quill-plus-v4.html',
+  },
+  {
     id: 'vector-nano-v4',
     name: 'Vector Nano v4',
     kind: 'Handcrafted weights · No training',

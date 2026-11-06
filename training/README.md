@@ -4,7 +4,7 @@ The active game is **Classic v4** (`pong-v4`). The current competition contract 
 
 ## Current models
 
-`public/models/` is the only deployed model collection. [catalog.json](catalog.json) records the seven files, SHA-256 identities, selected training checkpoints and original archived export paths. Do not select a checkpoint by filename or historical performance alone: validate its actual graph.
+`public/models/` is the only deployed model collection. [catalog.json](catalog.json) records the eight files, SHA-256 identities, selected training checkpoints and original archived export paths. Do not select a checkpoint by filename or historical performance alone: validate its actual graph.
 
 | Model | Parameters | Purpose |
 | --- | ---: | --- |
@@ -12,6 +12,7 @@ The active game is **Classic v4** (`pong-v4`). The current competition contract 
 | Pacer v4 | 17,795 | Established learned reference; default left player |
 | Apprentice v4 | 17,795 | Earlier DAgger checkpoint; default right player |
 | Plain Nano v4 | 447 | Trained Nano with local CMA refinement |
+| Quill Plus v4 | 163 | Four handwritten refinements; stronger ten-opponent average with matchup tradeoffs |
 | Vector Nano v4 | 487 | Handcrafted dense Nano alternative |
 | Prism Small v4 | 1,815 | Handcrafted dense Small alternative |
 | Tracker | 163 | Simple baseline and human-play starter |
@@ -71,15 +72,20 @@ The default field is Robust Strong, Pacer, Attacker, Defender and Interceptor. `
 
 ## Reconstruct handcrafted weights
 
-These constructors require fresh output paths and verify the original byte hashes. Validate the exported files before considering them for the app.
+These constructors require fresh output paths. Vector and Prism verify their original byte hashes; compare Quill Plus's regenerated hash with [catalog.json](catalog.json). Validate the exported files before considering them for the app.
 
 ```sh
 .venv/bin/python training/scripts/vector_dense_v4.py --out training/runs/vector-nano.onnx
 .venv/bin/python training/scripts/robust_dense_v4.py --out training/runs/prism-small.onnx
-node --import tsx training/scripts/check_models.ts training/runs/vector-nano.onnx training/runs/prism-small.onnx
+.venv/bin/python training/scripts/quill_plus_dense_v4.py --out training/runs/quill-plus.onnx
+node --import tsx training/scripts/check_models.ts training/runs/vector-nano.onnx training/runs/prism-small.onnx training/runs/quill-plus.onnx
 ```
 
-The remaining Python modules in `scripts/` support this trainer, its v4 simulator, script teachers and evaluation. `analytic_dense_v4.py` now contains only the serializer shared by the two retained constructors. Historical experiment launchers and report generators are archived rather than offered as current workflows.
+The Quill constructors use NumPy and ONNX only. Original Quill is retired from the active roster; its bytes remain at `tests/fixtures/models/quill-nano-v4.onnx` for regression checks and its base constructor remains a dependency of Quill Plus. Their 163 values are generated from fixed handwritten formulas, with no optimizer, training examples or loaded teacher weights. Original Quill's manual development used 32 seeds; the candidate was frozen before the separate 128-seed native ONNX evaluation. `/training/quill-nano-v4.html` and its evidence download retain all ten matchups, the constructor, development proposals, seed lists and native/WASM parity checks. Those final seeds are consumed; use fresh seeds for future model selection.
+
+Quill Plus is the only active Quill preset, selected for the stronger ten-opponent average. It imports original Quill's unchanged constructor and modifies four generated scalars. Development used 64 new seeds and ten manually specified revisions; the selected `speed-recovery` candidate was then frozen. Both original Quill and Plus were evaluated on the same separate 128 fresh seeds against ten references, with a further direct matchup. The aggregate rally-score gain is +2.60 percentage points (seed-bootstrap 95% CI +1.98 to +3.22); several Nano matchups regress and the direct matchup shows no clear advantage. `/training/quill-plus-v4.html` and its evidence download preserve all proposals, raw results, frozen identities and verification. These final seeds are also consumed.
+
+The remaining Python modules in `scripts/` support this trainer, its v4 simulator, script teachers and evaluation. `analytic_dense_v4.py` contains the serializer shared by Vector and Prism. Historical experiment launchers and report generators are archived rather than offered as current workflows.
 
 ## Historical material
 

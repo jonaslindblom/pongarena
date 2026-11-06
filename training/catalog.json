@@ -47,6 +47,14 @@
       ]
     },
     {
+      "id": "quill-plus-v4",
+      "file": "public/models/quill-plus-v4.onnx",
+      "sha256": "d2a4f54c292b1925b8d99c82e86801f987f22566a4e377233230b3b1c5ca5273",
+      "constructor": "training/scripts/quill_plus_dense_v4.py",
+      "evidence": "public/training/quill-plus-v4-evidence.zip",
+      "archived_exports": []
+    },
+    {
       "id": "robust-strong-v4",
       "file": "public/models/robust-strong-v4.onnx",
       "sha256": "c62b70d32f65a30c4745ec684e634f81c38bb06153f478b1e21bd491601d3481",
