@@ -1,4 +1,4 @@
-# Local weight competition
+# Local controller competition
 
 The active arena accepts **plain dense neural networks** mapping the six raw observations directly to three action scores. Weight values may be hand-edited, transferred, or learned; an entrant may not encode a separate physics or planning program in its ONNX architecture. Eligibility is determined by the validated dense graph and resource budgets, not metadata or a training-method label.
 
@@ -17,9 +17,11 @@ The earlier Handcrafted Nano, Handcrafted Small, Counter Small, and Strategist e
 
 The current ranking feature is a **local round-robin benchmark**. It is useful for comparing uploaded weights against a fixed field and inspecting size/strength tradeoffs. It is not a verified public leaderboard. Browser results and downloaded JSON files are under the local user's control.
 
+**All controllers** ranks eligible weight models and the built-in Attacker, Defender and Interceptor scripts together. Scripts receive the same league points and ranks, including in script-only fields. They use the same observations, movement limits, serves and side assignments as models. Scripts are labelled explicitly, with no parameter/MAC counts or model size class. All controllers does not change the dense-network submission contract for weight files.
+
 ## Provisional model classes
 
-Both limits must be satisfied. Smaller models may compete in any larger class. A class run includes only the selected eligible entrants and runs its own complete round-robin; filtering a mixed-size table does not create a class championship.
+These classes are **weights only**, including Open. Both limits must be satisfied. Smaller models may compete in any larger class. A class run includes only the selected eligible entrants and runs its own complete round-robin; filtering an All controllers or mixed-size table does not create a class championship.
 
 | Class | Embedded float32 scalars | Multiply–accumulates per decision |
 | --- | ---: | ---: |
@@ -47,7 +49,9 @@ Parameter count measures capacity; it does not promise a tactical or entertainin
 
 ## Identity and compatibility
 
-Each entrant's identity is the SHA-256 of its complete ONNX bytes. A renamed file remains the same entrant. Byte-identical files cannot enter twice, even under different display names. Different serializations of the same function can still have different hashes; a public system would additionally need submission and duplicate-policy controls.
+Each weight model's identity is the SHA-256 of its complete ONNX bytes. A renamed file remains the same entrant. Byte-identical files cannot enter twice, even under different display names. Different serializations of the same function can still have different hashes; a public system would additionally need submission and duplicate-policy controls.
+
+Each script's identity is the SHA-256 of UTF-8 JSON containing its policy key and the complete `src/scripted.ts` source, including shared planning helpers. Different policies have different identities, and any source change changes those identities. Duplicate script identities cannot enter twice. Script entries explicitly record `type: "script"` and null parameter/MAC counts. Older weight records without a type remain compatible and retain their fingerprints.
 
 Before entering a run, every model must pass the game's six-input/three-action **dense-only** validator. Archived eight-input/five-action Burst weights are not eligible for the active arena, and their historical rankings cannot be restored as Classic results. Physics-feature hybrids and the retired handcrafted programs are also rejected, even when they expose the correct ports. Compatibility adapters would require a separate contract. A controller's human label or training method cannot replace graph validation.
 
@@ -55,8 +59,8 @@ The benchmark fingerprint includes:
 
 - Ranking protocol version (`paired-round-robin-v1`).
 - An immutable rules identifier and the observation/action contract identifier.
-- Class identifier and its exact parameter/MAC budgets.
-- The selected roster's sorted file hashes and validated resource counts.
+- League identifier and its exact parameter/MAC budgets (null for All controllers).
+- The selected roster's sorted identities and validated resource counts, with explicit script types and null script counts.
 - The sorted distinct unsigned 32-bit seed set.
 - Five rallies per game, both side assignments, and the scoring/tie policy.
 
@@ -64,9 +68,9 @@ Display names and UI ordering are excluded. The caller must change the rules ide
 
 ## Schedule and scoring
 
-Each unordered model pair faces every seed twice: first A on the left, then B on the left. Both games replay the same five seeded rallies. All pairs use the same seed set. The arena can run four, eight or sixteen seed sets per pairing; the runner supports up to 64 distinct seeds.
+Each unordered controller pair faces every seed twice: first A on the left, then B on the left. Both games replay the same five seeded rallies. All pairs use the same seed set. The arena can run four, eight or sixteen seed sets per pairing; the runner supports up to 64 distinct seeds.
 
-The two games form one **paired contest**, with ten rallies in total. Add each model's rally points across its two side assignments. More rally points wins the contest; equal points draw it. League points are one for a contest win, half for a draw and zero for a loss. Sort the complete table by total league points, with equal scores sharing rank. Do not silently break a tie using returns, rally length, parameter count, inference time or a name. Rally points for/against and drawn rallies are descriptive diagnostics.
+The two games form one **paired contest**, with ten rallies in total. Add each controller's rally points across its two side assignments. More rally points wins the contest; equal points draw it. League points are one for a contest win, half for a draw and zero for a loss. Sort the complete table by total league points, with equal scores sharing rank. Do not silently break a tie using returns, rally length, parameter count, inference time or a name. Rally points for/against and drawn rallies are descriptive diagnostics.
 
 This makes side assignment symmetric and avoids ranking a player by a favorable five-rally serve order. It does not eliminate sampling noise or non-transitive matchups. An A-beats-B-beats-C-beats-A field may tie; the pairwise records are retained in the JSON export. Scores across different rosters or seed sets are different benchmarks and are not interchangeable ratings.
 
@@ -78,7 +82,7 @@ The runner evaluates one game at a time and yields between games. The injected h
 
 The browser retains the last complete league in local storage when available. Restoring checks its benchmark fingerprint, full pair/seed schedule and valid game scores, then reconstructs standings. This catches accidental incomplete or incompatible records; it does not authenticate scores against a malicious local editor. If storage is unavailable, the completed result can still be exported. Exported JSON contains the full specification and both game results for every completed contest.
 
-**Repeat benchmark** uses the saved weights, seed set, class and rules contract. All those model files must still be loaded. **New serves** draws a fresh comparison seed set. New model development should use fresh reserved evaluation seeds rather than repeatedly optimizing against a displayed leaderboard batch. Seeds are not explicit model inputs, but a network can recognize opening states, so a fixed public seed list is not a sufficient anti-overfitting measure.
+**Repeat benchmark** uses the saved controller identities, seed set, league and rules contract. All those model files and script versions must still be available. **New serves** draws a fresh comparison seed set. New model development should use fresh reserved evaluation seeds rather than repeatedly optimizing against a displayed leaderboard batch. Seeds are not explicit model inputs, but a network can recognize opening states, so a fixed public seed list is not a sufficient anti-overfitting measure.
 
 ## What a public leaderboard needs later
 
@@ -92,4 +96,4 @@ Ranking quality also depends on the reference field. Include defensive and attac
 node --import tsx --test tests/competition.test.ts
 ```
 
-The tests enforce side-pair symmetry, size/compute boundaries, stable benchmark identity, shared ranks for non-transitive ties, duplicate-file rejection, cancellation/failure handling and complete-record restoration.
+The tests enforce side-pair symmetry, weights-only size/compute boundaries, mixed and script-only standings, stable benchmark identity, shared ranks for non-transitive ties, duplicate-controller rejection, cancellation/failure handling and complete-record restoration.

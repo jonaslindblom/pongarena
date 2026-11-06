@@ -89,7 +89,7 @@ The current nine-model roster, maintained training commands and checkpoint prove
 
 **Rankings** runs a local round robin with a selected roster, common serve seeds and both side assignments. Each pair of five-rally games awards one league point for a win, half for a tie, and zero for a loss. Equal totals share rank; unfinished leagues remain unranked. Cancel, export the result, or repeat the exact benchmark. Rules, contracts, roster hashes and seeds identify each result; results from different benchmarks are not interchangeable ratings.
 
-Scripts are available as reference opponents in the Arena, but do not enter weight-budget leagues or receive a model size class.
+Choose **All controllers** to rank weight models alongside **Attacker**, **Defender**, and **Interceptor**, with the same paired games, league points and ranks. Scripts carry a **Script** label and no parameter count or model size class. **Nano**, **Small**, **Standard**, and **Open** remain weights-only leagues. Script identities hash the policy and its complete source, so changing a script changes its benchmark identity; repeating a saved league requires the same model files and script versions.
 
 The active neural-network contract is `observation-6/action-scores-3/dense-mlp-v3`. Rankings saved under the earlier two-hidden-layer or general-graph contracts are not restored. Classic v4 physics is unchanged.
 

@@ -39,7 +39,7 @@ const tabs: { page: Page; icon: typeof Gamepad2 }[] = [
 ]
 const descriptions: Record<Page, string> = {
   Arena: 'Pit two controllers against each other and watch every decision unfold.',
-  Rankings: 'Run reproducible local tournaments with equal budgets, paired serves, and your own weights.',
+  Rankings: 'Compare models and scripts in local tournaments with paired serves and reproducible results.',
   'Model library': 'Choose a controller, download a baseline, or bring your own weights.',
   'Field guide': 'The game rules, observations, actions, and submission contract.',
   'Device test': 'Measure this device with a repeatable workload, then copy the report to compare.',
@@ -428,8 +428,9 @@ export default function App() {
         )}
         {page === 'Device test' && <DeviceTest models={eligibleModels} startup={startup} loadingComplete={loadingComplete} />}
         {page === 'Rankings' && (
-          <Ranking key={rules.id} entrants={eligibleModels.filter((model) => model.type === 'weights' && model.sha256).map((model) => ({
-            id: model.id, name: model.name, sha256: model.sha256!, params: model.params, macs: model.macs,
+          <Ranking key={rules.id} entrants={eligibleModels.filter((model) => model.type !== 'human' && model.sha256).map((model) => ({
+            id: model.id, name: model.name, sha256: model.sha256!, type: model.type as 'weights' | 'script',
+            params: model.type === 'script' ? null : model.params, macs: model.type === 'script' ? null : model.macs,
           } satisfies CompetitionEntrant))} rulesId={rules.id} contractId={rules.contractId}
             handcraftedHashes={eligibleModels.filter((model) => model.handcrafted && model.sha256).map((model) => model.sha256!)}
             playMatch={browserCompetitionMatch(eligibleModels, rules)} onStart={m.pause} />

@@ -5,6 +5,7 @@ import { validateArenaModel, validateModel } from './validate'
 import { choice, type Scores } from './rules'
 import { sha256 } from './competition'
 import { scriptScores, type ScriptKind } from './scripted'
+import scriptedSource from './scripted.ts?raw'
 
 ort.env.wasm.numThreads = 1
 ort.env.wasm.wasmPaths = {
@@ -146,7 +147,11 @@ export async function infer(model: Controller, input: Float32Array): Promise<Sco
   return scores
 }
 export async function loadPresets() {
-  const controllers: Controller[] = [...scripts]
+  // Hash the policy and its complete implementation, including planning helpers.
+  const controllers: Controller[] = await Promise.all(scripts.map(async (script) => ({
+    ...script,
+    sha256: await sha256(new TextEncoder().encode(JSON.stringify({ policy: script.script, source: scriptedSource }))),
+  })))
   for (const p of presets) {
     const response = await fetch('/models/' + p.id + '.onnx')
     if (!response.ok) throw new Error('Could not load ' + p.name + '.')

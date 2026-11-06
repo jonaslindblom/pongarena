@@ -1,8 +1,8 @@
 import { ArrowDownToLine, Cpu, Play, RotateCcw, Shuffle, Square, Trophy } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import {
-  DIVISIONS, fitsDivision, restoreCompetition, runCompetition, smallestDivision, standings,
-  type CompetitionEntrant, type CompetitionRun, type CompetitionSpec, type Division,
+  DIVISIONS, fitsCompetition, restoreCompetition, runCompetition, smallestDivision, standings,
+  type CompetitionClass, type CompetitionEntrant, type CompetitionRun, type CompetitionSpec,
   type PlayCompetitionMatch,
 } from './competition'
 import './Ranking.css'
@@ -24,7 +24,7 @@ export function Ranking({ entrants, handcraftedHashes, rulesId, contractId, play
   playMatch: PlayCompetitionMatch
   onStart?: () => void
 }) {
-  const [division, setDivision] = useState<Division>('standard')
+  const [division, setDivision] = useState<CompetitionClass>('standard')
   const [selected, setSelected] = useState<string[] | null>(null)
   const [seeds, setSeeds] = useState(freshSeeds)
   const [seedCount, setSeedCount] = useState(8)
@@ -35,9 +35,9 @@ export function Ranking({ entrants, handcraftedHashes, rulesId, contractId, play
   const mounted = useRef(true)
   const revision = useRef(0)
   const unique = entrants.filter((e, i) => entrants.findIndex((other) => other.sha256 === e.sha256) === i)
-  const eligible = unique.filter((e) => fitsDivision(e, division))
+  const eligible = unique.filter((e) => fitsCompetition(e, division))
   const chosen = selected === null ? eligible.slice(0, 6) : eligible.filter((e) => selected.includes(e.id))
-  const limit = DIVISIONS.find((d) => d.id === division)!
+  const limit = DIVISIONS.find((d) => d.id === division)
   const total = chosen.length * (chosen.length - 1) * seedCount
   const rows = run ? standings(run) : []
   const currentHashes = new Set(unique.map((e) => e.sha256))
@@ -113,23 +113,30 @@ export function Ranking({ entrants, handcraftedHashes, rulesId, contractId, play
     if (!handcraftedHashes.includes(hash)) return null
     return <span className="ranking-handcrafted"><Cpu size={10} aria-hidden="true" />Handcrafted · No training</span>
   }
+  function classLabel(entrant: CompetitionEntrant) {
+    return <span className="ranking-class" data-controller-type={entrant.type}>
+      {entrant.type === 'script' ? 'Script' : smallestDivision(entrant)}
+    </span>
+  }
 
   return (
     <div className="ranking-page">
       <section className="panel ranking-intro">
-        <div className="ranking-heading"><Trophy size={20} /><h2>Make the weights compete</h2><span className="mini-tag">LOCAL LEAGUE</span></div>
-        <p>Every model faces the same opponents and serves, playing both sides. Training method does not affect eligibility or score.</p>
-        <p className="ranking-note">Scripts are reference opponents in the Arena. These leagues rank weight files only.</p>
-        <p className="ranking-note">Class limits are provisional. Smaller models can enter larger classes. Each class run has its own roster and results.</p>
+        <div className="ranking-heading"><Trophy size={20} /><h2>Make the controllers compete</h2><span className="mini-tag">LOCAL LEAGUE</span></div>
+        <p>Every controller faces the same opponents and serves, playing both sides. Training method does not affect eligibility or score.</p>
+        <p className="ranking-note">All controllers ranks models and scripts together. Nano, Small, Standard and Open are weights-only classes.</p>
+        <p className="ranking-note">Size limits are provisional. Smaller models can enter larger classes. Each league has its own roster and results.</p>
       </section>
       <section className="panel ranking-config">
         <fieldset disabled={busy}>
           <div className="ranking-fields">
-            <label>Competition class
-              <select value={division} onChange={(e) => { setDivision(e.target.value as Division); setSelected(null) }}>
+            <label>League
+              <select value={division} onChange={(e) => { setDivision(e.target.value as CompetitionClass); setSelected(null) }}>
+                <option value="all">All controllers</option>
                 {DIVISIONS.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
               </select>
-              <small>Up to {numbers(limit.maxParams)} parameters · {numbers(limit.maxMacs)} MACs / decision</small>
+              <small>{limit ? <>Weights only · Up to {numbers(limit.maxParams)} parameters · {numbers(limit.maxMacs)} MACs / decision</>
+                : 'Models of every size and built-in scripts compete for the same ranks.'}</small>
             </label>
             <label>Serve sets per pairing
               <select value={seedCount} onChange={(e) => setSeedCount(Number(e.target.value))}>
@@ -144,11 +151,12 @@ export function Ranking({ entrants, handcraftedHashes, rulesId, contractId, play
           <div className="ranking-roster">
             {eligible.map((e) => <label className="ranking-entry" key={e.sha256}>
               <input type="checkbox" checked={chosen.some((c) => c.id === e.id)} onChange={() => toggle(e.id)} aria-label={'Include ' + e.name} />
-              <span><strong>{e.name}</strong>{handcraftedLabel(e.sha256)}<small>{numbers(e.params)} parameters · {numbers(e.macs)} MACs</small></span>
-              <span className="ranking-class">{smallestDivision(e)}</span>
+              <span><strong>{e.name}</strong>{handcraftedLabel(e.sha256)}<small>{e.type === 'script'
+                ? 'Deterministic script' : <>{numbers(e.params!)} parameters · {numbers(e.macs!)} MACs</>}</small></span>
+              {classLabel(e)}
             </label>)}
           </div>
-          {!eligible.length && <p className="ranking-note">No loaded models fit this class yet. Import a smaller model or choose a larger class.</p>}
+          {!eligible.length && <p className="ranking-note">No loaded controllers are eligible for this league yet. Import a model or choose another league.</p>}
           <div className="ranking-actions">
             <button className="import-btn" disabled={chosen.length < 2} onClick={() => void start()}><Play size={16} /> Run league</button>
             <button className="secondary-btn" onClick={() => setSeeds(freshSeeds())}><Shuffle size={16} /> New serves</button>
@@ -161,7 +169,7 @@ export function Ranking({ entrants, handcraftedHashes, rulesId, contractId, play
       {message && <p className="message" role="status">{message}</p>}
       {run && <section className="panel ranking-results">
         <div className="ranking-result-heading">
-          <div><div className="section-code">{run.spec.division.toUpperCase()} / {run.spec.rulesId}</div><h2>{run.status === 'complete' ? 'League standings' : run.status === 'running' ? 'League in progress' : 'Incomplete league'}</h2></div>
+          <div><div className="section-code">{run.spec.division === 'all' ? 'ALL CONTROLLERS' : run.spec.division.toUpperCase()} / {run.spec.rulesId}</div><h2>{run.status === 'complete' ? 'League standings' : run.status === 'running' ? 'League in progress' : 'Incomplete league'}</h2></div>
           <span className="mini-tag">{run.status === 'complete' ? 'COMPLETE' : run.status.toUpperCase()}</span>
         </div>
         <div className="ranking-progress"><progress value={run.completedMatches} max={run.totalMatches} aria-label="Completed league games" /><span>{numbers(run.completedMatches)} / {numbers(run.totalMatches)} games</span></div>
@@ -169,12 +177,12 @@ export function Ranking({ entrants, handcraftedHashes, rulesId, contractId, play
         {run.error && <p className="message error" role="alert">{run.error}</p>}
         <div className="ranking-table-wrap">
           <table className="ranking-table">
-            <thead><tr><th>Rank</th><th>Model</th><th>League points</th><th>W / D / L</th><th>Rally points</th><th>Parameters</th></tr></thead>
+            <thead><tr><th>Rank</th><th>Controller</th><th>League points</th><th>W / D / L</th><th>Rally points</th><th>Parameters</th></tr></thead>
             <tbody>{rows.map((row) => <tr key={row.entrant.sha256}>
-              <td>{row.rank ?? '—'}</td><td><strong>{row.entrant.name}</strong>{handcraftedLabel(row.entrant.sha256)}<small>{row.entrant.sha256.slice(0, 10)} · {smallestDivision(row.entrant)}</small></td>
+              <td>{row.rank ?? '—'}</td><td><strong>{row.entrant.name}</strong>{handcraftedLabel(row.entrant.sha256)}<small>{row.entrant.sha256.slice(0, 10)} · {classLabel(row.entrant)}</small></td>
               <td>{row.leaguePoints.toLocaleString()}<small>of {row.played} contests</small></td>
               <td>{row.wins} / {row.draws} / {row.losses}</td><td>{row.rallyPointsFor} : {row.rallyPointsAgainst}<small>{row.rallyDraws} drawn rallies</small></td>
-              <td>{numbers(row.entrant.params)}</td>
+              <td>{row.entrant.type === 'script' ? '—' : numbers(row.entrant.params!)}</td>
             </tr>)}</tbody>
           </table>
         </div>
@@ -184,7 +192,7 @@ export function Ranking({ entrants, handcraftedHashes, rulesId, contractId, play
           <button className="secondary-btn" disabled={busy || !canRepeat} onClick={() => void start(run.spec)}><RotateCcw size={16} /> Repeat benchmark</button>
           <code className="ranking-fingerprint">Benchmark {run.benchmark.slice(0, 16)}</code>
         </div>
-        {!canRepeat && <p className="ranking-note">Load the same model files to repeat this saved benchmark.</p>}
+        {!canRepeat && <p className="ranking-note">The same model files and script versions must be available to repeat this saved benchmark.</p>}
         <details className="ranking-seeds"><summary>Recorded serve seeds</summary><code>{run.spec.seeds.join(', ')}</code></details>
       </section>}
       <p className="ranking-footnote">These are local benchmark results, not a verified public leaderboard. Compare scores only within the same benchmark. New opponents, rules, classes or serves create a new benchmark; public rankings will require independent evaluation.</p>

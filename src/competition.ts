@@ -7,18 +7,21 @@ export const DIVISIONS = [
   { id: 'open', name: 'Open', maxParams: 65536, maxMacs: 65536 },
 ] as const
 export type Division = typeof DIVISIONS[number]['id']
+export type CompetitionClass = Division | 'all'
 
 export interface CompetitionEntrant {
   id: string
   sha256: string
   name: string
-  params: number
-  macs: number
+  // Omitted in existing weights-only records.
+  type?: 'weights' | 'script'
+  params: number | null
+  macs: number | null
 }
 export interface CompetitionSpec {
   rulesId: string
   contractId: string
-  division: Division
+  division: CompetitionClass
   seeds: number[]
   entrants: CompetitionEntrant[]
 }
@@ -61,13 +64,22 @@ export type PlayCompetitionMatch = (request: {
   signal?: AbortSignal
 }) => Promise<MatchResult>
 
-export function fitsDivision(stats: Pick<CompetitionEntrant, 'params' | 'macs'>, id: Division) {
+type BudgetStats = Pick<CompetitionEntrant, 'params' | 'macs'> & { type?: string }
+
+export function fitsDivision(stats: BudgetStats, id: Division) {
   const limit = DIVISIONS.find((d) => d.id === id)!
-  return Number.isSafeInteger(stats.params) && stats.params >= 0 && stats.params <= limit.maxParams &&
-    Number.isSafeInteger(stats.macs) && stats.macs >= 0 && stats.macs <= limit.maxMacs
+  return (stats.type === undefined || stats.type === 'weights') &&
+    stats.params !== null && Number.isSafeInteger(stats.params) && stats.params >= 0 && stats.params <= limit.maxParams &&
+    stats.macs !== null && Number.isSafeInteger(stats.macs) && stats.macs >= 0 && stats.macs <= limit.maxMacs
 }
-export function smallestDivision(stats: Pick<CompetitionEntrant, 'params' | 'macs'>): Division | null {
+export function smallestDivision(stats: BudgetStats): Division | null {
   return DIVISIONS.find((d) => fitsDivision(stats, d.id))?.id ?? null
+}
+
+export function fitsCompetition(entrant: CompetitionEntrant, division: CompetitionClass) {
+  if (entrant.type === 'script')
+    return division === 'all' && entrant.params === null && entrant.macs === null
+  return fitsDivision(entrant, division === 'all' ? 'open' : division)
 }
 
 export async function sha256(bytes: Uint8Array) {
@@ -83,15 +95,15 @@ function normalizeSpec(spec: CompetitionSpec): CompetitionSpec {
   if (!spec || typeof spec.rulesId !== 'string' || !spec.rulesId ||
     typeof spec.contractId !== 'string' || !spec.contractId)
     throw new Error('A rules version and input/output contract are required.')
-  if (!DIVISIONS.some((d) => d.id === spec.division)) throw new Error('Choose a valid model class.')
-  if (!Array.isArray(spec.entrants) || spec.entrants.length < 2) throw new Error('Select at least two different models.')
+  if (spec.division !== 'all' && !DIVISIONS.some((d) => d.id === spec.division)) throw new Error('Choose a valid competition class.')
+  if (!Array.isArray(spec.entrants) || spec.entrants.length < 2) throw new Error('Select at least two different controllers.')
   const hashes = new Set<string>(), ids = new Set<string>()
   for (const entrant of spec.entrants) {
-    if (!/^[a-f0-9]{64}$/.test(entrant.sha256)) throw new Error('Every model needs its file SHA-256 identity.')
-    if (hashes.has(entrant.sha256)) throw new Error('Identical model files can enter only once.')
+    if (!/^[a-f0-9]{64}$/.test(entrant.sha256)) throw new Error('Every controller needs its SHA-256 identity.')
+    if (hashes.has(entrant.sha256)) throw new Error('Identical controllers can enter only once.')
     if (typeof entrant.id !== 'string' || !entrant.id || ids.has(entrant.id) || typeof entrant.name !== 'string')
-      throw new Error('Model identifiers must be unique and names must be text.')
-    if (!fitsDivision(entrant, spec.division)) throw new Error(entrant.name + ' exceeds this class budget.')
+      throw new Error('Controller identifiers must be unique and names must be text.')
+    if (!fitsCompetition(entrant, spec.division)) throw new Error(entrant.name + ' is ineligible for this class or exceeds its budget.')
     hashes.add(entrant.sha256)
     ids.add(entrant.id)
   }
@@ -113,9 +125,10 @@ export async function benchmarkIdentity(spec: CompetitionSpec) {
     rulesId: normalized.rulesId,
     contractId: normalized.contractId,
     division: normalized.division,
-    budget: DIVISIONS.find((d) => d.id === normalized.division),
+    budget: normalized.division === 'all' ? null : DIVISIONS.find((d) => d.id === normalized.division),
     seeds: normalized.seeds,
-    roster: normalized.entrants.map(({ sha256: hash, params, macs }) => ({ hash, params, macs })),
+    roster: normalized.entrants.map(({ sha256: hash, type, params, macs }) =>
+      type === 'script' ? { hash, type, params, macs } : { hash, params, macs }),
     ralliesPerMatch: 5,
     matchesPerContest: 2,
     scoring: 'aggregate-rally-points; contest-win=1,draw=0.5,loss=0; equal-league-points-share-rank',
