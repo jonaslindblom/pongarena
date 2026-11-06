@@ -1,10 +1,22 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { createHash } from 'node:crypto'
+import { readFileSync } from 'node:fs'
 import {
   DEVICE_TEST, benchmarkInference, createBenchmarkInputs, runAnimationSample, summarizeAnimation, summarizeSamples,
 } from '../src/deviceBenchmark'
 import type { Controller } from '../src/models'
+import { validateArenaModel } from '../src/validate'
+
+test('device workload v2 uses eligible dense models instead of the retired hybrid', () => {
+  assert.equal(DEVICE_TEST.version, 'rally-device-v2')
+  assert.deepEqual(DEVICE_TEST.modelIds, ['tracker', 'pacer-v4', 'prism-small-v4'])
+  for (const id of new Set([...DEVICE_TEST.modelIds, ...DEVICE_TEST.matchIds])) {
+    const stats = validateArenaModel(readFileSync(new URL(`../public/models/${id}.onnx`, import.meta.url)))
+    assert.deepEqual([stats.inputSize, stats.outputSize], [6, 3])
+    assert.ok(stats.architecture.widths, `${id} must use the active dense-network contract`)
+  }
+})
 
 test('benchmark percentiles describe measured batch averages without inventing single-call precision', () => {
   assert.equal(summarizeSamples([]), null)

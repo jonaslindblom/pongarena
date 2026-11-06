@@ -49,6 +49,7 @@ function restoreReport(startup: StartupSnapshot): DeviceReport | null {
   try {
     const value = JSON.parse(sessionStorage.getItem(STORAGE_KEY) ?? 'null')
     return value?.schema === 'rally-lab-device-report-v1' && value.status === 'complete' &&
+      value.workload?.version === DEVICE_TEST.version &&
       value.startup?.pageId === startup.pageId && value.startup?.build?.id === startup.build.id
       ? value : null
   } catch { return null }
@@ -215,7 +216,7 @@ export function DeviceTest({ models, startup, loadingComplete }: {
     <div className="device-test-page">
       <section className="panel device-intro">
         <div className="device-heading"><Smartphone size={21} /><h2>A baseline for this device</h2><span className="mini-tag">LOCAL TEST</span></div>
-        <p>Measure this page’s startup, three weight models, and a 15-second animated match. The same inputs and serve seed run on every device. Your report stays in this browser until you copy it.</p>
+        <p>Measure this page’s startup, Tracker, Pacer v4, Prism Small v4, and a 15-second animated match. The same inputs and serve seed run on every device. Your report stays in this browser until you copy it.</p>
         <p className="device-note">Keep the page visible and the phone in the same orientation. During animated play, leave the court in view without scrolling. Repeat with the same power-saving settings when comparing results.</p>
         {startup.build.mode !== 'production' && <p className="device-warning">Development build: useful for checking the test. Use a production preview for the phone baseline.</p>}
       </section>

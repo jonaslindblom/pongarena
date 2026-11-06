@@ -48,6 +48,8 @@ Save the first report before reloading. Reload the same page and run again with 
 
 Reports include navigation-relative arena/library readiness, loading phases, observed startup visibility, browser/viewport information, a source fingerprint, model hashes, and the versioned workload. The benchmark uses the existing CPU WASM runtime and ordinary game/rendering code. Inference statistics describe **batch-average decision times**, not individual-call tail latency. Animation statistics describe browser animation-callback intervals, not physical display FPS or touch-to-display latency; intentional between-rally pauses are counted separately. Hidden or interrupted tests are cancelled rather than reported as complete.
 
+Workload `rally-device-v2` measures Tracker, Pacer v4, and Prism Small v4. It replaces v1’s retired Strategist model; compare inference timings only between reports with matching workload versions and model hashes.
+
 Startup measurements belong to that page load. Running the test again without reloading only repeats inference and animation. Development-server reports are labelled as development and should not be used for before/after comparisons; the production source fingerprint is calculated at build time. Phone viewport emulation is useful for UI checks but is not physical-device performance evidence. The Device test addition preserves the existing startup sequence so the initial phone reports can serve as a baseline before optimization.
 
 ## Rally balance

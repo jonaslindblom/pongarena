@@ -5,14 +5,14 @@ import { scriptScores } from './scripted'
 import type { MatchTickTiming } from './useMatch'
 
 export const DEVICE_TEST = {
-  version: 'rally-device-v1',
+  version: 'rally-device-v2',
   seed: 902,
   inputCount: 512,
   warmup: 128,
   batchSize: 2048,
   batches: 7,
   animationMs: 15000,
-  modelIds: ['tracker', 'pacer-v4', 'strategist-v3'],
+  modelIds: ['tracker', 'pacer-v4', 'prism-small-v4'],
   matchIds: ['pacer-v4', 'apprentice-v4'],
 } as const
 
