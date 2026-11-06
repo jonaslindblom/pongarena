@@ -2,18 +2,18 @@
 <html lang="en">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Rally Lab · Archived · Counter Small v4</title>
+<title>PongArena · Archived · Counter Small v4</title>
 <link rel="icon" href="/mark.svg">
 <style>
 *{box-sizing:border-box}body{margin:0;background:#f5f6f0;color:#203c30;font:15px/1.65 system-ui,sans-serif}main{max-width:1080px;margin:auto;padding:36px 24px 64px}nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:40px}a{color:#376e43}h1{font-size:clamp(36px,6vw,64px);line-height:1.05;letter-spacing:-.05em;max-width:900px;margin:12px 0 22px}h2{font-size:26px;line-height:1.2;letter-spacing:-.025em;margin:0 0 16px}p{color:#5a6b5b;max-width:930px}.eyebrow{font:11px monospace;letter-spacing:.14em;color:#75935c}.notice{display:inline-block;font-size:12px;color:#466445;background:#e5eddc;padding:6px 12px;border-radius:30px}section{background:#fdfef9;border:1px solid #dce3d5;border-radius:12px;padding:24px;margin-top:22px}.table-wrap{overflow-x:auto;max-width:100%}table{border-collapse:collapse;width:100%;font-size:13px;text-align:left}th,td{padding:12px 10px;border-bottom:1px solid #e2e7dc;white-space:nowrap}th{font-weight:500;color:#70816c}.note,footer{font-size:12px;color:#70816c}.downloads{display:flex;flex-wrap:wrap;gap:12px}.download{display:inline-block;border:1px solid #b8c7ab;border-radius:8px;padding:10px 14px;text-decoration:none}code{background:#edf1e7;border-radius:4px;padding:2px 5px;overflow-wrap:anywhere}pre{background:#edf1e7;padding:16px;overflow:auto;font-size:12px;border-radius:8px}pre code{padding:0}footer{margin-top:30px}@media(max-width:650px){main{padding:26px 14px 44px}section{padding:18px}nav{margin-bottom:28px}h2{font-size:23px}}
 </style>
 <main><section aria-label="Archive notice"><h2>Archived: ineligible for dense-only play</h2><p>This historical study used physics features or planning operations inside its ONNX graph. Those models do not meet the current plain dense-network contract and have been removed from the active catalog. Downloads and scores below are retained as historical evidence under the former graph contract; they are not active dense-network standings.</p></section>
 <nav><a href="/">← Arena</a><a href="handcrafted-v4.html">Earlier handcrafted models →</a></nav>
-<div class="eyebrow">RALLY LAB / HANDCRAFTED CLASSIC V4</div>
+<div class="eyebrow">PONGARENA / HANDCRAFTED CLASSIC V4</div>
 <h1>Read the attack.<br>Choose the reply.</h1>
 <span class="notice">No training · Small class · three fresh attacker test blocks</span>
 <p>Counter Small v4 adds opponent-aware shot selection and predicted attacking replies to a compact physics graph. It beats the actual unchanged adaptive attacker on three fresh blocks: <strong>1,203 wins, 649 losses, 68 draws</strong> across 1,920 rallies. This is a finite-horizon counter to that controller, with explicit approximations.</p>
-<div class="downloads"><a class="download" href="/models/counter-attacker-v4.onnx" download>Counter Small v4 · 15.0 KiB ↓</a></div>
+<div class="downloads"><span title="Retired model; retained only as a test fixture">Counter Small v4 · 15.0 KiB ↓ (retired)</span></div>
 <section>
 <h2>A fixed policy within the Small budget</h2>
 <div class="table-wrap" tabindex="0"><table><thead><tr><th>Parameters</th><th>MACs / decision</th><th>Nodes</th><th>ONNX bytes</th><th>Class</th></tr></thead><tbody><tr><td>1,330</td><td>8,137</td><td>253</td><td>15,341</td><td>Small</td></tr></tbody></table></div>
@@ -52,6 +52,6 @@
   --out /tmp/counter-v4-build</code></pre>
 <p>Use the existing project Python/npm dependencies and a fresh output directory. The command constructs and validates the model without training. The final evaluator deliberately refuses to overwrite its frozen evidence.</p>
 </section>
-<footer>Rally Lab · Counter Small v4 · <a href="/models/counter-attacker-v4.onnx" download>Download weights</a> · <a href="handcrafted-v4.html">Earlier compact models</a> · <a href="/">Arena</a></footer>
+<footer>PongArena · Counter Small v4 · <span title="Retired model; retained only as a test fixture">Download weights (retired)</span> · <a href="handcrafted-v4.html">Earlier compact models</a> · <a href="/">Arena</a></footer>
 </main>
 </html>

@@ -2,14 +2,14 @@
 <html lang="en">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Rally Lab · Vector Nano v4</title>
+<title>PongArena · Vector Nano v4</title>
 <link rel="icon" href="/mark.svg">
 <style>
 *{box-sizing:border-box}body{margin:0;background:#f5f6f0;color:#203c30;font:15px/1.65 system-ui,sans-serif}main{max-width:1080px;margin:auto;padding:36px 24px 64px}nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:40px}a{color:#376e43}h1{font-size:clamp(36px,6vw,64px);line-height:1.05;letter-spacing:-.05em;max-width:900px;margin:12px 0 22px}h2{font-size:26px;line-height:1.2;letter-spacing:-.025em;margin:0 0 16px}p{color:#5a6b5b;max-width:930px}.eyebrow{font:11px monospace;letter-spacing:.14em;color:#75935c}.notice{display:inline-block;font-size:12px;color:#466445;background:#e5eddc;padding:6px 12px;border-radius:30px}section{background:#fdfef9;border:1px solid #dce3d5;border-radius:12px;padding:24px;margin-top:22px}.table-wrap{overflow-x:auto;max-width:100%}table{border-collapse:collapse;width:100%;font-size:13px;text-align:left}th,td{padding:12px 10px;border-bottom:1px solid #e2e7dc;white-space:nowrap}th{font-weight:500;color:#70816c}.note,footer{font-size:12px;color:#70816c}.downloads{display:flex;flex-wrap:wrap;gap:12px}.download{display:inline-block;border:1px solid #b8c7ab;border-radius:8px;padding:10px 14px;text-decoration:none}code{background:#edf1e7;border-radius:4px;padding:2px 5px;overflow-wrap:anywhere}pre{background:#edf1e7;padding:16px;overflow:auto;font-size:12px;border-radius:8px}pre code{padding:0}footer{margin-top:30px}@media(max-width:650px){main{padding:26px 14px 44px}section{padding:18px}nav{margin-bottom:28px}h2{font-size:23px}}
 </style>
 <main>
 <nav><a href="/">← Arena</a><a href="prism-small-v4.html">Prism Small comparison →</a></nav>
-<div class="eyebrow">RALLY LAB / OPPONENT-AWARE DENSE WEIGHTS</div>
+<div class="eyebrow">PONGARENA / OPPONENT-AWARE DENSE WEIGHTS</div>
 <h1>Vector Nano v4.</h1>
 <span class="notice">487 parameters · ordinary dense ReLU · no training</span>
 <p>Vector Nano beats Pacer, Prism Nano, Tracker, Anticipator, and Challenger in every fresh test block. Against Pacer it scores <strong>1,137 wins, 581 losses, and 202 draws</strong> across 1,920 rallies. <strong>It loses to Prism Small and both adaptive scripts in all three blocks.</strong> The Nano milestone does not establish overall dominance or an attacker counter.</p>
@@ -48,6 +48,6 @@ p = (83/78) × h − (5/78) × D</code></pre>
 <p>The investigation is documented at <code>training/results/vector-dense-v4/README.md</code>. Final protocol and all 24 raw pairings are retained under <code>training/results/vector-dense-v4/native-final/</code>, with the exact candidate at <code>training/results/vector-dense-v4/models/vector-nano-v4.onnx</code>. The portable constructor is <code>training/scripts/vector_dense_v4.py</code>.</p>
 <p>Use the model library to play or download Vector Nano. Prism Nano and Prism Small remain available as separate comparisons. The former graph-program policies remain retired archives; this release contains only the fixed dense network.</p>
 </section>
-<footer>Rally Lab · Vector Nano v4 · <a href="/models/vector-nano-v4.onnx" download>Download weights</a> · <a href="prism-nano-v4.html">Prism Nano</a> · <a href="prism-small-v4.html">Prism Small</a> · <a href="/">Arena</a></footer>
+<footer>PongArena · Vector Nano v4 · <a href="/models/vector-nano-v4.onnx" download>Download weights</a> · <a href="prism-nano-v4.html">Prism Nano</a> · <a href="prism-small-v4.html">Prism Small</a> · <a href="/">Arena</a></footer>
 </main>
 </html>

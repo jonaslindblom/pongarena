@@ -9,16 +9,6 @@ import onnxruntime as ort
 ROOT = Path(__file__).resolve().parents[2]
 
 
-class Actor(nn.Sequential):
-    def __init__(self):
-        super().__init__(nn.Linear(6, 64), nn.Tanh(), nn.Linear(64, 64), nn.Tanh(), nn.Linear(64, 3))
-        for layer in self:
-            if isinstance(layer, nn.Linear):
-                nn.init.orthogonal_(layer.weight, gain=np.sqrt(2))
-                nn.init.zeros_(layer.bias)
-        nn.init.orthogonal_(self[-1].weight, gain=.01)
-
-
 class OnnxPolicy:
     def __init__(self, path):
         options = ort.SessionOptions()
@@ -32,16 +22,24 @@ class OnnxPolicy:
 
 
 def load_builtin(name):
-    """Load the supplied 6→16 ReLU→3 ONNX into Torch for batched training."""
-    m = onnx.load(ROOT / 'public/models' / (name + '.onnx'))
-    weights = {w.name: torch.from_numpy(numpy_helper.to_array(w).copy()) for w in m.graph.initializer}
-    net = nn.Sequential(nn.Linear(6, 16), nn.ReLU(), nn.Linear(16, 3))
-    with torch.no_grad():
-        for layer, node in zip([net[0], net[2]], [n for n in m.graph.node if n.op_type == 'Gemm']):
+    """Load a current plain dense ONNX policy into Torch for batched training."""
+    model = onnx.load(ROOT / 'public/models' / (name + '.onnx'))
+    weights = {w.name: torch.from_numpy(numpy_helper.to_array(w).copy()) for w in model.graph.initializer}
+    layers = []
+    for node in model.graph.node:
+        if node.op_type == 'Gemm':
             trans = next((a.i for a in node.attribute if a.name == 'transB'), 0)
-            layer.weight.copy_(weights[node.input[1]] if trans else weights[node.input[1]].T)
-            layer.bias.copy_(weights[node.input[2]])
-    return net.eval()
+            weight = weights[node.input[1]] if trans else weights[node.input[1]].T
+            layer = nn.Linear(weight.shape[1], weight.shape[0])
+            with torch.no_grad():
+                layer.weight.copy_(weight)
+                layer.bias.copy_(weights[node.input[2]])
+            layers.append(layer)
+        elif node.op_type in ('Relu', 'Tanh'):
+            layers.append(nn.ReLU() if node.op_type == 'Relu' else nn.Tanh())
+        else:
+            raise ValueError(f'Expected a current dense policy, got {node.op_type}')
+    return nn.Sequential(*layers).eval()
 
 
 def actions(actor, obs):
@@ -68,12 +66,12 @@ def export(actor, path):
         else:
             raise ValueError(f'Unsupported layer: {layer}')
         current = output
-    graph = helper.make_graph(nodes, 'Rally Lab Pong v3 actor',
+    graph = helper.make_graph(nodes, 'PongArena dense actor',
                               [helper.make_tensor_value_info('observation', 1, [1, 6])],
                               [helper.make_tensor_value_info('action_scores', 1, [1, 3])], weights)
     model = helper.make_model(graph, opset_imports=[helper.make_opsetid('', 18)], ir_version=10)
     linear = [layer for layer in actor if isinstance(layer, nn.Linear)]
     widths = [linear[0].in_features] + [layer.out_features for layer in linear]
-    helper.set_model_props(model, {'rules': 'pong-v3', 'architecture': '-'.join(map(str, widths)) + ' Tanh', 'training': 'PyTorch'})
+    helper.set_model_props(model, {'rules': 'pong-v4', 'architecture': '-'.join(map(str, widths)) + ' Tanh', 'training': 'PyTorch'})
     onnx.checker.check_model(model)
     onnx.save(model, str(path))

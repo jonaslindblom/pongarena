@@ -15,7 +15,7 @@ import time
 import numpy as np
 import torch
 
-from competition_eval import decisions, load_mlp, openings, summarize, validate_seeds
+from competition_eval import decisions, openings, summarize, validate_seeds
 from env import Arena, reflect
 from offense_eval import contact_paths, make_policy as old_policy, run_pair as old_pair
 from offense_rules import CONFIGS as OLD_CONFIGS
@@ -39,7 +39,6 @@ CONFIGS.update({f'pace13-v{vertical}-scaled': Config(f'pace13-v{vertical}-scaled
 CENTERS = np.arange(15, 146)
 NEXT = np.clip(CENTERS[:, None] + [-2, 0, 2], 15, 145).astype(int)
 OFFSETS = np.arange(-15, 16)
-OUT = ROOT / 'training/results/pace-study'
 
 
 def shot(offset, incoming_speed, config):
@@ -304,40 +303,3 @@ def run_pair(config, policy_a, policy_b, seeds, capture_replays=0):
         i = replay['index']
         replay.update(outcome=int(outcome[i]), draw_reason=int(reasons[i]), returns=int(lengths[i]), ticks=int(durations[i]))
     return dict(rules=asdict(config), seeds=seeds, seed_count=len(seeds), summary=summary, records=records, replays=replays)
-
-
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--configs', nargs='+', choices=CONFIGS, default=list(CONFIGS))
-    parser.add_argument('--count', type=int, default=32)
-    parser.add_argument('--pairs', nargs='+', default=['attack:attack', 'attack:defend', 'defend:defend', 'attack:interceptor'])
-    parser.add_argument('--out', type=Path, default=OUT/'screen.json')
-    parser.add_argument('--confirmation', action='store_true')
-    args = parser.parse_args()
-    torch.set_num_threads(1)
-    rng_seed = 20261121 if args.confirmation else 20261120
-    low = 2_400_000_000 if args.confirmation else 2_300_000_000
-    seeds = (np.random.default_rng(rng_seed).choice(100_000_000, args.count, replace=False)+low).tolist()
-    contender = load_mlp(ROOT/'training/results/fully-learned/candidate/best.pt')
-    data = dict(purpose='Gradual speed progression tuning', seeds=seeds, rng_seed=rng_seed,
-                phase='confirmation' if args.confirmation else 'screen', source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(), configs={})
-    for name in args.configs:
-        config = CONFIGS[name]
-        data['configs'][name] = {}
-        for pair in args.pairs:
-            def make(kind):
-                return contender if kind == 'contender' else make_policy(config, 'interceptor', 5) if kind == 'delayed' else make_policy(config, kind)
-            a, b = pair.split(':')
-            started = time.monotonic()
-            result = run_pair(config, make(a), make(b), seeds, capture_replays=5 if args.confirmation and pair == 'attack:defend' else 0)
-            result['seconds'] = time.monotonic()-started
-            data['configs'][name][pair] = result
-            args.out.parent.mkdir(parents=True, exist_ok=True)
-            args.out.write_text(json.dumps(data, separators=(',', ':'))+'\n')
-            s = result['summary']
-            print(name, pair, s['wins'], s['losses'], s['draws'], 'median', s['median_decisive_returns'],
-                  'early', s['early_finish_rate'], 'receiver', s['first_receiver_win_rate'], flush=True)
-
-
-if __name__ == '__main__':
-    main()

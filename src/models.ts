@@ -25,6 +25,7 @@ export interface Controller {
   outputSize?: number
   architecture?: ReturnType<typeof validateModel>['architecture']
   report?: string
+  modelBytes?: Uint8Array
   session?: ort.InferenceSession
   script?: ScriptKind
 }
@@ -56,6 +57,12 @@ export const scripts: Controller[] = [
 }))
 export const presets = [
   {
+    id: 'robust-strong-v4',
+    name: 'Robust Strong v4',
+    kind: 'Fully learned · PPO · v4',
+    description: 'A plain 6→128→128→3 Tanh policy with 17,795 parameters. The robustness study’s selected full-size player beats the previous winner on fresh confirmation seeds; adaptive Attacker and Defender remain stronger.',
+  },
+  {
     id: 'pacer-v4',
     name: 'Pacer v4',
     kind: 'Fully learned · DAgger · v4',
@@ -84,14 +91,6 @@ export const presets = [
     report: '/training/vector-nano-v4.html',
   },
   {
-    id: 'prism-nano-v4',
-    name: 'Prism Nano v4',
-    kind: 'Handcrafted weights · No training',
-    handcrafted: true,
-    description: 'Manually designed weights, generated from fixed formulas without training. This 503-parameter dense ReLU network uses approximate anticipation and conservative contact aiming. Beats Tracker, Anticipator, and Challenger in fresh Nano tests; loses to Pacer and adaptive scripts.',
-    report: '/training/prism-nano-v4.html',
-  },
-  {
     id: 'prism-small-v4',
     name: 'Prism Small v4',
     kind: 'Handcrafted weights · No training',
@@ -100,50 +99,10 @@ export const presets = [
     report: '/training/prism-small-v4.html',
   },
   {
-    id: 'contender-v3',
-    name: 'Contender v3',
-    kind: 'Fully learned · PPO + weight search',
-    description: 'Earlier v3 weights: a learned 6→64→64→3 Tanh policy, refined through PPO and weight search. Retained for comparison under v4.',
-    report: '/training/fully-learned.html',
-  },
-  {
-    id: 'selfplay-v3',
-    name: 'Selfplay v3',
-    kind: 'PyTorch · PPO · v3',
-    description: 'Earlier v3 weights, refined through league self-play. Retained for comparison under v4.',
-    report: '/training/report.html',
-  },
-  {
-    id: 'apprentice-v3',
-    name: 'Apprentice v3',
-    kind: 'PyTorch · Imitation · v3',
-    description: 'Earlier v3 weights, trained to imitate a predictive attacker. Retained for comparison under v4.',
-    report: '/training/report.html',
-  },
-  {
-    id: 'selfplay-v2',
-    name: 'Selfplay v2',
-    kind: 'PyTorch · PPO · v2',
-    description: 'Earlier v2 PPO weights, retained for comparison under the current v4 rules.',
-    report: '/training/v2/report.html',
-  },
-  {
-    id: 'challenger',
-    name: 'Challenger',
-    kind: 'Evolved model',
-    description: 'Original v1 weights, evolved over 48 generations. Plays under the current rules.',
-  },
-  {
     id: 'tracker',
     name: 'Tracker',
     kind: 'Baseline model',
     description: 'Follows the ball’s current height. A baseline for your first match.',
-  },
-  {
-    id: 'anticipator',
-    name: 'Anticipator',
-    kind: 'Hand-edited model',
-    description: 'Looks seven ticks ahead using one edited velocity weight.',
   },
 ]
 export async function loadModel(
@@ -153,7 +112,7 @@ export async function loadModel(
   const stats = validateArenaModel(bytes)
   const digest = await sha256(bytes)
   const session = await ort.InferenceSession.create(bytes, { executionProviders: ['wasm'] })
-  const controller: Controller = { ...info, ...stats, type: 'weights', sha256: digest, session }
+  const controller: Controller = { ...info, ...stats, type: 'weights', sha256: digest, session, modelBytes: bytes.slice() }
   try {
     await infer(controller, new Float32Array(stats.inputSize))
   } catch (error) {

@@ -1,7 +1,0 @@
-{
-  "reference_sha256": "1167ad9fd13c6006eb8a157ab62b87a2ee4836da65396a13d11d99f533d85b11",
-  "matches": 6,
-  "frames": 17383,
-  "decisions": 34718,
-  "backend": "Native ONNX Runtime, scalar burst reference"
-}

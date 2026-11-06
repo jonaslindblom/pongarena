@@ -13,13 +13,14 @@ import {
 import type { StartupSnapshot } from './startup'
 import './DeviceTest.css'
 
+// Keep the existing storage namespace so saved data survives the product rename.
 const STORAGE_KEY = 'rally-lab-device-test-v1'
 const matchIds = [...DEVICE_TEST.matchIds] as Pair<string>
 const viewport = () => ({ width: innerWidth, height: innerHeight, pixelRatio: devicePixelRatio })
 const ms = (value: number | null | undefined) => value == null ? '—' : value.toFixed(1) + ' ms'
 
 interface DeviceReport {
-  schema: 'rally-lab-device-report-v1'
+  schema: 'pongarena-device-report-v1'
   status: 'complete'
   measuredAt: string
   device: string
@@ -48,10 +49,10 @@ interface DeviceReport {
 function restoreReport(startup: StartupSnapshot): DeviceReport | null {
   try {
     const value = JSON.parse(sessionStorage.getItem(STORAGE_KEY) ?? 'null')
-    return value?.schema === 'rally-lab-device-report-v1' && value.status === 'complete' &&
+    return (value?.schema === 'pongarena-device-report-v1' || value?.schema === 'rally-lab-device-report-v1') && value.status === 'complete' &&
       value.workload?.version === DEVICE_TEST.version &&
       value.startup?.pageId === startup.pageId && value.startup?.build?.id === startup.build.id
-      ? value : null
+      ? { ...value, schema: 'pongarena-device-report-v1' } : null
   } catch { return null }
 }
 
@@ -159,7 +160,7 @@ export function DeviceTest({ models, startup, loadingComplete }: {
       })
       controller.signal.throwIfAborted()
       const completed: DeviceReport = {
-        schema: 'rally-lab-device-report-v1', status: 'complete', measuredAt: new Date().toISOString(),
+        schema: 'pongarena-device-report-v1', status: 'complete', measuredAt: new Date().toISOString(),
         device: label, visit: visitLabel, startup: startupSnapshot,
         environment: {
           userAgent: navigator.userAgent, language: navigator.language,

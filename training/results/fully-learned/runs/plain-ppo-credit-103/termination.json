@@ -1,7 +1,0 @@
-{
-  "status": "interrupted",
-  "last_logged_update": 225,
-  "last_logged_env_steps": 14745600,
-  "best_update": 0,
-  "reason": "Stopped after sustained greedy development regression; replaced with stronger learned-policy KL retention and sharper initial logits to reduce sampled/deployed mismatch. Original planned learning-rate schedule remains in config; unlogged interrupted work is not reported as completed."
-}

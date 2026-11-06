@@ -7,6 +7,7 @@ import {
 } from './competition'
 import './Ranking.css'
 
+// Keep the existing storage namespace so saved data survives the product rename.
 const STORAGE_KEY = 'rally-lab-last-league-v1'
 const numbers = (n: number) => n.toLocaleString()
 function freshSeeds() {
@@ -104,7 +105,7 @@ export function Ranking({ entrants, handcraftedHashes, rulesId, contractId, play
     const url = URL.createObjectURL(new Blob([JSON.stringify(run, null, 2) + '\n'], { type: 'application/json' }))
     const link = document.createElement('a')
     link.href = url
-    link.download = 'rally-lab-' + run.spec.division + '-' + run.benchmark.slice(0, 12) + '.json'
+    link.download = 'pongarena-' + run.spec.division + '-' + run.benchmark.slice(0, 12) + '.json'
     link.click()
     setTimeout(() => URL.revokeObjectURL(url), 1000)
   }

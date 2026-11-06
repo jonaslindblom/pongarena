@@ -1,3 +1,4 @@
+import { modelFile } from './modelFiles'
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
@@ -170,7 +171,7 @@ test('ties go to the first action and unusable output fails explicitly', () => {
   assert.equal(choice([2, 2, -1]), 0)
   assert.throws(() => choice([0, NaN, 1]))
 })
-const starter = readFileSync(new URL('../public/models/tracker.onnx', import.meta.url))
+const starter = readFileSync(modelFile('tracker'))
 test('the starter fits the documented contract and compute budget', () => {
   const stats = validateModel(starter)
   assert.deepEqual([stats.params, stats.macs, stats.nodes], [163, 144, 3])
@@ -244,7 +245,7 @@ test('the archived v2 engine stays frozen for earlier models and balance studies
 
 test('trained exports reveal their actual widths and remain within the upload contract', () => {
   for (const name of ['apprentice-v2', 'selfplay-v2', 'apprentice-v3', 'selfplay-v3']) {
-    const bytes = readFileSync(new URL(`../public/models/${name}.onnx`, import.meta.url))
+    const bytes = readFileSync(modelFile(`${name}`))
     const graph = pb.onnx.ModelProto.decode(bytes)
     assert.equal(graph.metadataProps.find((p) => p.key === 'rules')?.value, 'pong-' + name.split('-')[1])
     const stats = validateModel(bytes)
@@ -272,8 +273,8 @@ test('the archive inspector describes a branched model without inventing a dense
 })
 
 test('the fully learned release is the evaluated plain MLP, without fixed feature branches', () => {
-  const bytes = readFileSync(new URL('../public/models/contender-v3.onnx', import.meta.url))
-  const frozen = JSON.parse(readFileSync(new URL('../training/results/fully-learned/candidate/freeze.json', import.meta.url), 'utf8'))
+  const bytes = readFileSync(modelFile('contender-v3'))
+  const frozen = JSON.parse(readFileSync(new URL('./fixtures/training/results/fully-learned/candidate/freeze.json', import.meta.url), 'utf8'))
   assert.equal(createHash('sha256').update(bytes).digest('hex'), frozen.onnx_sha256)
   const stats = validateModel(bytes)
   assert.deepEqual(stats.architecture.widths, [6, 64, 64, 3])
@@ -282,9 +283,9 @@ test('the fully learned release is the evaluated plain MLP, without fixed featur
 })
 
 test('v4 releases use the evaluated learned weights and expose their larger architecture', () => {
-  const manifest = JSON.parse(readFileSync(new URL('../training/results/pace-study/training/manifest.json', import.meta.url), 'utf8'))
+  const manifest = JSON.parse(readFileSync(new URL('./fixtures/training/results/pace-study/training/manifest.json', import.meta.url), 'utf8'))
   for (const name of ['pacer', 'apprentice']) {
-    const bytes = readFileSync(new URL(`../public/models/${name}-v4.onnx`, import.meta.url))
+    const bytes = readFileSync(modelFile(`${name}-v4`))
     const expected = manifest.files[`training/results/pace-study/training/candidate/${name}/best.onnx`]
     assert.equal(createHash('sha256').update(bytes).digest('hex'), expected)
     const graph = pb.onnx.ModelProto.decode(bytes)
@@ -297,7 +298,7 @@ test('v4 releases use the evaluated learned weights and expose their larger arch
 })
 
 test('Plain Nano publishes the confirmed trained candidate within the Nano budget', () => {
-  const bytes = readFileSync(new URL('../public/models/plain-nano-v4.onnx', import.meta.url))
+  const bytes = readFileSync(modelFile('plain-nano-v4'))
   assert.equal(createHash('sha256').update(bytes).digest('hex'),
     'fd59c8f08927f3e0b9a196919ad80674dcd92bdc44087065e3d0a9fa54406e3c',
     'Publish the preselected confirmation candidate, not an earlier Nano checkpoint')
@@ -311,7 +312,7 @@ test('Plain Nano publishes the confirmed trained candidate within the Nano budge
 })
 
 test('Vector Nano publishes its frozen plain dense weights within the Nano budget', () => {
-  const bytes = readFileSync(new URL('../public/models/vector-nano-v4.onnx', import.meta.url))
+  const bytes = readFileSync(modelFile('vector-nano-v4'))
   assert.equal(createHash('sha256').update(bytes).digest('hex'),
     'ad41b0b8b9be1264c7b3daea95aec2341ab14f4802038ef175aea5d4898ac551')
   const stats = validateArenaModel(bytes)
@@ -326,7 +327,7 @@ test('Vector Nano publishes its frozen plain dense weights within the Nano budge
 })
 
 test('Prism Nano publishes its frozen plain dense weights within the Nano budget', () => {
-  const bytes = readFileSync(new URL('../public/models/prism-nano-v4.onnx', import.meta.url))
+  const bytes = readFileSync(modelFile('prism-nano-v4'))
   assert.equal(createHash('sha256').update(bytes).digest('hex'),
     '1eedf32a2fff0721aa101d4ba8a925a6fac7734f259daa9180ecb6523f65991a')
   const stats = validateArenaModel(bytes)
@@ -341,7 +342,7 @@ test('Prism Nano publishes its frozen plain dense weights within the Nano budget
 })
 
 test('Prism Small publishes its frozen plain dense weights within the Small budget', () => {
-  const bytes = readFileSync(new URL('../public/models/prism-small-v4.onnx', import.meta.url))
+  const bytes = readFileSync(modelFile('prism-small-v4'))
   assert.equal(createHash('sha256').update(bytes).digest('hex'),
     '64b6f14a604fd6d7ff72b91a2861b7a061f6568b6edde80d4697c2e2160e31ca')
   const stats = validateArenaModel(bytes)
@@ -356,9 +357,9 @@ test('Prism Small publishes its frozen plain dense weights within the Small budg
 })
 
 test('the retired handcrafted policies remain inspectable archives but cannot enter dense-only play', () => {
-  const frozen = JSON.parse(readFileSync(new URL('../training/results/compact-handcrafted-v4/freeze.json', import.meta.url), 'utf8'))
+  const frozen = JSON.parse(readFileSync(new URL('./fixtures/training/results/compact-handcrafted-v4/freeze.json', import.meta.url), 'utf8'))
   for (const size of ['nano', 'small']) {
-    const bytes = readFileSync(new URL(`../public/models/handcrafted-${size}-v4.onnx`, import.meta.url))
+    const bytes = readFileSync(modelFile(`handcrafted-${size}-v4`))
     const expected = frozen.models[size]
     assert.equal(createHash('sha256').update(bytes).digest('hex'), expected.sha256)
     const model = pb.onnx.ModelProto.decode(bytes)
@@ -378,9 +379,9 @@ test('the retired handcrafted policies remain inspectable archives but cannot en
 })
 
 test('the archived counter retains its frozen bytes but is ineligible under the dense contract', () => {
-  const bytes = readFileSync(new URL('../public/models/counter-attacker-v4.onnx', import.meta.url))
-  const frozen = JSON.parse(readFileSync(new URL('../training/results/counter-attacker-v4/freeze.json', import.meta.url), 'utf8'))
-  const verification = JSON.parse(readFileSync(new URL('../training/results/counter-attacker-v4/verification.json', import.meta.url), 'utf8'))
+  const bytes = readFileSync(modelFile('counter-attacker-v4'))
+  const frozen = JSON.parse(readFileSync(new URL('./fixtures/training/results/counter-attacker-v4/freeze.json', import.meta.url), 'utf8'))
+  const verification = JSON.parse(readFileSync(new URL('./fixtures/training/results/counter-attacker-v4/verification.json', import.meta.url), 'utf8'))
   assert.equal(createHash('sha256').update(bytes).digest('hex'), frozen.model_sha256)
   const model = pb.onnx.ModelProto.decode(bytes)
   const metadata = new Map(model.metadataProps.map((p) => [p.key, p.value]))
@@ -397,7 +398,7 @@ test('the archived counter retains its frozen bytes but is ineligible under the 
 })
 
 test('the earlier Strategist hybrid cannot bypass dense-only eligibility with six inputs and three outputs', () => {
-  const bytes = readFileSync(new URL('../public/models/strategist-v3.onnx', import.meta.url))
+  const bytes = readFileSync(modelFile('strategist-v3'))
   assert.deepEqual([validateModel(bytes).inputSize, validateModel(bytes).outputSize], [6, 3])
   assert.throws(() => validateArenaModel(bytes), DenseModelError)
 })

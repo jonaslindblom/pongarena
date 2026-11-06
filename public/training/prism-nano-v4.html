@@ -2,18 +2,18 @@
 <html lang="en">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Rally Lab · Prism Nano v4</title>
+<title>PongArena · Prism Nano v4</title>
 <link rel="icon" href="/mark.svg">
 <style>
 *{box-sizing:border-box}body{margin:0;background:#f5f6f0;color:#203c30;font:15px/1.65 system-ui,sans-serif}main{max-width:1080px;margin:auto;padding:36px 24px 64px}nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:40px}a{color:#376e43}h1{font-size:clamp(36px,6vw,64px);line-height:1.05;letter-spacing:-.05em;max-width:900px;margin:12px 0 22px}h2{font-size:26px;line-height:1.2;letter-spacing:-.025em;margin:0 0 16px}p{color:#5a6b5b;max-width:930px}.eyebrow{font:11px monospace;letter-spacing:.14em;color:#75935c}.notice{display:inline-block;font-size:12px;color:#466445;background:#e5eddc;padding:6px 12px;border-radius:30px}section{background:#fdfef9;border:1px solid #dce3d5;border-radius:12px;padding:24px;margin-top:22px}.table-wrap{overflow-x:auto;max-width:100%}table{border-collapse:collapse;width:100%;font-size:13px;text-align:left}th,td{padding:12px 10px;border-bottom:1px solid #e2e7dc;white-space:nowrap}th{font-weight:500;color:#70816c}.note,footer{font-size:12px;color:#70816c}.downloads{display:flex;flex-wrap:wrap;gap:12px}.download{display:inline-block;border:1px solid #b8c7ab;border-radius:8px;padding:10px 14px;text-decoration:none}code{background:#edf1e7;border-radius:4px;padding:2px 5px;overflow-wrap:anywhere}pre{background:#edf1e7;padding:16px;overflow:auto;font-size:12px;border-radius:8px}pre code{padding:0}footer{margin-top:30px}@media(max-width:650px){main{padding:26px 14px 44px}section{padding:18px}nav{margin-bottom:28px}h2{font-size:23px}}
 </style>
 <main>
 <nav><a href="/">← Arena</a><a href="pong-v4.zip">Classic v4 game specification ↓</a></nav>
-<div class="eyebrow">RALLY LAB / ANALYTIC DENSE WEIGHTS</div>
+<div class="eyebrow">PONGARENA / ANALYTIC DENSE WEIGHTS</div>
 <h1>Prism Nano v4.</h1>
 <span class="notice">503 parameters · ordinary dense ReLU · no training</span>
 <p>Prism is a hand-constructed <strong>6 → 29 → 9 → 3</strong> network. It beats the Nano references Tracker, Anticipator, and Challenger in all three fresh test blocks. It loses to Pacer and both adaptive scripts in every block. This is a useful Nano-class comparison; the stronger-model goal remains unmet.</p>
-<div class="downloads"><a class="download" href="/models/prism-nano-v4.onnx" download>Prism Nano v4 · 2.7 KiB ↓</a></div>
+<div class="downloads"><span title="Retired model; retained only as a test fixture">Prism Nano v4 · 2.7 KiB ↓ (retired)</span></div>
 <section>
 <h2>A plain dense network from six raw inputs</h2>
 <div class="table-wrap" tabindex="0"><table><thead><tr><th>Architecture</th><th>Parameters</th><th>MACs / decision</th><th>Nodes</th><th>Bytes</th><th>Class</th></tr></thead><tbody><tr><td>6 → 29 → 9 → 3 · ReLU</td><td>503</td><td>462</td><td>5</td><td>2,769</td><td>Nano</td></tr></tbody></table></div>
@@ -45,6 +45,6 @@
 <p>The complete investigation is documented in <code>training/results/analytic-dense-v4/README.md</code>. Final protocol and raw outcomes are retained in <code>training/results/analytic-dense-v4/native-final/</code>, and the exact export is retained at <code>training/results/analytic-dense-v4/models/prism-nano-v4.onnx</code>. The constructor is <code>training/scripts/analytic_dense_v4.py</code>.</p>
 <p>Use the model library to play or download Prism. Its inclusion adds an eligible Nano baseline; it does not promote the retired graph-program results back into dense-network standings.</p>
 </section>
-<footer>Rally Lab · Prism Nano v4 · <a href="/models/prism-nano-v4.onnx" download>Download weights</a> · <a href="/">Arena</a></footer>
+<footer>PongArena · Prism Nano v4 · <span title="Retired model; retained only as a test fixture">Download weights (retired)</span> · <a href="/">Arena</a></footer>
 </main>
 </html>

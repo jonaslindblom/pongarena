@@ -1,5 +1,0 @@
-{
-  "status": "interrupted",
-  "completed_round": 16,
-  "reason": "Stopped one CE-target arm to run pure MSE after identifying classification pressure can bias continuous paddle targets; retained best completed checkpoint."
-}

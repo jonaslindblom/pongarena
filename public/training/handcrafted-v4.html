@@ -2,18 +2,18 @@
 <html lang="en">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Rally Lab · Archived · Compact handcrafted v4 weights</title>
+<title>PongArena · Archived · Compact handcrafted v4 weights</title>
 <link rel="icon" href="/mark.svg">
 <style>
 *{box-sizing:border-box}body{margin:0;background:#f5f6f0;color:#203c30;font:15px/1.65 system-ui,sans-serif}main{max-width:1080px;margin:auto;padding:36px 24px 64px}nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:40px}a{color:#376e43}h1{font-size:clamp(36px,6vw,64px);line-height:1.05;letter-spacing:-.05em;max-width:900px;margin:12px 0 22px}h2{font-size:26px;line-height:1.2;letter-spacing:-.025em;margin:0 0 16px}p{color:#5a6b5b;max-width:930px}.eyebrow{font:11px monospace;letter-spacing:.14em;color:#75935c}.notice{display:inline-block;font-size:12px;color:#466445;background:#e5eddc;padding:6px 12px;border-radius:30px}section{background:#fdfef9;border:1px solid #dce3d5;border-radius:12px;padding:24px;margin-top:22px}.table-wrap{overflow-x:auto;max-width:100%}table{border-collapse:collapse;width:100%;font-size:13px;text-align:left}th,td{padding:12px 10px;border-bottom:1px solid #e2e7dc;white-space:nowrap}th{font-weight:500;color:#70816c}.note,footer{font-size:12px;color:#70816c}.downloads{display:flex;flex-wrap:wrap;gap:12px}.download{display:inline-block;border:1px solid #b8c7ab;border-radius:8px;padding:10px 14px;text-decoration:none}code{background:#edf1e7;border-radius:4px;padding:2px 5px;overflow-wrap:anywhere}pre{background:#edf1e7;padding:16px;overflow:auto;font-size:12px;border-radius:8px}pre code{padding:0}footer{margin-top:30px}@media(max-width:650px){main{padding:26px 14px 44px}section{padding:18px}nav{margin-bottom:28px}h2{font-size:23px}}
 </style>
 <main><section aria-label="Archive notice"><h2>Archived: ineligible for dense-only play</h2><p>This historical study used physics features or planning operations inside its ONNX graph. Those models do not meet the current plain dense-network contract and have been removed from the active catalog. Downloads and scores below are retained as historical evidence under the former graph contract; they are not active dense-network standings.</p></section>
 <nav><a href="/">← Arena</a><a href="pong-v4.zip">Classic v4 training package ↓</a></nav>
-<div class="eyebrow">RALLY LAB / HANDCRAFTED CLASSIC V4</div>
+<div class="eyebrow">PONGARENA / HANDCRAFTED CLASSIC V4</div>
 <h1>Exact physics.<br>Compact weights.</h1>
 <span class="notice">No training · Nano and Small classes · frozen fresh-seed tests</span>
 <p>Handcrafted Nano v4 and Handcrafted Small v4 encode Pong physics and shot targets directly in their ONNX graphs. Both beat the learned Pacer v4 on three fresh test blocks. Small keeps the earlier Open model’s complete target policy with 94.6% fewer parameters; Nano simplifies recovery to fit the smallest class.</p>
-<div class="downloads"><a class="download" href="/models/handcrafted-nano-v4.onnx" download>Nano weights · 3.6 KiB ↓</a><a class="download" href="/models/handcrafted-small-v4.onnx" download>Small weights · 11.7 KiB ↓</a></div>
+<div class="downloads"><span title="Retired model; retained only as a test fixture">Nano weights · 3.6 KiB ↓ (retired)</span><span title="Retired model; retained only as a test fixture">Small weights · 11.7 KiB ↓ (retired)</span></div>
 <section>
 <h2>What enters the catalog</h2>
 <div class="table-wrap" tabindex="0"><table><thead><tr><th>Model</th><th>Parameters</th><th>MACs / decision</th><th>Nodes</th><th>Bytes</th><th>Class</th></tr></thead><tbody>
@@ -71,6 +71,6 @@
   --out /tmp/compact-v4 --evaluate</code></pre>
 <p>Use a fresh output directory and the existing project Python/npm dependencies. Omit <code>--evaluate</code> to construct and validate without replaying the retained benchmark. No training is performed.</p>
 </section>
-<footer>Rally Lab · Compact handcrafted Classic v4 · <a href="/models/handcrafted-nano-v4.onnx" download>Nano weights</a> · <a href="/models/handcrafted-small-v4.onnx" download>Small weights</a> · <a href="/">Arena</a></footer>
+<footer>PongArena · Compact handcrafted Classic v4 · <span title="Retired model; retained only as a test fixture">Nano weights (retired)</span> · <span title="Retired model; retained only as a test fixture">Small weights (retired)</span> · <a href="/">Arena</a></footer>
 </main>
 </html>

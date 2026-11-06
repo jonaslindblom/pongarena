@@ -1,8 +1,0 @@
-{
-  "numeric_probes": 8192,
-  "action_mismatches": 0,
-  "maximum_score_difference": 1.9073486328125e-05,
-  "native_matches": 2,
-  "native_frames": 11063,
-  "reference_sha256": "fd58d26faa5d2d029f804825fab768c5c8a8d5958e9f256628e4651403560500"
-}

@@ -88,34 +88,3 @@ class Arena:
 def reflect(y):
     z = (y - 4) % 304
     return 4 + np.where(z <= 152, z, 304 - z)
-
-
-def scripted(obs, attack=False, max_vx=MAX_BALL_VX):
-    """Exact-flight reference using only the six exposed inputs. No hidden state."""
-    x = np.rint(obs[:, 0].astype(np.float64) * 180 + 180)
-    y = np.rint(obs[:, 1].astype(np.float64) * 80 + 80)
-    vx = np.rint(obs[:, 2].astype(np.float64) * 6)
-    vy = np.rint(obs[:, 3].astype(np.float64) * 6)
-    own = np.rint(obs[:, 4].astype(np.float64) * 80 + 80)
-    other = np.rint(obs[:, 5].astype(np.float64) * 80 + 80)
-    ticks = np.maximum(1, np.ceil((x - 15) / np.maximum(1, -vx)))
-    landing = reflect(y + ticks * vy)
-    target = np.clip(landing, 15, 145)
-    if attack:
-        # Enumerate reachable paddle centers on the two-unit movement lattice.
-        moves = np.arange(-65, 66)[None, :]
-        centers = np.clip(own[:, None] + 2 * moves, 15, 145)
-        offset = landing[:, None] - centers
-        speed_x = 5 + np.floor((max_vx - 5) * np.abs(offset) / 15 + .5)
-        speed_y = np.clip(np.floor(offset / 3 + .5), -5, 5)
-        flight = np.ceil(330 / speed_x)
-        destination = reflect(landing[:, None] + flight * speed_y)
-        margin = np.abs(destination - other[:, None]) - 15 - 2 * flight
-        valid = (np.abs(moves) <= ticks[:, None]) & (np.abs(offset) <= 15)
-        # Prefer shorter paddle travel on equal attacking margin.
-        quality = np.where(valid, margin - .001 * np.abs(centers - own[:, None]), -1e9)
-        best = np.argmax(quality, axis=1)
-        target = np.where(valid.any(axis=1), centers[np.arange(len(obs)), best], target)
-    target = np.where(vx < 0, target, 80)
-    error = target - own
-    return np.where(error < -1, 0, np.where(error > 1, 2, 1)).astype(np.int64)

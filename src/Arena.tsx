@@ -39,6 +39,7 @@ import {
 import { type Controller } from './models'
 import type { Match } from './useMatch'
 import { architectureLabel } from './Architecture'
+import { BrainPanel } from './BrainPanel'
 import { HumanControls, useCourtPointerControls } from './HumanControls'
 import { interpolate, progress } from './presentation'
 import { ControllerBadge, controllerOptionLabel } from './ControllerBadge'
@@ -456,6 +457,7 @@ export function Arena({ m, models, ids, pick, swap, ready }: Props) {
         <Court m={m} names={names} controllers={controllers} ready={ready} humanSides={humanSides} bottom={bottom} />
         <HumanControls m={m} humanSides={humanSides} />
         <Transport m={m} ready={ready} />
+        <BrainPanel m={m} controllers={controllers} bottom={bottom} />
         <section className="panel feed">
           <div className="panel-heading">
             <h2>

@@ -16,7 +16,7 @@ import time
 import numpy as np
 import torch
 
-from competition_eval import decisions, load_mlp, openings, summarize, validate_seeds
+from competition_eval import decisions, openings, summarize, validate_seeds
 from env import reflect
 from offense_rules import CONFIGS, OffenseArena, shot
 from policy import ROOT
@@ -228,37 +228,3 @@ def run_pair(rules, policy_a, policy_b, seeds, capture_replays=0):
         i = replay['index']
         replay.update(outcome=int(outcome[i]), draw_reason=int(reasons[i]), returns=int(lengths[i]), ticks=int(durations[i]))
     return dict(rules=asdict(rules), seeds=seeds, seed_count=len(seeds), summary=summary, records=records, replays=replays)
-
-
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--count', type=int, default=32)
-    parser.add_argument('--configs', nargs='+', choices=CONFIGS, default=list(CONFIGS))
-    parser.add_argument('--pairs', nargs='+', default=['attack:attack', 'attack:defend', 'defend:defend', 'attack:delayed', 'contender:attack', 'contender:defend'])
-    parser.add_argument('--out', type=Path, default=ROOT / 'training/results/offense-study/evaluation/screen.json')
-    args = parser.parse_args()
-    torch.set_num_threads(1)
-    seeds = (np.random.default_rng(20261108).choice(100_000_000, args.count, replace=False) + 1_500_000_000).tolist()
-    contender = load_mlp(ROOT / 'training/results/fully-learned/candidate/best.pt')
-    result = dict(purpose='Diagnostic rule selection, no final-test claim', seeds=seeds, seed_count=len(seeds),
-                  sources={str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest()
-                           for p in [Path(__file__).resolve(), ROOT / 'training/scripts/offense_rules.py']}, configs={})
-    for name in args.configs:
-        rules = CONFIGS[name]
-        result['configs'][name] = {}
-        for pair in args.pairs:
-            def make(kind):
-                return contender if kind == 'contender' else make_policy(rules, 'defend', delay=5) if kind == 'delayed' else make_policy(rules, kind)
-            a, b = pair.split(':')
-            started = time.monotonic()
-            row = run_pair(rules, make(a), make(b), seeds)
-            row['seconds'] = time.monotonic() - started
-            result['configs'][name][pair] = row
-            args.out.parent.mkdir(parents=True, exist_ok=True)
-            args.out.write_text(json.dumps(result, indent=2) + '\n')
-            print(json.dumps(dict(config=name, pair=pair, seconds=row['seconds'], **{k: row['summary'][k] for k in
-                ['wins', 'losses', 'draws', 'median_decisive_returns', 'early_finish_rate', 'first_receiver_win_rate', 'locally_unreachable_scores']})), flush=True)
-
-
-if __name__ == '__main__':
-    main()

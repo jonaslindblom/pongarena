@@ -1,6 +1,7 @@
+import { modelFile } from './modelFiles'
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { readFileSync } from 'node:fs'
+import { readFileSync, readdirSync } from 'node:fs'
 import pb from 'onnx-proto'
 import { DenseModelError, validateArenaModel, validateModel } from '../src/validate'
 import { fitsDivision, smallestDivision } from '../src/competition'
@@ -76,7 +77,7 @@ test('matrix orientation does not change eligibility when every layer is dense',
 test('all existing plain policies remain playable under the dense contract', () => {
   for (const name of ['tracker', 'anticipator', 'challenger', 'pacer-v4', 'apprentice-v4',
     'contender-v3', 'selfplay-v3', 'apprentice-v3', 'selfplay-v2']) {
-    const stats = validateArenaModel(readFileSync(new URL(`../public/models/${name}.onnx`, import.meta.url)))
+    const stats = validateArenaModel(readFileSync(modelFile(`${name}`)))
     assert.ok(stats.architecture.widths)
     assert.deepEqual([stats.inputSize, stats.outputSize], [6, 3])
   }
@@ -84,7 +85,7 @@ test('all existing plain policies remain playable under the dense contract', () 
 
 test('physics programs and hybrid features remain inspectable archives but cannot enter the arena', () => {
   for (const name of ['handcrafted-nano-v4', 'handcrafted-small-v4', 'counter-attacker-v4', 'strategist-v3']) {
-    const bytes = readFileSync(new URL(`../public/models/${name}.onnx`, import.meta.url))
+    const bytes = readFileSync(modelFile(`${name}`))
     assert.equal(validateModel(bytes).inputSize, 6)
     assert.throws(() => validateArenaModel(bytes), DenseModelError)
     const disguised = pb.onnx.ModelProto.decode(bytes)
@@ -163,4 +164,12 @@ test('every parameter must be finite and stored only once in its float32 tensor'
   const extraTypedStorage = network()
   extraTypedStorage.graph!.initializer[0].int32Data = [123]
   assert.throws(() => validateArenaModel(encode(extraTypedStorage)), DenseModelError)
+})
+
+test('the shipped collection contains only current eligible models', () => {
+  const directory = new URL('../public/models/', import.meta.url)
+  const files = readdirSync(directory).filter((name) => name.endsWith('.onnx')).sort()
+  assert.deepEqual(files, ['apprentice-v4.onnx', 'pacer-v4.onnx', 'plain-nano-v4.onnx',
+    'prism-small-v4.onnx', 'robust-strong-v4.onnx', 'tracker.onnx', 'vector-nano-v4.onnx'])
+  for (const file of files) assert.ok(validateArenaModel(readFileSync(new URL(file, directory))).architecture.widths)
 })

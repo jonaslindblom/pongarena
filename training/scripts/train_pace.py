@@ -14,7 +14,7 @@ import onnx
 import torch
 from torch import nn
 
-from competition_eval import load_mlp
+from competition_eval import validate_seeds
 from pace_study import CONFIGS, PaceArena, make_policy, run_pair
 from policy import ROOT, actions, export, load_builtin
 
@@ -32,7 +32,7 @@ def actor(width):
 def export_v4(net,path):
     export(net,path)
     graph = onnx.load(path)
-    graph.graph.name = 'Rally Lab Pong v4 learned actor'
+    graph.graph.name = 'PongArena Pong v4 learned actor'
     props = {p.key:p.value for p in graph.metadata_props}
     props.update(rules='pong-v4',training='PyTorch DAgger',fixed_features='none')
     onnx.helper.set_model_props(graph,props)
@@ -53,7 +53,8 @@ def broad_observations(rng,n):
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument('--out',type=Path,default=ROOT/'training/results/pace-study/training/dagger-s411')
+    p.add_argument('--out',type=Path,required=True)
+    p.add_argument('--development-seeds',type=Path,required=True)
     p.add_argument('--seed',type=int,default=411)
     p.add_argument('--rounds',type=int,default=24)
     p.add_argument('--envs',type=int,default=256)
@@ -64,7 +65,12 @@ def main():
     p.add_argument('--initial',type=Path)
     p.add_argument('--replay-rounds',type=int,default=4)
     args = p.parse_args()
-    if (args.out/'config.json').exists():raise FileExistsError('Use a fresh output directory.')
+    if min(args.rounds,args.envs,args.horizon,args.epochs,args.width,args.eval_every,args.replay_rounds) < 1:
+        p.error('Training counts and width must be positive.')
+    dev = validate_seeds(json.loads(args.development_seeds.read_text()))
+    if any(seed < 1_000_000_000 for seed in dev):
+        p.error('Development seeds must be outside the training interval [0, 1000000000).')
+    if args.out.exists():raise FileExistsError('Use a fresh output directory.')
     args.out.mkdir(parents=True,exist_ok=True)
     torch.set_num_threads(1)
     torch.manual_seed(args.seed)
@@ -72,20 +78,22 @@ def main():
     rules = CONFIGS['pace13-v9-scaled']
     net = actor(args.width)
     if args.initial:
-        net.load_state_dict(torch.load(args.initial,weights_only=True))
+        state = torch.load(args.initial,weights_only=True)
+        net.load_state_dict({key.removeprefix('core.'):value for key,value in state.items()})
     teacher = make_policy(rules,'attack')
     defender = make_policy(rules,'defend')
     interceptor = make_policy(rules,'interceptor')
-    contender = load_mlp(ROOT/'training/results/fully-learned/candidate/best.pt')
-    tracker,anticipator = load_builtin('tracker'),load_builtin('anticipator')
-    policies = [teacher,defender,interceptor,contender,tracker,anticipator]
-    dev = (np.random.default_rng(20261130).choice(100_000_000,32,replace=False)+1_900_000_000).tolist()
+    strong = load_builtin('robust-strong-v4')
+    tracker,pacer = load_builtin('tracker'),load_builtin('pacer-v4')
+    policies = [teacher,defender,interceptor,strong,tracker,pacer]
     cfg = {k:str(v) if isinstance(v,Path) else v for k,v in vars(args).items()}
     cfg.update(rules=vars(rules),architecture=[6,args.width,args.width,3],activation='Tanh',
         learning_rate=.001,minibatch=2048,synthetic_states_per_round=16384,
         development_seeds=dev,training_seed_interval=[0,1_000_000_000],
         loss='cross entropy on geometric teacher labels; training-only teacher, plain inference',
-        selection='mean point margin versus adaptive attack, adaptive defense, original Contender, Tracker',
+        selection='mean point margin versus adaptive attack, adaptive defense, Robust Strong, Tracker',
+        reference_hashes={name:hashlib.sha256((ROOT/f'public/models/{name}.onnx').read_bytes()).hexdigest()
+            for name in ('robust-strong-v4','tracker','pacer-v4')},
         sources={str(path.relative_to(ROOT)):hashlib.sha256(path.read_bytes()).hexdigest()
             for path in (Path(__file__).resolve(),ROOT/'training/scripts/pace_study.py')})
     (args.out/'config.json').write_text(json.dumps(cfg,indent=2)+'\n')
@@ -98,7 +106,7 @@ def main():
     def evaluate(round_index,diagnostics):
         nonlocal best
         rows = {}
-        for name,opponent in [('attack',teacher),('defend',defender),('contender',contender),('tracker',tracker)]:
+        for name,opponent in [('attack',teacher),('defend',defender),('strong',strong),('tracker',tracker)]:
             rows[name] = run_pair(rules,net,opponent,dev)['summary']
         score = float(np.mean([r['point_margin'] for r in rows.values()]))
         row = dict(round=round_index,seconds=time.monotonic()-started,env_steps=total,

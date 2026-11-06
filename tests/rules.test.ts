@@ -1,3 +1,4 @@
+import { modelFile } from './modelFiles'
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
@@ -14,12 +15,12 @@ const burstUp: Pair<Scores> = [[0, 0, 0, 1, 0], [0, 1, 0, 0, 0]]
 
 test('the active arena accepts classic weights while archived burst weights remain inspectable only', () => {
   for (const name of ['tracker', 'pacer-v4', 'apprentice-v4']) {
-    const bytes = readFileSync(new URL(`../public/models/${name}.onnx`, import.meta.url))
+    const bytes = readFileSync(modelFile(`${name}`))
     const stats = validateArenaModel(bytes)
     assert.deepEqual([stats.inputSize, stats.outputSize], [6, 3])
   }
   for (const name of ['burst-tiny', 'burst-focus']) {
-    const bytes = readFileSync(new URL(`../public/models/${name}.onnx`, import.meta.url))
+    const bytes = readFileSync(modelFile(`${name}`))
     assert.equal(validateModel(bytes).inputSize, 8, 'Historical experiments can still verify their original exports')
     assert.throws(() => validateArenaModel(bytes), ArchivedModelError,
       'The live loader must reject archived actions before saving or creating a playable session')
@@ -87,7 +88,7 @@ test('a repeated physical position cannot draw a burst rally while either resour
 })
 
 test('size-study downloads are the evaluated plain eight-input/five-output weights in their stated classes', () => {
-  const manifest = JSON.parse(readFileSync(new URL('../training/results/burst-study/models/release/manifest.json', import.meta.url), 'utf8'))
+  const manifest = JSON.parse(readFileSync(new URL('./fixtures/training/results/burst-study/models/release/manifest.json', import.meta.url), 'utf8'))
   for (const [name, widths, params, macs, division] of [
     ['micro', [8, 16, 5], 229, 208, 'nano'],
     ['tiny', [8, 16, 16, 5], 501, 464, 'nano'],
@@ -95,7 +96,7 @@ test('size-study downloads are the evaluated plain eight-input/five-output weigh
     ['medium', [8, 64, 64, 5], 5061, 4928, 'standard'],
     ['large', [8, 128, 128, 5], 18309, 18048, 'standard'],
   ] as const) {
-    const bytes = readFileSync(new URL(`../public/models/burst-${name}.onnx`, import.meta.url))
+    const bytes = readFileSync(modelFile(`burst-${name}`))
     assert.equal(createHash('sha256').update(bytes).digest('hex'),
       manifest.files[`training/results/burst-study/models/release/${name}/model.onnx`])
     const model = pb.onnx.ModelProto.decode(bytes)
@@ -110,19 +111,19 @@ test('size-study downloads are the evaluated plain eight-input/five-output weigh
 })
 
 test('a model cannot mix the classic observation port with burst actions or vice versa', () => {
-  const bytes = readFileSync(new URL('../public/models/burst-micro.onnx', import.meta.url))
+  const bytes = readFileSync(modelFile('burst-micro'))
   const model = pb.onnx.ModelProto.decode(bytes)
   model.graph!.input![0].type!.tensorType!.shape!.dim![1].dimValue = 6
   assert.throws(() => validateModel(pb.onnx.ModelProto.encode(model).finish()), /action_scores/)
-  const classicBytes = readFileSync(new URL('../public/models/tracker.onnx', import.meta.url))
+  const classicBytes = readFileSync(modelFile('tracker'))
   const legacy = pb.onnx.ModelProto.decode(classicBytes)
   legacy.graph!.input![0].type!.tensorType!.shape!.dim![1].dimValue = 8
   assert.throws(() => validateModel(pb.onnx.ModelProto.encode(legacy).finish()), /action_scores/)
 })
 
 test('the focused follow-up remains a separately identified Standard model with its evaluated weights', () => {
-  const bytes = readFileSync(new URL('../public/models/burst-focus.onnx', import.meta.url))
-  const frozen = JSON.parse(readFileSync(new URL('../training/results/burst-study/models/followup-release/manifest.json', import.meta.url), 'utf8'))
+  const bytes = readFileSync(modelFile('burst-focus'))
+  const frozen = JSON.parse(readFileSync(new URL('./fixtures/training/results/burst-study/models/followup-release/manifest.json', import.meta.url), 'utf8'))
   assert.equal(createHash('sha256').update(bytes).digest('hex'), frozen.onnx_sha256)
   const stats = validateModel(bytes)
   assert.deepEqual([stats.inputSize, stats.outputSize, stats.params, stats.macs], [8, 5, 18309, 18048])

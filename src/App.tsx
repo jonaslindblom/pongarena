@@ -355,7 +355,7 @@ export default function App() {
           >
             <img src="/mark.svg" alt="" />
             <span>
-              Rally<span className="brand-light">Lab</span>
+              Pong<span className="brand-light">Arena</span>
             </span>
           </a>
           <nav aria-label="Main navigation">
@@ -510,7 +510,7 @@ export default function App() {
         {page === 'Field guide' && <Guide />}
         <footer>
           <span>
-            <FlaskConical size={13} /> Rally Lab <b>/</b> Local edition
+            <FlaskConical size={13} /> PongArena <b>/</b> Local edition
           </span>
           <span>
             <Monitor size={14} /> Browser inference
