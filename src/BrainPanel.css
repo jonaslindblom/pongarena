@@ -13,6 +13,7 @@
 .brain-layer-size { fill: #8fa795; font: 11px var(--mono); }
 .brain-node-label { fill: #b9cbbb; font: 10px var(--mono); }
 .brain-node-label.chosen { fill: #e5f7ce; font-weight: 700; }
+.brain-active { fill: #bed6ac; font: 10px var(--mono); }
 .brain-range { fill: #8fa795; font: 10px var(--mono); }
 .brain-selected { fill: none; stroke: #d6efb0; stroke-width: 1.3; }
 .brain-flow { fill: none; stroke: #a6d697; stroke-width: 1; opacity: .24; stroke-dasharray: 3 4; }

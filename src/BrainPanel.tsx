@@ -1,7 +1,7 @@
 import { Brain, ChevronDown } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import * as ort from 'onnxruntime-web/wasm'
-import { createBrainGraph, type BrainLayer } from './brain'
+import { activationLevels, createBrainGraph, type BrainLayer } from './brain'
 import type { Controller } from './models'
 import { choice, type Frame, type Pair, type Ruleset, type Side } from './rules'
 import type { Match } from './useMatch'
@@ -15,38 +15,41 @@ interface Snapshot {
 }
 const inputNames = ['Ball X', 'Ball Y', 'Velocity X', 'Velocity Y', 'Own paddle', 'Opponent']
 const actionNames = ['Left', 'Stay', 'Right']
-const number = (value: number) => value.toFixed(3)
+const number = (value: number) => value !== 0 && Math.abs(value) < 0.001 ? value.toExponential(1) : value.toFixed(3)
 
 function Network({ snapshot }: { snapshot: Snapshot }) {
   const { layers, values } = snapshot
   const x = (index: number) => 84 + index * 560 / (layers.length - 1)
   return (
     <div className="brain-graph-scroll" tabIndex={0} aria-label="Neural activation graph; scroll horizontally on narrow screens">
-      <svg className="brain-graph" viewBox="0 0 740 260" role="img" aria-label={`Real neuron activations at tick ${snapshot.tick}; selected move ${actionNames[snapshot.chosen]}`}>
+      <svg className="brain-graph" viewBox="0 0 740 280" role="img" aria-label={`Real neuron activations at tick ${snapshot.tick}; selected move ${actionNames[snapshot.chosen]}`}>
         {layers.slice(1).map((_, i) => (
           <path key={i} d={`M ${x(i) + 42} 134 C ${x(i) + 62} 134, ${x(i + 1) - 62} 134, ${x(i + 1) - 42} 134`}
             className="brain-flow" />
         ))}
         {layers.map((layer, index) => {
           const data = values[index]
-          const scale = Math.max(1, ...data.map(Math.abs))
+          const { peak, intensities } = activationLevels(data)
           const visible = Math.min(256, layer.width)
           const columns = layer.kind === 'hidden' ? Math.ceil(Math.sqrt(visible / 2)) : 1
           const rows = Math.ceil(visible / columns)
+          const small = layer.kind === 'hidden' && layer.width <= 32
+          const spacing = small ? 17 : 10
           return (
             <g key={layer.name}>
               <text x={x(index)} y="25" textAnchor="middle" className="brain-layer-name">{layer.kind === 'input' ? 'INPUT' : layer.kind === 'output' ? 'ACTION' : `HIDDEN ${index}`}</text>
               <text x={x(index)} y="43" textAnchor="middle" className="brain-layer-size">{layer.width}{layer.activation ? ` · ${layer.activation === 'Relu' ? 'ReLU' : 'Tanh'}` : ''}</text>
               {data.slice(0, visible).map((value, neuron) => {
-                const cx = x(index) + (neuron % columns - (columns - 1) / 2) * 10
-                const cy = 134 + (Math.floor(neuron / columns) - (rows - 1) / 2) * (layer.kind === 'hidden' ? Math.min(9, 156 / Math.max(1, rows - 1)) : layer.kind === 'output' ? 43 : 25)
+                const cx = x(index) + (neuron % columns - (columns - 1) / 2) * spacing
+                const cy = 134 + (Math.floor(neuron / columns) - (rows - 1) / 2) * (layer.kind === 'hidden' ? Math.min(small ? 17 : 9, 156 / Math.max(1, rows - 1)) : layer.kind === 'output' ? 43 : 25)
                 const selected = layer.kind === 'output' && neuron === snapshot.chosen
                 const label = layer.kind === 'input' ? inputNames[neuron] : layer.kind === 'output' ? actionNames[neuron] : `Neuron ${neuron + 1}`
                 return (
                   <g key={neuron}>
                     {selected && <circle cx={cx} cy={cy} r="11" className="brain-selected" />}
-                    <circle cx={cx} cy={cy} r={layer.kind === 'hidden' ? 3.1 : 5.5}
-                      fill={value < 0 ? '#eead78' : '#bce78b'} fillOpacity={0.12 + 0.88 * Math.min(1, Math.abs(value) / scale)}>
+                    <circle cx={cx} cy={cy} r={layer.kind === 'hidden' ? small ? 5.3 : 3.1 : 5.5}
+                      fill={value === 0 ? '#91a594' : value < 0 ? '#eead78' : '#bce78b'} fillOpacity={value === 0 ? 0.08 : 0.25 + 0.75 * intensities[neuron]}
+                      stroke={value === 0 ? '#65816e' : 'none'} strokeWidth={0.6}>
                       <title>{label}: {value.toPrecision(7)}</title>
                     </circle>
                     {layer.kind === 'input' && <text x={cx - 12} y={cy + 3} textAnchor="end" className="brain-node-label">{label}</text>}
@@ -54,7 +57,8 @@ function Network({ snapshot }: { snapshot: Snapshot }) {
                   </g>
                 )
               })}
-              <text x={x(index)} y="235" textAnchor="middle" className="brain-range">±{number(scale)}</text>
+              {layer.kind === 'hidden' && <text x={x(index)} y="235" textAnchor="middle" className="brain-active">{data.filter((value) => value !== 0).length} / {layer.width} active</text>}
+              <text x={x(index)} y="255" textAnchor="middle" className="brain-range">max |x| {number(peak)}</text>
             </g>
           )
         })}
@@ -132,8 +136,8 @@ function BrainView({ model, side, frame, previous, start, rules }: {
     <div className="brain-view">
       <div className="brain-source"><span>{model.name}</span><span>{snapshot ? `DECISION TICK ${snapshot.tick}` : loading ? 'OPENING MODEL' : 'AWAITING DECISION'}</span></div>
       {error ? <p className="brain-message" role="status">{error}</p> : snapshot ? <Network snapshot={snapshot} /> : <p className="brain-message">{loading ? 'Reading the network…' : 'Play or step the match to see real neuron activations.'}</p>}
-      <div className="brain-legend"><span><i /> Positive</span><span><i /> Negative</span><span>Dim = near zero</span></div>
-      <p className="brain-caption">Real model values · sampled up to 4 times/s. Brightness is scaled within each layer; hover a node for its value. Lines show layer flow, not connection strengths.{snapshot?.layers.some((layer) => layer.width > 256) ? ' First 256 neurons per layer shown.' : ''}</p>
+      <div className="brain-legend"><span><i /> Positive</span><span><i /> Negative</span><span>Dark = zero</span></div>
+      <p className="brain-caption">Real model values · sampled up to 4 times/s. Brightness is scaled within each layer and emphasizes small values; hover a node for its value. Active counts show nonzero values; zero is normal for ReLU. Lines show layer flow, not connection strengths.{snapshot?.layers.some((layer) => layer.width > 256) ? ' First 256 neurons per layer shown.' : ''}</p>
     </div>
   )
 }

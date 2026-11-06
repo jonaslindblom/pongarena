@@ -2,7 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync, readdirSync } from 'node:fs'
 import pb from 'onnx-proto'
-import { createBrainGraph } from '../src/brain'
+import { activationLevels, createBrainGraph } from '../src/brain'
 
 test('inspection exposes every hidden activation without changing the competing network or its identity', () => {
   for (const name of readdirSync(new URL('../public/models/', import.meta.url))) {
@@ -44,4 +44,13 @@ test('inspection supports an eligible linear policy with no hidden layers', () =
 test('inspection cannot turn a retired physics program into a playable dense model', () => {
   const bytes = readFileSync(new URL('./fixtures/models/counter-attacker-v4.onnx', import.meta.url))
   assert.throws(() => createBrainGraph(bytes), /plain dense network/)
+})
+
+
+test('small real activations remain visible while genuine zeros stay inactive', () => {
+  const small = activationLevels([0, 0.00004, -0.00001])
+  assert.equal(small.peak, 0.00004)
+  assert.deepEqual(small.intensities, [0, 1, 0.5], 'A hidden layer below one must still use the visible intensity range')
+  assert.deepEqual(activationLevels([0, 0, 0]), { peak: 0, intensities: [0, 0, 0] }, 'An inactive ReLU layer must never acquire artificial activity')
+  assert.deepEqual(activationLevels([0, 4, -1]).intensities, small.intensities, 'Display intensity depends on relative magnitude, not a model-specific numeric scale')
 })

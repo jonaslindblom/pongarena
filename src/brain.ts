@@ -25,3 +25,9 @@ export function createBrainGraph(bytes: Uint8Array) {
   layers.push({ name: 'action_scores', width: stats.outputSize, kind: 'output' })
   return { bytes: pb.onnx.ModelProto.encode(model).finish(), layers }
 }
+
+// Normalize each layer independently so small, real activations remain visible.
+export function activationLevels(values: readonly number[]) {
+  const peak = Math.max(0, ...values.map(Math.abs))
+  return { peak, intensities: values.map((value) => peak ? Math.sqrt(Math.abs(value) / peak) : 0) }
+}
