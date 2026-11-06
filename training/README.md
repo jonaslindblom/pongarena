@@ -4,7 +4,7 @@ The active game is **Classic v4** (`pong-v4`). The current competition contract 
 
 ## Current models
 
-`public/models/` is the only deployed model collection. [catalog.json](catalog.json) records the eight files, SHA-256 identities, selected training checkpoints and original archived export paths. Do not select a checkpoint by filename or historical performance alone: validate its actual graph.
+`public/models/` is the only deployed model collection. [catalog.json](catalog.json) records the nine files, SHA-256 identities, selected training checkpoints and retained evidence paths. Do not select a checkpoint by filename or historical performance alone: validate its actual graph.
 
 | Model | Parameters | Purpose |
 | --- | ---: | --- |
@@ -12,12 +12,15 @@ The active game is **Classic v4** (`pong-v4`). The current competition contract 
 | Pacer v4 | 17,795 | Established learned reference; default left player |
 | Apprentice v4 | 17,795 | Earlier DAgger checkpoint; default right player |
 | Plain Nano v4 | 447 | Trained Nano with local CMA refinement |
+| Refined Nano v4 | 163 | Trained Tanh Nano improved by small-step CMA; weaker overall than Plain Nano and Quill Plus |
 | Quill Plus v4 | 163 | Four handwritten refinements; stronger ten-opponent average with matchup tradeoffs |
 | Vector Nano v4 | 487 | Handcrafted dense Nano alternative |
 | Prism Small v4 | 1,815 | Handcrafted dense Small alternative |
 | Tracker | 163 | Simple baseline and human-play starter |
 
 Robust Strong and Plain Nano still have substantial weaknesses against adaptive scripts. Smaller models do not preserve full-size strength. These are retained study conclusions, not a newly run championship; see [evidence.md](evidence.md).
+
+Refined Nano is the frozen `cma-fine-g40` candidate: `6→16→3` Tanh, 163 parameters and 144 MACs. Its selected checkpoint, training/selection protocols, confirmation results and later Quill Plus comparison are retained in `public/training/refined-nano-v4-evidence.zip`; `/training/refined-nano-v4.html` summarizes both studies. The bundle includes the exact checkpoint at `training/runs/nano163-refine-20261106/cma/cma-fine-g40.pt`. Copy it to the catalog's local checkpoint path to enable checkpoint checks in a fresh checkout. The full-size DAgger trainer below cannot load this smaller topology.
 
 Old v1/v2/v3 policies may still be eligible dense networks, but are retired from the app roster. Burst models use the wrong input/action interface. Strategist, Handcrafted Nano/Small, Counter Attacker and shortcut-based Robust Small violate the active architecture contract. Retired model bytes and minimal historical manifests live in `tests/fixtures/` for compatibility and rejection tests.
 

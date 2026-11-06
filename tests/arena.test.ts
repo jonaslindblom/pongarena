@@ -311,6 +311,18 @@ test('Plain Nano publishes the confirmed trained candidate within the Nano budge
   assert.equal(smallestDivision(stats), 'nano')
 })
 
+test('Refined Nano preserves the evaluated 163-parameter candidate', () => {
+  const bytes = readFileSync(modelFile('refined-nano-v4'))
+  assert.equal(createHash('sha256').update(bytes).digest('hex'),
+    '3772611174d50c181668ed5f4984b65d6e8fbaad6b438a942941ad9901497633',
+    'The published strength claims require the independently confirmed weights')
+  const stats = validateArenaModel(bytes)
+  assert.deepEqual(stats.architecture.widths, [6, 16, 3])
+  assert.deepEqual(stats.architecture.operations.map((node) => node.op), ['Gemm', 'Tanh', 'Gemm'])
+  assert.deepEqual([stats.params, stats.macs, stats.nodes], [163, 144, 3])
+  assert.equal(smallestDivision(stats), 'nano')
+})
+
 test('Vector Nano publishes its frozen plain dense weights within the Nano budget', () => {
   const bytes = readFileSync(modelFile('vector-nano-v4'))
   assert.equal(createHash('sha256').update(bytes).digest('hex'),

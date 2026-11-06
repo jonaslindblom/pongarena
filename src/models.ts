@@ -83,6 +83,13 @@ export const presets = [
     description: 'A trained 6→16→12→8→3 ReLU policy with 447 parameters and 408 MACs. Beats unchanged Pacer in the retained confirmation study; Defender remains a major weakness. Uses only dense layers with distinct weights and biases.',
   },
   {
+    id: 'refined-nano-v4',
+    name: 'Refined Nano v4',
+    kind: 'Learned weights · Distillation + CMA refinement',
+    description: 'A trained 6→16→3 Tanh policy with 163 parameters and 144 MACs. Small-step weight search improves its unchanged starting model on fresh confirmation games. Plain Nano and Quill Plus remain stronger overall.',
+    report: '/training/refined-nano-v4.html',
+  },
+  {
     id: 'quill-plus-v4',
     name: 'Quill Plus v4',
     kind: 'Handcrafted weights · No training',
