@@ -70,6 +70,12 @@ export const presets = [
     report: '/training/pace-study.html',
   },
   {
+    id: 'plain-nano-v4',
+    name: 'Plain Nano v4',
+    kind: 'Learned weights · Distillation + CMA refinement',
+    description: 'A trained 6→16→12→8→3 ReLU policy with 447 parameters and 408 MACs. Beats unchanged Pacer in the retained confirmation study; Defender remains a major weakness. Uses only dense layers with distinct weights and biases.',
+  },
+  {
     id: 'vector-nano-v4',
     name: 'Vector Nano v4',
     kind: 'Handcrafted weights · No training',

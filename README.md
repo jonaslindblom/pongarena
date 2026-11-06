@@ -78,6 +78,8 @@ The active contract permits one to five sequential dense `Gemm` layers: zero to 
 
 ## Compare weights
 
+**Plain Nano v4** is the trained 447-parameter `6→16→12→8→3` ReLU preset (408 MACs). It publishes the plain-Nano study's preselected `precise-cma-7151` candidate, refined through local CMA weight search after student training. In the retained confirmation study it won 332 games, lost 145, and drew 35 against unchanged Pacer across 256 paired seeds. Defender remains a major weakness; this does not establish full-size playing strength. The built-in file is `public/models/plain-nano-v4.onnx`, SHA-256 `fd59c8f08927f3e0b9a196919ad80674dcd92bdc44087065e3d0a9fa54406e3c`.
+
 **Rankings** runs a local round robin with a selected roster, common serve seeds and both side assignments. Each pair of five-rally games awards one league point for a win, half for a tie, and zero for a loss. Equal totals share rank; unfinished leagues remain unranked. Cancel, export the result, or repeat the exact benchmark. Rules, contracts, roster hashes and seeds identify each result; results from different benchmarks are not interchangeable ratings.
 
 Scripts are available as reference opponents in the Arena, but do not enter weight-budget leagues or receive a model size class.

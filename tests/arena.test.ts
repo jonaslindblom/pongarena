@@ -296,6 +296,20 @@ test('v4 releases use the evaluated learned weights and expose their larger arch
   }
 })
 
+test('Plain Nano publishes the confirmed trained candidate within the Nano budget', () => {
+  const bytes = readFileSync(new URL('../public/models/plain-nano-v4.onnx', import.meta.url))
+  assert.equal(createHash('sha256').update(bytes).digest('hex'),
+    'fd59c8f08927f3e0b9a196919ad80674dcd92bdc44087065e3d0a9fa54406e3c',
+    'Publish the preselected confirmation candidate, not an earlier Nano checkpoint')
+  const stats = validateArenaModel(bytes)
+  assert.deepEqual([stats.inputSize, stats.outputSize], [6, 3])
+  assert.deepEqual(stats.architecture.widths, [6, 16, 12, 8, 3])
+  assert.deepEqual(stats.architecture.operations.map((node) => node.op),
+    ['Gemm', 'Relu', 'Gemm', 'Relu', 'Gemm', 'Relu', 'Gemm'])
+  assert.deepEqual([stats.params, stats.macs, stats.nodes], [447, 408, 7])
+  assert.equal(smallestDivision(stats), 'nano')
+})
+
 test('Vector Nano publishes its frozen plain dense weights within the Nano budget', () => {
   const bytes = readFileSync(new URL('../public/models/vector-nano-v4.onnx', import.meta.url))
   assert.equal(createHash('sha256').update(bytes).digest('hex'),
