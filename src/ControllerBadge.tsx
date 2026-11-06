@@ -1,4 +1,4 @@
-import { Code2, Cpu, Keyboard, Pencil } from 'lucide-react'
+import { Code2, Cpu, Keyboard } from 'lucide-react'
 import { DIVISIONS, smallestDivision } from './competition'
 import type { Controller } from './models'
 import './ControllerBadge.css'
@@ -15,7 +15,7 @@ export function ControllerBadge({ model, compact = false }: { model?: Controller
   const weights = model.type === 'weights'
   const handcrafted = weights && model.handcrafted
   const division = weights ? DIVISIONS.find((d) => d.id === smallestDivision(model)) : undefined
-  const Icon = model.type === 'human' ? Keyboard : model.type === 'script' ? Code2 : handcrafted ? Pencil : Cpu
+  const Icon = model.type === 'human' ? Keyboard : model.type === 'script' ? Code2 : Cpu
   const label = model.type === 'human' ? 'Human' : model.type === 'script' ? 'Script'
     : handcrafted ? (compact ? 'Handcrafted' : 'Handcrafted weights') : 'Weights'
   const count = compact && model.params >= 1000

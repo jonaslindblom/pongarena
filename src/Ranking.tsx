@@ -1,4 +1,4 @@
-import { ArrowDownToLine, Pencil, Play, RotateCcw, Shuffle, Square, Trophy } from 'lucide-react'
+import { ArrowDownToLine, Cpu, Play, RotateCcw, Shuffle, Square, Trophy } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import {
   DIVISIONS, fitsDivision, restoreCompetition, runCompetition, smallestDivision, standings,
@@ -110,7 +110,7 @@ export function Ranking({ entrants, handcraftedHashes, rulesId, contractId, play
   }
   function handcraftedLabel(hash: string) {
     if (!handcraftedHashes.includes(hash)) return null
-    return <span className="ranking-handcrafted"><Pencil size={10} aria-hidden="true" />Handcrafted · No training</span>
+    return <span className="ranking-handcrafted"><Cpu size={10} aria-hidden="true" />Handcrafted · No training</span>
   }
 
   return (

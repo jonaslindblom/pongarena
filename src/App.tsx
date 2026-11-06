@@ -9,7 +9,6 @@ import {
   Gamepad2,
   Layers3,
   Monitor,
-  Pencil,
   Smartphone,
   Plus,
   Upload,
@@ -444,7 +443,7 @@ export default function App() {
                   data-weight-origin={c.handcrafted ? 'handcrafted' : undefined}>
                   <div className="library-top">
                     <span className="library-icon">
-                      {c.handcrafted ? <Pencil size={27} aria-hidden="true" /> : <ModelIcon id={c.id} size={27} />}
+                      <ModelIcon id={c.id} size={27} />
                     </span>
                     <span className="mini-tag">
                       {c.id.startsWith('local-') ? 'IMPORTED' : 'BUILT-IN'}
