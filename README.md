@@ -6,6 +6,10 @@ PongArena compares two ways to build neural controllers: **Quill**, a network wi
 
 **Follow** is a playable teaching example with just **13 handwritten parameters and 9 MACs per decision**. [Understand every weight](docs/FOLLOW.md), then inspect its single hidden neuron in the arena.
 
+**Predict75** uses **75 handwritten parameters and 63 MACs per decision**, with a
+`6 → 6 → 3 → 3` layout. It predicts landings and a wall bounce while omitting
+Quill’s recovery and opponent-dependent aiming. [Construction and limitations](docs/PREDICT75.md).
+
 The project is inspired by [Sparks of Weight-Space Programming](https://rikiyat.github.io/blog/weight-space-programming/), which explores reasoning directly about neural weights. [How Quill works](docs/QUILL.md) explains its construction and limitations. The league explores how this small handwritten policy compares with learned ones.
 
 [League standings](public/league.md) · [Train the models](training/README.md) · [Contribute a model](CONTRIBUTING.md) · [Rules](docs/RULES.md)
@@ -31,7 +35,7 @@ To play from a phone on the same Wi-Fi, use `npm run dev -- --host 0.0.0.0` and 
 
 ## League
 
-The deployed League page uses verified PR evaluation results: 128 shared serve sets sampled after model hashes are frozen, with both side assignments. Saved seeds and hashes make the results replayable. The checked-in [standings](public/league.md) remain a 16-seed development benchmark: **192 games** for Follow, Quill, Small and Large.
+The deployed League page uses verified PR evaluation results: 128 shared serve sets sampled after model hashes are frozen, with both side assignments. Saved seeds and hashes make the results replayable. The checked-in [standings](public/league.md) remain a 16-seed development benchmark: **320 games** for Follow, Predict75, Quill, Small and Large.
 
 The current `pong-v2` benchmark uses centered, gentle serves with the same frozen model files; its scores are separate from the original `pong` results.
 
@@ -62,10 +66,10 @@ npm run build
 npm run preview
 ```
 
-The static build is written to `dist/`. Python is only needed to [train models](training/README.md) or rebuild [Follow](docs/FOLLOW.md#rebuild-it) and [Quill](docs/QUILL.md#rebuild-it).
+The static build is written to `dist/`. Python is only needed to [train models](training/README.md) or rebuild [Follow](docs/FOLLOW.md#rebuild-it), [Quill](docs/QUILL.md#rebuild-it) and [Predict75](docs/PREDICT75.md#reproduce).
 
 - `src/`: game, browser interface, model validation and league logic.
-- `public/models/`: the four bundled ONNX files.
+- `public/models/`: the bundled ONNX files.
 - `public/league.json` and `public/league.md`: reference results.
 - `handwritten/`: standalone handwritten constructors for Follow and Quill.
 - `training/`: standalone PyTorch imitation, reinforcement learning and evaluation.
