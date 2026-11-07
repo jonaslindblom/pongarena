@@ -113,8 +113,10 @@ def main():
     torch.set_num_threads(1)
     from evaluate import DEVELOPMENT_SEEDS, FINAL_SEEDS
     assert all(1_000_000_000 <= seed < 2_000_000_000 for seed in DEVELOPMENT_SEEDS)
-    assert all(2_500_000_000 <= seed < 2_500_100_000 for seed in FINAL_SEEDS)
-    assert len(set(FINAL_SEEDS)) == 64
+    assert len(set(DEVELOPMENT_SEEDS)) == 32
+    assert all(2_510_000_000 <= seed < 2_600_000_000 for seed in FINAL_SEEDS)
+    assert len(set(FINAL_SEEDS)) == 128
+    assert set(DEVELOPMENT_SEEDS).isdisjoint(FINAL_SEEDS)
     physics()
     teachers()
     if args.models:

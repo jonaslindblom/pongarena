@@ -1,4 +1,4 @@
-"""Train an independent Pong policy from random weights using geometric teachers."""
+"""Train a Pong policy from random weights, then improve it through game outcomes."""
 import argparse
 import json
 from pathlib import Path
@@ -10,7 +10,7 @@ from game import Arena, reflect
 from teachers import teacher
 from models import network, decide
 from export import export_model
-from evaluate import DEVELOPMENT_SEEDS, field
+from evaluate import development_field
 
 HERE = Path(__file__).resolve().parent
 
@@ -21,11 +21,11 @@ def synthetic(rng, n, contacts):
         rng.integers(15, 146, n), rng.integers(15, 146, n)], 1)
     # Half the synthetic positions emphasize the final approach to our paddle.
     m = n // 2 if contacts else 0
-    raw[:m, 0] = rng.integers(16, 81, m)
+    raw[:m, 0] = rng.integers(16, 101, m)
     raw[:m, 2] = -np.abs(raw[:m, 2])
     ticks = np.ceil((raw[:m, 0]-15) / -raw[:m, 2])
     landing = reflect(raw[:m, 1] + ticks * raw[:m, 3])
-    raw[:m, 4] = np.clip(landing + rng.integers(-20, 21, m), 15, 145)
+    raw[:m, 4] = np.clip(landing + rng.integers(-24, 25, m), 15, 145)
     return ((raw - [180, 80, 0, 0, 80, 80]) / [180, 80, 6, 6, 80, 80]).astype(np.float32)
 
 
@@ -52,9 +52,31 @@ def train(config, output, name):
     best = -2.
     started = time.monotonic()
     (output / 'config.json').write_text(json.dumps(config, indent=2) + '\n')
+
+    def select(candidate, row):
+        nonlocal best
+        evaluation = development_field(candidate)
+        score = float(np.mean([result['point_margin'] for result in evaluation.values()]))
+        if not np.isfinite(score):
+            raise ValueError('Development evaluation produced a non-finite score.')
+        row.update(development_margin=score, opponents=evaluation)
+        if score > best:
+            best = score
+            torch.save({'widths': config['widths'], 'activation': config['activation'],
+                        'state_dict': candidate.state_dict()}, output / 'model.pt')
+            method = ('PyTorch imitation of geometric scripts; random initialization' if row['phase'] == 'imitation'
+                      else 'PyTorch imitation followed by PPO against scripts and past learned policies; random initialization')
+            export_model(candidate, output / 'model.onnx', config['activation'], name.capitalize(), method)
+            (output / 'selection.json').write_text(json.dumps(row, indent=2) + '\n')
+
+    def record(row):
+        with (output / 'metrics.jsonl').open('a') as f:
+            f.write(json.dumps(row) + '\n')
+        print(json.dumps({k: v for k, v in row.items() if k != 'opponents'}), flush=True)
+
     for iteration in range(1, config['rounds'] + 1):
         xs, ys = [], []
-        beta = max(.05, 1 - iteration / config['teacher_rounds'])
+        beta = max(config.get('teacher_floor', 0.), 1 - iteration / config['teacher_rounds'])
         for _ in range(config['horizon']):
             obs = arena.obs()
             labels = labels_for(obs)
@@ -80,13 +102,16 @@ def train(config, output, name):
         replay_x, replay_y = replay_x[-config['replay_rounds']:], replay_y[-config['replay_rounds']:]
         x = torch.from_numpy(np.concatenate(replay_x))
         y = torch.from_numpy(np.concatenate(replay_y))
-        optimizer.param_groups[0]['lr'] = config['learning_rate'] * (.3 + .7 * (1 - (iteration - 1) / config['rounds']))
+        critical = (x[:, 2] < 0) & (x[:, 0] < -.45)
+        importance = torch.where(critical, float(config.get('contact_weight', 1)), 1.)
+        floor = config.get('learning_rate_floor', .15)
+        optimizer.param_groups[0]['lr'] = config['learning_rate'] * (floor + (1 - floor) * (1 - (iteration - 1) / config['rounds']))
         total_loss, correct, seen = 0., 0, 0
         for _ in range(config['epochs']):
             for ids in torch.randperm(len(x)).split(config['batch_size']):
                 logits = policy(x[ids])
                 targets = y[ids]
-                loss = nn.functional.cross_entropy(logits, targets)
+                loss = (nn.functional.cross_entropy(logits, targets, reduction='none') * importance[ids]).mean()
                 if not torch.isfinite(loss):
                     raise ValueError('Training produced a non-finite loss.')
                 optimizer.zero_grad()
@@ -96,26 +121,26 @@ def train(config, output, name):
                 total_loss += float(loss.detach()) * len(ids)
                 correct += int((logits.argmax(-1) == targets).sum())
                 seen += len(ids)
-        row = {'round': iteration, 'loss': total_loss / seen, 'accuracy': correct / seen}
+        row = {'phase': 'imitation', 'round': iteration, 'loss': total_loss / seen, 'accuracy': correct / seen}
         if iteration % config['evaluate_every'] == 0 or iteration == config['rounds']:
-            evaluation = field(policy, DEVELOPMENT_SEEDS)
-            score = float(np.mean([result['point_margin'] for result in evaluation.values()]))
-            if not np.isfinite(score):
-                raise ValueError('Development evaluation produced a non-finite score.')
-            row.update(development_margin=score, opponents=evaluation)
-            if score > best:
-                best = score
-                torch.save({'widths': config['widths'], 'activation': config['activation'],
-                            'state_dict': policy.state_dict()}, output / 'model.pt')
-                export_model(policy, output / 'model.onnx', config['activation'], name.capitalize())
-                (output / 'selection.json').write_text(json.dumps(row, indent=2) + '\n')
-        with (output / 'metrics.jsonl').open('a') as f:
-            f.write(json.dumps(row) + '\n')
-        print(json.dumps({k: v for k, v in row.items() if k != 'opponents'}), flush=True)
+            select(policy, row)
+        record(row)
     if not (output / 'model.onnx').exists():
         raise RuntimeError('Training did not select a model.')
+    reinforcement = None
+    if config.get('ppo', {}).get('rounds', 0):
+        from ppo import finetune
+        saved = torch.load(output / 'model.pt', map_location='cpu', weights_only=True)
+        policy.load_state_dict(saved['state_dict'])
+        # Use a separate repeatable random stream for outcome learning.
+        reinforcement = finetune(policy, config['ppo'], config['seed'] + 1100,
+                                 on_evaluate=select, on_progress=record)
+    imitation_steps = config['rounds'] * config['envs'] * config['horizon']
     (output / 'run.json').write_text(json.dumps({'parameters': params, 'seconds': time.monotonic() - started,
-        'environment_steps': config['rounds'] * config['envs'] * config['horizon'],
+        'environment_steps': imitation_steps + (reinforcement['environment_steps'] if reinforcement else 0),
+        'imitation_environment_steps': imitation_steps,
+        'ppo_seed': config['seed'] + 1100 if reinforcement else None,
+        'reinforcement': reinforcement,
         'best_development_margin': best}, indent=2) + '\n')
 
 
@@ -124,11 +149,16 @@ def main():
     parser.add_argument('--size', choices=['small', 'large'], required=True)
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--config', type=Path)
+    parser.add_argument('--seed', type=int, help='Override initialization and training seed')
     parser.add_argument('--smoke', action='store_true', help='Tiny pipeline check; not a strength benchmark')
     args = parser.parse_args()
     config = json.loads((args.config or HERE / 'configs' / (args.size + '.json')).read_text())
+    if args.seed is not None:
+        config['seed'] = args.seed
     if args.smoke:
         config.update(rounds=1, envs=8, horizon=8, epochs=1, synthetic=64)
+        if config.get('ppo'):
+            config['ppo'].update(rounds=2, envs=8, horizon=64, epochs=1, batch_size=128, critic_warmup=0)
     train(config, args.out, args.size)
 
 

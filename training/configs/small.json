@@ -17,5 +17,7 @@
   "learning_rate": 0.003,
   "evaluate_every": 8,
   "teacher_rounds": 64,
-  "contacts": false
+  "contacts": false,
+  "teacher_floor": 0.05,
+  "learning_rate_floor": 0.3
 }

@@ -2,7 +2,7 @@
 
 Play Pong against tiny neural networks, watch them compete, and inspect their neurons as they play. Everything runs locally in the browser through ONNX Runtime Web.
 
-PongArena compares two ways to build neural controllers: **Quill**, a network with 163 handwritten parameters, and **Small** and **Large**, trained independently with PyTorch using scripted teachers. Quill expresses prediction, wall reflection and aiming directly in dense weights. The trained models use no Quill weights, targets or opponents during training or selection; Quill enters the final comparison after they are frozen.
+PongArena compares two ways to build neural controllers: **Quill**, a network with 163 handwritten parameters, and **Small** and **Large**, trained independently with PyTorch. Small learns from scripted teachers; Large adds reinforcement learning from game outcomes against scripts and past learned policies. Quill expresses prediction, wall reflection and aiming directly in dense weights. The trained models use no handwritten weights, targets or opponents during training or selection; Quill enters the final comparison after they are frozen.
 
 **Follow** is a playable teaching example with just **13 handwritten parameters and 9 MACs per decision**. [Understand every weight](docs/FOLLOW.md), then inspect its single hidden neuron in the arena.
 
@@ -61,7 +61,7 @@ The static build is written to `dist/`. Python is only needed to [train models](
 - `public/models/`: the four bundled ONNX files.
 - `public/league.json` and `public/league.md`: reference results.
 - `handwritten/`: standalone handwritten constructors for Follow and Quill.
-- `training/`: independent PyTorch training and evaluation using scripted teachers.
+- `training/`: standalone PyTorch imitation, reinforcement learning and evaluation.
 - `scripts/`: league generation for local development and CI.
 - `tests/`: game, model and competition checks.
 

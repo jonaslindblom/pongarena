@@ -2,7 +2,7 @@
 
 Quill plays Pong with **163 parameters** in a `6 → 12 → 4 → 3 → 3` ReLU network. Its weights are written directly from geometric formulas. It uses no optimizer, training dataset or learned checkpoint. Every decision runs through the same dense ONNX operations as the trained models.
 
-The [constructor](../handwritten/quill.py) is independent of the PyTorch training code. Small and Large learn from scripted teachers, without Quill's weights, outputs or matches during training and selection. The frozen models meet in the final league so the two methods can be compared.
+The [constructor](../handwritten/quill.py) is independent of the PyTorch training code. Small and Large learn from scripted teachers; Large also learns from game outcomes. Neither uses Quill's weights, outputs or matches during training and selection. The frozen models meet in the final league so the two methods can be compared.
 
 The project is inspired by [Sparks of Weight-Space Programming](https://rikiyat.github.io/blog/weight-space-programming/) by Rikiya Takehi, Jayden Teoh, Alex Zhang and Omar Khattab. Their article explores reasoning directly about neural weights, including constructing game-playing networks. Quill is a small, inspectable example of expressing a control policy in weights. Its design was evaluated and adjusted through play; it is not a claim to reproduce the article's zero-shot experiments.
 

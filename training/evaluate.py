@@ -11,7 +11,33 @@ from teachers import teacher
 
 DEVELOPMENT_SEEDS = [1100000149, 1200000311, 1300000487, 1400000621,
                      1500000793, 1600000931, 1700001097, 1800001249]
-FINAL_SEEDS = [int(x) for x in np.random.default_rng(774911).choice(np.arange(2_500_000_000, 2_500_100_000), 64, replace=False)]
+DEVELOPMENT_SEEDS += [1_000_000_000 + int(x) for x in
+                      np.random.default_rng(901837).choice(1_000_000_000, 24, replace=False)]
+FINAL_SEEDS = [2_510_000_000 + int(x) for x in
+               np.random.default_rng(612907).choice(90_000_000, 128, replace=False)]
+INTERVAL_METHOD = ('95% percentile bootstrap of mean rally score; 4096 resamples of serve seeds, '
+                   'keeping both sides and all five rallies together. Measures serve-set uncertainty, '
+                   'not variation between training runs.')
+
+
+def summarize(outcomes, sides, seed_count):
+    """Treat each paired serve seed as one observation, not ten independent rallies."""
+    outcomes, sides = np.asarray(outcomes), np.asarray(sides)
+    if seed_count < 1 or outcomes.shape != (seed_count * 10,) or sides.shape != outcomes.shape:
+        raise ValueError('Expected ten paired rallies per evaluation seed.')
+    if not np.isin(outcomes, [0, 1, 2]).all() or not np.isin(sides, [0, 1]).all():
+        raise ValueError('Evaluation requires completed rallies and valid player sides.')
+    won = outcomes == sides
+    lost = (outcomes < 2) & ~won
+    draws = outcomes == 2
+    by_seed = (won.astype(int) - lost.astype(int)).reshape(2, seed_count, 5).sum((0, 2))
+    paired_scores = .5 + by_seed / 20
+    samples = np.random.default_rng(831701).choice(paired_scores, (4096, seed_count)).mean(axis=1)
+    interval = np.quantile(samples, [.025, .975]).tolist()
+    return {'wins': int(won.sum()), 'draws': int(draws.sum()), 'losses': int(lost.sum()),
+            'rally_score': float(paired_scores.mean()), 'rally_score_ci95': interval,
+            'point_margin': float(by_seed.mean() / 10),
+            'paired_point_margin': by_seed.tolist(), 'paired_rally_score': paired_scores.tolist()}
 
 
 def onnx_policy(path):
@@ -30,6 +56,9 @@ def onnx_policy(path):
 
 
 def pair(a, b, seeds):
+    seeds = list(seeds)
+    if not seeds or len(set(seeds)) != len(seeds) or any(not 0 <= seed < 2 ** 32 for seed in seeds):
+        raise ValueError('Evaluation seeds must be distinct uint32 values.')
     frames, sides = [], []
     for side in (0, 1):
         for seed in seeds:
@@ -55,14 +84,7 @@ def pair(a, b, seeds):
         if (outcomes >= 0).all():
             break
     assert (outcomes >= 0).all()
-    won = outcomes == sides
-    lost = (outcomes < 2) & ~won
-    draws = outcomes == 2
-    by_seed = (won.astype(int) - lost.astype(int)).reshape(2, len(seeds), 5).sum((0, 2))
-    return {'wins': int(won.sum()), 'draws': int(draws.sum()), 'losses': int(lost.sum()),
-            'rally_score': float((won.sum() + .5 * draws.sum()) / len(frames)),
-            'point_margin': float(by_seed.mean() / 10),
-            'paired_point_margin': by_seed.tolist()}
+    return summarize(outcomes, sides, len(seeds))
 
 
 def field(policy, seeds):
@@ -70,21 +92,29 @@ def field(policy, seeds):
     return {name: pair(policy, opponent, seeds) for name, opponent in opponents.items()}
 
 
+def development_field(policy, seeds=DEVELOPMENT_SEEDS):
+    """Checkpoint selection cannot consume final or fresh evaluation seeds."""
+    if not seeds or any(not 1_000_000_000 <= seed < 2_000_000_000 for seed in seeds):
+        raise ValueError('Checkpoint selection requires development seeds in [1e9, 2e9).')
+    return field(policy, seeds)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('model', type=Path)
     split = parser.add_mutually_exclusive_group()
     split.add_argument('--seeds', choices=['development', 'final'], default='final')
-    split.add_argument('--seed', type=int, help='Generate 64 fresh evaluation seeds from this RNG seed')
+    split.add_argument('--seed', type=int, help='Generate 128 fresh evaluation seeds from this RNG seed')
     parser.add_argument('--opponent', type=Path, help='Also compare against this ONNX after freezing your model')
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     if args.output.exists():
         raise FileExistsError('Choose a fresh output path.')
-    seeds = ([int(x) + 2_000_000_000 for x in np.random.default_rng(args.seed).choice(400_000_000, 64, replace=False)]
+    seeds = ([int(x) + 2_000_000_000 for x in np.random.default_rng(args.seed).choice(400_000_000, 128, replace=False)]
              if args.seed is not None else DEVELOPMENT_SEEDS if args.seeds == 'development' else FINAL_SEEDS)
     data = {'model': args.model.name, 'sha256': hashlib.sha256(args.model.read_bytes()).hexdigest(),
-            'seeds': seeds, 'rallies_per_side': 5, 'opponents': field(onnx_policy(args.model), seeds)}
+            'seeds': seeds, 'rallies_per_side': 5, 'interval_method': INTERVAL_METHOD,
+            'opponents': field(onnx_policy(args.model), seeds)}
     if args.opponent:
         data['additional_opponent'] = {
             'model': args.opponent.name,

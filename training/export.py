@@ -30,7 +30,8 @@ def export_weights(weights, path, activation='Tanh', name='Pong model', method='
     path.write_bytes(model.SerializeToString())
 
 
-def export_model(policy, path, activation='Tanh', name='Pong model'):
+def export_model(policy, path, activation='Tanh', name='Pong model',
+                 method='PyTorch imitation of geometric scripts; random initialization'):
     weights = [(layer.weight.detach().cpu().numpy(), layer.bias.detach().cpu().numpy())
                for layer in policy if hasattr(layer, 'weight')]
-    export_weights(weights, path, activation, name, 'PyTorch imitation of geometric scripts; random initialization')
+    export_weights(weights, path, activation, name, method)

@@ -65,8 +65,11 @@ jobs:
           python -m pip install -r training/requirements.txt
       - name: Exercise training and ONNX export
         run: |
+          python -m unittest discover -s training -p 'test_*.py'
           python training/train.py --size small --smoke --out "$RUNNER_TEMP/training-smoke"
           python training/check.py --models public/models --run "$RUNNER_TEMP/training-smoke"
+          python training/train.py --size large --smoke --out "$RUNNER_TEMP/training-large-smoke"
+          python training/check.py --run "$RUNNER_TEMP/training-large-smoke"
       - name: Reproduce handwritten weights independently
         run: |
           python handwritten/quill.py --out "$RUNNER_TEMP/quill.onnx"

@@ -4,7 +4,7 @@ Use Node.js 22 and `npm ci`. Import an ONNX file under **Models** to validate it
 
 For a small handwritten example, [Follow](docs/FOLLOW.md) explains all 13 parameters and can be rebuilt with [its constructor](handwritten/follow.py).
 
-Keep the two approaches independent: [Quill's constructor](handwritten/quill.py) writes fixed weights, while [training](training/README.md) starts from random weights and uses scripted teachers. Training and checkpoint selection must not use Quill's weights, outputs or matches; compare frozen models with Quill afterward.
+Keep the two approaches independent: [Quill's constructor](handwritten/quill.py) writes fixed weights, while [training](training/README.md) starts from random weights, learns from scripts and improves Large through game outcomes. Training and checkpoint selection must not use handwritten models' weights, outputs or matches; compare frozen models with Quill afterward.
 
 ## Submit a model
 
@@ -29,7 +29,7 @@ The league generator validates every model and records its SHA-256, parameter co
 
 ## PR checks
 
-The [Check and rank workflow](.github/workflows/check.yml) runs tests, replays the league and builds the app. A separate CPU job checks the training physics, runs a tiny training example and verifies its ONNX export. It also regenerates Follow and Quill and requires byte-for-byte matches with their shipped files. The workflow fails if either committed league file is stale, displays regenerated standings in the summary, and uploads them as **league-results**. Review and commit any needed update; CI has read-only repository permissions and does not push changes.
+The [Check and rank workflow](.github/workflows/check.yml) runs tests, replays the league and builds the app. A separate CPU job tests training and evaluation, checks physics, and runs tiny Small and Large recipes with ONNX export checks. It also regenerates Follow and Quill and requires byte-for-byte matches with their shipped files. The workflow fails if either committed league file is stale, displays regenerated standings in the summary, and uploads them as **league-results**. Review and commit any needed update; CI has read-only repository permissions and does not push changes.
 
 The reference league uses single-threaded ONNX Runtime Web CPU/WASM and 16 public seeds from `src/league.ts`: 192 games among the four bundled models. Browser leagues use the same game and scoring code. Scores from different opponent fields or seed sets are different benchmarks, so compare results with matching inputs.
 

@@ -171,7 +171,7 @@ function Guide({ onDeviceTest }: { onDeviceTest: () => void }) {
         <h3>Train a model</h3>
         <p>
           The repository’s <code>training/</code> folder contains a standalone PyTorch recipe for
-          Small and Large, with the game physics, scripted teachers, evaluation and ONNX export.
+          Small and Large, with scripted teachers, reinforcement learning, evaluation and ONNX export.
           Start with its README, then import your exported model here.
         </p>
         <h3>Check your device</h3>
