@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: pages
@@ -16,7 +17,7 @@ jobs:
   build:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v7
         with:
@@ -26,9 +27,81 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npm run models:check
       - run: npm test
       - run: npm run league:check
+      - name: Identify the exact models and evaluator being published
+        id: inputs
+        run: |
+          identity=$(node --import tsx scripts/generate-league.ts --identity)
+          echo "identity=$identity" >> "$GITHUB_OUTPUT"
+      - name: Find the merged PR's successful trusted evaluation
+        id: evaluation
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          EVALUATION_IDENTITY: ${{ steps.inputs.outputs.identity }}
+        run: node --import tsx scripts/ci-artifacts.ts find-results --identity "$EVALUATION_IDENTITY"
+      - name: Download the accepted results
+        if: steps.evaluation.outputs.found == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ steps.evaluation.outputs.artifact-name }}
+          run-id: ${{ steps.evaluation.outputs.run-id }}
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/accepted-league
+      - name: Recover a previously drawn trusted-main serve plan
+        if: steps.evaluation.outputs.bootstrap == 'true'
+        id: main-plan
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          EVALUATION_IDENTITY: ${{ steps.inputs.outputs.identity }}
+        run: node --import tsx scripts/ci-artifacts.ts find-main-plan --identity "$EVALUATION_IDENTITY"
+      - name: Download the saved trusted-main plan
+        if: steps.evaluation.outputs.bootstrap == 'true' && steps.main-plan.outputs.found == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: main-evaluation-plan-${{ steps.inputs.outputs.identity }}
+          run-id: ${{ steps.main-plan.outputs.run-id }}
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/accepted-league
+      - name: Freeze a trusted-main bootstrap serve plan
+        if: steps.evaluation.outputs.bootstrap == 'true' && steps.main-plan.outputs.found != 'true'
+        run: |
+          mkdir -p "$RUNNER_TEMP/accepted-league"
+          npm run league -- --create-plan "$RUNNER_TEMP/accepted-league/evaluation-plan.json" --count 128
+      - name: Persist the trusted-main plan before evaluation
+        if: steps.evaluation.outputs.bootstrap == 'true' && steps.main-plan.outputs.found != 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: main-evaluation-plan-${{ steps.inputs.outputs.identity }}
+          path: ${{ runner.temp }}/accepted-league/evaluation-plan.json
+          if-no-files-found: error
+          retention-days: 90
+      - name: Bootstrap a trusted-main evaluation for infrastructure changes
+        if: steps.evaluation.outputs.bootstrap == 'true'
+        run: npm run league -- --plan "$RUNNER_TEMP/accepted-league/evaluation-plan.json" --output "$RUNNER_TEMP/accepted-league"
+      - name: Verify and publish the exact accepted results
+        if: steps.evaluation.outputs.found == 'true'
+        env:
+          EVALUATED_PR: ${{ steps.evaluation.outputs.pr-number }}
+        run: |
+          if test -n "$EVALUATED_PR"; then
+            npm run league:publish -- --source "$RUNNER_TEMP/accepted-league" --pr "$EVALUATED_PR"
+          else
+            npm run league:publish -- --source "$RUNNER_TEMP/accepted-league"
+          fi
+      - name: Verify the trusted-main bootstrap results
+        if: steps.evaluation.outputs.bootstrap == 'true'
+        run: npm run league:publish -- --source "$RUNNER_TEMP/accepted-league"
       - run: npm run build
+      - name: Save the verified published league for retries and metadata-only updates
+        uses: actions/upload-artifact@v7
+        with:
+          name: published-league-${{ steps.inputs.outputs.identity }}
+          path: ${{ runner.temp }}/accepted-league/
+          if-no-files-found: error
+          retention-days: 90
+          overwrite: true
       - uses: actions/upload-pages-artifact@v4
         with:
           path: dist

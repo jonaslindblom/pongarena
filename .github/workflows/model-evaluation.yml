@@ -1,0 +1,120 @@
+name: Model submission gate
+run-name: 'Model PR #${{ github.event.pull_request.number }} at ${{ github.event.pull_request.head.sha }}'
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: model-evaluation-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  evaluate:
+    name: Validate and evaluate submitted models
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: evaluator
+    steps:
+      # Only the trusted base evaluator runs. The PR checkout supplies data files.
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: evaluator
+          persist-credentials: false
+      - uses: actions/checkout@v7
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: submission
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /public/models/
+            /src/roster.ts
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: evaluator/package-lock.json
+      - run: npm ci
+      - name: Require model and evaluator changes in separate PRs
+        id: scope
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node --import tsx scripts/ci-artifacts.ts check-scope
+      - name: Enforce the submission contract and finite WASM output
+        env:
+          PR_SUBMITTER: ${{ github.event.pull_request.user.login }}
+        run: npm run models:check -- --models-dir ../submission/public/models --roster ../submission/src/roster.ts --submitter "$PR_SUBMITTER"
+      - name: Freeze submitted model identities
+        if: steps.scope.outputs.model-changes == 'true'
+        id: inputs
+        run: |
+          identity=$(node --import tsx scripts/generate-league.ts --identity --models-dir ../submission/public/models --roster ../submission/src/roster.ts)
+          echo "identity=$identity" >> "$GITHUB_OUTPUT"
+      - name: Find the immutable serve plan for this model revision
+        if: steps.scope.outputs.model-changes == 'true'
+        id: plan
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          EVALUATION_IDENTITY: ${{ steps.inputs.outputs.identity }}
+        run: node --import tsx scripts/ci-artifacts.ts find-plan --identity "$EVALUATION_IDENTITY"
+      - name: Restore previously drawn serves
+        if: steps.scope.outputs.model-changes == 'true' && steps.plan.outputs.found == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: evaluation-plan-${{ github.event.pull_request.number }}-${{ steps.inputs.outputs.identity }}
+          run-id: ${{ steps.plan.outputs.run-id }}
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/model-plan
+      - name: Draw shared serves after freezing the models
+        if: steps.scope.outputs.model-changes == 'true' && steps.plan.outputs.found != 'true'
+        run: |
+          mkdir -p "$RUNNER_TEMP/model-plan"
+          npm run league -- --create-plan "$RUNNER_TEMP/model-plan/evaluation-plan.json" --count 128 --models-dir ../submission/public/models --roster ../submission/src/roster.ts
+      - name: Persist the serve plan before running any matches
+        if: steps.scope.outputs.model-changes == 'true' && steps.plan.outputs.found != 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: evaluation-plan-${{ github.event.pull_request.number }}-${{ steps.inputs.outputs.identity }}
+          path: ${{ runner.temp }}/model-plan/evaluation-plan.json
+          if-no-files-found: error
+          retention-days: 90
+      - name: Evaluate the complete proposed roster on paired serves
+        if: steps.scope.outputs.model-changes == 'true'
+        run: npm run league -- --plan "$RUNNER_TEMP/model-plan/evaluation-plan.json" --models-dir ../submission/public/models --roster ../submission/src/roster.ts --output "$RUNNER_TEMP/model-league"
+      - name: Record the evaluated PR revision
+        if: steps.scope.outputs.model-changes == 'true'
+        env:
+          EVALUATION_IDENTITY: ${{ steps.inputs.outputs.identity }}
+        run: |
+          node --input-type=module <<'JS'
+          import { readFileSync, writeFileSync } from 'node:fs'
+          import { join } from 'node:path'
+          const event = JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8'))
+          writeFileSync(join(process.env.RUNNER_TEMP, 'model-league', 'provenance.json'), JSON.stringify({
+            schema: 'pongarena-pr-evaluation-v1', repository: process.env.GITHUB_REPOSITORY,
+            pullRequest: event.pull_request.number, headSha: event.pull_request.head.sha,
+            baseSha: event.pull_request.base.sha, identity: process.env.EVALUATION_IDENTITY,
+            runId: process.env.GITHUB_RUN_ID,
+          }, null, 2) + '\n')
+          JS
+      - name: Show candidate standings
+        if: steps.scope.outputs.model-changes == 'true'
+        run: cat "$RUNNER_TEMP/model-league/league.md" >> "$GITHUB_STEP_SUMMARY"
+      - name: Publish the verified results bundle
+        if: steps.scope.outputs.model-changes == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: model-league-${{ github.event.pull_request.number }}-${{ steps.inputs.outputs.identity }}
+          path: ${{ runner.temp }}/model-league/
+          if-no-files-found: error
+          retention-days: 90
+          overwrite: true

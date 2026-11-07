@@ -6,6 +6,7 @@ Choose a license for the source and model weights before publication. Prepare th
 
 ```sh
 npm ci
+npm run models:check
 npm run league
 npm test
 npm run league:check
@@ -21,15 +22,21 @@ git push -u origin main
 
 ## Ranking in pull requests
 
-The [Check and rank workflow](../.github/workflows/check.yml) runs on pull requests, pushes to `main` and manual dispatch. It verifies the committed league, displays regenerated standings in its summary and uploads **league-results** for seven days. It does not push commits. The website reads the checked-in results immediately.
+The [normal checks](../.github/workflows/check.yml) validate models, run tests, replay the committed development league and build the app. Development results remain available as **development-league-results** for seven days.
+
+The [model submission gate](../.github/workflows/model-evaluation.yml) uses `pull_request_target` and executes only the trusted base evaluator. PR ONNX files and roster metadata supply data; PR scripts and workflows are not executed by this gate. Model and evaluator changes must use separate PRs.
+
+For model-file changes, the gate freezes model hashes, draws 128 shared serve sets and evaluates all proposed entrants with paired sides. It retains `evaluation-plan-<PR>-<identity>` and `model-league-<PR>-<identity>` for 90 days. Retries and display-name changes reuse the saved plan; changed model bytes get fresh serves. A missing or expired recorded plan fails instead of silently rerolling. Documentation-only PRs do not redraw serves.
+
+Configure branch protection to require **Validate and evaluate submitted models**, **Browser end-to-end tests** and up-to-date branches. A failing workflow check blocks merging only when the repository requires it. Rebase and reevaluate if another model merge changes the roster before yours merges.
 
 Standard GitHub-hosted runners are free for public repositories; this workflow uses a standard Ubuntu CPU runner. Larger runners are billed even for public repositories, and artifact storage has a separate allowance. See [GitHub Actions billing](https://docs.github.com/en/billing/concepts/product-billing/github-actions) for current terms.
 
-The workflow uses `pull_request` with read-only repository permissions. Keep secrets out of model evaluation and review any workflow changes submitted in PRs.
+The evaluation workflow has read-only contents and Actions access. Review evaluator and workflow changes separately from model submissions.
 
 ## Publish the website
 
-The [Publish Pages workflow](../.github/workflows/pages.yml) runs automatically on pushes to `main`, including merged pull requests. It also supports manual runs on `main`. It runs tests, verifies the league, builds `dist/`, then deploys with permissions limited to its deployment job.
+The [Publish Pages workflow](../.github/workflows/pages.yml) runs on pushes to `main` and manual dispatch. It verifies the merged PR's trusted results against the exact model bytes and evaluator identity, then builds those standings into `dist/`. Model merges without matching results fail publication. It retains `published-league-<identity>` so retries and metadata-only updates preserve the accepted standings. Infrastructure changes may bootstrap a trusted-main evaluation with a persisted `main-evaluation-plan-<identity>`; retries reuse it. These artifacts have the same 90-day retention. Deployment permissions stay limited to the deployment job.
 
 1. In the repository, select **Settings → Pages → Source → GitHub Actions**.
 2. Merge a pull request into `main`, push to `main`, or run **Actions → Publish Pages → Run workflow** on `main`.

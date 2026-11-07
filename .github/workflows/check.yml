@@ -26,11 +26,13 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Validate every bundled model before tests and ranking
+        run: npm run models:check
       - run: npm test
       - name: Reproduce the published league
         if: ${{ !cancelled() }}
         run: npm run league:check -- --output "$RUNNER_TEMP/league"
-      - name: Show candidate standings
+      - name: Show development standings
         if: always()
         run: |
           if test -f "$RUNNER_TEMP/league/league.md"; then
@@ -40,12 +42,39 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: league-results
+          name: development-league-results
           path: ${{ runner.temp }}/league/
           if-no-files-found: ignore
           retention-days: 7
       - run: npm run build
         if: ${{ !cancelled() }}
+
+  browser:
+    name: Browser end-to-end tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Install the matching Chromium browser
+        run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - name: Upload browser report and failure traces
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: browser-e2e-results
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 7
 
   training:
     runs-on: ubuntu-24.04
@@ -72,7 +101,8 @@ jobs:
           python training/check.py --run "$RUNNER_TEMP/training-large-smoke"
       - name: Reproduce handwritten weights independently
         run: |
-          python handwritten/quill.py --out "$RUNNER_TEMP/quill.onnx"
-          cmp "$RUNNER_TEMP/quill.onnx" public/models/quill.onnx
-          python handwritten/follow.py --out "$RUNNER_TEMP/follow.onnx"
-          cmp "$RUNNER_TEMP/follow.onnx" public/models/follow.onnx
+          for constructor in handwritten/*.py; do
+            model_id=$(basename "$constructor" .py)
+            python "$constructor" --out "$RUNNER_TEMP/$model_id.onnx"
+            cmp "$RUNNER_TEMP/$model_id.onnx" "public/models/$model_id.onnx"
+          done

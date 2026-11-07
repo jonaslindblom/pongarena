@@ -739,6 +739,39 @@ footer b {
 .library-card p {
   font-size: 13px;
 }
+.library-card .model-submitter {
+  color: var(--muted);
+  margin: 12px 0 0;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.model-submitter a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.model-submitter a:hover {
+  color: #315f9a;
+}
+.model-submitter a:focus-visible {
+  outline: 2px solid #315f9a;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+.library-card .library-layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 10px;
+  color: var(--muted);
+  margin: 12px 0;
+  font-size: 11px;
+}
+.library-layout b {
+  color: var(--ink);
+  font-family: var(--mono);
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
 .library-card dl,
 .guide dl {
   display: grid;

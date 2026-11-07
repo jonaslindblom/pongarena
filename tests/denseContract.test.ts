@@ -2,7 +2,7 @@ import { presets } from '../src/roster'
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync, readdirSync } from 'node:fs'
-import { DenseModelError, validateArenaModel } from '../src/validate'
+import { DenseModelError, MAX_PARAMS, validateArenaModel } from '../src/validate'
 import { fitsDivision, smallestDivision } from '../src/competition'
 import { encode, network, tensor } from './modelFactory'
 
@@ -160,6 +160,58 @@ test('ordinary ONNX float_data storage has the same costs as raw float32 bytes',
   assert.deepEqual(validateArenaModel(encode(model)), expected)
   model.graph!.initializer[0].floatData![0] = Infinity
   assert.throws(() => validateArenaModel(encode(model)), DenseModelError)
+})
+
+test('ports cannot hide contradictory non-tensor type declarations', () => {
+  for (const port of ['input', 'output'] as const) {
+    for (const declaration of ['sequenceType', 'mapType', 'optionalType', 'sparseTensorType'] as const) {
+      const model = network()
+      model.graph![port][0].type![declaration] = {}
+      assert.throws(() => validateArenaModel(encode(model)), DenseModelError, `${port}: ${declaration}`)
+    }
+  }
+})
+
+test('Gemm attributes contain only their declared scalar payload', () => {
+  const malformed: [string, Record<string, unknown>][] = [
+    ['missing integer payload', { name: 'transB', type: 2 }],
+    ['integer with extra float payload', { name: 'transB', type: 2, i: 1, f: 0 }],
+    ['float with extra integer payload', { name: 'alpha', type: 1, f: 1, i: 0 }],
+    ['referenced attribute', { name: 'alpha', type: 1, f: 1, refAttrName: 'hidden' }],
+    ['sparse tensor payload', { name: 'alpha', type: 1, f: 1, sparseTensor: {} }],
+    ['sparse tensor list', { name: 'alpha', type: 1, f: 1, sparseTensors: [{}] }],
+    ['type payload', { name: 'alpha', type: 1, f: 1, tp: {} }],
+    ['type list', { name: 'alpha', type: 1, f: 1, typeProtos: [{}] }],
+  ]
+  for (const [name, attr] of malformed) {
+    const model = network()
+    if (attr.name === 'transB') model.graph!.node[0].attribute = [attr]
+    else model.graph!.node[0].attribute!.push(attr)
+    assert.throws(() => validateArenaModel(encode(model)), DenseModelError, name)
+  }
+})
+
+test('intermediate type annotations must agree with actual dense tensors', () => {
+  const model = network()
+  model.graph!.valueInfo = [{ name: 'hidden0', type: { tensorType: {
+    elemType: 1, shape: { dim: [{ dimValue: 1 }, { dimValue: 4 }] },
+  } } }]
+  assert.deepEqual(validateArenaModel(encode(model)).architecture.widths, [6, 4, 4, 3])
+  model.graph!.valueInfo[0].type!.tensorType!.shape!.dim![1].dimValue = 5
+  assert.throws(() => validateArenaModel(encode(model)), DenseModelError)
+  model.graph!.valueInfo[0].type!.tensorType!.shape!.dim![1].dimValue = 4
+  model.graph!.valueInfo.push(model.graph!.valueInfo[0])
+  assert.throws(() => validateArenaModel(encode(model)), DenseModelError)
+  model.graph!.valueInfo = [{ name: 'unconnected' }]
+  assert.throws(() => validateArenaModel(encode(model)), DenseModelError)
+})
+
+test('Large budgets count stored biases and zeros as well as matrix weights', () => {
+  const within = validateArenaModel(encode(network([6, 245, 245, 3])))
+  assert.ok(within.params <= MAX_PARAMS)
+  assert.equal(smallestDivision(within), 'large')
+  // All values are zero; the stored tensors still exceed the published cap.
+  assert.throws(() => validateArenaModel(encode(network([6, 251, 251, 3]))), DenseModelError)
 })
 
 test('the shipped collection contains only current eligible models', () => {

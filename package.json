@@ -8,8 +8,11 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 127.0.0.1",
     "test": "node --import tsx --test tests/*.test.ts",
+    "test:e2e": "npm run build && playwright test",
+    "models:check": "node --import tsx scripts/validate-models.ts",
     "league": "node --import tsx scripts/generate-league.ts",
-    "league:check": "node --import tsx scripts/generate-league.ts --check"
+    "league:check": "node --import tsx scripts/generate-league.ts --check",
+    "league:publish": "node --import tsx scripts/promote-evaluation.ts"
   },
   "dependencies": {
     "@fontsource-variable/manrope": "^5.2.0",
@@ -21,6 +24,7 @@
     "react-dom": "^19.2.0"
   },
   "devDependencies": {
+    "@playwright/test": "1.65.0",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^4.4.0",

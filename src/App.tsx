@@ -22,7 +22,8 @@ import type { Pair, Side } from './game'
 import { MAX_BYTES, MAX_DENSE_HIDDEN_LAYERS } from './validate'
 import { savedModels, saveModel } from './storage'
 import { useMatch } from './useMatch'
-import { Architecture } from './Architecture'
+import { Architecture, architectureLabel } from './Architecture'
+import { ModelSubmitter } from './ModelSubmitter'
 import { ControllerBadge } from './ControllerBadge'
 import { PONG } from './rules'
 import { Ranking } from './Ranking'
@@ -438,7 +439,8 @@ export default function App() {
             {eligibleModels
               .filter((c) => c.id !== 'keyboard')
               .map((c) => (
-                <article className="panel library-card" key={c.id}
+                <article className="panel library-card" key={c.id} aria-label={`${c.name} model`}
+                  data-model-id={c.id}
                   data-weight-origin={c.handcrafted ? 'handcrafted' : undefined}>
                   <div className="library-top">
                     <span className="library-icon">
@@ -451,6 +453,10 @@ export default function App() {
                   <small>{c.kind}</small>
                   <h2>{c.name}</h2>
                   <ControllerBadge model={c} />
+                  <ModelSubmitter handle={c.submittedBy} />
+                  {c.architecture && <p className="library-layout" aria-label={`${c.name} layer layout`}>
+                    <span>Layers</span> <b>{architectureLabel(c)}</b>
+                  </p>}
                   <details className="model-details"><summary>About this model</summary>
                   <p>{c.description}</p>
                   <Architecture model={c} />
