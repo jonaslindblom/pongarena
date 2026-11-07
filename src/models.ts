@@ -19,6 +19,7 @@ export interface Controller {
   name: string
   kind: string
   handcrafted?: boolean
+  submittedBy?: string
   description: string
   params: number
   macs: number

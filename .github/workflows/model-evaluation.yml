@@ -50,7 +50,9 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: node --import tsx scripts/ci-artifacts.ts check-scope
       - name: Enforce the submission contract and finite WASM output
-        run: npm run models:check -- --models-dir ../submission/public/models --roster ../submission/src/roster.ts
+        env:
+          PR_SUBMITTER: ${{ github.event.pull_request.user.login }}
+        run: npm run models:check -- --models-dir ../submission/public/models --roster ../submission/src/roster.ts --submitter "$PR_SUBMITTER"
       - name: Freeze submitted model identities
         if: steps.scope.outputs.model-changes == 'true'
         id: inputs

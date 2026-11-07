@@ -28,7 +28,7 @@ The [model submission gate](../.github/workflows/model-evaluation.yml) uses `pul
 
 For model-file changes, the gate freezes model hashes, draws 128 shared serve sets and evaluates all proposed entrants with paired sides. It retains `evaluation-plan-<PR>-<identity>` and `model-league-<PR>-<identity>` for 90 days. Retries and display-name changes reuse the saved plan; changed model bytes get fresh serves. A missing or expired recorded plan fails instead of silently rerolling. Documentation-only PRs do not redraw serves.
 
-Configure branch protection to require **Validate and evaluate submitted models** and require branches to be up to date. A failing workflow check blocks merging only when the repository requires it. Rebase and reevaluate if another model merge changes the roster before yours merges.
+Configure branch protection to require **Validate and evaluate submitted models**, **Browser end-to-end tests** and up-to-date branches. A failing workflow check blocks merging only when the repository requires it. Rebase and reevaluate if another model merge changes the roster before yours merges.
 
 Standard GitHub-hosted runners are free for public repositories; this workflow uses a standard Ubuntu CPU runner. Larger runners are billed even for public repositories, and artifact storage has a separate allowance. See [GitHub Actions billing](https://docs.github.com/en/billing/concepts/product-billing/github-actions) for current terms.
 

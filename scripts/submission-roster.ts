@@ -1,9 +1,11 @@
 import { lstat, readFile } from 'node:fs/promises'
 import ts from 'typescript'
+import { isGitHubUsername } from '../src/submitter'
 
 export interface SubmissionPreset {
   id: string
   name: string
+  submittedBy: string
   kind?: string
   handcrafted?: boolean
   description?: string
@@ -30,7 +32,7 @@ export function parseSubmissionRoster(source: string): SubmissionPreset[] {
       if (!ts.isPropertyAssignment(property) ||
         !(ts.isIdentifier(property.name) || ts.isStringLiteral(property.name))) return fail()
       const key = property.name.text
-      if (!['id', 'name', 'kind', 'description', 'handcrafted'].includes(key) || key in values) return fail()
+      if (!['id', 'name', 'submittedBy', 'kind', 'description', 'handcrafted'].includes(key) || key in values) return fail()
       const value = property.initializer
       if (key === 'handcrafted') {
         if (value.kind !== ts.SyntaxKind.TrueKeyword && value.kind !== ts.SyntaxKind.FalseKeyword) return fail()
@@ -42,6 +44,8 @@ export function parseSubmissionRoster(source: string): SubmissionPreset[] {
     }
     if (typeof values.id !== 'string' || !/^[A-Za-z0-9_-]+$/.test(values.id) || ids.has(values.id) ||
       typeof values.name !== 'string' || !values.name.trim()) return fail()
+    if (!isGitHubUsername(values.submittedBy))
+      throw new Error('Each submitted model needs submittedBy as a valid GitHub username, not a URL.')
     ids.add(values.id)
     return { ...values } as unknown as SubmissionPreset
   })

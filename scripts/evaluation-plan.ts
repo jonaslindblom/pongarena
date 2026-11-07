@@ -13,7 +13,7 @@ export const MAX_EVALUATION_SEEDS = 512
 export const EVALUATOR_FILES = [
   'package-lock.json', 'scripts/evaluation-plan.ts', 'scripts/generate-league.ts',
   'scripts/validate-models.ts', 'src/competition.ts', 'src/competitionMatch.ts',
-  'scripts/submission-roster.ts', 'src/game.ts', 'src/rules.ts', 'src/validate.ts',
+  'scripts/submission-roster.ts', 'src/submitter.ts', 'src/game.ts', 'src/rules.ts', 'src/validate.ts',
 ] as const
 const root = new URL('../', import.meta.url)
 const digest = (value: string | Uint8Array) => createHash('sha256').update(value).digest('hex')
@@ -28,7 +28,7 @@ export interface LeagueInputs {
 
 export interface LeagueInputOptions {
   modelsDirectory?: string | URL
-  roster?: readonly { id: string; name: string }[]
+  roster?: readonly { id: string; name: string; submittedBy: string }[]
 }
 
 export interface EvaluationPlan {

@@ -12,7 +12,7 @@ Submit one opset 18 ONNX file, at most 256 KiB. It must map float32 `observation
 
 Small allows at most **256 parameters and 1,024 MACs** per decision. Large allows **65,536 of each**. Both limits apply. See [rules, observations and scoring](docs/RULES.md) before exporting.
 
-1. Add `public/models/<id>.onnx` and its entry in `src/roster.ts`. The ID must match the filename without `.onnx`. Describe how the weights were constructed or trained.
+1. Add `public/models/<id>.onnx` and its entry in `src/roster.ts`. The ID must match the filename without `.onnx`. Include `submittedBy: 'your-github-handle'` so the model card can link to its submitter; supply a GitHub username, not a URL. CI requires new or changed model bytes to credit the PR author and preserves existing credits. This credits the submission, rather than claiming authorship of every weight. Describe how the weights were constructed or trained.
 2. Include a reproducible constructor or training recipe. Keep checkpoints, datasets and raw runs out of the public tree.
 3. Regenerate the league before running checks, since tests verify the bundled roster against its results:
 
@@ -23,6 +23,10 @@ Small allows at most **256 parameters and 1,024 MACs** per decision. Large allow
    npm run league:check
    npm run build
    ```
+
+   Browser checks run in CI. To run them locally, install Chromium with
+   `npx playwright install chromium`, then run `npm run test:e2e`. They cover
+   submitter links, model layouts, play/watch actions, downloads and imports on desktop and mobile.
 
 4. Include both `public/league.json` and `public/league.md` in the PR. Describe the architecture, validated resource counts, method and evaluation. Identify the opponent field and fresh evaluation seeds for claims of improvement.
 
@@ -36,6 +40,6 @@ The [model submission gate](.github/workflows/model-evaluation.yml) runs the tru
 
 CI retains `evaluation-plan-<PR>-<identity>` and `model-league-<PR>-<identity>` artifacts for 90 days. A missing or expired previously recorded plan fails instead of drawing replacement serves. On merge, Pages verifies the matching trusted results and uses them for the published standings. Compare scores only within the same opponent field and serve set.
 
-Repository branch protection must require **Validate and evaluate submitted models** and up-to-date branches to prevent merging a failed or stale submission gate. See [publishing](docs/PUBLISHING.md).
+Repository branch protection must require **Validate and evaluate submitted models**, **Browser end-to-end tests** and up-to-date branches to prevent merging failed or stale checks. See [publishing](docs/PUBLISHING.md).
 
 Keep model contributions separate from changes to game physics, the model contract or scoring. Propose changes to those rules explicitly so their effect on the comparison can be reviewed.

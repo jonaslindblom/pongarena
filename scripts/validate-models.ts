@@ -8,17 +8,19 @@ import { choice, type Scores } from '../src/game'
 import { presets } from '../src/roster'
 import { MAX_BYTES, validateArenaModel, type ModelStats } from '../src/validate'
 import { readSubmissionRoster } from './submission-roster'
+import { isGitHubUsername } from '../src/submitter'
 
 export interface ValidatedModel {
   bytes: Uint8Array
   entrant: CompetitionEntrant
   stats: ModelStats
+  submittedBy: string
 }
 
 /** Freeze and validate every submission before seeds are selected or games start. */
 export async function validateModelCollection(
   directory: string | URL = new URL('../public/models/', import.meta.url),
-  roster: readonly { id: string; name: string }[] = presets,
+  roster: readonly { id: string; name: string; submittedBy: string }[] = presets,
 ): Promise<ValidatedModel[]> {
   const folder = typeof directory === 'string' ? pathToFileURL(resolve(directory) + '/') : directory
   const directoryInfo = await lstat(resolve(fileURLToPath(folder)))
@@ -29,6 +31,8 @@ export async function validateModelCollection(
     if (typeof entry.id !== 'string' || !/^[A-Za-z0-9_-]+$/.test(entry.id) || basename(entry.id) !== entry.id ||
       ids.has(entry.id) || typeof entry.name !== 'string' || !entry.name.trim())
       throw new Error('The active roster needs unique file-safe model IDs and nonempty names.')
+    if (!isGitHubUsername(entry.submittedBy))
+      throw new Error('Each submitted model needs submittedBy as a valid GitHub username, not a URL.')
     ids.add(entry.id)
   }
   const entries = await readdir(folder, { withFileTypes: true })
@@ -49,7 +53,7 @@ export async function validateModelCollection(
       const hash = await sha256(bytes)
       if (hashes.has(hash)) throw new Error('Identical model bytes cannot enter the league twice.')
       hashes.add(hash)
-      models.push({ bytes, stats, entrant: {
+      models.push({ bytes, stats, submittedBy: preset.submittedBy, entrant: {
         id: preset.id, name: preset.name, sha256: hash, params: stats.params, macs: stats.macs,
       } })
     } catch (error) {
@@ -57,6 +61,25 @@ export async function validateModelCollection(
     }
   }
   return models
+}
+
+interface ModelAttribution {
+  entrant: Pick<CompetitionEntrant, 'id' | 'sha256'>
+  submittedBy: string
+}
+
+/** Bind new model bytes to the PR author while preserving existing credits. */
+export function validateSubmissionAttribution(
+  submitted: readonly ModelAttribution[], baseline: readonly ModelAttribution[], submitter: string,
+) {
+  if (!isGitHubUsername(submitter)) throw new Error('Expected the authenticated PR author as --submitter.')
+  const existing = new Map(baseline.map(model => [model.entrant.sha256, model.submittedBy]))
+  for (const model of submitted) {
+    const previous = existing.get(model.entrant.sha256)
+    const expected = previous ?? submitter
+    if (!isGitHubUsername(model.submittedBy) || model.submittedBy.toLowerCase() !== expected.toLowerCase())
+      throw new Error(`${model.entrant.id}.onnx: submittedBy must credit ${previous ? 'its existing submitter' : 'the PR author'} @${expected}.`)
+  }
 }
 
 /** Runtime validity checks supplement structural validation; league inference also checks every decision. */
@@ -95,10 +118,15 @@ export async function smokeTestModels(models: readonly ValidatedModel[]) {
 
 async function main() {
   const { values } = parseArgs({ options: {
-    'models-dir': { type: 'string' }, roster: { type: 'string' },
+    'models-dir': { type: 'string' }, roster: { type: 'string' }, submitter: { type: 'string' },
   } })
   const roster = values.roster ? await readSubmissionRoster(values.roster) : undefined
   const models = await validateModelCollection(values['models-dir'], roster)
+  if (values.submitter !== undefined) {
+    if (!values['models-dir'] || !values.roster)
+      throw new Error('--submitter requires submitted --models-dir and --roster paths.')
+    validateSubmissionAttribution(models, await validateModelCollection(), values.submitter)
+  }
   await smokeTestModels(models)
   for (const { entrant, stats } of models)
     console.log(`${entrant.id}: ${entrant.sha256} · ${entrant.params} parameters · ${entrant.macs} MACs · ${stats.architecture.widths.join(' → ')} · ${smallestDivision(stats)}`)
