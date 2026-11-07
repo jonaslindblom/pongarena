@@ -78,4 +78,11 @@ The static build is written to `dist/`. Python is only needed to [train models](
 - `scripts/`: league generation for local development and CI.
 - `tests/`: game, model and competition checks.
 
-See [publishing notes](docs/PUBLISHING.md) for GitHub Actions and Pages. A source and model-weight license must be selected before publication.
+See [publishing notes](docs/PUBLISHING.md) for GitHub Actions and Pages.
+
+## License
+
+PongArena’s original source code, documentation and bundled ONNX model weights
+are licensed under the [MIT License](LICENSE). Third-party dependencies and
+assets retain their own licenses. Contributions, including model submissions,
+are accepted under MIT; see [contributing](CONTRIBUTING.md).

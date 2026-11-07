@@ -1,5 +1,11 @@
 # Contributing to PongArena
 
+Contributions, including submitted model weights and their constructors or
+training recipes, are accepted under the [MIT License](LICENSE). By submitting
+a contribution, you agree to license it under MIT and confirm that you have
+the rights to do so. Contributors retain their copyright. Third-party
+dependencies and assets retain their own licenses and notices.
+
 Use Node.js 22 and `npm ci`. Import an ONNX file under **Models** to validate it and try it in the arena. Handwritten and trained weights follow the same [model contract](docs/RULES.md).
 
 For a small handwritten example, [Follow](docs/FOLLOW.md) explains all 13 parameters and can be rebuilt with [its constructor](handwritten/follow.py).
