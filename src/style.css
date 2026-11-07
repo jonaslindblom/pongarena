@@ -363,8 +363,8 @@ h1 {
   font-size: 0.55em;
   color: #869c89;
 }
-.court-field { position: relative; display: flex; align-items: center; justify-content: center; }
-.court-surface { position: relative; height: clamp(280px, calc(100dvh - 304px), 850px); aspect-ratio: 2 / 3; max-width: 100%; }
+.court-field { position: relative; isolation: isolate; display: flex; align-items: center; justify-content: center; }
+.court-surface { position: relative; z-index: 1; height: clamp(280px, calc(100dvh - 304px), 850px); aspect-ratio: 2 / 3; max-width: 100%; }
 .field { display: block; width: 100%; height: 100%; background: #142c2455; }
 .court-center-circle { position: absolute; top: 50%; left: 50%; width: 32.5%; aspect-ratio: 1; border: 1px solid #bad2c22e; border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; }
 .court.human-controlled {
@@ -374,71 +374,60 @@ h1 {
   -webkit-touch-callout: none;
   cursor: pointer;
 }
-.human-controls { display: none; padding-top: 10px; }
-.human-control-heading { color: #b9c9b9; font-size: 11px; line-height: 1.5; margin-bottom: 7px; }
-.human-control-pads {
-  display: grid;
-  gap: 16px;
-}
-.human-control-pads.two-players {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-.human-control-pad {
-  min-width: 0;
-}
-.human-control-label,
-.human-control-label > span {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.human-control-label {
-  justify-content: space-between;
-  margin-bottom: 7px;
-  color: #b9c9b9;
-  font-size: 11px;
-  font-weight: 700;
-}
-.human-control-label small {
-  font: 10px var(--mono);
-  color: #a8bcae;
-}
-.human-direction-buttons {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-}
-.human-direction {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 8px;
-  border: 1px solid #52765e;
-  border-radius: 8px;
-  background: #294c3b;
-  color: #c8efce;
-  font-size: 13px;
-  font-weight: 750;
-  touch-action: none;
+/* Touch zones are a background layer, so they never reduce the court's size. */
+.court-touch-hints {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
   user-select: none;
-  -webkit-user-select: none;
-  -webkit-touch-callout: none;
 }
-.side-1 .human-direction {
-  background: #513e2e;
-  border-color: #7b614b;
-  color: #ffd2a8;
+.touch-zone-pair {
+  --touch-color: 137, 244, 185;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
-.human-direction[aria-pressed='true'] {
-  background: #38684c;
-  border-color: #a6d79c;
-  box-shadow: inset 0 2px 4px #3053251a;
+.touch-zone-pair.side-1 { --touch-color: 255, 170, 117; }
+.court-touch-hints.two-players { grid-template-rows: repeat(2, minmax(0, 1fr)); }
+.two-players .touch-zone-pair.side-1 { grid-row: 1; }
+.two-players .touch-zone-pair.side-0 { grid-row: 2; }
+.touch-zone {
+  position: relative;
+  --touch-gradient: to right;
+  background: linear-gradient(var(--touch-gradient), rgba(var(--touch-color), .06), transparent 85%);
 }
-.side-1 .human-direction[aria-pressed='true'] {
-  background: #785235;
-  border-color: #e6b588;
+.touch-zone.right { --touch-gradient: to left; }
+.touch-zone::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(var(--touch-gradient), rgba(var(--touch-color), .16), transparent);
+  opacity: 0;
+  transition: opacity .12s;
+}
+.touch-zone-cue {
+  position: absolute;
+  inset-inline: 0;
+  bottom: clamp(18px, 6dvh, 60px);
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  color: rgb(var(--touch-color));
+  opacity: .55;
+  transition: opacity .15s;
+}
+.touch-zone-cue > span {
+  font: 9px var(--mono);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.is-playing .touch-zone-cue { opacity: .3; }
+.touch-zone[data-held]::before { opacity: 1; }
+.touch-zone[data-held] .touch-zone-cue { opacity: .9; }
+@media (any-pointer: coarse) {
+  .court-touch-hints { display: grid; }
 }
 .paddle.left {
   fill: #89f4b9;
@@ -628,7 +617,7 @@ h1 {
 .court-modes button { padding: 8px; border-radius: 5px; color: #abc3b4; font-size: 11px; letter-spacing: 0; white-space: nowrap; }
 .court-modes button[aria-pressed='true'] { color: #edfade; background: #35533e; }
 .court-movement-hint { margin-left: auto; color: #c6d9bd; }
-.match-over { position: absolute; inset: 0; display: grid; place-items: center; padding: 12px; background: #10271fbb; }
+.match-over { position: absolute; z-index: 2; inset: 0; display: grid; place-items: center; padding: 12px; background: #10271fbb; }
 .match-over-card { width: min(330px, 100%); padding: 24px 20px; border: 1px solid #a7ce83; border-radius: 14px; background: #203e30; text-align: center; box-shadow: 0 12px 40px #08160e70; }
 .match-over-label { color: #bfe690; font: 11px var(--mono); letter-spacing: .15em; }
 .match-over h2 { margin-top: 8px; font-size: 28px; letter-spacing: -.04em; overflow-wrap: anywhere; }
@@ -1090,20 +1079,6 @@ legend {
     font-size: 30px;
     gap: 7px;
   }
-  .human-control-pads.two-players {
-    gap: 12px;
-  }
-  .human-control-pads.two-players .human-control-label {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .human-control-pads.two-players .human-direction {
-    flex-direction: column;
-    gap: 2px;
-    padding: 8px 4px;
-    font-size: 11px;
-  }
   .tick-readout {
     display: none !important;
   }
@@ -1187,7 +1162,6 @@ legend {
     flex-wrap: wrap;
     gap: 6px;
   }
-  .court .human-controls { display: none; }
   .side-column { display: contents; }
   .matchup { grid-column: 2; grid-row: 1; }
   .brain-panel { grid-column: 1 / -1; grid-row: 4; }
@@ -1326,8 +1300,6 @@ html.game-fullscreen #root {
   min-height: 0;
 }
 .court-fullscreen .court-surface { height: 100%; max-height: 100%; }
-/* The court itself handles touch movement; extra buttons would shrink it in play mode. */
-.court-fullscreen .human-controls { display: none; }
 .court-fullscreen .court-foot {
   flex: none;
   gap: 8px;
@@ -1341,7 +1313,6 @@ html.game-fullscreen #root {
 @media (max-width: 1100px) { .court-control > span { display: none; } }
 @media (pointer: coarse) {
   .court .keyboard-hint, .court .match-over .keyboard-hint, .court kbd { display: none; }
-  .human-controls { display: block; }
   .court-modes button { min-height: 38px; }
 }
 @media (max-height: 500px) {
