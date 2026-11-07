@@ -1,6 +1,9 @@
 # Publishing PongArena
 
-Choose a license for the source and model weights before publication. Prepare the intended initial commit from the reviewed release files; creating the public repository and publishing the site are separate steps.
+PongArena’s original source code, documentation and bundled model weights use
+the [MIT License](../LICENSE). Keep that license and third-party license
+notices with releases. Repository visibility and website deployment are
+managed separately.
 
 ## Check the release
 
