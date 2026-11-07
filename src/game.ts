@@ -67,21 +67,21 @@ export function serve(seed: number, prior?: Frame): Frame {
   const firstSlope = sign()
   const secondSlope = sign()
   const directions = [firstSlope, secondSlope, -firstSlope, -secondSlope, sign()]
-  const openings = [32, 56, 80, 104, 128].map((center) => ({
-    y: center + Math.floor(random() * 21) - 10,
-    speedY: 1 + Math.floor(random() * 5),
-  }))
+  // Five varied angle bands, all within 15–20° of the receiving axis.
+  // Hundredth-unit velocities keep the independent Python implementation exact.
+  const openings = [134, 144, 154, 164, 174].map((minimum) =>
+    (minimum + Math.floor(random() * 8)) / 100)
   for (let i = openings.length - 1; i > 0; i--) {
     const j = Math.floor(random() * (i + 1))
     ;[openings[i], openings[j]] = [openings[j], openings[i]]
   }
-  const { y, speedY } = openings[rally - 1]
+  const speedY = openings[rally - 1]
   return {
     tick: prior ? prior.tick + 1 : 0,
     rally,
     rallyTick: 0,
     x: 180,
-    y,
+    y: 80,
     vx: rally % 2 ? firstVx : -firstVx,
     vy: speedY * directions[rally - 1],
     paddles: [80, 80],
@@ -142,7 +142,8 @@ export function advance(prior: Frame, scores: Pair<Scores>, loops?: LoopDetector
       f.x = side === 0 ? 15 : 345
       const speed = Math.min(MAX_BALL_VX, Math.abs(f.vx) + 1)
       f.vx = (side === 0 ? 1 : -1) * speed
-      f.vy = Math.round((MAX_BALL_VY * speed * offset) / (15 * MAX_BALL_VX))
+      // Canonicalize negative zero so browser, Python and saved traces agree.
+      f.vy = Math.round((MAX_BALL_VY * speed * offset) / (15 * MAX_BALL_VX)) || 0
       f.returns++
       f.actor = side
       f.event = 'return'

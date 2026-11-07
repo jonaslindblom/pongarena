@@ -6,7 +6,7 @@ import time
 import numpy as np
 import torch
 from torch import nn
-from game import Arena, reflect
+from game import Arena, RULES_ID, reflect
 from teachers import teacher
 from models import network, decide
 from export import export_model
@@ -136,7 +136,7 @@ def train(config, output, name):
         reinforcement = finetune(policy, config['ppo'], config['seed'] + 1100,
                                  on_evaluate=select, on_progress=record)
     imitation_steps = config['rounds'] * config['envs'] * config['horizon']
-    (output / 'run.json').write_text(json.dumps({'parameters': params, 'seconds': time.monotonic() - started,
+    (output / 'run.json').write_text(json.dumps({'rules_id': RULES_ID, 'parameters': params, 'seconds': time.monotonic() - started,
         'environment_steps': imitation_steps + (reinforcement['environment_steps'] if reinforcement else 0),
         'imitation_environment_steps': imitation_steps,
         'ppo_seed': config['seed'] + 1100 if reinforcement else None,

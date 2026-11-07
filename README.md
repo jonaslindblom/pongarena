@@ -21,6 +21,8 @@ npm run dev
 
 Open the localhost URL and press **P** to play. **P** also pauses, resumes, or plays again after game over. Move with **A/D** or **←/→**; on a touch screen, hold the left or right half of the court. **R** restarts with the same serves. **F** toggles full screen; **Esc** exits it.
 
+New matches and **Play again** use fresh serve sets. Each rally starts at the center of the circle, alternates the receiving end, and launches at a gentle 15–20° angle toward it. Opening serves reach the paddle without a wall bounce; returns build the difficulty. Restart replays the current set for practice.
+
 Faint arrows and shaded halves show the touch controls directly on the court. Hold either half to move, slide across to change direction, and release to stop. The held half lights up gently; no separate movement buttons take space from the game.
 
 Choose an opponent or switch to **Watch models** to compare two networks. **Brain** starts open and shows live activations. **Models** provides reference ranks, downloads and local ONNX imports. **Weights** explains Follow through an interactive view of its actual weights and decisions. A match contains five rallies, each lasting at most 1,600 ticks at 30 decisions per second.
@@ -29,7 +31,7 @@ To play from a phone on the same Wi-Fi, use `npm run dev -- --host 0.0.0.0` and 
 
 ## League
 
-The League page opens with the checked-in [standings](public/league.md). Follow, Quill, Small and Large face each other on 16 fixed serve sets, with both side assignments: **192 games**. [league.json](public/league.json) contains every result, seed and model hash.
+The League page opens with the checked-in [standings](public/league.md). Follow, Quill, Small and Large face each other on 16 fixed serve sets, with both side assignments: **192 games**. [league.json](public/league.json) contains every result, seed and model hash. The current `pong-v2` benchmark uses centered, gentle serves with the same frozen model files; its scores are separate from the original `pong` results.
 
 Each pair of five-rally games forms one contest. Its winner earns one league point; a draw earns half. Equal totals share rank. These public seeds are a reproducible development benchmark; use fresh seeds for independent performance claims.
 
