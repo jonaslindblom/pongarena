@@ -2,6 +2,7 @@ import pb from 'onnx-proto'
 import type { onnx } from 'onnx-proto'
 
 export const MAX_BYTES = 256 * 1024
+export const MAX_PARAMS = 65536
 export const MAX_MACS = 65536
 export const MAX_DENSE_HIDDEN_LAYERS = 4
 
@@ -16,12 +17,18 @@ function check(ok: unknown, message: string): asserts ok {
   if (!ok) throw new DenseModelError(message)
 }
 
+function checkTensorInfo(port: onnx.IValueInfoProto | undefined, name: string, shape: number[]) {
+  const type = port?.type, tensor = type?.tensorType, dims = tensor?.shape?.dim
+  check(port?.name === name && tensor?.elemType === 1 &&
+    !type?.sequenceType && !type?.mapType && !type?.optionalType && !type?.sparseTensorType &&
+    dims?.length === shape.length && dims.every((dim, index) =>
+      !dim.dimParam && Number(dim.dimValue) === shape[index]),
+    `expected ${name} as float32[${shape.join(', ')}].`)
+}
+
 function checkPort(list: onnx.IValueInfoProto[], name: string, width: number) {
-  const port = list[0], type = port?.type?.tensorType, dims = type?.shape?.dim
-  check(list.length === 1 && port.name === name && type?.elemType === 1 &&
-    dims?.length === 2 && dims.every((dim) => !dim.dimParam) &&
-    Number(dims[0].dimValue) === 1 && Number(dims[1].dimValue) === width,
-    `expected ${name} as float32[1, ${width}].`)
+  check(list.length === 1, `expected one ${name} port.`)
+  checkTensorInfo(list[0], name, [1, width])
 }
 
 export function validateArenaModel(bytes: Uint8Array) {
@@ -44,7 +51,7 @@ export function validateArenaModel(bytes: Uint8Array) {
     check(tensor.name && tensor.name !== 'observation' && tensor.name !== 'action_scores' &&
       !initializers.has(tensor.name) && tensor.dataType === 1 && !tensor.dataLocation &&
       !tensor.externalData?.length && dims.length >= 1 && dims.length <= 2 &&
-      dims.every((dim) => Number.isSafeInteger(dim) && dim > 0) && count <= 65536,
+      dims.every((dim) => Number.isSafeInteger(dim) && dim > 0) && count <= MAX_PARAMS,
       'weights must be uniquely named, embedded float32 vectors or matrices of bounded size.')
     const raw = tensor.rawData, floats = tensor.floatData
     check((raw?.length === count * 4 && !floats?.length) ||
@@ -59,12 +66,15 @@ export function validateArenaModel(bytes: Uint8Array) {
     } else check(floats?.every(Number.isFinite), 'every weight and bias must be finite.')
     initializers.set(tensor.name, tensor)
     params += count
+    check(params <= MAX_PARAMS, 'the graph exceeds the stored-parameter budget.')
   }
 
   const nodes = graph.node ?? []
   check(nodes.length % 2 === 1 && nodes.length <= 2 * MAX_DENSE_HIDDEN_LAYERS + 1,
     `use zero to ${MAX_DENSE_HIDDEN_LAYERS} hidden layers, each followed by the same ReLU or Tanh activation.`)
   const used = new Set<string>(), outputs = new Set(['observation', ...initializers.keys()])
+  const shapes = new Map<string, number[]>([['observation', [1, 6]],
+    ...Array.from(initializers, ([name, tensor]) => [name, tensor.dims!.map(Number)] as [string, number[]])])
   const widths = [6], operations: { op: string; inputs: string[]; output: string; shape: number[] }[] = []
   let previous = 'observation', width = 6, activation: string | undefined
   for (const [index, node] of nodes.entries()) {
@@ -85,11 +95,15 @@ export function validateArenaModel(bytes: Uint8Array) {
         const name = attr.name ?? ''
         check(!attributes.has(name), 'Gemm attributes must not repeat.')
         check(((name === 'transA' || name === 'transB') && attr.type === 2 &&
+          Object.hasOwn(attr, 'i') && !Object.hasOwn(attr, 'f') &&
           (name === 'transA' ? Number(attr.i) === 0 : [0, 1].includes(Number(attr.i)))) ||
-          ((name === 'alpha' || name === 'beta') && attr.type === 1 && attr.f === 1),
+          ((name === 'alpha' || name === 'beta') && attr.type === 1 &&
+          Object.hasOwn(attr, 'f') && !Object.hasOwn(attr, 'i') && attr.f === 1),
           'Gemm permits only transB=0/1, transA=0, and unit alpha/beta scaling.')
         check(!attr.g && !attr.graphs?.length && !attr.t && !attr.tensors?.length &&
-          !attr.floats?.length && !attr.ints?.length && !attr.s?.length && !attr.strings?.length,
+          !attr.floats?.length && !attr.ints?.length && !attr.s?.length && !attr.strings?.length &&
+          !attr.refAttrName && !attr.sparseTensor && !attr.sparseTensors?.length &&
+          !attr.tp && !attr.typeProtos?.length,
           'Gemm attributes cannot contain additional tensors or subgraphs.')
         attributes.set(name, attr)
       }
@@ -111,11 +125,20 @@ export function validateArenaModel(bytes: Uint8Array) {
     check(index === nodes.length - 1 || output !== 'action_scores',
       'only the final linear layer may produce action_scores.')
     outputs.add(output)
+    shapes.set(output, [1, width])
     operations.push({ op: node.opType!, inputs, output, shape: [1, width] })
     previous = output
   }
   check(previous === 'action_scores' && width === 3, 'the final layer must directly produce three linear action scores.')
   check(used.size === initializers.size, 'unused constants and parameter tensors are not permitted.')
+  const annotations = new Set<string>()
+  for (const info of graph.valueInfo ?? []) {
+    const shape = info.name && shapes.get(info.name)
+    check(info.name && shape && !annotations.has(info.name),
+      'value annotations must uniquely identify tensors in the dense chain.')
+    checkTensorInfo(info, info.name, shape)
+    annotations.add(info.name)
+  }
   return { inputSize: 6, outputSize: 3, params, macs, nodes: nodes.length, architecture: { widths, operations } }
 }
 

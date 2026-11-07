@@ -26,11 +26,13 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Validate every bundled model before tests and ranking
+        run: npm run models:check
       - run: npm test
       - name: Reproduce the published league
         if: ${{ !cancelled() }}
         run: npm run league:check -- --output "$RUNNER_TEMP/league"
-      - name: Show candidate standings
+      - name: Show development standings
         if: always()
         run: |
           if test -f "$RUNNER_TEMP/league/league.md"; then
@@ -40,7 +42,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: league-results
+          name: development-league-results
           path: ${{ runner.temp }}/league/
           if-no-files-found: ignore
           retention-days: 7

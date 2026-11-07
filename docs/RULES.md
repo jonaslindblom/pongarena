@@ -44,23 +44,25 @@ Hidden neurons can encode useful features through their weights, as [Follow](FOL
 
 Both limits apply. Count all stored weights and biases, including zeros. MACs are the sum of input width × output width for each dense layer. Small models may compete in Large. Each class league runs its own complete tournament among eligible entrants.
 
+`npm run models:check` validates every submitted file and its roster entry, rejects duplicate model hashes, and checks WASM inference on 217 observations, including legal extremes. Ports and runtime outputs must have the exact shapes and float32 types above; scores must be finite. Every decision during league play is checked too. Invalid submissions fail the PR gate.
+
 ## League schedule and scoring
 
 Each unordered model pair plays every seed twice, swapping sides. Both games replay the same five serves. Add each model's rally points across both games to decide the paired contest: more points wins, equal points draw. A contest awards one league point for a win, half for a draw and zero for a loss. Rank by total league points, with equal totals sharing rank.
 
 Returns, rally duration, size and speed do not break ties. Pairwise results remain in the JSON because matchups can be non-transitive. An inference failure stops the league as failed; incomplete runs receive no ranks.
 
-The reference field is **Follow, Quill, Small and Large**, using 16 fixed seeds in [league.ts](../src/league.ts): 96 paired contests, or **192 games**. The generator uses single-threaded ONNX Runtime Web CPU/WASM and the same game and scoring code as the browser.
+The checked-in development field is **Follow, Quill, Small and Large**, using 16 fixed public seeds in [league.ts](../src/league.ts): 96 paired contests, or **192 games**. The generator uses single-threaded ONNX Runtime Web CPU/WASM and the same game and scoring code as the browser.
 
 ```sh
 npm run league        # write public/league.json and public/league.md
 npm run league:check  # replay and require exact matches
 ```
 
-[Standings](../public/league.md) load immediately in the app. [league.json](../public/league.json) records the complete schedule and outcomes. Model PRs include both regenerated files; [CI](../.github/workflows/check.yml) checks them. See [contributing](../CONTRIBUTING.md).
+Model PRs include both regenerated development files; [normal CI](../.github/workflows/check.yml) checks them. The separate [submission gate](../.github/workflows/model-evaluation.yml) freezes the full proposed roster before drawing 128 fresh shared serve sets. It saves the plan and results, reuses the plan on retries, and draws new serves for changed model bytes. Missing or expired recorded plans fail instead of rerolling. Pages publishes the verified results matching the merged models and evaluator. See [contributing](../CONTRIBUTING.md).
 
 ## Reproducibility
 
 Each model's identity is the SHA-256 of its exact ONNX bytes. Duplicate model identities cannot enter twice. The benchmark hash includes the rules, contract, scoring protocol, class and budgets, sorted model hashes and resource counts, seed set and schedule. Display names do not affect it.
 
-Compare scores only with the same benchmark inputs. Public seeds support reproducible development, not independent evaluation: freeze a candidate before testing on fresh seeds. Browser exports are local records and do not change the checked-in reference league.
+Compare scores only with the same benchmark inputs. Public seeds support reproducible development; after using evaluation results to tune a model, use a new evaluation set for independent claims. Submitted display names do not change the saved seed-plan identity. Browser exports are local records and do not change published rankings.

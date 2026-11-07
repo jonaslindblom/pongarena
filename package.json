@@ -8,8 +8,10 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 127.0.0.1",
     "test": "node --import tsx --test tests/*.test.ts",
+    "models:check": "node --import tsx scripts/validate-models.ts",
     "league": "node --import tsx scripts/generate-league.ts",
-    "league:check": "node --import tsx scripts/generate-league.ts --check"
+    "league:check": "node --import tsx scripts/generate-league.ts --check",
+    "league:publish": "node --import tsx scripts/promote-evaluation.ts"
   },
   "dependencies": {
     "@fontsource-variable/manrope": "^5.2.0",

@@ -29,9 +29,9 @@ To play from a phone on the same Wi-Fi, use `npm run dev -- --host 0.0.0.0` and 
 
 ## League
 
-The League page opens with the checked-in [standings](public/league.md). Follow, Quill, Small and Large face each other on 16 fixed serve sets, with both side assignments: **192 games**. [league.json](public/league.json) contains every result, seed and model hash.
+The deployed League page uses verified PR evaluation results: 128 shared serve sets sampled after model hashes are frozen, with both side assignments. Saved seeds and hashes make the results replayable. The checked-in [standings](public/league.md) remain a 16-seed development benchmark: **192 games** for Follow, Quill, Small and Large.
 
-Each pair of five-rally games forms one contest. Its winner earns one league point; a draw earns half. Equal totals share rank. These public seeds are a reproducible development benchmark; use fresh seeds for independent performance claims.
+Each pair of five-rally games forms one contest. Its winner earns one league point; a draw earns half. Equal totals share rank. Compare scores within the same opponent field and serve set.
 
 Local leagues can include imported models. Size classes apply equally to handwritten and trained weights:
 
@@ -43,11 +43,12 @@ Local leagues can include imported models. Size classes apply equally to handwri
 Both limits apply; Small models may also compete in Large. See the [model contract and scoring](docs/RULES.md).
 
 ```sh
+npm run models:check  # validate every model and finite WASM output
 npm run league        # regenerate public/league.json and public/league.md
 npm run league:check  # replay and verify both committed files
 ```
 
-Model PRs include regenerated standings. The [Check and rank workflow](.github/workflows/check.yml) verifies them, displays the table in its summary, and uploads results for review.
+Model PRs include regenerated development standings. A separate [submission gate](.github/workflows/model-evaluation.yml) validates models and evaluates the full proposed roster on fresh serves. Retries reuse the saved plan; model changes get a new set. On merge, Pages verifies and publishes the matching results. See [contributing](CONTRIBUTING.md).
 
 ## Develop
 

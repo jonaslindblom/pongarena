@@ -100,10 +100,10 @@ function normalizeSpec(spec: CompetitionSpec): CompetitionSpec {
     hashes.add(entrant.sha256)
     ids.add(entrant.id)
   }
-  if (!Array.isArray(spec.seeds) || !spec.seeds.length || spec.seeds.length > 64 ||
+  if (!Array.isArray(spec.seeds) || !spec.seeds.length || spec.seeds.length > 512 ||
     spec.seeds.some((seed) => !Number.isInteger(seed) || seed < 0 || seed > 0xffffffff) ||
     new Set(spec.seeds).size !== spec.seeds.length)
-    throw new Error('Use 1–64 distinct unsigned 32-bit seeds.')
+    throw new Error('Use 1–512 distinct unsigned 32-bit seeds.')
   return {
     rulesId: spec.rulesId, contractId: spec.contractId, division: spec.division,
     seeds: [...spec.seeds].sort((a, b) => a - b),
