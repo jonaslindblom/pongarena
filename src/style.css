@@ -1326,7 +1326,8 @@ html.game-fullscreen #root {
   min-height: 0;
 }
 .court-fullscreen .court-surface { height: 100%; max-height: 100%; }
-.court-fullscreen .human-controls { flex: none; }
+/* The court itself handles touch movement; extra buttons would shrink it in play mode. */
+.court-fullscreen .human-controls { display: none; }
 .court-fullscreen .court-foot {
   flex: none;
   gap: 8px;
@@ -1348,5 +1349,4 @@ html.game-fullscreen #root {
   .match-over-card { padding: 12px 18px; }
   .match-over h2 { font-size: 23px; }
   .match-over-score { margin: 3px 0 8px; font-size: 20px; }
-  .court-fullscreen .human-controls { display: none; }
 }

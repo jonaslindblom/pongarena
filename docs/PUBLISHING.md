@@ -29,8 +29,8 @@ The workflow uses `pull_request` with read-only repository permissions. Keep sec
 
 ## Publish the website
 
-The [Publish Pages workflow](../.github/workflows/pages.yml) is manual and accepts only `main`. It runs tests, verifies the league, builds `dist/`, then deploys with permissions limited to its deployment job.
+The [Publish Pages workflow](../.github/workflows/pages.yml) runs automatically on pushes to `main`, including merged pull requests. It also supports manual runs on `main`. It runs tests, verifies the league, builds `dist/`, then deploys with permissions limited to its deployment job.
 
 1. In the repository, select **Settings → Pages → Source → GitHub Actions**.
-2. Run **Actions → Publish Pages → Run workflow** on `main`.
+2. Merge a pull request into `main`, push to `main`, or run **Actions → Publish Pages → Run workflow** on `main`.
 3. Open the deployment URL and check play, model loading and the league. The build uses relative asset paths to support a repository Pages URL.
