@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 import numpy as np
 import onnxruntime as ort
-from game import Arena, serve
+from game import Arena, RULES_ID, serve
 from models import decide
 from teachers import teacher
 
@@ -112,7 +112,7 @@ def main():
         raise FileExistsError('Choose a fresh output path.')
     seeds = ([int(x) + 2_000_000_000 for x in np.random.default_rng(args.seed).choice(400_000_000, 128, replace=False)]
              if args.seed is not None else DEVELOPMENT_SEEDS if args.seeds == 'development' else FINAL_SEEDS)
-    data = {'model': args.model.name, 'sha256': hashlib.sha256(args.model.read_bytes()).hexdigest(),
+    data = {'rules_id': RULES_ID, 'model': args.model.name, 'sha256': hashlib.sha256(args.model.read_bytes()).hexdigest(),
             'seeds': seeds, 'rallies_per_side': 5, 'interval_method': INTERVAL_METHOD,
             'opponents': field(onnx_policy(args.model), seeds)}
     if args.opponent:

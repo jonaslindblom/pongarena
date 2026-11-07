@@ -1,4 +1,5 @@
 {
+  "rules_id": "pong",
   "method": "Randomly initialized PyTorch networks learn from geometric scripts. Large then uses PPO with rally outcomes against scripts and past learned policies. Handwritten models are excluded from training and checkpoint selection.",
   "selection": "Best mean point margin against attack, defend and interceptor on 32 development seeds; select checkpoints and initialization seeds on development results, then freeze models before final evaluation.",
   "evaluation": {

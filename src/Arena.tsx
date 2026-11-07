@@ -308,7 +308,7 @@ function Court({ m, names, ready, humanSides, bottom, mode, onModeChange }: {
             <p className="match-over-label">GAME OVER</p>
             <h2>{result}</h2>
             <p className="match-over-score">{f.points[0]} – {f.points[1]}</p>
-            <button className="play-btn" onClick={m.restart} aria-keyshortcuts="P">
+            <button className="play-btn" onClick={m.play} aria-keyshortcuts="P">
               <Play size={18} fill="currentColor" /> {mode === 'play' ? 'Play again' : 'Watch again'}
             </button>
             <p className="keyboard-hint">Press <kbd>P</kbd> to {mode === 'play' ? 'play' : 'watch'} again</p>

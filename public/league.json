@@ -1,8 +1,8 @@
 {
   "protocol": "paired-round-robin",
-  "benchmark": "d0db6f77ce6167c5b54af0902bbea80d17d435fe4f3833847a091d6627d77aec",
+  "benchmark": "6f1ec7918e9b8a8791ee0e364be1cb55e4c0f1fa41ba9b0c9cf3b28e17831ede",
   "spec": {
-    "rulesId": "pong",
+    "rulesId": "pong-v2",
     "contractId": "dense-mlp",
     "division": "all",
     "seeds": [
@@ -91,8 +91,8 @@
         },
         {
           "points": [
-            4,
-            1
+            2,
+            3
           ],
           "rallies": 5
         }
@@ -112,8 +112,8 @@
         },
         {
           "points": [
-            5,
-            0
+            2,
+            3
           ],
           "rallies": 5
         }
@@ -126,15 +126,15 @@
       "matches": [
         {
           "points": [
-            0,
-            5
+            2,
+            3
           ],
           "rallies": 5
         },
         {
           "points": [
-            5,
-            0
+            4,
+            1
           ],
           "rallies": 5
         }
@@ -168,15 +168,15 @@
       "matches": [
         {
           "points": [
-            2,
-            3
+            0,
+            5
           ],
           "rallies": 5
         },
         {
           "points": [
-            4,
-            1
+            3,
+            2
           ],
           "rallies": 5
         }
@@ -186,69 +186,6 @@
       "a": "4cb35fc761e381d3951f8bca2dcdf317626b3cfd62de5d3d1f04e41bcfa7235c",
       "b": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
       "seed": 1817080241,
-      "matches": [
-        {
-          "points": [
-            2,
-            3
-          ],
-          "rallies": 5
-        },
-        {
-          "points": [
-            3,
-            2
-          ],
-          "rallies": 5
-        }
-      ]
-    },
-    {
-      "a": "4cb35fc761e381d3951f8bca2dcdf317626b3cfd62de5d3d1f04e41bcfa7235c",
-      "b": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
-      "seed": 2159879017,
-      "matches": [
-        {
-          "points": [
-            4,
-            1
-          ],
-          "rallies": 5
-        },
-        {
-          "points": [
-            3,
-            2
-          ],
-          "rallies": 5
-        }
-      ]
-    },
-    {
-      "a": "4cb35fc761e381d3951f8bca2dcdf317626b3cfd62de5d3d1f04e41bcfa7235c",
-      "b": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
-      "seed": 2245385025,
-      "matches": [
-        {
-          "points": [
-            2,
-            3
-          ],
-          "rallies": 5
-        },
-        {
-          "points": [
-            5,
-            0
-          ],
-          "rallies": 5
-        }
-      ]
-    },
-    {
-      "a": "4cb35fc761e381d3951f8bca2dcdf317626b3cfd62de5d3d1f04e41bcfa7235c",
-      "b": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
-      "seed": 2594516131,
       "matches": [
         {
           "points": [
@@ -269,19 +206,82 @@
     {
       "a": "4cb35fc761e381d3951f8bca2dcdf317626b3cfd62de5d3d1f04e41bcfa7235c",
       "b": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
-      "seed": 3015271933,
+      "seed": 2159879017,
       "matches": [
+        {
+          "points": [
+            1,
+            4
+          ],
+          "rallies": 5
+        },
+        {
+          "points": [
+            4,
+            1
+          ],
+          "rallies": 5
+        }
+      ]
+    },
+    {
+      "a": "4cb35fc761e381d3951f8bca2dcdf317626b3cfd62de5d3d1f04e41bcfa7235c",
+      "b": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
+      "seed": 2245385025,
+      "matches": [
+        {
+          "points": [
+            1,
+            4
+          ],
+          "rallies": 5
+        },
+        {
+          "points": [
+            3,
+            2
+          ],
+          "rallies": 5
+        }
+      ]
+    },
+    {
+      "a": "4cb35fc761e381d3951f8bca2dcdf317626b3cfd62de5d3d1f04e41bcfa7235c",
+      "b": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
+      "seed": 2594516131,
+      "matches": [
+        {
+          "points": [
+            0,
+            5
+          ],
+          "rallies": 5
+        },
         {
           "points": [
             2,
             3
           ],
           "rallies": 5
+        }
+      ]
+    },
+    {
+      "a": "4cb35fc761e381d3951f8bca2dcdf317626b3cfd62de5d3d1f04e41bcfa7235c",
+      "b": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
+      "seed": 3015271933,
+      "matches": [
+        {
+          "points": [
+            3,
+            2
+          ],
+          "rallies": 5
         },
         {
           "points": [
-            5,
-            0
+            3,
+            2
           ],
           "rallies": 5
         }
@@ -291,6 +291,27 @@
       "a": "4cb35fc761e381d3951f8bca2dcdf317626b3cfd62de5d3d1f04e41bcfa7235c",
       "b": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
       "seed": 3441057251,
+      "matches": [
+        {
+          "points": [
+            1,
+            4
+          ],
+          "rallies": 5
+        },
+        {
+          "points": [
+            4,
+            1
+          ],
+          "rallies": 5
+        }
+      ]
+    },
+    {
+      "a": "4cb35fc761e381d3951f8bca2dcdf317626b3cfd62de5d3d1f04e41bcfa7235c",
+      "b": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
+      "seed": 3647935327,
       "matches": [
         {
           "points": [
@@ -311,7 +332,28 @@
     {
       "a": "4cb35fc761e381d3951f8bca2dcdf317626b3cfd62de5d3d1f04e41bcfa7235c",
       "b": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
-      "seed": 3647935327,
+      "seed": 3691036299,
+      "matches": [
+        {
+          "points": [
+            1,
+            4
+          ],
+          "rallies": 5
+        },
+        {
+          "points": [
+            2,
+            3
+          ],
+          "rallies": 5
+        }
+      ]
+    },
+    {
+      "a": "4cb35fc761e381d3951f8bca2dcdf317626b3cfd62de5d3d1f04e41bcfa7235c",
+      "b": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
+      "seed": 3888870560,
       "matches": [
         {
           "points": [
@@ -332,54 +374,12 @@
     {
       "a": "4cb35fc761e381d3951f8bca2dcdf317626b3cfd62de5d3d1f04e41bcfa7235c",
       "b": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
-      "seed": 3691036299,
-      "matches": [
-        {
-          "points": [
-            1,
-            4
-          ],
-          "rallies": 5
-        },
-        {
-          "points": [
-            3,
-            2
-          ],
-          "rallies": 5
-        }
-      ]
-    },
-    {
-      "a": "4cb35fc761e381d3951f8bca2dcdf317626b3cfd62de5d3d1f04e41bcfa7235c",
-      "b": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
-      "seed": 3888870560,
-      "matches": [
-        {
-          "points": [
-            1,
-            4
-          ],
-          "rallies": 5
-        },
-        {
-          "points": [
-            2,
-            3
-          ],
-          "rallies": 5
-        }
-      ]
-    },
-    {
-      "a": "4cb35fc761e381d3951f8bca2dcdf317626b3cfd62de5d3d1f04e41bcfa7235c",
-      "b": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
       "seed": 4189532519,
       "matches": [
         {
           "points": [
-            3,
-            2
+            2,
+            3
           ],
           "rallies": 5
         },
@@ -406,8 +406,8 @@
         },
         {
           "points": [
-            4,
-            1
+            5,
+            0
           ],
           "rallies": 5
         }
@@ -427,8 +427,8 @@
         },
         {
           "points": [
-            4,
-            1
+            5,
+            0
           ],
           "rallies": 5
         }
@@ -469,8 +469,8 @@
         },
         {
           "points": [
-            4,
-            1
+            5,
+            0
           ],
           "rallies": 5
         }
@@ -504,8 +504,8 @@
       "matches": [
         {
           "points": [
-            1,
-            4
+            0,
+            5
           ],
           "rallies": 5
         },
@@ -567,8 +567,8 @@
       "matches": [
         {
           "points": [
-            0,
-            5
+            1,
+            4
           ],
           "rallies": 5
         },
@@ -630,15 +630,15 @@
       "matches": [
         {
           "points": [
-            1,
-            4
+            0,
+            5
           ],
           "rallies": 5
         },
         {
           "points": [
-            3,
-            2
+            5,
+            0
           ],
           "rallies": 5
         }
@@ -651,8 +651,8 @@
       "matches": [
         {
           "points": [
-            1,
-            4
+            0,
+            5
           ],
           "rallies": 5
         },
@@ -672,8 +672,8 @@
       "matches": [
         {
           "points": [
-            0,
-            5
+            1,
+            4
           ],
           "rallies": 5
         },
@@ -700,8 +700,8 @@
         },
         {
           "points": [
-            3,
-            2
+            5,
+            0
           ],
           "rallies": 5
         }
@@ -903,8 +903,8 @@
       "matches": [
         {
           "points": [
-            1,
-            4
+            0,
+            5
           ],
           "rallies": 5
         },
@@ -966,15 +966,15 @@
       "matches": [
         {
           "points": [
-            1,
-            4
+            0,
+            5
           ],
           "rallies": 5
         },
         {
           "points": [
-            4,
-            1
+            5,
+            0
           ],
           "rallies": 5
         }
@@ -1071,15 +1071,15 @@
       "matches": [
         {
           "points": [
-            1,
-            4
+            0,
+            5
           ],
           "rallies": 5
         },
         {
           "points": [
-            4,
-            1
+            3,
+            2
           ],
           "rallies": 5
         }
@@ -1099,8 +1099,8 @@
         },
         {
           "points": [
-            2,
-            2
+            3,
+            1
           ],
           "rallies": 5
         }
@@ -1121,7 +1121,7 @@
         {
           "points": [
             4,
-            1
+            0
           ],
           "rallies": 5
         }
@@ -1134,15 +1134,15 @@
       "matches": [
         {
           "points": [
-            2,
-            3
+            0,
+            5
           ],
           "rallies": 5
         },
         {
           "points": [
-            4,
-            1
+            5,
+            0
           ],
           "rallies": 5
         }
@@ -1156,14 +1156,14 @@
         {
           "points": [
             0,
-            4
+            5
           ],
           "rallies": 5
         },
         {
           "points": [
-            5,
-            0
+            4,
+            1
           ],
           "rallies": 5
         }
@@ -1183,8 +1183,8 @@
         },
         {
           "points": [
-            3,
-            1
+            4,
+            0
           ],
           "rallies": 5
         }
@@ -1194,6 +1194,132 @@
       "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
       "b": "bb1b4680654fdd31bcd596c38ce0b4a1cb38a126aafa71c15f55029ba49daa04",
       "seed": 1817080241,
+      "matches": [
+        {
+          "points": [
+            0,
+            5
+          ],
+          "rallies": 5
+        },
+        {
+          "points": [
+            3,
+            2
+          ],
+          "rallies": 5
+        }
+      ]
+    },
+    {
+      "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
+      "b": "bb1b4680654fdd31bcd596c38ce0b4a1cb38a126aafa71c15f55029ba49daa04",
+      "seed": 2159879017,
+      "matches": [
+        {
+          "points": [
+            1,
+            4
+          ],
+          "rallies": 5
+        },
+        {
+          "points": [
+            4,
+            1
+          ],
+          "rallies": 5
+        }
+      ]
+    },
+    {
+      "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
+      "b": "bb1b4680654fdd31bcd596c38ce0b4a1cb38a126aafa71c15f55029ba49daa04",
+      "seed": 2245385025,
+      "matches": [
+        {
+          "points": [
+            0,
+            4
+          ],
+          "rallies": 5
+        },
+        {
+          "points": [
+            4,
+            1
+          ],
+          "rallies": 5
+        }
+      ]
+    },
+    {
+      "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
+      "b": "bb1b4680654fdd31bcd596c38ce0b4a1cb38a126aafa71c15f55029ba49daa04",
+      "seed": 2594516131,
+      "matches": [
+        {
+          "points": [
+            0,
+            5
+          ],
+          "rallies": 5
+        },
+        {
+          "points": [
+            3,
+            2
+          ],
+          "rallies": 5
+        }
+      ]
+    },
+    {
+      "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
+      "b": "bb1b4680654fdd31bcd596c38ce0b4a1cb38a126aafa71c15f55029ba49daa04",
+      "seed": 3015271933,
+      "matches": [
+        {
+          "points": [
+            1,
+            3
+          ],
+          "rallies": 5
+        },
+        {
+          "points": [
+            3,
+            2
+          ],
+          "rallies": 5
+        }
+      ]
+    },
+    {
+      "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
+      "b": "bb1b4680654fdd31bcd596c38ce0b4a1cb38a126aafa71c15f55029ba49daa04",
+      "seed": 3441057251,
+      "matches": [
+        {
+          "points": [
+            0,
+            5
+          ],
+          "rallies": 5
+        },
+        {
+          "points": [
+            3,
+            2
+          ],
+          "rallies": 5
+        }
+      ]
+    },
+    {
+      "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
+      "b": "bb1b4680654fdd31bcd596c38ce0b4a1cb38a126aafa71c15f55029ba49daa04",
+      "seed": 3647935327,
       "matches": [
         {
           "points": [
@@ -1214,145 +1340,19 @@
     {
       "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
       "b": "bb1b4680654fdd31bcd596c38ce0b4a1cb38a126aafa71c15f55029ba49daa04",
-      "seed": 2159879017,
-      "matches": [
-        {
-          "points": [
-            2,
-            3
-          ],
-          "rallies": 5
-        },
-        {
-          "points": [
-            4,
-            1
-          ],
-          "rallies": 5
-        }
-      ]
-    },
-    {
-      "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
-      "b": "bb1b4680654fdd31bcd596c38ce0b4a1cb38a126aafa71c15f55029ba49daa04",
-      "seed": 2245385025,
-      "matches": [
-        {
-          "points": [
-            1,
-            4
-          ],
-          "rallies": 5
-        },
-        {
-          "points": [
-            4,
-            0
-          ],
-          "rallies": 5
-        }
-      ]
-    },
-    {
-      "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
-      "b": "bb1b4680654fdd31bcd596c38ce0b4a1cb38a126aafa71c15f55029ba49daa04",
-      "seed": 2594516131,
-      "matches": [
-        {
-          "points": [
-            2,
-            2
-          ],
-          "rallies": 5
-        },
-        {
-          "points": [
-            2,
-            2
-          ],
-          "rallies": 5
-        }
-      ]
-    },
-    {
-      "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
-      "b": "bb1b4680654fdd31bcd596c38ce0b4a1cb38a126aafa71c15f55029ba49daa04",
-      "seed": 3015271933,
-      "matches": [
-        {
-          "points": [
-            1,
-            4
-          ],
-          "rallies": 5
-        },
-        {
-          "points": [
-            3,
-            2
-          ],
-          "rallies": 5
-        }
-      ]
-    },
-    {
-      "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
-      "b": "bb1b4680654fdd31bcd596c38ce0b4a1cb38a126aafa71c15f55029ba49daa04",
-      "seed": 3441057251,
-      "matches": [
-        {
-          "points": [
-            1,
-            4
-          ],
-          "rallies": 5
-        },
-        {
-          "points": [
-            3,
-            2
-          ],
-          "rallies": 5
-        }
-      ]
-    },
-    {
-      "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
-      "b": "bb1b4680654fdd31bcd596c38ce0b4a1cb38a126aafa71c15f55029ba49daa04",
-      "seed": 3647935327,
-      "matches": [
-        {
-          "points": [
-            2,
-            3
-          ],
-          "rallies": 5
-        },
-        {
-          "points": [
-            4,
-            1
-          ],
-          "rallies": 5
-        }
-      ]
-    },
-    {
-      "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
-      "b": "bb1b4680654fdd31bcd596c38ce0b4a1cb38a126aafa71c15f55029ba49daa04",
       "seed": 3691036299,
       "matches": [
         {
           "points": [
-            0,
+            1,
             4
           ],
           "rallies": 5
         },
         {
           "points": [
-            2,
-            2
+            4,
+            1
           ],
           "rallies": 5
         }
@@ -1365,15 +1365,15 @@
       "matches": [
         {
           "points": [
-            1,
-            4
+            0,
+            3
           ],
           "rallies": 5
         },
         {
           "points": [
-            2,
-            3
+            5,
+            0
           ],
           "rallies": 5
         }
@@ -1386,15 +1386,15 @@
       "matches": [
         {
           "points": [
-            0,
-            5
+            1,
+            4
           ],
           "rallies": 5
         },
         {
           "points": [
-            4,
-            1
+            2,
+            0
           ],
           "rallies": 5
         }
@@ -1407,15 +1407,15 @@
       "matches": [
         {
           "points": [
-            1,
-            4
+            0,
+            5
           ],
           "rallies": 5
         },
         {
           "points": [
-            5,
-            0
+            4,
+            1
           ],
           "rallies": 5
         }
@@ -1435,8 +1435,8 @@
         },
         {
           "points": [
-            5,
-            0
+            3,
+            2
           ],
           "rallies": 5
         }
@@ -1470,8 +1470,8 @@
       "matches": [
         {
           "points": [
-            0,
-            5
+            1,
+            4
           ],
           "rallies": 5
         },
@@ -1488,48 +1488,6 @@
       "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
       "b": "f549993574845d13e0a34c5567508aa9c1b65cd8a651368d5669f8d5ebfecfdd",
       "seed": 1468069226,
-      "matches": [
-        {
-          "points": [
-            0,
-            5
-          ],
-          "rallies": 5
-        },
-        {
-          "points": [
-            3,
-            2
-          ],
-          "rallies": 5
-        }
-      ]
-    },
-    {
-      "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
-      "b": "f549993574845d13e0a34c5567508aa9c1b65cd8a651368d5669f8d5ebfecfdd",
-      "seed": 1724295011,
-      "matches": [
-        {
-          "points": [
-            0,
-            5
-          ],
-          "rallies": 5
-        },
-        {
-          "points": [
-            5,
-            0
-          ],
-          "rallies": 5
-        }
-      ]
-    },
-    {
-      "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
-      "b": "f549993574845d13e0a34c5567508aa9c1b65cd8a651368d5669f8d5ebfecfdd",
-      "seed": 1817080241,
       "matches": [
         {
           "points": [
@@ -1550,12 +1508,75 @@
     {
       "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
       "b": "f549993574845d13e0a34c5567508aa9c1b65cd8a651368d5669f8d5ebfecfdd",
-      "seed": 2159879017,
+      "seed": 1724295011,
       "matches": [
         {
           "points": [
             0,
             5
+          ],
+          "rallies": 5
+        },
+        {
+          "points": [
+            3,
+            2
+          ],
+          "rallies": 5
+        }
+      ]
+    },
+    {
+      "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
+      "b": "f549993574845d13e0a34c5567508aa9c1b65cd8a651368d5669f8d5ebfecfdd",
+      "seed": 1817080241,
+      "matches": [
+        {
+          "points": [
+            0,
+            5
+          ],
+          "rallies": 5
+        },
+        {
+          "points": [
+            1,
+            4
+          ],
+          "rallies": 5
+        }
+      ]
+    },
+    {
+      "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
+      "b": "f549993574845d13e0a34c5567508aa9c1b65cd8a651368d5669f8d5ebfecfdd",
+      "seed": 2159879017,
+      "matches": [
+        {
+          "points": [
+            3,
+            2
+          ],
+          "rallies": 5
+        },
+        {
+          "points": [
+            3,
+            2
+          ],
+          "rallies": 5
+        }
+      ]
+    },
+    {
+      "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
+      "b": "f549993574845d13e0a34c5567508aa9c1b65cd8a651368d5669f8d5ebfecfdd",
+      "seed": 2245385025,
+      "matches": [
+        {
+          "points": [
+            1,
+            4
           ],
           "rallies": 5
         },
@@ -1571,7 +1592,28 @@
     {
       "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
       "b": "f549993574845d13e0a34c5567508aa9c1b65cd8a651368d5669f8d5ebfecfdd",
-      "seed": 2245385025,
+      "seed": 2594516131,
+      "matches": [
+        {
+          "points": [
+            0,
+            5
+          ],
+          "rallies": 5
+        },
+        {
+          "points": [
+            4,
+            1
+          ],
+          "rallies": 5
+        }
+      ]
+    },
+    {
+      "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
+      "b": "f549993574845d13e0a34c5567508aa9c1b65cd8a651368d5669f8d5ebfecfdd",
+      "seed": 3015271933,
       "matches": [
         {
           "points": [
@@ -1582,8 +1624,8 @@
         },
         {
           "points": [
-            3,
-            2
+            4,
+            1
           ],
           "rallies": 5
         }
@@ -1592,7 +1634,49 @@
     {
       "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
       "b": "f549993574845d13e0a34c5567508aa9c1b65cd8a651368d5669f8d5ebfecfdd",
-      "seed": 2594516131,
+      "seed": 3441057251,
+      "matches": [
+        {
+          "points": [
+            1,
+            4
+          ],
+          "rallies": 5
+        },
+        {
+          "points": [
+            5,
+            0
+          ],
+          "rallies": 5
+        }
+      ]
+    },
+    {
+      "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
+      "b": "f549993574845d13e0a34c5567508aa9c1b65cd8a651368d5669f8d5ebfecfdd",
+      "seed": 3647935327,
+      "matches": [
+        {
+          "points": [
+            1,
+            4
+          ],
+          "rallies": 5
+        },
+        {
+          "points": [
+            5,
+            0
+          ],
+          "rallies": 5
+        }
+      ]
+    },
+    {
+      "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
+      "b": "f549993574845d13e0a34c5567508aa9c1b65cd8a651368d5669f8d5ebfecfdd",
+      "seed": 3691036299,
       "matches": [
         {
           "points": [
@@ -1613,7 +1697,7 @@
     {
       "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
       "b": "f549993574845d13e0a34c5567508aa9c1b65cd8a651368d5669f8d5ebfecfdd",
-      "seed": 3015271933,
+      "seed": 3888870560,
       "matches": [
         {
           "points": [
@@ -1634,90 +1718,6 @@
     {
       "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
       "b": "f549993574845d13e0a34c5567508aa9c1b65cd8a651368d5669f8d5ebfecfdd",
-      "seed": 3441057251,
-      "matches": [
-        {
-          "points": [
-            1,
-            4
-          ],
-          "rallies": 5
-        },
-        {
-          "points": [
-            3,
-            2
-          ],
-          "rallies": 5
-        }
-      ]
-    },
-    {
-      "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
-      "b": "f549993574845d13e0a34c5567508aa9c1b65cd8a651368d5669f8d5ebfecfdd",
-      "seed": 3647935327,
-      "matches": [
-        {
-          "points": [
-            0,
-            5
-          ],
-          "rallies": 5
-        },
-        {
-          "points": [
-            4,
-            1
-          ],
-          "rallies": 5
-        }
-      ]
-    },
-    {
-      "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
-      "b": "f549993574845d13e0a34c5567508aa9c1b65cd8a651368d5669f8d5ebfecfdd",
-      "seed": 3691036299,
-      "matches": [
-        {
-          "points": [
-            0,
-            5
-          ],
-          "rallies": 5
-        },
-        {
-          "points": [
-            3,
-            2
-          ],
-          "rallies": 5
-        }
-      ]
-    },
-    {
-      "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
-      "b": "f549993574845d13e0a34c5567508aa9c1b65cd8a651368d5669f8d5ebfecfdd",
-      "seed": 3888870560,
-      "matches": [
-        {
-          "points": [
-            1,
-            4
-          ],
-          "rallies": 5
-        },
-        {
-          "points": [
-            4,
-            1
-          ],
-          "rallies": 5
-        }
-      ]
-    },
-    {
-      "a": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
-      "b": "f549993574845d13e0a34c5567508aa9c1b65cd8a651368d5669f8d5ebfecfdd",
       "seed": 4189532519,
       "matches": [
         {
@@ -1729,8 +1729,8 @@
         },
         {
           "points": [
-            4,
-            0
+            3,
+            2
           ],
           "rallies": 5
         }
@@ -1743,15 +1743,15 @@
       "matches": [
         {
           "points": [
-            1,
-            4
+            3,
+            2
           ],
           "rallies": 5
         },
         {
           "points": [
-            4,
-            1
+            3,
+            2
           ],
           "rallies": 5
         }
@@ -1764,8 +1764,8 @@
       "matches": [
         {
           "points": [
-            3,
-            2
+            1,
+            4
           ],
           "rallies": 5
         },
@@ -1782,27 +1782,6 @@
       "a": "bb1b4680654fdd31bcd596c38ce0b4a1cb38a126aafa71c15f55029ba49daa04",
       "b": "f549993574845d13e0a34c5567508aa9c1b65cd8a651368d5669f8d5ebfecfdd",
       "seed": 1229251971,
-      "matches": [
-        {
-          "points": [
-            2,
-            3
-          ],
-          "rallies": 5
-        },
-        {
-          "points": [
-            3,
-            2
-          ],
-          "rallies": 5
-        }
-      ]
-    },
-    {
-      "a": "bb1b4680654fdd31bcd596c38ce0b4a1cb38a126aafa71c15f55029ba49daa04",
-      "b": "f549993574845d13e0a34c5567508aa9c1b65cd8a651368d5669f8d5ebfecfdd",
-      "seed": 1398955327,
       "matches": [
         {
           "points": [
@@ -1823,6 +1802,27 @@
     {
       "a": "bb1b4680654fdd31bcd596c38ce0b4a1cb38a126aafa71c15f55029ba49daa04",
       "b": "f549993574845d13e0a34c5567508aa9c1b65cd8a651368d5669f8d5ebfecfdd",
+      "seed": 1398955327,
+      "matches": [
+        {
+          "points": [
+            5,
+            0
+          ],
+          "rallies": 5
+        },
+        {
+          "points": [
+            5,
+            0
+          ],
+          "rallies": 5
+        }
+      ]
+    },
+    {
+      "a": "bb1b4680654fdd31bcd596c38ce0b4a1cb38a126aafa71c15f55029ba49daa04",
+      "b": "f549993574845d13e0a34c5567508aa9c1b65cd8a651368d5669f8d5ebfecfdd",
       "seed": 1468069226,
       "matches": [
         {
@@ -1834,7 +1834,7 @@
         },
         {
           "points": [
-            1,
+            2,
             3
           ],
           "rallies": 5
@@ -1855,8 +1855,8 @@
         },
         {
           "points": [
-            4,
-            1
+            3,
+            2
           ],
           "rallies": 5
         }
@@ -1869,15 +1869,15 @@
       "matches": [
         {
           "points": [
-            2,
-            3
+            1,
+            4
           ],
           "rallies": 5
         },
         {
           "points": [
-            3,
-            2
+            4,
+            1
           ],
           "rallies": 5
         }
@@ -1897,8 +1897,8 @@
         },
         {
           "points": [
-            3,
-            2
+            4,
+            1
           ],
           "rallies": 5
         }
@@ -1911,15 +1911,15 @@
       "matches": [
         {
           "points": [
-            0,
-            5
+            1,
+            4
           ],
           "rallies": 5
         },
         {
           "points": [
             3,
-            1
+            2
           ],
           "rallies": 5
         }
@@ -1932,15 +1932,15 @@
       "matches": [
         {
           "points": [
-            0,
-            5
+            1,
+            4
           ],
           "rallies": 5
         },
         {
           "points": [
-            4,
-            1
+            3,
+            2
           ],
           "rallies": 5
         }
@@ -1953,15 +1953,15 @@
       "matches": [
         {
           "points": [
-            2,
-            3
+            0,
+            5
           ],
           "rallies": 5
         },
         {
           "points": [
-            3,
-            2
+            1,
+            4
           ],
           "rallies": 5
         }
@@ -1974,15 +1974,15 @@
       "matches": [
         {
           "points": [
-            1,
-            4
+            2,
+            3
           ],
           "rallies": 5
         },
         {
           "points": [
-            2,
-            3
+            1,
+            4
           ],
           "rallies": 5
         }
@@ -1995,15 +1995,15 @@
       "matches": [
         {
           "points": [
-            1,
-            4
+            3,
+            2
           ],
           "rallies": 5
         },
         {
           "points": [
-            3,
-            2
+            2,
+            3
           ],
           "rallies": 5
         }
@@ -2037,15 +2037,15 @@
       "matches": [
         {
           "points": [
-            0,
-            5
+            3,
+            2
           ],
           "rallies": 5
         },
         {
           "points": [
-            3,
-            2
+            4,
+            1
           ],
           "rallies": 5
         }
@@ -2066,7 +2066,7 @@
         {
           "points": [
             3,
-            1
+            2
           ],
           "rallies": 5
         }

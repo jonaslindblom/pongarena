@@ -59,9 +59,17 @@ Training, development and final evaluation use disjoint seed ranges.
 `check.py` verifies physics, script decisions and optional PyTorch/ONNX parity;
 `--models ../public/models` also checks the shipped model and recipe hashes.
 Fixed seeds and single-threaded CPU runs reproduced both ONNX files byte for byte
-from an isolated copy of this folder. Floating-point results can vary across platforms.
+under the original `pong` rules. The shipped weights remain frozen. Current training
+and evaluation use `pong-v2` centered serves; to reproduce the original weights and
+historical results, use the [pre-v2 training source](https://github.com/jonaslindblom/pongarena/tree/a46ecd8d53d46d49b00723f9b1059d9c0155b3d9/training).
+Floating-point results can vary across platforms.
 
 ## Results
+
+These are historical `pong` results. The current `pong-v2` comparison reuses the
+same model bytes and is recorded in the [reference league](../public/league.md).
+Changing the serve distribution does not require retraining; scores from the two
+rule versions should not be compared directly.
 
 | Model | Parameters | Rally score vs Quill (95% interval) |
 | --- | ---: | ---: |
@@ -75,5 +83,5 @@ Across three training seeds, development scores averaged over the scripts range
 from 22.4–32.2% for Small and 74.2–78.8% for Large.
 
 [results.json](results.json) records seeds, hashes, resource counts and scores.
-These are reproducible baselines within this arena, not a claim of optimal
+These are reproducible baselines under the original rules, not a claim of optimal
 training. Quill remains an independent 163-parameter handwritten comparison.
