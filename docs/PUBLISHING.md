@@ -13,7 +13,7 @@ npm run build
 git status --short
 ```
 
-Review and commit the model files, metadata and both league results. The app and league need no Python dependencies. A separate CI job installs the training environment and runs a small pipeline check; full training stays outside PR checks. After creating the GitHub repository and adding its URL as `origin`, push the reviewed `main` branch:
+Review and commit the model files, metadata and both league results. The app and league need no Python dependencies. A separate CI job installs the training environment, runs a small pipeline check and reproduces Follow and Quill from their standalone constructors. Full training stays outside PR checks. After creating the GitHub repository and adding its URL as `origin`, push the reviewed `main` branch:
 
 ```sh
 git push -u origin main

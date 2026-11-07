@@ -9,6 +9,7 @@ import {
   Gamepad2,
   Layers3,
   Monitor,
+  Network,
   Smartphone,
   Plus,
   Upload,
@@ -25,6 +26,9 @@ import { Architecture } from './Architecture'
 import { ControllerBadge } from './ControllerBadge'
 import { PONG } from './rules'
 import { Ranking } from './Ranking'
+import { RankBadge } from './RankBadge'
+import { useReferenceRanks } from './useReferenceRanks'
+import { WeightsLab } from './WeightsLab'
 import { browserCompetitionMatch } from './runCompetition'
 import { sha256, smallestDivision, type CompetitionEntrant } from './competition'
 import { DeviceTest } from './DeviceTest'
@@ -32,15 +36,15 @@ import { finishStartup, getStartupSnapshot, markArenaReady, recordStartupFailure
 import { assetPath } from './assets'
 import quillSourceUrl from '../handwritten/quill.py?url'
 import './App.css'
-type Page = 'Arena' | 'Rankings' | 'Model library' | 'Field guide' | 'Device test'
+type Page = 'Arena' | 'Rankings' | 'Model library' | 'Understanding the weights' | 'Field guide' | 'Device test'
 const tabs: { page: Page; label: string; icon: typeof Gamepad2 }[] = [
   { page: 'Arena', label: 'Play', icon: Gamepad2 },
   { page: 'Rankings', label: 'League', icon: Trophy },
   { page: 'Model library', label: 'Models', icon: Layers3 },
+  { page: 'Understanding the weights', label: 'Weights', icon: Network },
   { page: 'Field guide', label: 'Guide', icon: BookOpen },
 ]
-const descriptions: Record<Page, string> = {
-  Arena: 'Move with A/D or ←/→. Press R to restart.',
+const descriptions = {
   Rankings: 'Handwritten and trained models, tested on the same serves from both sides.',
   'Model library': 'Play against a model, inspect its brain, or bring your own weights.',
   'Field guide': 'The game rules, observations, actions, and submission contract.',
@@ -81,14 +85,15 @@ function Guide({ onDeviceTest }: { onDeviceTest: () => void }) {
         <p>
           Every match uses a vertical court. You play from the bottom. Hold the left
           half to move left or the right half to move right, and lift to stop. You can also use A/D,
-          ←/→, or the on-screen buttons. Press R to restart immediately. Full screen hides the workspace and locks page scrolling.
+          ←/→, or the touch controls. Press P to play, pause or resume; after game over, P plays again. Press R to restart immediately. Press F for full screen and F or Esc to exit; full screen hides the workspace and locks page scrolling.
           Touch and pointer controls steer through the same movement limit. Animation fills the space between
           decisions; pausing preserves the exact game state.
         </p>
         <p>
           Quill is a neural network with handwritten weights: its ball prediction and paddle control
           are built directly into dense matrices. Small and Large are trained in PyTorch.
-          All three receive the same observations and choose from the same moves.
+          Follow is a tiny handwritten example explained in the Weights tab.
+          Every model receives the same observations and chooses from the same moves.
         </p>
         <div className="section-code">02 / OBSERVATION</div>
         <h2>What your model sees</h2>
@@ -122,7 +127,7 @@ function Guide({ onDeviceTest }: { onDeviceTest: () => void }) {
           Ties go to the earliest action. Ordinary moves cover two court units.
         </p>
         <p>
-          Show brain opens the model’s real neuron activations and highlights its selected action.
+          The brain panel shows the model’s real neuron activations and highlights its selected action.
           Pause to inspect a decision. Human players have no neural network.
         </p>
       </article>
@@ -179,6 +184,7 @@ function Guide({ onDeviceTest }: { onDeviceTest: () => void }) {
 
 export default function App() {
   const [page, setPage] = useState<Page>('Arena')
+  const referenceRanks = useReferenceRanks(page === 'Model library')
   const [mode, setMode] = useState<'play' | 'watch'>('play')
   const [startup, setStartup] = useState(getStartupSnapshot)
   const [loadingComplete, setLoadingComplete] = useState(false)
@@ -365,22 +371,19 @@ export default function App() {
           </nav>
         </div>
       </header>
-      <main className="shell">
-        <div className="page-head">
+      <main className={'shell' + (page === 'Arena' ? ' shell-arena' : '')}>
+        {page === 'Arena' && <h1 className="visually-hidden">Pong arena</h1>}
+        {page !== 'Arena' && page !== 'Understanding the weights' && <div className="page-head">
           <div>
-            <h1>{page === 'Arena' ? mode === 'play' ? 'Play Pong' : 'Watch models' : page === 'Rankings' ? 'League' : page}</h1>
+            <h1>{page === 'Rankings' ? 'League' : page}</h1>
             <p>{descriptions[page]}</p>
           </div>
           <div className="page-actions">
-            {page === 'Arena' && <div className="play-mode" role="group" aria-label="Game mode">
-              <button aria-pressed={mode === 'play'} onClick={() => changeMode('play')}>You play</button>
-              <button aria-pressed={mode === 'watch'} onClick={() => changeMode('watch')}>Watch models</button>
-            </div>}
             {page === 'Model library' && <button className="import-btn" disabled={!ready} onClick={openImport}>
               <Plus size={17} /> Import model
             </button>}
           </div>
-        </div>
+        </div>}
         {error && (
           <div className="message error" role="alert">
             {error}
@@ -401,6 +404,7 @@ export default function App() {
         {page === 'Arena' && (
           <Arena
             mode={mode}
+            onModeChange={changeMode}
             models={eligibleModels}
             ids={ids}
             pick={select}
@@ -413,6 +417,7 @@ export default function App() {
           />
         )}
         {page === 'Device test' && <DeviceTest models={eligibleModels} startup={startup} loadingComplete={loadingComplete} />}
+        {page === 'Understanding the weights' && <WeightsLab model={models.find((model) => model.id === 'follow')} onPlay={() => playAgainst('follow')} />}
         {page === 'Rankings' && (
           <Ranking key={rules.id} entrants={eligibleModels.filter((model) => model.type !== 'human' && model.sha256).map((model) => ({
             id: model.id, name: model.name, sha256: model.sha256!, params: model.params, macs: model.macs,
@@ -421,6 +426,10 @@ export default function App() {
             playMatch={browserCompetitionMatch(eligibleModels, rules)} onStart={m.pause} onPlay={playAgainst} />
         )}
         {page === 'Model library' && (
+          <>
+          <p className="library-rank-note" role="status">{referenceRanks.error
+            ? 'Reference ranks unavailable: ' + referenceRanks.error
+            : referenceRanks.loading ? 'Loading reference league ranks…' : 'Ranks from the reference league, matched to the exact model weights.'}</p>
           <div className="library">
             {eligibleModels
               .filter((c) => c.id !== 'keyboard')
@@ -431,9 +440,9 @@ export default function App() {
                     <span className="library-icon">
                       <ModelIcon id={c.id} size={27} />
                     </span>
-                    <span className="mini-tag">
-                      {c.id.startsWith('local-') ? 'IMPORTED' : 'BUILT-IN'}
-                    </span>
+                    {c.sha256 && referenceRanks.ranks.has(c.sha256)
+                      ? <RankBadge rank={referenceRanks.ranks.get(c.sha256)!} label="Reference league rank" />
+                      : <span className="mini-tag">{c.id.startsWith('local-') ? 'IMPORTED' : 'BUILT-IN'}</span>}
                   </div>
                   <small>{c.kind}</small>
                   <h2>{c.name}</h2>
@@ -482,6 +491,7 @@ export default function App() {
                 </article>
               ))}
           </div>
+          </>
         )}
         {page === 'Field guide' && <Guide onDeviceTest={() => navigate('Device test')} />}
         <footer>

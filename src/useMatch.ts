@@ -11,6 +11,7 @@ import {
 import { infer, type Controller } from './models'
 import { boundedDeadline, frameDuration, TICK_MS, type Presentation } from './presentation'
 import { humanKeyAction } from './humanInput'
+import { matchShortcut } from './matchShortcuts'
 
 function newSeed() {
   return crypto.getRandomValues(new Uint32Array(1))[0] % 1000000
@@ -193,13 +194,11 @@ export function useMatch(
   useEffect(() => {
     if (!arenaActive || !keyboardShortcuts) return
     function keydown(event: KeyboardEvent) {
-      if (event.code !== 'KeyR' || event.repeat || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey || event.defaultPrevented) return
-      if (document.querySelector('dialog[open]')) return
-      const target = event.target
-      if (target instanceof Element && target.closest('input, select, textarea, dialog, [contenteditable]:not([contenteditable="false"])')) return
-      if (!players[0] || !players[1]) return
+      const shortcut = matchShortcut(event)
+      if (!shortcut || shortcut === 'fullscreen' || !players[0] || !players[1]) return
       event.preventDefault()
-      restart()
+      if (shortcut === 'play') toggle()
+      else restart()
     }
     window.addEventListener('keydown', keydown)
     return () => window.removeEventListener('keydown', keydown)

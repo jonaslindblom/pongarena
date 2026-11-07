@@ -8,18 +8,4 @@
 .controller-class[data-division='small'] { color: #1e7474; }
 .controller-class[data-division='large'] { color: #73539b; }
 .controller-params { color: #6c796b; white-space: nowrap; }
-.score-player .controller-identity { margin-top: 2px; gap: 3px 6px; min-height: 22px; align-content: flex-start; }
-.score-player.right .controller-identity, .score-player.right .controller-size { justify-content: flex-end; }
-.court .controller-badge { color: #d5e8cb; border-color: #92ad7e40; background: #a5c99213; }
-.court [data-controller-type='human'] > .controller-badge { color: #c5d4cd; border-color: #b6c8be40; background: #baccc313; }
-.court [data-weight-origin='handcrafted'] > .controller-badge { color: #b3d0ff; border-color: #80a5df70; background: #759ee31a; }
-.court .controller-class[data-division='small'] { color: #93d8cb; }
-.court .controller-class[data-division='large'] { color: #d4bce9; }
-.court .controller-params { color: #b1c3b5; }
 .pick-details { margin: 7px 2px 0; }
-@media (max-width: 510px) {
-  .score-player .controller-identity { display: flex; align-items: flex-start; flex-direction: column; min-height: 32px; font-size: 8px; }
-  .score-player.right .controller-identity { align-items: flex-end; }
-  .score-player .controller-size { gap: 0 5px; }
-  .score-player .controller-badge { padding: 1px 4px; }
-}

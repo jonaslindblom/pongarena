@@ -1,7 +1,5 @@
 import {
-  ArrowLeft,
   ArrowLeftRight,
-  ArrowRight,
   ChevronDown,
   Cpu,
   Keyboard,
@@ -12,7 +10,7 @@ import {
   RotateCcw,
   SlidersHorizontal,
 } from 'lucide-react'
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import {
   endedMatch,
   endedRally,
@@ -28,6 +26,7 @@ import { BrainPanel } from './BrainPanel'
 import { HumanControls, useCourtPointerControls } from './HumanControls'
 import { interpolate, progress } from './presentation'
 import { ControllerBadge, controllerOptionLabel } from './ControllerBadge'
+import { matchShortcut } from './matchShortcuts'
 import { DIVISIONS, smallestDivision } from './competition'
 
 export const pad = (n: number) => String(n).padStart(2, '0')
@@ -49,25 +48,42 @@ function playLabel(m: Match, mode: Mode) {
   if (m.tick) return 'Resume'
   return mode === 'play' ? 'Play' : 'Watch'
 }
-function Court({ m, names, controllers, ready, humanSides, bottom, mode }: {
-  m: Match; names: Pair<string>; controllers: Pair<Controller | undefined>; ready: boolean; humanSides: Pair<boolean>; bottom: Side; mode: Mode
+function Court({ m, names, ready, humanSides, bottom, mode, onModeChange }: {
+  m: Match; names: Pair<string>; ready: boolean; humanSides: Pair<boolean>; bottom: Side; mode: Mode
+  onModeChange?: (mode: Mode) => void
 }) {
   const f = m.frame
   const { active, ...input } = useCourtPointerControls(m, humanSides)
   const field = useRef<SVGSVGElement>(null)
   const court = useRef<HTMLElement>(null)
   const fullscreenControl = useRef<HTMLButtonElement>(null)
+  const fullscreenWanted = useRef(false)
   const [fullscreen, setFullscreen] = useState(false)
   function exitFullscreen() {
+    fullscreenWanted.current = false
     if (document.fullscreenElement === court.current)
       void document.exitFullscreen().catch(() => { /* The viewport mode can still be closed. */ })
-    setFullscreen(false)
+        .finally(() => { if (!fullscreenWanted.current) setFullscreen(false) })
+    else setFullscreen(false)
   }
   function enterFullscreen() {
+    fullscreenWanted.current = true
     setFullscreen(true)
     // Keep a viewport-filling mode when native fullscreen is unavailable or denied.
-    void court.current?.requestFullscreen?.().catch(() => {})
+    void court.current?.requestFullscreen?.().then(() => {
+      if (!fullscreenWanted.current) exitFullscreen()
+    }).catch(() => {})
   }
+  useEffect(() => {
+    function keydown(event: KeyboardEvent) {
+      if (matchShortcut(event) !== 'fullscreen' || court.current?.closest('fieldset:disabled')) return
+      event.preventDefault()
+      if (fullscreen) exitFullscreen()
+      else enterFullscreen()
+    }
+    window.addEventListener('keydown', keydown)
+    return () => window.removeEventListener('keydown', keydown)
+  }, [fullscreen])
   useLayoutEffect(() => {
     if (!fullscreen) return
     const scrollX = window.scrollX, scrollY = window.scrollY
@@ -75,7 +91,10 @@ function Court({ m, names, controllers, ready, humanSides, bottom, mode }: {
     document.documentElement.classList.add('game-fullscreen')
     fullscreenControl.current?.focus({ preventScroll: true })
     function change() {
-      if (document.fullscreenElement !== court.current) setFullscreen(false)
+      if (document.fullscreenElement !== court.current) {
+        fullscreenWanted.current = false
+        setFullscreen(false)
+      }
     }
     function keydown(event: KeyboardEvent) {
       if (event.key === 'Escape') {
@@ -83,8 +102,10 @@ function Court({ m, names, controllers, ready, humanSides, bottom, mode }: {
         exitFullscreen()
       }
       if (event.key !== 'Tab') return
-      const buttons = court.current!.querySelectorAll<HTMLButtonElement>('button:not(:disabled)')
+      const buttons = [...court.current!.querySelectorAll<HTMLButtonElement>('button:not(:disabled)')]
+        .filter((button) => button.getClientRects().length)
       const first = buttons[0], last = buttons[buttons.length - 1]
+      if (!first || !last) return
       if (event.shiftKey && document.activeElement === first) {
         event.preventDefault()
         last.focus()
@@ -137,52 +158,58 @@ function Court({ m, names, controllers, ready, humanSides, bottom, mode }: {
   const status = !ready
     ? 'Loading'
     : endedMatch(f)
-      ? 'Full time'
+      ? 'Game over'
       : m.playing
         ? 'Live'
         : f.tick
           ? 'Paused'
           : 'Ready'
+  const finished = endedMatch(f)
+  const winner: Side = f.points[0] > f.points[1] ? 0 : 1
+  const result = f.points[0] === f.points[1] ? 'Match drawn'
+    : humanSides[winner] && !(humanSides[0] && humanSides[1]) ? 'You win!' : names[winner] + ' wins'
+  function showCourt() {
+    if (!fullscreen && window.matchMedia('(max-width: 720px), (pointer: coarse)').matches)
+      court.current?.scrollIntoView({ block: 'start' })
+  }
   return (
     <section {...input} ref={court}
-      className={'court court-vertical' + (active ? ' human-controlled' : '') + (fullscreen ? ' court-fullscreen' : '')}
+      className={'court' + (active ? ' human-controlled' : '') + (fullscreen ? ' court-fullscreen' : '')}
       role={fullscreen ? 'dialog' : undefined} aria-modal={fullscreen || undefined} aria-label="Pong court">
       <div className="court-top">
-        <span className="court-id">
-          <span className="bracket">[</span> COURT 01 <span className="bracket">]</span>
-        </span>
-        <span className="court-line" />
-        <span className="court-version">NEURAL PONG</span>
-        <span className={'status ' + (status === 'Live' ? 'live' : '')}>
-          <i />
-          {status}
-        </span>
-        <div className="court-actions">
-          {fullscreen && <>
-            <button className="court-control" disabled={!ready} onClick={m.toggle}
-              aria-label={playLabel(m, mode)} title={playLabel(m, mode)}>
-              {m.playing ? <Pause size={18} /> : <Play size={18} />}
-            </button>
-            <button className="court-control" disabled={!ready} onClick={m.restart} aria-label="Restart match" title="Restart match (R)">
-              <RotateCcw size={18} />
-            </button>
-          </>}
+        {onModeChange && <div className="court-modes" role="group" aria-label="Game mode">
+          <button aria-pressed={mode === 'play'} onClick={() => onModeChange('play')}>You play</button>
+          <button aria-pressed={mode === 'watch'} onClick={() => onModeChange('watch')}>Watch models</button>
+        </div>}
+        <div className="court-actions" role="group" aria-label="Match controls">
+          <button className="court-control play-btn" disabled={!ready} aria-label={playLabel(m, mode)}
+            aria-keyshortcuts="P" title={playLabel(m, mode) + ' (P)'} onClick={() => {
+              m.toggle()
+              if (!m.playing) showCourt()
+            }}>
+            {m.playing ? <Pause size={16} /> : <Play size={16} fill="currentColor" />}
+            {playLabel(m, mode)} <kbd>P</kbd>
+          </button>
+          <button className="court-control" disabled={!ready} onClick={() => { m.restart(); showCourt() }}
+            aria-label="Restart match" aria-keyshortcuts="R" title="Restart the same serves (R)">
+            <RotateCcw size={16} /><span>Restart</span><kbd>R</kbd>
+          </button>
           <button ref={fullscreenControl} className="court-control" onClick={fullscreen ? exitFullscreen : enterFullscreen}
-            aria-label={fullscreen ? 'Exit full screen' : 'Enter full screen'} aria-pressed={fullscreen}
-            title={fullscreen ? 'Exit full screen (Esc)' : 'Enter full screen'}>
+            aria-label={fullscreen ? 'Exit full screen' : 'Enter full screen'} aria-pressed={fullscreen} aria-keyshortcuts="F"
+            title={fullscreen ? 'Exit full screen (F / Esc)' : 'Enter full screen (F)'}>
             {fullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
-            <span>{fullscreen ? 'Exit' : 'Full screen'}</span>
+            <span>{fullscreen ? 'Exit' : 'Full screen'}</span><kbd>F</kbd>
           </button>
         </div>
+        <span className={'status ' + (status === 'Live' ? 'live' : '')}><i />{status}</span>
       </div>
       <div className="scoreboard">
         <div className="score-player">
           <small>
             <i className="p1-dot" />
-            PLAYER 01{bottom === 0 ? ' · BOTTOM' : ' · TOP'}
+            P1{bottom === 0 ? ' · BOTTOM' : ' · TOP'}
           </small>
           <strong>{names[0]}</strong>
-          <ControllerBadge model={controllers[0]} compact />
         </div>
         <div className="big-score" aria-label={'Score ' + f.points.join(' to ')}>
           <b>{pad(f.points[0])}</b>
@@ -191,101 +218,103 @@ function Court({ m, names, controllers, ready, humanSides, bottom, mode }: {
         </div>
         <div className="score-player right">
           <small>
-            PLAYER 02{bottom === 1 ? ' · BOTTOM' : ' · TOP'}
+            P2{bottom === 1 ? ' · BOTTOM' : ' · TOP'}
             <i className="p2-dot" />
           </small>
           <strong>{names[1]}</strong>
-          <ControllerBadge model={controllers[1]} compact />
         </div>
       </div>
       <div className="court-field">
-        <svg
-          className="field"
-          ref={field}
-          viewBox="0 0 160 360"
-          preserveAspectRatio="none"
-          role="img"
-          aria-label={`Live court: ${bottom === 0 ? 'mint' : 'orange'} bottom paddle, ${bottom === 0 ? 'orange' : 'mint'} top paddle and ball`}
-        >
-          <defs>
-            <pattern id="grid" width="15" height="16" patternUnits="userSpaceOnUse">
-              <path d="M15 0H0V16" fill="none" stroke="#9ebdb2" strokeWidth=".28" opacity=".18" />
-              <circle r=".55" fill="#bdd1c5" opacity=".35" />
-            </pattern>
-            <filter id="softball" x="-100%" y="-100%" width="300%" height="300%">
-              <feGaussianBlur stdDeviation="2" />
-            </filter>
-          </defs>
-          <g transform={bottom === 0 ? 'matrix(0 -1 1 0 0 360)' : 'matrix(0 1 1 0 0 0)'}>
-            <rect width="360" height="160" fill="url(#grid)" />
-            <rect
-              x=".4"
-              y=".4"
-              width="359.2"
-              height="159.2"
-              rx="1"
-              fill="none"
-              stroke="#aec7b6"
-              strokeWidth=".6"
-              opacity=".45"
-            />
-            <circle
-              cx="180"
-              cy="80"
-              r="26"
-              stroke="#bad2c2"
-              opacity=".18"
-              fill="none"
-              strokeWidth=".65"
-            />
-            <path
-              d="M180 0V160"
-              stroke="#bdd2c1"
-              strokeWidth=".8"
-              strokeDasharray="2.2 2.7"
-              opacity=".62"
-            />
-            <path
-              d="M.7 7V.7H7 M353 .7h6.3V7 M.7 153v6.3H7 M353 159.3h6.3V153"
-              fill="none"
-              stroke="#b4c7b7"
-              strokeWidth="1"
-            />
-            <rect x="6" y="68" width="5" height="24" rx="1.2" className="paddle left" />
-            <rect
-              x="349"
-              y="68"
-              width="5"
-              height="24"
-              rx="1.2"
-              className="paddle right"
-            />
-            {Array.from({ length: 7 }, (_, i) => (
-              <circle
-                key={i}
-                className="ball-trail"
-                cx="180"
-                cy="80"
-                r={0.7 + i * 0.18}
-                fill="#e8f8c9"
-                opacity="0"
+        <div className="court-surface">
+          <svg
+            className="field"
+            ref={field}
+            viewBox="0 0 160 360"
+            preserveAspectRatio="none"
+            role="img"
+            aria-label={`Live court: ${bottom === 0 ? 'mint' : 'orange'} bottom paddle, ${bottom === 0 ? 'orange' : 'mint'} top paddle and ball`}
+          >
+            <defs>
+              <pattern id="grid" width="15" height="16" patternUnits="userSpaceOnUse">
+                <path d="M15 0H0V16" fill="none" stroke="#9ebdb2" strokeWidth=".28" opacity=".18" />
+                <circle r=".55" fill="#bdd1c5" opacity=".35" />
+              </pattern>
+              <filter id="softball" x="-100%" y="-100%" width="300%" height="300%">
+                <feGaussianBlur stdDeviation="2" />
+              </filter>
+            </defs>
+            <g transform={bottom === 0 ? 'matrix(0 -1 1 0 0 360)' : 'matrix(0 1 1 0 0 0)'}>
+              <rect width="360" height="160" fill="url(#grid)" />
+              <rect
+                x=".4"
+                y=".4"
+                width="359.2"
+                height="159.2"
+                rx="1"
+                fill="none"
+                stroke="#aec7b6"
+                strokeWidth=".6"
+                opacity=".45"
               />
-            ))}
-            <circle className="moving-ball" cx="180" cy="80" r="3.7" fill="#dafa9c" opacity=".44" filter="url(#softball)" />
-            <circle className="moving-ball" cx="180" cy="80" r="2.55" fill="#f1ffd9" />
-          </g>
-        </svg>
+              <path
+                d="M180 0V160"
+                stroke="#bdd2c1"
+                strokeWidth=".8"
+                strokeDasharray="2.2 2.7"
+                opacity=".62"
+              />
+              <path
+                d="M.7 7V.7H7 M353 .7h6.3V7 M.7 153v6.3H7 M353 159.3h6.3V153"
+                fill="none"
+                stroke="#b4c7b7"
+                strokeWidth="1"
+              />
+              <rect x="6" y="68" width="5" height="24" rx="1.2" className="paddle left" />
+              <rect
+                x="349"
+                y="68"
+                width="5"
+                height="24"
+                rx="1.2"
+                className="paddle right"
+              />
+              {Array.from({ length: 7 }, (_, i) => (
+                <circle
+                  key={i}
+                  className="ball-trail"
+                  cx="180"
+                  cy="80"
+                  r={0.7 + i * 0.18}
+                  fill="#e8f8c9"
+                  opacity="0"
+                />
+              ))}
+              <circle className="moving-ball" cx="180" cy="80" r="3.7" fill="#dafa9c" opacity=".44" filter="url(#softball)" />
+              <circle className="moving-ball" cx="180" cy="80" r="2.55" fill="#f1ffd9" />
+            </g>
+          </svg>
+          <span className="court-center-circle" aria-hidden="true" />
+        </div>
+        {finished && <div className="match-over" role="status">
+          <div className="match-over-card">
+            <p className="match-over-label">GAME OVER</p>
+            <h2>{result}</h2>
+            <p className="match-over-score">{f.points[0]} – {f.points[1]}</p>
+            <button className="play-btn" onClick={m.restart} aria-keyshortcuts="P">
+              <Play size={18} fill="currentColor" /> {mode === 'play' ? 'Play again' : 'Watch again'}
+            </button>
+            <p className="keyboard-hint">Press <kbd>P</kbd> to {mode === 'play' ? 'play' : 'watch'} again</p>
+            <small className="keyboard-hint"><kbd>R</kbd> restarts the same serves</small>
+          </div>
+        </div>}
       </div>
-      {fullscreen && (humanSides[0] || humanSides[1]) && <p className="court-instruction">
-        <span><ArrowLeft size={14} /> Hold left</span>
-        <span>Hold right <ArrowRight size={14} /></span>
-      </p>}
+      <HumanControls m={m} humanSides={humanSides} />
       <div className="court-foot">
         <span>
           <i />
           RALLY {pad(f.rally)} <em>/ {pad(RALLIES)}</em>
         </span>
-        <span>
+        <span className="court-event">
           {endedMatch(f)
             ? f.points[0] === f.points[1]
               ? 'MATCH DRAWN'
@@ -294,32 +323,9 @@ function Court({ m, names, controllers, ready, humanSides, bottom, mode }: {
               ? eventText(f, names).toUpperCase()
               : pad(f.returns) + ' RETURNS'}
         </span>
-        <span className="tick-readout">TICK {String(f.tick).padStart(4, '0')}</span>
+        {(humanSides[0] || humanSides[1]) && <span className="keyboard-hint court-movement-hint">A/D or ←/→ to move</span>}
+        <span className="tick-readout" aria-label={'Simulation tick ' + f.tick}>TICK {String(f.tick).padStart(4, '0')}</span>
       </div>
-    </section>
-  )
-}
-function MatchControls({ m, ready, mode }: { m: Match; ready: boolean; mode: Mode }) {
-  function showCourt(button: HTMLButtonElement) {
-    if (window.matchMedia('(max-width: 720px), (pointer: coarse)').matches)
-      button.closest('.main-column')?.querySelector('.court')?.scrollIntoView({ block: 'start' })
-  }
-  return (
-    <section className="panel match-controls" aria-label="Match controls">
-      <button className="play-btn" disabled={!ready} onClick={(event) => {
-        m.toggle()
-        if (!m.playing) showCourt(event.currentTarget)
-      }}>
-        {m.playing ? <Pause size={16} fill="currentColor" /> : <Play size={16} fill="currentColor" />}
-        {playLabel(m, mode)}
-      </button>
-      <button className="secondary-btn" disabled={!ready} onClick={(event) => {
-        m.restart()
-        showCourt(event.currentTarget)
-      }} title="Restart the same serves (R)">
-        <RotateCcw size={16} /> Restart <kbd>R</kbd>
-      </button>
-      <span>{mode === 'play' ? 'Move with A/D or ←/→' : 'Five rallies per match'}</span>
     </section>
   )
 }
@@ -331,8 +337,9 @@ interface Props {
   swap: () => void
   ready: boolean
   mode?: Mode
+  onModeChange?: (mode: Mode) => void
 }
-export function Arena({ m, models, ids, pick, swap, ready, mode = 'watch' }: Props) {
+export function Arena({ m, models, ids, pick, swap, ready, mode = 'watch', onModeChange }: Props) {
   const humanSides: Pair<boolean> = [ids[0] === 'keyboard', ids[1] === 'keyboard']
   const bottom: Side = humanSides[1] && !humanSides[0] ? 1 : 0
   const controllers = ids.map((id) => models.find((model) => model.id === id)) as Pair<Controller | undefined>
@@ -347,9 +354,7 @@ export function Arena({ m, models, ids, pick, swap, ready, mode = 'watch' }: Pro
   return (
     <div className="arena-grid">
       <div className="main-column">
-        <MatchControls m={m} ready={ready} mode={mode} />
-        <Court m={m} names={names} controllers={controllers} ready={ready} humanSides={humanSides} bottom={bottom} mode={mode} />
-        <HumanControls m={m} humanSides={humanSides} />
+        <Court m={m} names={names} ready={ready} humanSides={humanSides} bottom={bottom} mode={mode} onModeChange={onModeChange} />
       </div>
       <aside className="side-column">
         <section className="panel matchup">

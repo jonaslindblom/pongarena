@@ -11,7 +11,7 @@ export const DEVICE_TEST = {
   batchSize: 2048,
   batches: 7,
   animationMs: 15000,
-  modelIds: ['quill', 'small', 'large'],
+  modelIds: ['quill', 'small', 'large', 'follow'],
   matchIds: ['large', 'quill'],
 } as const
 

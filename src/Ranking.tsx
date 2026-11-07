@@ -6,6 +6,7 @@ import {
   type PlayCompetitionMatch,
 } from './competition'
 import { assetPath } from './assets'
+import { RankBadge } from './RankBadge'
 import './Ranking.css'
 
 const STORAGE_KEY = 'pongarena-last-league'
@@ -28,7 +29,7 @@ function StandingsTable({ run, entrants, handcraftedHashes, onPlay }: {
       const entrant = row.entrant
       const loaded = entrants.find((current) => current.sha256 === entrant.sha256)
       return <tr key={entrant.sha256}>
-        <td>{row.rank ?? '—'}</td>
+        <td><RankBadge rank={row.rank} /></td>
         <td><strong>{entrant.name}</strong><small>
           <span className="ranking-class">{smallestDivision(entrant)}</span>
           {' · '}{numbers(entrant.params)} params{handcraftedHashes.includes(entrant.sha256) ? ' · Handwritten' : ''}
@@ -82,8 +83,8 @@ export function Ranking({ entrants, handcraftedHashes, rulesId, contractId, play
         const response = await fetch(assetPath('league.json'), { signal: request.signal })
         if (!response.ok) throw new Error('The reference league could not be loaded.')
         const saved = await response.json()
-        if (saved?.spec?.rulesId !== rulesId || saved?.spec?.contractId !== contractId)
-          throw new Error('The reference league uses different game rules.')
+        if (saved?.spec?.rulesId !== rulesId || saved?.spec?.contractId !== contractId || saved?.spec?.division !== 'all')
+          throw new Error('The reference league uses different game rules or classes.')
         const restored = await restoreCompetition(saved)
         if (!request.signal.aborted) setReference(restored)
       } catch (error) {

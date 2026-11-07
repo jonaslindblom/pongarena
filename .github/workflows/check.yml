@@ -71,3 +71,5 @@ jobs:
         run: |
           python handwritten/quill.py --out "$RUNNER_TEMP/quill.onnx"
           cmp "$RUNNER_TEMP/quill.onnx" public/models/quill.onnx
+          python handwritten/follow.py --out "$RUNNER_TEMP/follow.onnx"
+          cmp "$RUNNER_TEMP/follow.onnx" public/models/follow.onnx

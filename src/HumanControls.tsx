@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowRight, Hand } from 'lucide-react'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
 import { endedMatch, type Pair, type Side } from './rules'
 import { courtActionAt, heldHumanAction, humanSideAt, type HeldDirection } from './humanInput'
@@ -129,24 +129,16 @@ export function HumanControls({ m, humanSides }: Props) {
   }, [enabled, left, right, m.seed, m.history])
 
   if (!left && !right) return null
-  const instruction = !m.playing
-    ? 'Start the match, then hold the left or right half of the court.'
-    : left && right
-      ? 'In your top or bottom half, hold left or right to move.'
-      : 'Hold the left half to move left, or the right half to move right. Lift to stop.'
   return (
-    <section className="panel human-controls" aria-label="Human paddle controls">
-      <div className="human-control-heading">
-        <Hand size={16} />
-        <p>{instruction}</p>
-      </div>
+    <section className="human-controls" aria-label="Human paddle controls">
+      <p className="human-control-heading">Hold a button or either half of the court to move.</p>
       <div className={'human-control-pads' + (left && right ? ' two-players' : '')}>
         {([0, 1] as const).filter((side) => humanSides[side]).map((side) => (
           <div className={'human-control-pad side-' + side} key={side}>
-            <div className="human-control-label">
+            {left && right && <div className="human-control-label">
               <span><i className={side === 0 ? 'p1-dot' : 'p2-dot'} /> P{side + 1} · {left && right && side === 1 ? 'Top' : 'Bottom'}</span>
               <small>{left && right ? side === 0 ? 'A / D' : '← / →' : 'A / D or ← / →'}</small>
-            </div>
+            </div>}
             <div className="human-direction-buttons">
               {([0, 2] as const).map((action) => {
                 const label = action === 0 ? 'Left' : 'Right'

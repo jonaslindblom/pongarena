@@ -9,7 +9,7 @@ import { validateArenaModel } from '../src/validate'
 
 test('device measurements cover every shipped model and a playable match', () => {
   assert.equal(DEVICE_TEST.version, 'pong-device')
-  assert.deepEqual(DEVICE_TEST.modelIds, ['quill', 'small', 'large'])
+  assert.deepEqual(DEVICE_TEST.modelIds, ['quill', 'small', 'large', 'follow'])
   assert.deepEqual(DEVICE_TEST.matchIds, ['large', 'quill'])
   for (const id of new Set([...DEVICE_TEST.modelIds, ...DEVICE_TEST.matchIds])) {
     const stats = validateArenaModel(readFileSync(new URL(`../public/models/${id}.onnx`, import.meta.url)))
@@ -66,7 +66,7 @@ test('inference has a fixed per-model workload and checksums selected actions, n
       counts.set(model.id, (counts.get(model.id) ?? 0) + 1)
       return input[2] < 0 ? [1, 0, 0] : [0, 0, 1]
     })
-  assert.equal(measured.length, 3)
+  assert.deepEqual(measured.map((model) => model.id), models.map((model) => model.id), 'Every shipped model gets measured')
   for (const model of measured) {
     assert.equal(counts.get(model.id), DEVICE_TEST.warmup + DEVICE_TEST.batches * DEVICE_TEST.batchSize)
     assert.equal(model.batchAverageDecisionUs.count, DEVICE_TEST.batches)
@@ -76,7 +76,7 @@ test('inference has a fixed per-model workload and checksums selected actions, n
     assert.match(model.actionChecksum, /^fnv1a32:[a-f0-9]{8}$/)
   }
   assert.equal(new Set(measured.map((model) => model.actionChecksum)).size, 1, 'The same decisions produce the same checksum despite timing differences')
-  assert.deepEqual(progress, Array.from({ length: 21 }, (_, i) => i + 1))
+  assert.deepEqual(progress, Array.from({ length: models.length * DEVICE_TEST.batches }, (_, i) => i + 1))
 })
 
 test('cancelling inference stops work instead of producing a partial successful report', async () => {

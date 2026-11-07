@@ -35,7 +35,7 @@ The output is float32 `action_scores` with shape `[1, 3]`. The first maximum sel
 - Each layer owns a unique embedded float32 matrix and bias, all finite and used exactly once. `alpha = beta = 1`, `transA = 0`; `transB` may select matrix storage orientation.
 - No extra inputs, branches, skip connections, shared tensors, computed weights, extra features, or input/output processing. Standalone `MatMul` and `Add` nodes are not accepted.
 
-Hidden neurons can encode useful features through their weights, as [Quill](QUILL.md) demonstrates. The submitted graph still consists entirely of these dense layers and activations.
+Hidden neurons can encode useful features through their weights, as [Follow](FOLLOW.md) and [Quill](QUILL.md) demonstrate. The submitted graph still consists entirely of these dense layers and activations.
 
 | Class | Maximum stored parameters | Maximum MACs per decision |
 | --- | ---: | ---: |
@@ -50,7 +50,7 @@ Each unordered model pair plays every seed twice, swapping sides. Both games rep
 
 Returns, rally duration, size and speed do not break ties. Pairwise results remain in the JSON because matchups can be non-transitive. An inference failure stops the league as failed; incomplete runs receive no ranks.
 
-The reference field is **Quill, Small and Large**, using 16 fixed seeds in [league.ts](../src/league.ts): 48 paired contests, or **96 games**. The generator uses single-threaded ONNX Runtime Web CPU/WASM and the same game and scoring code as the browser.
+The reference field is **Follow, Quill, Small and Large**, using 16 fixed seeds in [league.ts](../src/league.ts): 96 paired contests, or **192 games**. The generator uses single-threaded ONNX Runtime Web CPU/WASM and the same game and scoring code as the browser.
 
 ```sh
 npm run league        # write public/league.json and public/league.md
