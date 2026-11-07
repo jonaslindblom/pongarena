@@ -21,6 +21,8 @@ npm run dev
 
 Open the localhost URL and press **P** to play. **P** also pauses, resumes, or plays again after game over. Move with **A/D** or **←/→**; on a touch screen, hold the left or right half of the court. **R** restarts with the same serves. **F** toggles full screen; **Esc** exits it.
 
+Faint arrows and shaded halves show the touch controls directly on the court. Hold either half to move, slide across to change direction, and release to stop. The held half lights up gently; no separate movement buttons take space from the game.
+
 Choose an opponent or switch to **Watch models** to compare two networks. **Brain** starts open and shows live activations. **Models** provides reference ranks, downloads and local ONNX imports. **Weights** explains Follow through an interactive view of its actual weights and decisions. A match contains five rallies, each lasting at most 1,600 ticks at 30 decisions per second.
 
 To play from a phone on the same Wi-Fi, use `npm run dev -- --host 0.0.0.0` and open the printed Network URL.

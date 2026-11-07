@@ -10,7 +10,7 @@ import {
   RotateCcw,
   SlidersHorizontal,
 } from 'lucide-react'
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import {
   endedMatch,
   endedRally,
@@ -23,7 +23,7 @@ import {
 import { type Controller } from './models'
 import type { Match } from './useMatch'
 import { BrainPanel } from './BrainPanel'
-import { HumanControls, useCourtPointerControls } from './HumanControls'
+import { CourtTouchHints, useCourtPointerControls } from './HumanControls'
 import { interpolate, progress } from './presentation'
 import { ControllerBadge, controllerOptionLabel } from './ControllerBadge'
 import { matchShortcut } from './matchShortcuts'
@@ -53,7 +53,9 @@ function Court({ m, names, ready, humanSides, bottom, mode, onModeChange }: {
   onModeChange?: (mode: Mode) => void
 }) {
   const f = m.frame
-  const { active, ...input } = useCourtPointerControls(m, humanSides)
+  const { active, directions, ...input } = useCourtPointerControls(m, humanSides)
+  const movementHelp = useId()
+  const hasHuman = humanSides[0] || humanSides[1]
   const field = useRef<SVGSVGElement>(null)
   const court = useRef<HTMLElement>(null)
   const fullscreenControl = useRef<HTMLButtonElement>(null)
@@ -175,7 +177,12 @@ function Court({ m, names, ready, humanSides, bottom, mode, onModeChange }: {
   return (
     <section {...input} ref={court}
       className={'court' + (active ? ' human-controlled' : '') + (fullscreen ? ' court-fullscreen' : '')}
-      role={fullscreen ? 'dialog' : undefined} aria-modal={fullscreen || undefined} aria-label="Pong court">
+      role={fullscreen ? 'dialog' : undefined} aria-modal={fullscreen || undefined} aria-label="Pong court"
+      aria-describedby={hasHuman ? movementHelp : undefined}>
+      {hasHuman && <p id={movementHelp} className="visually-hidden">
+        Hold the left or right half of the court to move. Slide across to change direction; release to stop.
+        You can also use A/D or the arrow keys.
+      </p>}
       <div className="court-top">
         {onModeChange && <div className="court-modes" role="group" aria-label="Game mode">
           <button aria-pressed={mode === 'play'} onClick={() => onModeChange('play')}>You play</button>
@@ -225,6 +232,7 @@ function Court({ m, names, ready, humanSides, bottom, mode, onModeChange }: {
         </div>
       </div>
       <div className="court-field">
+        {!finished && <CourtTouchHints humanSides={humanSides} directions={directions} playing={m.playing} />}
         <div className="court-surface">
           <svg
             className="field"
@@ -308,7 +316,6 @@ function Court({ m, names, ready, humanSides, bottom, mode, onModeChange }: {
           </div>
         </div>}
       </div>
-      <HumanControls m={m} humanSides={humanSides} />
       <div className="court-foot">
         <span>
           <i />
