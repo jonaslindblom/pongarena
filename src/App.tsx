@@ -294,7 +294,6 @@ export default function App() {
   }
   function playAgainst(opponent: string) {
     m.reset()
-    m.setSpeed(1)
     setIds(['keyboard', opponent])
     setMode('play')
     setPage('Arena')
@@ -304,7 +303,6 @@ export default function App() {
   function changeMode(next: 'play' | 'watch') {
     if (next === mode) return
     m.reset()
-    m.setSpeed(1)
     setMode(next)
     setIds(next === 'play' ? ['keyboard', ids[1]] : ['prism-small-v4', 'quill-plus-v4'])
     setError('')
@@ -487,7 +485,6 @@ export default function App() {
                       className="secondary-btn"
                       onClick={() => {
                         m.reset()
-                        m.setSpeed(1)
                         setMode('watch')
                         setIds([c.id, c.id === 'quill-plus-v4' ? 'prism-small-v4' : 'quill-plus-v4'])
                         setPage('Arena')

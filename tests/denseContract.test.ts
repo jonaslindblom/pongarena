@@ -1,3 +1,4 @@
+import { presets } from '../src/roster'
 import { modelFile } from './modelFiles'
 import test from 'node:test'
 import assert from 'node:assert/strict'
@@ -169,7 +170,7 @@ test('every parameter must be finite and stored only once in its float32 tensor'
 test('the shipped collection contains only current eligible models', () => {
   const directory = new URL('../public/models/', import.meta.url)
   const files = readdirSync(directory).filter((name) => name.endsWith('.onnx')).sort()
-  assert.deepEqual(files, ['plain-nano-v4.onnx', 'prism-small-v4.onnx', 'quill-plus-v4.onnx',
-    'robust-strong-v4.onnx', 'tracker.onnx', 'vector-nano-v4.onnx'])
+  assert.deepEqual(files, presets.map((preset) => preset.id + '.onnx').sort(),
+    'Every shipped model must be registered in the active roster, with no extra files')
   for (const file of files) assert.ok(validateArenaModel(readFileSync(new URL(file, directory))).architecture.widths)
 })

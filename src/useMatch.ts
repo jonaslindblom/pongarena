@@ -45,11 +45,9 @@ export function useMatch(
   const currentPlayers = useRef(players)
   currentPlayers.current = players
   const humanActions = useRef<Pair<number | null>>([null, null])
-  const humanBoost = useRef<Pair<boolean>>([false, false])
   const [position, setPosition] = useState({ tick: 0 }),
     [playing, setPlaying] = useState(false),
-    [runVersion, setRunVersion] = useState(0),
-    [speed, setSpeed] = useState(1)
+    [runVersion, setRunVersion] = useState(0)
   const tick = position.tick
   const setTick = (tick: number) => setPosition({ tick })
   const presentation = useRef<Presentation>({
@@ -60,14 +58,13 @@ export function useMatch(
   function clearHumanInput() {
     keys.current.clear()
     humanActions.current = [null, null]
-    humanBoost.current = [false, false]
   }
-  function present(animate = false, duration = TICK_MS / speed) {
+  function present(animate = false) {
     const at = cursor.current
     const to = history.current[at]
     const from = history.current[Math.max(0, at - 1)]
     presentation.current = {
-      from, to, startedAt: performance.now(), duration,
+      from, to, startedAt: performance.now(), duration: TICK_MS,
       animate: animate && from.rally === to.rally && to.event !== 'serve',
       trail: history.current.slice(Math.max(0, at - 8), at + 1),
     }
@@ -108,52 +105,39 @@ export function useMatch(
   function setHumanAction(side: Side, action: 0 | 1 | 2 | null) {
     humanActions.current[side] = running.current ? action : null
   }
-  function setHumanBoost(side: Side, enabled: boolean) {
-    humanBoost.current[side] = running.current && enabled
-  }
   function human(side: Side): Scores {
     const both = players[0]?.id === 'keyboard' && players[1]?.id === 'keyboard'
-    const held = keys.current
-    let action: number | null = humanKeyAction(held, side, both) ?? humanActions.current[side]
-    const boostKey = both ? held.has(side === 0 ? 'ShiftLeft' : 'ShiftRight')
-      : held.has('ShiftLeft') || held.has('ShiftRight')
-    const boosting = rules.outputSize === 5 && (humanBoost.current[side] || boostKey)
-    if (boosting && action !== null && action !== 1)
-      action = action === 0 ? 3 : 4
-    action ??= 1
+    const action = humanKeyAction(keys.current, side, both) ?? humanActions.current[side] ?? 1
     return Array.from({ length: rules.outputSize }, (_, index) => index === action ? 1 : 0) as Scores
   }
-  function advanceOne(animate = false, duration = TICK_MS / speed, scheduledAt?: number): Promise<boolean> {
+  function advanceOne(scheduledAt: number): Promise<boolean> {
     if (pending.current || !players[0] || !players[1]) return Promise.resolve(false)
     const version = revision.current, at = cursor.current
     const previous = history.current[at]
     if (endedMatch(previous)) return Promise.resolve(false)
     const job = (async () => {
       try {
-        if (at === history.current.length - 1) {
-          let next: Frame
-          if (endedRally(previous)) next = rules.serve(seed, previous)
-          else {
-            // Human input is sampled with the same pre-tick state as both models,
-            // before either asynchronous inference has a chance to finish.
-            const scores = players.map((player, side) => player!.id === 'keyboard'
-              ? human(side as Side) : null) as Pair<Scores | null>
-            for (const side of [0, 1] as const) {
-              if (!scores[side]) scores[side] = await infer(players[side]!, rules.observation(previous, side))
-              if (revision.current !== version) return false
-            }
-            if (players.some((player, side) => player !== currentPlayers.current[side])) return false
-            const automaticMatch = players.every((player) => player && player.type !== 'human')
-            next = rules.advance(previous, scores as Pair<Scores>, automaticMatch ? loops.current : undefined)
+        let next: Frame
+        if (endedRally(previous)) next = rules.serve(seed, previous)
+        else {
+          // Human input is sampled with the same pre-tick state as both models,
+          // before either asynchronous inference has a chance to finish.
+          const scores = players.map((player, side) => player!.id === 'keyboard'
+            ? human(side as Side) : null) as Pair<Scores | null>
+          for (const side of [0, 1] as const) {
+            if (!scores[side]) scores[side] = await infer(players[side]!, rules.observation(previous, side))
+            if (revision.current !== version) return false
           }
-          if (revision.current !== version) return false
-          history.current.push(next)
+          if (players.some((player, side) => player !== currentPlayers.current[side])) return false
+          const automaticMatch = players.every((player) => player && player.type !== 'human')
+          next = rules.advance(previous, scores as Pair<Scores>, automaticMatch ? loops.current : undefined)
         }
         if (revision.current !== version) return false
+        history.current.push(next)
         cursor.current = at + 1
-        present(animate, duration)
+        present(true)
         setTick(at + 1)
-        if (scheduledAt !== undefined && observer.current) observer.current({
+        observer.current?.({
           completedAt: performance.now(), scheduledAt, tick: at + 1,
           previousEndedRally: endedRally(previous),
         })
@@ -179,16 +163,16 @@ export function useMatch(
   useEffect(() => {
     if (!playing || !arenaActive || !players[0] || !players[1]) return
     let alive = true, pumping = false, raf = 0
-    let due = performance.now() + frameDuration(history.current[cursor.current], speed)
+    let due = performance.now() + frameDuration(history.current[cursor.current])
     async function pump(now: number) {
       if (pumping || pending.current) return
       pumping = true
       // Deadlines follow the simulation cadence rather than inference completion.
       // At most four states are advanced per animation callback after a stall.
-      due = boundedDeadline(due, now, speed)
+      due = boundedDeadline(due, now)
       for (let count = 0; count < 4 && alive && running.current && now >= due; count++) {
-        if (!await advanceOne(true, TICK_MS / speed, due)) break
-        due += frameDuration(history.current[cursor.current], speed)
+        if (!await advanceOne(due)) break
+        due += frameDuration(history.current[cursor.current])
       }
       pumping = false
     }
@@ -202,7 +186,7 @@ export function useMatch(
       alive = false
       cancelAnimationFrame(raf)
     }
-  }, [playing, runVersion, speed, players[0], players[1], seed, arenaActive, rules])
+  }, [playing, runVersion, players[0], players[1], seed, arenaActive, rules])
 
   useEffect(() => { reset() }, [rules])
 
@@ -227,7 +211,7 @@ export function useMatch(
     function keydown(e: KeyboardEvent) {
       const target = e.target as HTMLElement
       if (target.closest('input, select, textarea, dialog, [contenteditable="true"]')) return
-      if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'KeyA', 'KeyD', 'KeyW', 'KeyS', 'ShiftLeft', 'ShiftRight'].includes(e.code)) {
+      if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'KeyA', 'KeyD', 'KeyW', 'KeyS'].includes(e.code)) {
         e.preventDefault()
         keys.current.add(e.code)
       }
@@ -266,10 +250,7 @@ export function useMatch(
     tick,
     seed,
     playing,
-    speed,
-    setSpeed,
     setHumanAction,
-    setHumanBoost,
     rules,
     toggle,
     pause,

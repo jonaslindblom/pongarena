@@ -19,11 +19,6 @@
 .court .controller-class[data-division='large'] { color: #d4bce9; }
 .court .controller-params { color: #b1c3b5; }
 .pick-details { margin: 7px 2px 0; }
-.pick-details .pick-architecture { margin: 5px 0 0; }
-.controller-class-note { margin: 10px 18px 13px; color: #6c796b; font-size: 10px; line-height: 1.5; }
-.inspect-controller { margin: -3px 0 12px; }
-.controller-decision-note { margin: 11px 0 0; color: #6c796b; font-size: 10px; line-height: 1.6; }
-.score-track.discrete:after { display: none; }
 @media (max-width: 510px) {
   .score-player .controller-identity { display: flex; align-items: flex-start; flex-direction: column; min-height: 32px; font-size: 8px; }
   .score-player.right .controller-identity { align-items: flex-end; }

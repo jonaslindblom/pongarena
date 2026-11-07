@@ -25,8 +25,8 @@ See the [full contract and scoring](training/COMPETITION.md) and [game specifica
 
    ```sh
    node --import tsx training/scripts/check_models.ts
-   npm test
    npm run league
+   npm test
    npm run league:check
    npm run build
    ```

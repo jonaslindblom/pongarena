@@ -35,24 +35,22 @@ test('a return never visually travels behind its paddle contact plane', () => {
   assert.equal(interpolate(from, to, 1).x, 15)
 })
 
-test('new serves and replay jumps snap directly to the recorded state', () => {
+test('new serves and nonadjacent frames snap directly to the authoritative state', () => {
   const from = { ...serve(1), x: 15, y: 140, tick: 90 }
   for (const to of [serve(1, from), { ...from, tick: 20, x: 250 }])
     assert.deepEqual(interpolate(from, to, 0.25), { x: to.x, y: to.y, paddles: to.paddles })
   const to = advance(from, still)
   const p: Presentation = { from, to, startedAt: 100, duration: TICK_MS, animate: false, trail: [] }
-  assert.equal(progress(p, 100), 1, 'Paused stepping must show the exact resulting state immediately')
+  assert.equal(progress(p, 100), 1, 'Pausing must show the latest physics state immediately')
   assert.ok(Math.abs(progress({ ...p, animate: true }, 100 + TICK_MS / 2) - 0.5) < 1e-12)
   assert.equal(progress({ ...p, animate: true }, 500), 1, 'Rendering must never predict an uncomputed next state')
 })
 
 test('absolute tick deadlines retain cadence and bound stall debt without skipping game states', () => {
   const frame = serve(1)
-  assert.equal(frameDuration(frame, 1), TICK_MS)
-  assert.equal(frameDuration(frame, 4), TICK_MS / 4)
+  assert.equal(frameDuration(frame), 1000 / 30, 'Live play must use the Classic cadence of 30 decisions per second')
   const terminal = { ...frame, event: 'point' } as Frame
-  assert.equal(frameDuration(terminal, 1), 650)
-  assert.equal(boundedDeadline(100, 105, 1), 100, 'Normal inference latency must not move the next deadline')
-  assert.equal(boundedDeadline(100, 1000, 1), 900, 'A long stall leaves at most three ticks of wall-clock debt')
-  assert.equal(boundedDeadline(100, 1000, 4), 975)
+  assert.equal(frameDuration(terminal), 650)
+  assert.equal(boundedDeadline(100, 105), 100, 'Normal inference latency must not move the next deadline')
+  assert.equal(boundedDeadline(100, 1000), 900, 'A long stall leaves at most three ticks of wall-clock debt')
 })

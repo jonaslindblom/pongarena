@@ -45,7 +45,6 @@ export const BURST: Ruleset = {
   detector: () => new burst.LoopDetector(),
 }
 
-export const RULESETS = [BURST, CLASSIC]
 export const { RALLIES, RALLY_TICK_LIMIT, TICKS_PER_SECOND } = classic
 export const endedRally = (frame: Frame) => frame.event === 'point' || frame.event === 'draw'
 export const endedMatch = (frame: Frame) => frame.rally === RALLIES && endedRally(frame)

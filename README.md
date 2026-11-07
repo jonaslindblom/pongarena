@@ -20,7 +20,7 @@ To try a phone on the same Wi-Fi, run `npm run dev -- --host 0.0.0.0` and open t
 ## Play, watch and inspect
 
 - Move with **A/D** or **←/→**. On a touch screen, hold the left or right half of the court.
-- Press **R** or **Restart** to immediately replay the same five serves. **Pause** stops the match; **Full screen** focuses on the court.
+- Press **R** or **Restart** to immediately restart with the same five serves. **Pause** stops the match; **Full screen** focuses on the court.
 - Choose another opponent, or use **Play** from the league and **Play against** from a model card.
 - Switch to **Watch models** to choose both controllers. The initial matchup is Prism Small v4 versus Quill Plus v4.
 - Open **Show brain** to see a weight model's hidden activations and chosen action while it plays.
@@ -65,6 +65,14 @@ npm run preview
 ```
 
 The static build is written to `dist/`. For phone measurements, use a production preview with `-- --host 0.0.0.0`; open **Guide → Device test** and compare reports with matching workload versions and model hashes. Browser emulation does not establish physical-device performance.
+
+Repository layout:
+
+- `src/`: browser app, game rules and shared league logic.
+- `public/models/`, `public/league.json` and `public/league.md`: active weights and reference standings.
+- `training/`: maintained training tools and frozen game reference packages.
+- `tests/`: behavior checks and retained regression fixtures.
+- `public/training/`: downloads and [historical research reports](training/evidence.md#historical-reports).
 
 [Training instructions](training/README.md), the [model catalog](training/catalog.json) and [retained evidence](training/evidence.md) document the active models and historical experiments. Retired model bytes remain available for compatibility tests and reproducing old comparisons.
 

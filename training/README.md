@@ -25,7 +25,7 @@ Old v1/v2/v3 policies may still be eligible dense networks, but are retired from
 
 ## Setup and checks
 
-Run from the repository root. Recorded dependencies use Python 3.12; the exact package versions are in [requirements.txt](requirements.txt) and [requirements-lock.txt](requirements-lock.txt).
+Run from the repository root with Python 3.12. [requirements.txt](requirements.txt) pins the dependencies used by the maintained training tools. [requirements-lock.txt](requirements-lock.txt) preserves the full recorded research environment, including plotting packages used only by archived report generators.
 
 ```sh
 python3.12 -m venv .venv
@@ -40,7 +40,7 @@ npm run build
 
 The model check verifies the six-model active roster and all nine cataloged models' hashes, available local checkpoint hashes and current dense eligibility. Checkpoints and the archive are local ignored artifacts; source-only checkouts report their unavailable checkpoint checks explicitly. The Python training check compares Torch/native ONNX decisions, retained checkpoints and vector/scalar v4 physics. The replay checker uses the archived Pacer/Apprentice v4 weights and replays; it does not claim to replay newer studies.
 
-`training/` remains ignored as requested. Already tracked files remain tracked. New runs belong in `training/runs/`; use a fresh output directory, and never write directly over deployed weights or retained checkpoints.
+Maintained training source and documentation are tracked. Generated runs, results, checkpoints and local archives are ignored. New runs belong in `training/runs/`; use a fresh output directory, and never write directly over deployed weights or retained checkpoints.
 
 ## Train a full-size dense policy
 

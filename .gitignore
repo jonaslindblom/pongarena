@@ -9,4 +9,7 @@ __pycache__/
 training/runs/*
 !training/runs/.gitkeep
 
-/training/
+/training/results/
+/training/checkpoints/
+/training/archive/*
+!/training/archive/README.md

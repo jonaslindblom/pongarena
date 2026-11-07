@@ -6,7 +6,6 @@ import {
   CircleDot,
   Code2,
   Cpu,
-  Dna,
   Keyboard,
   Maximize,
   Minimize,
@@ -14,7 +13,6 @@ import {
   Play,
   RotateCcw,
   SlidersHorizontal,
-  Waves,
 } from 'lucide-react'
 import { useLayoutEffect, useRef, useState } from 'react'
 import {
@@ -41,13 +39,9 @@ export function ModelIcon({ id, size = 20 }: { id: string; size?: number }) {
       ? Keyboard
       : id.startsWith('script-')
         ? Code2
-        : id === 'challenger'
-          ? Dna
-          : id === 'tracker'
-            ? CircleDot
-            : id === 'anticipator'
-              ? Waves
-              : Cpu
+        : id === 'tracker'
+          ? CircleDot
+          : Cpu
   return <Icon size={size} strokeWidth={1.7} />
 }
 function eventText(f: Frame, names: Pair<string>) {
@@ -148,7 +142,7 @@ function Court({ m, names, controllers, ready, humanSides, bottom, mode }: {
     }
     draw(performance.now())
     return () => cancelAnimationFrame(raf)
-  }, [m.presentation, m.tick, m.seed, m.playing, m.speed])
+  }, [m.presentation, m.tick, m.seed, m.playing])
   const status = !ready
     ? 'Loading'
     : endedMatch(f)
@@ -295,19 +289,6 @@ function Court({ m, names, controllers, ready, humanSides, bottom, mode }: {
         <span><ArrowLeft size={14} /> Hold left</span>
         <span>Hold right <ArrowRight size={14} /></span>
       </p>}
-      {f.energy && m.rules.energyMax && (
-        <div className="court-energy" aria-label="Burst energy">
-          {([0, 1] as const).map((side) => (
-            <div key={side} className={'energy-player side-' + side}>
-              <span>P{side + 1} · BURST <b>{Math.round(f.energy![side] / m.rules.energyMax! * 100)}%</b></span>
-              <div role="meter" aria-label={'Player ' + (side + 1) + ' burst energy'}
-                aria-valuemin={0} aria-valuemax={m.rules.energyMax} aria-valuenow={f.energy![side]}>
-                <i style={{ width: f.energy![side] / m.rules.energyMax! * 100 + '%' }} />
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
       <div className="court-foot">
         <span>
           <i />

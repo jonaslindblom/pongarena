@@ -11,14 +11,14 @@ export interface Presentation {
   trail: Frame[]
 }
 
-export function frameDuration(frame: Frame, speed: number) {
-  return (endedRally(frame) ? 650 : TICK_MS) / speed
+export function frameDuration(frame: Frame) {
+  return endedRally(frame) ? 650 : TICK_MS
 }
 
 // A slow browser may lose wall-clock time, but never skips a simulation state.
 // Limit catch-up to three decision intervals so input cannot be buried in debt.
-export function boundedDeadline(due: number, now: number, speed: number) {
-  return Math.max(due, now - 3 * TICK_MS / speed)
+export function boundedDeadline(due: number, now: number) {
+  return Math.max(due, now - 3 * TICK_MS)
 }
 
 export function progress(p: Presentation, now: number) {

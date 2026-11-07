@@ -137,7 +137,6 @@ export function DeviceTest({ models, startup, loadingComplete }: {
       }, infer)
       controller.signal.throwIfAborted()
       latestMatch.current.reset(DEVICE_TEST.seed)
-      latestMatch.current.setSpeed(1)
       flushSync(() => setStage('animation'))
       // Mount and position the real arena before starting the timed workload.
       await nextFrame(controller.signal)
