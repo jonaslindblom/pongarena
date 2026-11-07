@@ -12,35 +12,33 @@ The included [Check and rank workflow](../.github/workflows/check.yml) runs `npm
 
 Use `pull_request` with read-only repository permissions. Fork pull requests receive a read-only `GITHUB_TOKEN` and no repository secrets; first-time contributors may need a maintainer to approve the workflow. Do not use `pull_request_target` to build or evaluate submitted code. [Fork workflow behavior](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflows-in-forked-repositories), [workflow approval settings](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#controlling-changes-from-forks-to-workflows-in-public-repositories).
 
-## Start the public repository from a clean snapshot
+## Publish the main branch
 
-The local development history contains a 209 MB experiment result, `training/results/compact-lab/evaluation/selection.json`. Although that file is gone from the current tree, pushing the existing history would include it. GitHub blocks Git objects larger than 100 MiB. [GitHub file limits](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github).
+The 209 MB experiment result, `training/results/compact-lab/evaluation/selection.json`, is absent from the checkout and is not reachable from `main` or the backup branch. It is retained only by a local tree reference under `refs/codex/turn-diffs/checkpoints/`. The earlier all-reference scan included that checkpoint and incorrectly treated it as branch history.
 
-Keep this local repository and its experiment history. Create the public repository from a fresh snapshot of the reviewed, committed files instead of rewriting or deleting the original history. The current tree's largest file is under 10 MB.
+An explicit push of `main` excludes those auxiliary checkpoint references. No deletion, history rewrite or fresh root commit is needed for this file-size issue. The largest blob reachable from `main` in the publication audit is 12,047,911 bytes, below GitHub's 100 MiB file limit. [GitHub file limits](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github).
 
-Before exporting, select a license for the source and model weights and commit the intended release files. No license is selected by this preparation.
+Before publishing, select a license for the source and model weights, review the intended public history and commit the release files. No license is selected by this preparation.
 
-The public Refined Nano evidence bundle uses portable repository-relative paths for five validation file references in one protocol. Its `SHA256.json` entry for that protocol was updated, and all 194 manifest entries verify. Those five strings and the corresponding manifest hash are the only content changes; measured data, model bytes and recorded model hashes are unchanged. The byte-identical original is preserved locally at `training/archive/refined-nano-v4-evidence-before-publication.zip`, which is ignored and excluded from the export.
+The public Refined Nano evidence bundle uses portable repository-relative paths for five validation file references in one protocol. Its `SHA256.json` entry for that protocol was updated, and all 194 manifest entries verify. Those five strings and the corresponding manifest hash are the only content changes; measured data, model bytes and recorded model hashes are unchanged. The byte-identical original is preserved locally at `training/archive/refined-nano-v4-evidence-before-publication.zip`, which is ignored.
 
-From the original checkout, after the release changes have been committed:
+Run the release checks:
 
 ```sh
-git status --short
-publish_dir=$(mktemp -d "${TMPDIR:-/tmp}/pongarena-public.XXXXXX")
-git archive HEAD | tar -x -C "$publish_dir"
-git -C "$publish_dir" init -b main
-git -C "$publish_dir" add --force .
-git -C "$publish_dir" commit -m "Initial public release"
-cd "$publish_dir"
 npm ci
 npm test
 npm run league:check
 npm run build
+git status --short
 ```
 
-The forced add is intentional and must happen before installing dependencies or building: the export contains only files already tracked in the original repository, including required `training/` sources that the local `.gitignore` otherwise ignores. Do not force-add the original working directory.
+After creating the chosen GitHub repository and configuring its URL as `origin`, publish the reviewed main branch:
 
-Review this new repository, then connect it to the chosen GitHub repository. Its history starts at the public release; the original checkout, checkpoints and ignored experiment archive remain intact. Python training dependencies and local checkpoints are optional for the web app and Node-based league workflow.
+```sh
+git push -u origin main
+```
+
+Keep the push scoped to `main`; a mirror push would also send the local checkpoint references. Python training dependencies and local checkpoints are optional for the web app and Node-based league workflow.
 
 ## Publish the website when ready
 

@@ -70,4 +70,4 @@ The static build is written to `dist/`. For phone measurements, use a production
 
 ## Publishing
 
-[Publishing notes](docs/PUBLISHING.md) cover free public GitHub Actions compute, the manual Pages workflow and creating a clean public history while preserving local research. A source and model-weight license still needs to be selected before release.
+[Publishing notes](docs/PUBLISHING.md) cover free public GitHub Actions compute, the manual Pages workflow and publishing the main branch while keeping local checkpoints private. A source and model-weight license still needs to be selected before release.
