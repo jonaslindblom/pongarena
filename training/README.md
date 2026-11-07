@@ -58,11 +58,11 @@ should not guide further tuning if you intend to claim independent results.
 Training, development and final evaluation use disjoint seed ranges.
 `check.py` verifies physics, script decisions and optional PyTorch/ONNX parity;
 `--models ../public/models` also checks the shipped model and recipe hashes.
-Fixed seeds and single-threaded CPU runs reproduced both ONNX files byte for byte
-under the original `pong` rules. The shipped weights remain frozen. Current training
-and evaluation use `pong-v3` centered serves; to reproduce the original weights and
-historical results, use the [pre-v2 training source](https://github.com/jonaslindblom/pongarena/tree/a46ecd8d53d46d49b00723f9b1059d9c0155b3d9/training).
-Floating-point results can vary across platforms.
+The shipped weights are frozen baselines trained under the original `pong` rules.
+The current recipes and evaluator use `pong-v3` centered serves, so a new training
+run is not expected to reproduce the shipped ONNX bytes or their historical scores.
+Use the current league to compare new models. Floating-point results can vary
+across platforms.
 
 ## Results
 

@@ -2,7 +2,7 @@
 
 PongArena’s original source code, documentation and bundled model weights use
 the [MIT License](../LICENSE). Keep that license and third-party license
-notices with releases. Repository visibility and website deployment are
+notices with releases. The static build includes [third-party notices](../public/THIRD_PARTY_NOTICES.txt); review them when changing runtime dependencies or fonts. Repository visibility and website deployment are
 managed separately.
 
 ## Check the release
@@ -17,7 +17,7 @@ npm run build
 git status --short
 ```
 
-Review and commit the model files, metadata and both league results. The app and league need no Python dependencies. A separate CI job installs the training environment, runs a small pipeline check and reproduces Follow and Quill from their standalone constructors. Full training stays outside PR checks. After creating the GitHub repository and adding its URL as `origin`, push the reviewed `main` branch:
+Review and commit the model files, metadata and both league results. The app and league need no Python dependencies. A separate CI job installs the training environment, runs a small pipeline check and reproduces Follow, Predict75 and Quill from their standalone constructors. Full training stays outside PR checks. After the required PR checks pass, merge the reviewed changes into `main`. For a separate deployment of your own fork, push its reviewed `main` branch:
 
 ```sh
 git push -u origin main
@@ -33,7 +33,7 @@ For model-file changes, the gate freezes model hashes, draws 512 shared serve se
 
 The evaluator's shared default and publication check both require 512 sets. The `pong-v3` rule change creates a new identity and plan, preserving earlier 128-set artifacts as historical results. Reports include the same paired-seed bootstrap score intervals displayed in the app.
 
-Configure branch protection to require **Validate and evaluate submitted models**, **Browser end-to-end tests** and up-to-date branches. A failing workflow check blocks merging only when the repository requires it. Rebase and reevaluate if another model merge changes the roster before yours merges.
+In **Settings → Rules → Rulesets** (or branch protection), protect `main` with pull requests, up-to-date branches and all four status checks: **check**, **training**, **Browser end-to-end tests** and **Validate and evaluate submitted models**. A failing workflow check blocks merging only when the repository requires it. Rebase and reevaluate if another model merge changes the roster before yours merges.
 
 Standard GitHub-hosted runners are free for public repositories; this workflow uses a standard Ubuntu CPU runner. Larger runners are billed even for public repositories, and artifact storage has a separate allowance. See [GitHub Actions billing](https://docs.github.com/en/billing/concepts/product-billing/github-actions) for current terms.
 
