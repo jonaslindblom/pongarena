@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.DS_Store
+
+.playwright-mcp/
+/playwright-report/
+/test-results/
+/.npm-cache/
+.venv/
+__pycache__/
+*.pyc
+training/runs/
+
+/training/results/
+/training/checkpoints/
+/training/archive/

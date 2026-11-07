@@ -1,0 +1,4 @@
+.model-details { margin-top: 16px; font-size: 12px; color: #627864; }
+.model-details summary { cursor: pointer; min-height: 36px; padding: 8px 0; }
+.library-card .library-actions { margin-top: 18px; }
+.library-rank-note { margin: 0 0 18px; color: var(--muted); font-size: 12px; }

@@ -1,0 +1,40 @@
+{
+  "name": "pongarena",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "node --import tsx --test tests/*.test.ts",
+    "test:e2e": "npm run build && playwright test",
+    "models:check": "node --import tsx scripts/validate-models.ts",
+    "league": "node --import tsx scripts/generate-league.ts",
+    "league:check": "node --import tsx scripts/generate-league.ts --check",
+    "league:publish": "node --import tsx scripts/promote-evaluation.ts"
+  },
+  "dependencies": {
+    "@fontsource-variable/manrope": "^5.2.0",
+    "@noble/hashes": "2.4.0",
+    "lucide-react": "^0.468.0",
+    "onnx-proto": "^8.0.1",
+    "onnxruntime-web": "~1.22.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^4.4.0",
+    "tsx": "^4.20.0",
+    "typescript": "~5.9.0",
+    "vite": "^6.4.3"
+  },
+  "overrides": {
+    "onnx-proto": {
+      "protobufjs": "7.6.6"
+    }
+  }
+}

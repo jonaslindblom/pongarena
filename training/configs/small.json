@@ -1,0 +1,23 @@
+{
+  "widths": [
+    6,
+    16,
+    6,
+    3
+  ],
+  "activation": "Relu",
+  "seed": 731,
+  "rounds": 192,
+  "envs": 128,
+  "horizon": 256,
+  "epochs": 4,
+  "synthetic": 8192,
+  "replay_rounds": 4,
+  "batch_size": 2048,
+  "learning_rate": 0.003,
+  "evaluate_every": 8,
+  "teacher_rounds": 64,
+  "contacts": false,
+  "teacher_floor": 0.05,
+  "learning_rate_floor": 0.3
+}
