@@ -4,7 +4,7 @@ import { Activity, Check, Copy, Play, Smartphone, Square } from 'lucide-react'
 import { env } from 'onnxruntime-web/wasm'
 import { Arena } from './Arena'
 import { infer, type Controller } from './models'
-import { CLASSIC, type Pair } from './rules'
+import { PONG, type Pair } from './rules'
 import { useMatch, type MatchTickTiming } from './useMatch'
 import {
   benchmarkInference, DEVICE_TEST, DEVICE_TEST_METHODS, runAnimationSample,
@@ -13,14 +13,13 @@ import {
 import type { StartupSnapshot } from './startup'
 import './DeviceTest.css'
 
-// Keep the existing storage namespace so saved data survives the product rename.
-const STORAGE_KEY = 'rally-lab-device-test-v1'
+const STORAGE_KEY = 'pongarena-device-test'
 const matchIds = [...DEVICE_TEST.matchIds] as Pair<string>
 const viewport = () => ({ width: innerWidth, height: innerHeight, pixelRatio: devicePixelRatio })
 const ms = (value: number | null | undefined) => value == null ? '—' : value.toFixed(1) + ' ms'
 
 interface DeviceReport {
-  schema: 'pongarena-device-report-v1'
+  schema: 'pongarena-device-report'
   status: 'complete'
   measuredAt: string
   device: string
@@ -49,10 +48,10 @@ interface DeviceReport {
 function restoreReport(startup: StartupSnapshot): DeviceReport | null {
   try {
     const value = JSON.parse(sessionStorage.getItem(STORAGE_KEY) ?? 'null')
-    return (value?.schema === 'pongarena-device-report-v1' || value?.schema === 'rally-lab-device-report-v1') && value.status === 'complete' &&
+    return value?.schema === 'pongarena-device-report' && value.status === 'complete' &&
       value.workload?.version === DEVICE_TEST.version &&
       value.startup?.pageId === startup.pageId && value.startup?.build?.id === startup.build.id
-      ? { ...value, schema: 'pongarena-device-report-v1' } : null
+      ? { ...value, schema: 'pongarena-device-report' } : null
   } catch { return null }
 }
 
@@ -89,7 +88,7 @@ export function DeviceTest({ models, startup, loadingComplete }: {
   const m = useMatch(matchPlayers, (error) => {
     abort.current?.abort(new Error(error))
     if (mounted.current) setMessage(error)
-  }, true, CLASSIC, (tick) => ticks.current?.push(tick))
+  }, true, PONG, (tick) => ticks.current?.push(tick))
   const latestMatch = useRef(m)
   latestMatch.current = m
   const requiredIds = [...DEVICE_TEST.modelIds, ...DEVICE_TEST.matchIds]
@@ -159,7 +158,7 @@ export function DeviceTest({ models, startup, loadingComplete }: {
       })
       controller.signal.throwIfAborted()
       const completed: DeviceReport = {
-        schema: 'pongarena-device-report-v1', status: 'complete', measuredAt: new Date().toISOString(),
+        schema: 'pongarena-device-report', status: 'complete', measuredAt: new Date().toISOString(),
         device: label, visit: visitLabel, startup: startupSnapshot,
         environment: {
           userAgent: navigator.userAgent, language: navigator.language,
@@ -169,7 +168,7 @@ export function DeviceTest({ models, startup, loadingComplete }: {
         },
         runtime: { name: 'ONNX Runtime Web', version: env.versions.web, executionProvider: 'wasm', simd: true, threads: 1 },
         workload: DEVICE_TEST, methods: DEVICE_TEST_METHODS,
-        rules: { id: CLASSIC.id, contract: CLASSIC.contractId },
+        rules: { id: PONG.id, contract: PONG.contractId },
         animationModels: matchPlayers.map((model) => ({ id: model!.id, name: model!.name, sha256: model!.sha256! })),
         loadedWeightModels: models.filter((model) => model.type === 'weights').map((model) => ({ id: model.id, name: model.name, sha256: model.sha256 })),
         inference, animation,
@@ -216,7 +215,7 @@ export function DeviceTest({ models, startup, loadingComplete }: {
     <div className="device-test-page">
       <section className="panel device-intro">
         <div className="device-heading"><Smartphone size={21} /><h2>A baseline for this device</h2><span className="mini-tag">LOCAL TEST</span></div>
-        <p>Measure this page’s startup, Tracker, Robust Strong v4, Prism Small v4, and a 15-second Prism Small vs Quill Plus match. The same inputs and serve seed run on every device. Your report stays in this browser until you copy it.</p>
+        <p>Measure this page’s startup, Quill, Small, Large, and a 15-second Large vs Quill match. The same inputs and serve seed run on every device. Your report stays in this browser until you copy it.</p>
         <p className="device-note">Keep the page visible and the phone in the same orientation. During animated play, leave the court in view without scrolling. Repeat with the same power-saving settings when comparing results.</p>
         {startup.build.mode !== 'production' && <p className="device-warning">Development build: useful for checking the test. Use a production preview for the phone baseline.</p>}
       </section>

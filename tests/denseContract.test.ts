@@ -1,40 +1,10 @@
 import { presets } from '../src/roster'
-import { modelFile } from './modelFiles'
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync, readdirSync } from 'node:fs'
-import pb from 'onnx-proto'
-import { DenseModelError, validateArenaModel, validateModel } from '../src/validate'
+import { DenseModelError, validateArenaModel } from '../src/validate'
 import { fitsDivision, smallestDivision } from '../src/competition'
-
-function tensor(name: string, dims: number[]) {
-  return { name, dims, dataType: 1, rawData: new Uint8Array(dims.reduce((a, b) => a * b, 1) * 4) }
-}
-
-function network(widths = [6, 4, 4, 3], activation = 'Tanh') {
-  const input = (name: string, width: number) => ({ name, type: { tensorType: {
-    elemType: 1, shape: { dim: [{ dimValue: 1 }, { dimValue: width }] },
-  } } })
-  const graph = pb.onnx.GraphProto.create({
-    name: 'Dense contract fixture', input: [input('observation', 6)],
-    output: [input('action_scores', 3)], initializer: [], node: [],
-  })
-  let previous = 'observation'
-  for (let i = 0; i < widths.length - 1; i++) {
-    const final = i === widths.length - 2, output = final ? 'action_scores' : `linear${i}`
-    graph.initializer.push(tensor(`w${i}`, [widths[i + 1], widths[i]]), tensor(`b${i}`, [widths[i + 1]]))
-    graph.node.push({ opType: 'Gemm', input: [previous, `w${i}`, `b${i}`], output: [output],
-      attribute: [{ name: 'transB', type: 2, i: 1 }] })
-    previous = output
-    if (!final) {
-      previous = `hidden${i}`
-      graph.node.push({ opType: activation, input: [output], output: [previous] })
-    }
-  }
-  return pb.onnx.ModelProto.create({ irVersion: 10, opsetImport: [{ domain: '', version: 18 }], graph })
-}
-
-const encode = (model: ReturnType<typeof network>) => pb.onnx.ModelProto.encode(model).finish()
+import { encode, network, tensor } from './modelFactory'
 
 test('the active contract allows width and depth tradeoffs through four hidden layers', () => {
   for (const widths of [[6, 3], [6, 16, 3], [6, 7, 11, 3], [6, 16, 12, 8, 3], [6, 8, 8, 8, 8, 3]]) {
@@ -60,7 +30,6 @@ test('deeper dense networks stay Small only within the same parameter and comput
 
 test('five hidden layers exceed the structural limit even within Small resource budgets', () => {
   const bytes = encode(network([6, 2, 2, 2, 2, 2, 3]))
-  assert.equal(smallestDivision(validateModel(bytes)), 'small')
   assert.throws(() => validateArenaModel(bytes), DenseModelError,
     'A small parameter count does not permit an unbounded instruction chain')
 })
@@ -75,41 +44,18 @@ test('matrix orientation does not change eligibility when every layer is dense',
   assert.deepEqual(validateArenaModel(encode(model)).architecture.widths, [6, 4, 4, 3])
 })
 
-test('all existing plain policies remain playable under the dense contract', () => {
-  for (const name of ['tracker', 'anticipator', 'challenger', 'pacer-v4', 'apprentice-v4',
-    'contender-v3', 'selfplay-v3', 'apprentice-v3', 'selfplay-v2']) {
-    const stats = validateArenaModel(readFileSync(modelFile(`${name}`)))
-    assert.ok(stats.architecture.widths)
-    assert.deepEqual([stats.inputSize, stats.outputSize], [6, 3])
-  }
-})
-
-test('physics programs and hybrid features remain inspectable archives but cannot enter the arena', () => {
-  for (const name of ['handcrafted-nano-v4', 'handcrafted-small-v4', 'counter-attacker-v4', 'strategist-v3']) {
-    const bytes = readFileSync(modelFile(`${name}`))
-    assert.equal(validateModel(bytes).inputSize, 6)
-    assert.throws(() => validateArenaModel(bytes), DenseModelError)
-    const disguised = pb.onnx.ModelProto.decode(bytes)
-    disguised.metadataProps = [{ key: 'architecture', value: '6-16-16-3 Tanh dense network' }]
-    assert.throws(() => validateArenaModel(encode(disguised)), DenseModelError,
-      'A label must not turn an arithmetic program into a dense policy')
-  }
-})
-
 test('runtime-computed weights and residual branches do not count as dense layers', () => {
   const dynamic = network([6, 3]), graph = dynamic.graph!
   graph.node[0].output = ['runtimeRow']
   graph.initializer.push(tensor('column', [6, 1]))
   graph.node.push({ opType: 'MatMul', input: ['column', 'runtimeRow'], output: ['runtimeWeights'] },
     { opType: 'Gemm', input: ['observation', 'runtimeWeights', 'b0'], output: ['action_scores'] })
-  assert.equal(validateModel(encode(dynamic)).outputSize, 3)
   assert.throws(() => validateArenaModel(encode(dynamic)), DenseModelError)
 
   const residual = network([6, 4, 3])
   residual.graph!.node[2].input![0] = 'residual'
   residual.graph!.node.splice(2, 0,
     { opType: 'Add', input: ['linear0', 'hidden0'], output: ['residual'] })
-  assert.equal(validateModel(encode(residual)).outputSize, 3)
   assert.throws(() => validateArenaModel(encode(residual)), DenseModelError)
 })
 
@@ -117,7 +63,6 @@ test('dense weights and biases belong to one layer and no constants may be hidde
   const shared = network([6, 6, 6, 3]), graph = shared.graph!
   graph.node[2].input = ['hidden0', 'w0', 'b0']
   graph.initializer = graph.initializer.filter((tensor) => !['w1', 'b1'].includes(tensor.name!))
-  assert.equal(validateModel(encode(shared)).outputSize, 3)
   assert.throws(() => validateArenaModel(encode(shared)), DenseModelError)
 
   const unused = network()
@@ -133,7 +78,6 @@ test('scaling constants cannot carry extra instructions outside the dense weight
   }
   const transposedBatch = network([6, 1, 3])
   transposedBatch.graph!.node[2].attribute!.push({ name: 'transA', type: 2, i: 1 })
-  assert.equal(validateModel(encode(transposedBatch)).outputSize, 3)
   assert.throws(() => validateArenaModel(encode(transposedBatch)), DenseModelError)
 
   const duplicate = network()
@@ -165,6 +109,57 @@ test('every parameter must be finite and stored only once in its float32 tensor'
   const extraTypedStorage = network()
   extraTypedStorage.graph!.initializer[0].int32Data = [123]
   assert.throws(() => validateArenaModel(encode(extraTypedStorage)), DenseModelError)
+})
+
+test('labels cannot make a branched graph eligible or override its real parameter count', () => {
+  const model = network([6, 4, 3])
+  model.metadataProps = [{ key: 'architecture', value: 'plain dense network' }, { key: 'params', value: '1' }]
+  assert.equal(validateArenaModel(encode(model)).params, 43)
+  model.graph!.node[2].input![0] = 'residual'
+  model.graph!.node.splice(2, 0, { opType: 'Add', input: ['linear0', 'hidden0'], output: ['residual'] })
+  assert.throws(() => validateArenaModel(encode(model)), DenseModelError)
+})
+
+test('uploads are self-contained bounded inference files with the exact game ports', () => {
+  const malformed: [string, (model: ReturnType<typeof network>) => void][] = [
+    ['different opset', (m) => { m.opsetImport[0].version = 17 }],
+    ['custom domain', (m) => { m.graph!.node[0].domain = 'custom' }],
+    ['extra input', (m) => { m.graph!.input.push(m.graph!.input[0]) }],
+    ['wrong input width', (m) => { m.graph!.input[0].type!.tensorType!.shape!.dim![1].dimValue = 8 }],
+    ['dynamic batch', (m) => { m.graph!.input[0].type!.tensorType!.shape!.dim![0].dimParam = 'batch' }],
+    ['wrong output width', (m) => { m.graph!.output[0].type!.tensorType!.shape!.dim![1].dimValue = 5 }],
+    ['wrong input type', (m) => { m.graph!.input[0].type!.tensorType!.elemType = 11 }],
+    ['external weights', (m) => { m.graph!.initializer[0].externalData = [{ key: 'location', value: 'weights.bin' }] }],
+    ['wrong parameter type', (m) => { m.graph!.initializer[0].dataType = 11 }],
+    ['missing parameter bytes', (m) => { m.graph!.initializer[0].rawData = new Uint8Array() }],
+    ['oversized parameter dimensions', (m) => { m.graph!.initializer[0].dims = [Number.MAX_SAFE_INTEGER, 2] }],
+    ['duplicate parameter names', (m) => { m.graph!.initializer[1].name = m.graph!.initializer[0].name }],
+    ['output overwrites input', (m) => { m.graph!.node[0].output = ['observation'] }],
+    ['output overwrites weight', (m) => { m.graph!.node[0].output = ['w0'] }],
+    ['extra operator output', (m) => { m.graph!.node[0].output!.push('extra') }],
+    ['wrong final layer width', (m) => { m.graph!.initializer.at(-1)!.dims = [4] }],
+    ['missing bias', (m) => { m.graph!.node[0].input!.pop() }],
+    ['control flow', (m) => { m.graph!.node[1].opType = 'Loop' }],
+    ['subgraph attribute', (m) => { m.graph!.node[0].attribute!.push({ name: 'alpha', type: 1, f: 1, g: { name: 'hidden' } }) }],
+  ]
+  for (const [name, mutate] of malformed) {
+    const model = network()
+    mutate(model)
+    assert.throws(() => validateArenaModel(encode(model)), DenseModelError, name)
+  }
+  for (const bytes of [new Uint8Array(), new Uint8Array([255]), new Uint8Array(262145), encode(network([6, 256, 256, 3]))])
+    assert.throws(() => validateArenaModel(bytes), DenseModelError)
+})
+
+test('ordinary ONNX float_data storage has the same costs as raw float32 bytes', () => {
+  const model = network(), expected = validateArenaModel(encode(model))
+  for (const tensor of model.graph!.initializer) {
+    tensor.floatData = Array(tensor.rawData!.length / 4).fill(0)
+    tensor.rawData = new Uint8Array()
+  }
+  assert.deepEqual(validateArenaModel(encode(model)), expected)
+  model.graph!.initializer[0].floatData![0] = Infinity
+  assert.throws(() => validateArenaModel(encode(model)), DenseModelError)
 })
 
 test('the shipped collection contains only current eligible models', () => {

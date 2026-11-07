@@ -3,8 +3,6 @@ import {
   ArrowLeftRight,
   ArrowRight,
   ChevronDown,
-  CircleDot,
-  Code2,
   Cpu,
   Keyboard,
   Maximize,
@@ -34,14 +32,7 @@ import { DIVISIONS, smallestDivision } from './competition'
 
 export const pad = (n: number) => String(n).padStart(2, '0')
 export function ModelIcon({ id, size = 20 }: { id: string; size?: number }) {
-  const Icon =
-    id === 'keyboard'
-      ? Keyboard
-      : id.startsWith('script-')
-        ? Code2
-        : id === 'tracker'
-          ? CircleDot
-          : Cpu
+  const Icon = id === 'keyboard' ? Keyboard : Cpu
   return <Icon size={size} strokeWidth={1.7} />
 }
 function eventText(f: Frame, names: Pair<string>) {
@@ -349,7 +340,6 @@ export function Arena({ m, models, ids, pick, swap, ready, mode = 'watch' }: Pro
     (id, i) => controllers[i]?.name ?? id[0].toUpperCase() + id.slice(1),
   ) as Pair<string>
   const groups = [
-    { name: 'Scripts', models: models.filter((c) => c.type === 'script') },
     ...DIVISIONS.map((d) => ({ name: d.name + ' weights',
       models: models.filter((c) => c.type === 'weights' && smallestDivision(c) === d.id) })),
     { name: 'Unclassified weights', models: models.filter((c) => c.type === 'weights' && !smallestDivision(c)) },

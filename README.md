@@ -1,10 +1,14 @@
 # PongArena
 
-Play Pong against small neural networks and deterministic scripts, watch them compete, and inspect a model's live activations. Inference runs locally on the CPU through ONNX Runtime Web. Models, fonts and WebAssembly assets are served with the app.
+Play Pong against tiny neural networks, watch them compete, and inspect their neurons as they play. Everything runs locally in the browser through ONNX Runtime Web.
 
-[Reference league](public/league.md) · [Contribute a model](CONTRIBUTING.md) · [Game and competition contract](training/COMPETITION.md)
+PongArena compares two ways to build neural controllers: **Quill**, a network with 163 handwritten parameters, and **Small** and **Large**, trained independently with PyTorch using scripted teachers. Quill expresses prediction, wall reflection and aiming directly in dense weights. The trained models use no Quill weights, targets or opponents during training or selection; Quill enters the final comparison after they are frozen.
 
-## Run locally
+The project is inspired by [Sparks of Weight-Space Programming](https://rikiyat.github.io/blog/weight-space-programming/), which explores reasoning directly about neural weights. [How Quill works](docs/QUILL.md) explains its construction and limitations. The league explores how this small handwritten policy compares with learned ones.
+
+[League standings](public/league.md) · [Train the models](training/README.md) · [Contribute a model](CONTRIBUTING.md) · [Rules](docs/RULES.md)
+
+## Run and play
 
 Use Node.js 22 and npm:
 
@@ -13,50 +17,35 @@ npm ci
 npm run dev
 ```
 
-Open the localhost URL printed by Vite. The arena starts ready for **You play** against **Tracker**; press **Play** to begin.
+Open the localhost URL, then press **Play**. Move with **A/D** or **←/→**; on a touch screen, hold the left or right half of the court. Press **R** to restart with the same serves.
 
-To try a phone on the same Wi-Fi, run `npm run dev -- --host 0.0.0.0` and open the printed Network URL.
+Choose an opponent or switch to **Watch models** to compare two networks. **Show brain** reveals their live activations. **Models** provides downloads and local ONNX imports. A match contains five rallies, each lasting at most 1,600 ticks at 30 decisions per second.
 
-## Play, watch and inspect
-
-- Move with **A/D** or **←/→**. On a touch screen, hold the left or right half of the court.
-- Press **R** or **Restart** to immediately restart with the same five serves. **Pause** stops the match; **Full screen** focuses on the court.
-- Choose another opponent, or use **Play** from the league and **Play against** from a model card.
-- Switch to **Watch models** to choose both controllers. The initial matchup is Prism Small v4 versus Quill Plus v4.
-- Open **Show brain** to see a weight model's hidden activations and chosen action while it plays.
-- **Models** holds downloads and local ONNX imports. **Guide** explains the game and includes the optional device test.
-
-Classic v4 runs at 30 decisions per second with five rallies per match. Rallies last at most 1,600 ticks; automated players also draw when an exact state repeats. Both paddles use the same observations and movement limits. Scripts are labelled separately from weight models.
+To play from a phone on the same Wi-Fi, use `npm run dev -- --host 0.0.0.0` and open the printed Network URL.
 
 ## League
 
-The **League** page loads the checked-in [reference standings](public/league.md) immediately. All six bundled weight models and three scripts compete on the same 16 fixed serve sets, with both side assignments: 1,152 games in total. Full scores, controller hashes and seeds are in [league.json](public/league.json).
+The League page opens with the checked-in [standings](public/league.md). Quill, Small and Large face each other on 16 fixed serve sets, with both side assignments: **96 games**. [league.json](public/league.json) contains every result, seed and model hash.
 
-A contest combines two five-rally games. Its winner earns one league point, a tie earns half, and equal totals share rank. Scores describe this field and seed set; the published seeds are a development benchmark, not a private training holdout.
+Each pair of five-rally games forms one contest. Its winner earns one league point; a draw earns half. Equal totals share rank. These public seeds are a reproducible development benchmark; use fresh seeds for independent performance claims.
 
-Expand **Run your own league** to compare imported models or change the field. **All controllers** includes scripts and weights; the size classes accept weights only:
+Local leagues can include imported models. Size classes apply equally to handwritten and trained weights:
 
 | Class | Maximum parameters | Maximum MACs per decision |
 | --- | ---: | ---: |
 | Small | 256 | 1,024 |
 | Large | 65,536 | 65,536 |
 
-Both limits apply. Quill Plus and Tracker fit Small; the other bundled weight models fit Large. Small models may compete in Large; handwritten and trained weights follow the same contract.
+Both limits apply; Small models may also compete in Large. See the [model contract and scoring](docs/RULES.md).
 
 ```sh
 npm run league        # regenerate public/league.json and public/league.md
-npm run league:check  # replay the league and verify both committed files
+npm run league:check  # replay and verify both committed files
 ```
 
-The included GitHub Actions workflow runs tests, regenerates the league, checks the committed snapshot, and uploads standings for review. Model PRs include both refreshed files; the workflow does not push changes. See [CONTRIBUTING.md](CONTRIBUTING.md).
+Model PRs include regenerated standings. The [Check and rank workflow](.github/workflows/check.yml) verifies them, displays the table in its summary, and uploads results for review.
 
-## Model contract
-
-Submit one opset 18 ONNX file, at most 256 KiB, with float32 `observation` input `[1, 6]` and `action_scores` output `[1, 3]`. Use a sequential dense network with zero to four hidden layers, uniform ReLU or Tanh activation, and a linear output. Graph structure, finite parameters and resource usage are validated.
-
-The simulation's legacy actions `up, stay, down` display as `left, stay, right`. The [competition contract](training/COMPETITION.md) gives the exact interface; the [standalone Classic v4 package](training/v4/README.md) contains the game and reference implementations.
-
-## Development and research
+## Develop
 
 ```sh
 npm test
@@ -64,18 +53,14 @@ npm run build
 npm run preview
 ```
 
-The static build is written to `dist/`. For phone measurements, use a production preview with `-- --host 0.0.0.0`; open **Guide → Device test** and compare reports with matching workload versions and model hashes. Browser emulation does not establish physical-device performance.
+The static build is written to `dist/`. Python is only needed to [train models](training/README.md) or [regenerate Quill](docs/QUILL.md#rebuild-it).
 
-Repository layout:
+- `src/`: game, browser interface, model validation and league logic.
+- `public/models/`: the three bundled ONNX files.
+- `public/league.json` and `public/league.md`: reference results.
+- `handwritten/`: Quill's standalone formula-based constructor.
+- `training/`: independent PyTorch training and evaluation using scripted teachers.
+- `scripts/`: league generation for local development and CI.
+- `tests/`: game, model and competition checks.
 
-- `src/`: browser app, game rules and shared league logic.
-- `public/models/`, `public/league.json` and `public/league.md`: active weights and reference standings.
-- `training/`: maintained training tools and frozen game reference packages.
-- `tests/`: behavior checks and retained regression fixtures.
-- `public/training/`: downloads and [historical research reports](training/evidence.md#historical-reports).
-
-[Training instructions](training/README.md), the [model catalog](training/catalog.json) and [retained evidence](training/evidence.md) document the active models and historical experiments. Retired model bytes remain available for compatibility tests and reproducing old comparisons.
-
-## Publishing
-
-[Publishing notes](docs/PUBLISHING.md) cover free public GitHub Actions compute, the manual Pages workflow and publishing the main branch while keeping local checkpoints private. A source and model-weight license still needs to be selected before release.
+See [publishing notes](docs/PUBLISHING.md) for GitHub Actions and Pages. A source and model-weight license must be selected before publication.

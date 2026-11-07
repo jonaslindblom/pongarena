@@ -1,14 +1,12 @@
 import * as ort from 'onnxruntime-web/wasm'
 import wasmUrl from '../node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.wasm?url'
 import moduleUrl from '../node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.mjs?url'
-import { validateArenaModel, validateModel } from './validate'
+import { validateArenaModel, type ModelStats } from './validate'
 import { choice, type Scores } from './rules'
 import { sha256 } from './competition'
 import { assetPath } from './assets'
-import { scriptScores, type ScriptKind } from './scripted'
-import scriptedSource from './scripted.ts?raw'
-import { presets, scripts, scriptIdentity } from './roster'
-export { presets, scripts } from './roster'
+import { presets } from './roster'
+export { presets } from './roster'
 
 ort.env.wasm.numThreads = 1
 ort.env.wasm.wasmPaths = {
@@ -16,7 +14,7 @@ ort.env.wasm.wasmPaths = {
   mjs: new URL(moduleUrl, document.baseURI).href,
 }
 export interface Controller {
-  type: 'human' | 'script' | 'weights'
+  type: 'human' | 'weights'
   id: string
   name: string
   kind: string
@@ -27,11 +25,9 @@ export interface Controller {
   sha256?: string
   inputSize?: number
   outputSize?: number
-  architecture?: ReturnType<typeof validateModel>['architecture']
-  report?: string
+  architecture?: ModelStats['architecture']
   modelBytes?: Uint8Array
   session?: ort.InferenceSession
-  script?: ScriptKind
 }
 export const keyboard: Controller = {
   type: 'human',
@@ -44,7 +40,7 @@ export const keyboard: Controller = {
 }
 export async function loadModel(
   bytes: Uint8Array,
-  info: Omit<Controller, 'type' | 'params' | 'macs' | 'session' | 'script'>,
+  info: Omit<Controller, 'type' | 'params' | 'macs' | 'session'>,
 ): Promise<Controller> {
   const stats = validateArenaModel(bytes)
   const digest = await sha256(bytes)
@@ -60,7 +56,6 @@ export async function loadModel(
 }
 export async function infer(model: Controller, input: Float32Array): Promise<Scores> {
   if (input.length !== model.inputSize) throw new Error('This model belongs to a different game contract.')
-  if (model.type === 'script') return scriptScores(model.script!, input)
   const result = await model.session!.run({ observation: new ort.Tensor('float32', input, [1, input.length]) })
   const output = result.action_scores
   const scores = Array.from(output.data as Float32Array) as Scores
@@ -68,11 +63,7 @@ export async function infer(model: Controller, input: Float32Array): Promise<Sco
   return scores
 }
 export async function loadPresets() {
-  // Hash the policy and its complete implementation, including planning helpers.
-  const controllers: Controller[] = await Promise.all(scripts.map(async (script) => ({
-    ...script,
-    sha256: await scriptIdentity(script.script, scriptedSource),
-  })))
+  const controllers: Controller[] = []
   for (const p of presets) {
     const response = await fetch(assetPath('models/' + p.id + '.onnx'))
     if (!response.ok) throw new Error('Could not load ' + p.name + '.')

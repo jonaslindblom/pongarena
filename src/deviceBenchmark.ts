@@ -1,25 +1,24 @@
 import { advance, choice, endedMatch, endedRally, LoopDetector, observation, serve } from './game'
 import type { Controller } from './models'
 import type { Scores } from './rules'
-import { scriptScores } from './scripted'
 import type { MatchTickTiming } from './useMatch'
 
 export const DEVICE_TEST = {
-  version: 'rally-device-v3',
+  version: 'pong-device',
   seed: 902,
   inputCount: 512,
   warmup: 128,
   batchSize: 2048,
   batches: 7,
   animationMs: 15000,
-  modelIds: ['tracker', 'robust-strong-v4', 'prism-small-v4'],
-  matchIds: ['prism-small-v4', 'quill-plus-v4'],
+  modelIds: ['quill', 'small', 'large'],
+  matchIds: ['large', 'quill'],
 } as const
 
 export const DEVICE_TEST_METHODS = {
-  inputs: '512 consecutive legal Classic v4 positions, seed 902, alternating observing side; Attacker vs Defender generates the positions.',
+  inputs: '512 consecutive legal Pong positions, seed 902, alternating observing side; both paddles follow the ball to generate the positions.',
   inference: 'Each model is warmed with 128 calls. Seven rounds of 2048 calls are timed per model, rotating model order each round. Times include the ordinary inference wrapper plus benchmark action selection, checksums and abort checks, and exclude between-batch UI yields. Percentiles describe batch-average decision time, not individual-call latency. Browser clock resolution can limit precision; raw batch durations and zero-duration counts are retained.',
-  animation: '15 seconds of ordinary Arena playback at 1×, Prism Small vs Quill Plus, seed 902. Frame intervals measure requestAnimationFrame callback cadence, not physical display FPS or touch-to-display latency. Tick lateness is relative to the scheduler deadline; its normal stall-debt limit still applies. Counts separate decisions from intentional 650 ms rally transitions; no adjusted tick-rate estimate is made.',
+  animation: '15 seconds of ordinary Arena playback at 1×, Large vs Quill, seed 902. Frame intervals measure requestAnimationFrame callback cadence, not physical display FPS or touch-to-display latency. Tick lateness is relative to the scheduler deadline; its normal stall-debt limit still applies. Counts separate decisions from intentional 650 ms rally transitions; no adjusted tick-rate estimate is made.',
   checksum: 'FNV-1a 32-bit checksum of ordered selected actions, with action indices encoded as bytes 1–3; a comparison aid, not a cryptographic model identity.',
 } as const
 
@@ -56,7 +55,9 @@ export function createBenchmarkInputs() {
     } else if (endedRally(frame)) frame = serve(seed, frame)
     const left = observation(frame, 0), right = observation(frame, 1)
     inputs.push(i % 2 === 0 ? left : right)
-    frame = advance(frame, [scriptScores('attack', left), scriptScores('defend', right)], loops)
+    const follow = (input: Float32Array): Scores => input[1] < input[4] - .025 ? [1, 0, 0]
+      : input[1] > input[4] + .025 ? [0, 0, 1] : [0, 1, 0]
+    frame = advance(frame, [follow(left), follow(right)], loops)
   }
   return inputs
 }

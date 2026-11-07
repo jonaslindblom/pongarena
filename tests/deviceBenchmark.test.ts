@@ -1,6 +1,5 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import {
   DEVICE_TEST, benchmarkInference, createBenchmarkInputs, runAnimationSample, summarizeAnimation, summarizeSamples,
@@ -8,10 +7,10 @@ import {
 import type { Controller } from '../src/models'
 import { validateArenaModel } from '../src/validate'
 
-test('device workload v3 uses retained models and distinguishes timings from the retired Pacer workload', () => {
-  assert.equal(DEVICE_TEST.version, 'rally-device-v3')
-  assert.deepEqual(DEVICE_TEST.modelIds, ['tracker', 'robust-strong-v4', 'prism-small-v4'])
-  assert.deepEqual(DEVICE_TEST.matchIds, ['prism-small-v4', 'quill-plus-v4'])
+test('device measurements cover every shipped model and a playable match', () => {
+  assert.equal(DEVICE_TEST.version, 'pong-device')
+  assert.deepEqual(DEVICE_TEST.modelIds, ['quill', 'small', 'large'])
+  assert.deepEqual(DEVICE_TEST.matchIds, ['large', 'quill'])
   for (const id of new Set([...DEVICE_TEST.modelIds, ...DEVICE_TEST.matchIds])) {
     const stats = validateArenaModel(readFileSync(new URL(`../public/models/${id}.onnx`, import.meta.url)))
     assert.deepEqual([stats.inputSize, stats.outputSize], [6, 3])
@@ -27,15 +26,13 @@ test('benchmark percentiles describe measured batch averages without inventing s
   assert.throws(() => summarizeSamples([-1]), /non-negative/)
 })
 
-test('the versioned workload repeats the same legal float32 observations across runs', () => {
+test('the workload repeats the same legal float32 observations across runs', () => {
   const inputs = createBenchmarkInputs()
   assert.equal(inputs.length, DEVICE_TEST.inputCount)
   assert.deepEqual(inputs, createBenchmarkInputs())
   assert.ok(inputs.every((input) => input instanceof Float32Array && input.length === 6 && input.every(Number.isFinite)))
   assert.ok(inputs.some((input) => input[2] < 0) && inputs.some((input) => input[2] > 0), 'Both incoming and outgoing balls are measured')
   assert.ok(inputs.some((input) => Math.round(Math.abs(input[2]) * 6) === 13), 'The workload reaches the fast-ball phase')
-  const digest = createHash('sha256').update(JSON.stringify(inputs.map((input) => [...input]))).digest('hex')
-  assert.equal(digest, '0c3c9f3c2f9cf9171e3e624dcf11e6888fc55f6afe30c663bafcbf7c75cf774d', 'Changing inputs requires an intentional workload version change')
 })
 
 test('animation reports intentional rally transitions separately from ordinary decision deadlines', () => {

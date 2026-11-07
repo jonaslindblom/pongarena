@@ -48,7 +48,7 @@ test('new serves and nonadjacent frames snap directly to the authoritative state
 
 test('absolute tick deadlines retain cadence and bound stall debt without skipping game states', () => {
   const frame = serve(1)
-  assert.equal(frameDuration(frame), 1000 / 30, 'Live play must use the Classic cadence of 30 decisions per second')
+  assert.equal(frameDuration(frame), 1000 / 30, 'Live play must use the game cadence of 30 decisions per second')
   const terminal = { ...frame, event: 'point' } as Frame
   assert.equal(frameDuration(terminal), 650)
   assert.equal(boundedDeadline(100, 105), 100, 'Normal inference latency must not move the next deadline')

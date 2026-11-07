@@ -5,9 +5,8 @@ import { parseArgs } from 'node:util'
 import * as ort from 'onnxruntime-web/wasm'
 import { runCompetition, sha256, smallestDivision, standings, type CompetitionEntrant, type CompetitionRun } from '../src/competition'
 import { competitionMatch } from '../src/competitionMatch'
-import { CLASSIC, choice, type Pair, type Scores } from '../src/rules'
-import { presets, scripts, scriptIdentity } from '../src/roster'
-import { scriptScores } from '../src/scripted'
+import { PONG, choice, type Pair, type Scores } from '../src/rules'
+import { presets } from '../src/roster'
 import { validateArenaModel } from '../src/validate'
 import { LEAGUE_JSON, LEAGUE_MARKDOWN, LEAGUE_SEEDS, LEAGUE_SEED_SET } from '../src/league'
 
@@ -23,30 +22,24 @@ export async function generateLeague(seeds: readonly number[] = LEAGUE_SEEDS): P
   const decisions = new Map<string, Decision>()
   const sessions: ort.InferenceSession[] = []
   try {
-    const source = await readFile(new URL('src/scripted.ts', root), 'utf8')
-    for (const script of scripts) {
-      const hash = await scriptIdentity(script.script, source)
-      entrants.push({ id: script.id, name: script.name, sha256: hash, type: 'script', params: null, macs: null })
-      decisions.set(hash, async (input) => scriptScores(script.script, input))
-    }
     for (const preset of presets) {
       const bytes = await readFile(new URL('public/models/' + preset.id + '.onnx', root))
       const stats = validateArenaModel(bytes)
       const hash = await sha256(bytes)
       const session = await ort.InferenceSession.create(bytes, { executionProviders: ['wasm'] })
       sessions.push(session)
-      entrants.push({ id: preset.id, name: preset.name, sha256: hash, type: 'weights', params: stats.params, macs: stats.macs })
+      entrants.push({ id: preset.id, name: preset.name, sha256: hash, params: stats.params, macs: stats.macs })
       decisions.set(hash, async (input) => {
-        const output = await session.run({ observation: new ort.Tensor('float32', input, [1, CLASSIC.inputSize]) })
+        const output = await session.run({ observation: new ort.Tensor('float32', input, [1, PONG.inputSize]) })
         const scores = Array.from(output.action_scores.data as Float32Array) as Scores
         choice(scores)
         return scores
       })
     }
     const run = await runCompetition({
-      rulesId: CLASSIC.id, contractId: CLASSIC.contractId, division: 'all', seeds: [...seeds], entrants,
+      rulesId: PONG.id, contractId: PONG.contractId, division: 'all', seeds: [...seeds], entrants,
       playMatch: ({ left, right, seed, signal }) => competitionMatch(
-        [decisions.get(left.sha256)!, decisions.get(right.sha256)!] as Pair<Decision>, CLASSIC, seed, signal),
+        [decisions.get(left.sha256)!, decisions.get(right.sha256)!] as Pair<Decision>, PONG, seed, signal),
     })
     if (run.status !== 'complete') throw new Error(run.error ?? 'The published league did not complete.')
     return run
@@ -61,21 +54,21 @@ export function leagueMarkdown(run: CompetitionRun) {
   const rows = standings(run).map((row) => {
     const entrant = row.entrant
     const preset = presets.find((p) => p.id === entrant.id)
-    const kind = entrant.type === 'script' ? 'Script' : preset?.handcrafted ? 'Handwritten weights' : 'Learned / baseline weights'
-    const size = entrant.type === 'script' ? '—' : smallestDivision(entrant) === 'small' ? 'Small' : 'Large'
-    return `| ${row.rank} | ${cell(entrant.name)} | ${kind} | ${size} | ${row.leaguePoints} / ${row.played} | ${row.wins} / ${row.draws} / ${row.losses} | ${entrant.params ?? '—'} |`
+    const kind = preset?.handcrafted ? 'Handwritten weights' : 'Trained weights'
+    const size = smallestDivision(entrant) === 'small' ? 'Small' : 'Large'
+    return `| ${row.rank} | ${cell(entrant.name)} | ${kind} | ${size} | ${row.leaguePoints} / ${row.played} | ${row.wins} / ${row.draws} / ${row.losses} | ${entrant.params} |`
   })
   return [
     '# PongArena league', '',
-    `All ${run.spec.entrants.length} bundled controllers, ${run.spec.seeds.length} paired serve sets per matchup, ${run.totalMatches} games.`, '',
-    '| Rank | Controller | Kind | Size | Points | W / D / L | Parameters |',
+    `All ${run.spec.entrants.length} bundled models, ${run.spec.seeds.length} paired serve sets per matchup, ${run.totalMatches} games.`, '',
+    '| Rank | Model | Kind | Size | Points | W / D / L | Parameters |',
     '| ---: | --- | --- | --- | ---: | --- | ---: |', ...rows, '',
     'Each contest combines two five-rally games with swapped sides on the same seed. A contest win earns one point; a tie earns half. Equal points share rank.', '',
     `Rules: \`${run.spec.rulesId}\` · Contract: \`${run.spec.contractId}\` · Protocol: \`${run.protocol}\` · Seeds: \`${LEAGUE_SEED_SET}\`.`, '',
     `Benchmark: \`${run.benchmark}\`.`, '',
-    'Generated from the repository’s model bytes and scripts by `npm run league`, using ONNX Runtime Web CPU/WASM with one thread. CI reruns the league and checks both committed files. Review the passing workflow on the relevant commit before treating a proposed PR table as verified.', '',
+    'Generated from the repository’s model bytes by `npm run league`, using ONNX Runtime Web CPU/WASM with one thread. CI reruns the league and checks both committed files. Review the passing workflow on the relevant commit before treating a proposed PR table as verified.', '',
     'The public seeds are a repeatable development benchmark, not a private training holdout or a universal strength rating. Compare scores only within the same benchmark.', '',
-    '[Full results, controller hashes and serve seeds](league.json)', '',
+    '[Full results, model hashes and serve seeds](league.json)', '',
   ].join('\n')
 }
 

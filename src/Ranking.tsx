@@ -8,7 +8,7 @@ import {
 import { assetPath } from './assets'
 import './Ranking.css'
 
-const STORAGE_KEY = 'rally-lab-last-league-v1'
+const STORAGE_KEY = 'pongarena-last-league'
 const numbers = (n: number) => n.toLocaleString()
 function freshSeeds() {
   const seeds = new Set<number>()
@@ -23,15 +23,15 @@ function StandingsTable({ run, entrants, handcraftedHashes, onPlay }: {
   onPlay: (id: string) => void
 }) {
   return <div className="ranking-table-wrap"><table className="ranking-table">
-    <thead><tr><th>Rank</th><th>Controller</th><th>Points</th><th>W / D / L</th><th><span className="visually-hidden">Play</span></th></tr></thead>
+    <thead><tr><th>Rank</th><th>Model</th><th>Points</th><th>W / D / L</th><th><span className="visually-hidden">Play</span></th></tr></thead>
     <tbody>{standings(run).map((row) => {
       const entrant = row.entrant
       const loaded = entrants.find((current) => current.sha256 === entrant.sha256)
       return <tr key={entrant.sha256}>
         <td>{row.rank ?? '—'}</td>
         <td><strong>{entrant.name}</strong><small>
-          <span className="ranking-class" data-controller-type={entrant.type}>{entrant.type === 'script' ? 'Script' : smallestDivision(entrant)}</span>
-          {entrant.type !== 'script' && <> · {numbers(entrant.params!)} params{handcraftedHashes.includes(entrant.sha256) ? ' · Handwritten' : ''}</>}
+          <span className="ranking-class">{smallestDivision(entrant)}</span>
+          {' · '}{numbers(entrant.params)} params{handcraftedHashes.includes(entrant.sha256) ? ' · Handwritten' : ''}
         </small></td>
         <td>{numbers(row.leaguePoints)}<small>of {row.played}</small></td>
         <td>{row.wins} / {row.draws} / {row.losses}</td>
@@ -148,8 +148,8 @@ export function Ranking({ entrants, handcraftedHashes, rulesId, contractId, play
 
   return <div className="ranking-page">
     <section className="panel ranking-results" aria-label="Reference league">
-      <div className="ranking-result-heading"><h2>Reference standings</h2><span className="mini-tag">ALL CONTROLLERS</span></div>
-      <p className="ranking-note">Bundled models and scripts, evaluated together on fixed serves. Pick an opponent and play.</p>
+      <div className="ranking-result-heading"><h2>Reference standings</h2><span className="mini-tag">ALL MODELS</span></div>
+      <p className="ranking-note">Bundled models, evaluated together on fixed serves. Pick an opponent and play.</p>
       {reference ? <>
         <StandingsTable run={reference} entrants={unique} handcraftedHashes={handcraftedHashes} onPlay={onPlay} />
         <p className="ranking-note">{numbers(reference.totalMatches)} games · {reference.spec.seeds.length} paired serve sets per opponent. A contest win earns 1 point; a tie earns ½. Equal points share rank.</p>
@@ -170,9 +170,9 @@ export function Ranking({ entrants, handcraftedHashes, rulesId, contractId, play
       <fieldset disabled={busy}>
         <div className="ranking-fields">
           <label>League<select value={division} onChange={(e) => { setDivision(e.target.value as CompetitionClass); setSelected(null) }}>
-            <option value="all">All controllers</option>
+            <option value="all">All models</option>
             {DIVISIONS.map((d) => <option key={d.id} value={d.id}>{d.name} models</option>)}
-          </select><small>{limit ? <>Weights only · Up to {numbers(limit.maxParams)} parameters / {numbers(limit.maxMacs)} MACs</> : 'Weight models and scripts, ranked together.'}</small></label>
+          </select><small>{limit ? <>Up to {numbers(limit.maxParams)} parameters / {numbers(limit.maxMacs)} MACs</> : 'Every eligible model, ranked together.'}</small></label>
           <label>Serve sets per pairing<select value={seedCount} onChange={(e) => setSeedCount(Number(e.target.value))}>
             <option value={4}>4 · Quick</option><option value={8}>8 · Standard</option><option value={16}>16 · Broader</option>
           </select><small>Five rallies per game, then swap sides on the same serves.</small></label>
@@ -180,9 +180,9 @@ export function Ranking({ entrants, handcraftedHashes, rulesId, contractId, play
         <div className="ranking-roster-heading"><h3>Choose the field</h3><span>{chosen.length} selected</span></div>
         <div className="ranking-roster">{eligible.map((e) => <label className="ranking-entry" key={e.sha256}>
           <input type="checkbox" checked={chosen.some((c) => c.id === e.id)} onChange={() => toggle(e.id)} aria-label={'Include ' + e.name} />
-          <span><strong>{e.name}</strong><small>{e.type === 'script' ? 'Script' : `${smallestDivision(e)} · ${numbers(e.params!)} params`}</small></span>
+          <span><strong>{e.name}</strong><small>{`${smallestDivision(e)} · ${numbers(e.params)} params`}</small></span>
         </label>)}</div>
-        {!eligible.length && <p className="ranking-note">No loaded controllers fit this league yet.</p>}
+        {!eligible.length && <p className="ranking-note">No loaded models fit this league yet.</p>}
         <div className="ranking-actions">
           <button className="import-btn" disabled={chosen.length < 2} onClick={() => void start()}><Play size={16} /> Run league</button>
           <button className="secondary-btn" onClick={() => setSeeds(freshSeeds())}><Shuffle size={16} /> New serves</button>
@@ -193,7 +193,7 @@ export function Ranking({ entrants, handcraftedHashes, rulesId, contractId, play
       {message && <p className="message" role="status">{message}</p>}
       {run && <div className="ranking-local-results">
         <h3>{run.status === 'complete' ? 'Your local result' : run.status === 'running' ? 'League in progress' : 'Incomplete league'}</h3>
-        <p className="ranking-note">{run.spec.division === 'all' ? 'All controllers' : run.spec.division} · {run.spec.seeds.length} paired serve sets</p>
+        <p className="ranking-note">{run.spec.division === 'all' ? 'All models' : run.spec.division} · {run.spec.seeds.length} paired serve sets</p>
         <div className="ranking-progress"><progress value={run.completedMatches} max={run.totalMatches} aria-label="Completed league games" /><span>{numbers(run.completedMatches)} / {numbers(run.totalMatches)} games</span></div>
         {run.status !== 'complete' && <p className="ranking-note">Completed side pairs contribute points. Ranks appear when every game finishes.</p>}
         {run.error && <p className="message error" role="alert">{run.error}</p>}
@@ -202,7 +202,7 @@ export function Ranking({ entrants, handcraftedHashes, rulesId, contractId, play
           <button className="secondary-btn" disabled={busy} onClick={download}><ArrowDownToLine size={16} /> Export</button>
           <button className="secondary-btn" disabled={busy || !canRepeat} onClick={() => void start(run.spec)}><RotateCcw size={16} /> Repeat benchmark</button>
         </div>
-        {!canRepeat && <p className="ranking-note">Load the same model files and script versions to repeat this result.</p>}
+        {!canRepeat && <p className="ranking-note">Load the same model files to repeat this result.</p>}
         <details className="ranking-seeds"><summary>Benchmark details</summary><code>{run.benchmark}</code><code>{run.spec.seeds.join(', ')}</code></details>
       </div>}
     </details>

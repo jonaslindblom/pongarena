@@ -1,0 +1,193 @@
+{
+  "method": "Randomly initialized PyTorch networks imitate the geometric attacking script. Handwritten models are excluded from training and selection.",
+  "selection": "Best mean point margin against attack, defend and interceptor on eight development seeds; models frozen before evaluation.",
+  "evaluation": {
+    "runtime": "ONNX Runtime 1.31.1 CPU",
+    "seeds": [
+      2500040991,
+      2500018564,
+      2500013654,
+      2500068443,
+      2500025399,
+      2500062046,
+      2500021910,
+      2500012727,
+      2500043432,
+      2500040267,
+      2500056994,
+      2500040829,
+      2500039976,
+      2500061483,
+      2500040441,
+      2500012376,
+      2500052633,
+      2500043774,
+      2500013991,
+      2500046201,
+      2500034804,
+      2500027727,
+      2500065322,
+      2500046078,
+      2500031505,
+      2500053941,
+      2500083774,
+      2500028453,
+      2500002200,
+      2500078436,
+      2500041077,
+      2500085960,
+      2500075267,
+      2500003423,
+      2500084914,
+      2500056768,
+      2500084128,
+      2500040941,
+      2500006939,
+      2500058622,
+      2500086419,
+      2500094481,
+      2500045209,
+      2500032628,
+      2500027511,
+      2500087563,
+      2500058033,
+      2500084549,
+      2500003679,
+      2500011464,
+      2500076936,
+      2500064969,
+      2500087036,
+      2500062146,
+      2500076038,
+      2500021396,
+      2500070009,
+      2500003165,
+      2500006064,
+      2500058843,
+      2500045377,
+      2500007101,
+      2500099231,
+      2500037718
+    ],
+    "rallies_per_seed": 10,
+    "rally_score": "(wins + draws / 2) / rallies"
+  },
+  "reproduction": {
+    "python": "3.12.11",
+    "platform": "Darwin arm64",
+    "cpu_threads": 1,
+    "dependencies": "requirements.txt",
+    "standalone_full_runs": "Both ONNX files reproduced byte-for-byte using only a copied training folder."
+  },
+  "models": {
+    "small": {
+      "sha256": "7780f41b43d52e82b595441d7847783b098c420f206d0f4fab667bf0ac3a81bd",
+      "parameters": 235,
+      "macs": 210,
+      "recipe": "configs/small.json",
+      "recipe_sha256": "391afca45ee2c983303de23cbd478fd2837e6899114b39dd25d5d89c72d875f1",
+      "selected_round": 160,
+      "training_seconds": 55.2,
+      "repeat_seconds": 47.0,
+      "training_environment_steps": 6291456,
+      "development_point_margin": -0.3916666666666666,
+      "scripts": {
+        "attack": {
+          "wins": 88,
+          "draws": 12,
+          "losses": 540,
+          "rally_score": 0.146875
+        },
+        "defend": {
+          "wins": 25,
+          "draws": 190,
+          "losses": 425,
+          "rally_score": 0.1875
+        },
+        "interceptor": {
+          "wins": 380,
+          "draws": 64,
+          "losses": 196,
+          "rally_score": 0.64375
+        }
+      }
+    },
+    "large": {
+      "sha256": "52050d8fd9714c72223a39c94c26a0cf803248513fe06b7820ad99645fd79789",
+      "parameters": 34307,
+      "macs": 33920,
+      "recipe": "configs/large.json",
+      "recipe_sha256": "fe21a0d5771d26af4cd2bf0050b6d9699c9393c36b5268fe0ecc2a4b5645e75d",
+      "selected_round": 248,
+      "training_seconds": 165.9,
+      "repeat_seconds": 108.5,
+      "training_environment_steps": 8388608,
+      "development_point_margin": -0.12499999999999996,
+      "scripts": {
+        "attack": {
+          "wins": 167,
+          "draws": 0,
+          "losses": 473,
+          "rally_score": 0.2609375
+        },
+        "defend": {
+          "wins": 143,
+          "draws": 68,
+          "losses": 429,
+          "rally_score": 0.2765625
+        },
+        "interceptor": {
+          "wins": 425,
+          "draws": 18,
+          "losses": 197,
+          "rally_score": 0.678125
+        }
+      }
+    }
+  },
+  "comparisons": {
+    "small-large": {
+      "wins": 246,
+      "draws": 30,
+      "losses": 364,
+      "rally_score": 0.4078125
+    },
+    "small-quill": {
+      "wins": 158,
+      "draws": 33,
+      "losses": 449,
+      "rally_score": 0.27265625
+    },
+    "large-quill": {
+      "wins": 253,
+      "draws": 3,
+      "losses": 384,
+      "rally_score": 0.39765625
+    }
+  },
+  "comparison_model": {
+    "name": "Quill",
+    "sha256": "bb1b4680654fdd31bcd596c38ce0b4a1cb38a126aafa71c15f55029ba49daa04",
+    "parameters": 163,
+    "scripts": {
+      "attack": {
+        "wins": 53,
+        "draws": 22,
+        "losses": 565,
+        "rally_score": 0.1
+      },
+      "defend": {
+        "wins": 44,
+        "draws": 168,
+        "losses": 428,
+        "rally_score": 0.2
+      },
+      "interceptor": {
+        "wins": 485,
+        "draws": 0,
+        "losses": 155,
+        "rally_score": 0.7578125
+      }
+    }
+  }
+}

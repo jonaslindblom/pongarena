@@ -6,10 +6,8 @@ dist/
 .venv/
 __pycache__/
 *.pyc
-training/runs/*
-!training/runs/.gitkeep
+training/runs/
 
 /training/results/
 /training/checkpoints/
-/training/archive/*
-!/training/archive/README.md
+/training/archive/

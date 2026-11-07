@@ -23,7 +23,6 @@
 .ranking-entry strong { font-size: 13px; overflow-wrap: anywhere; }
 .ranking-entry small { display: block; margin-top: 4px; font-size: 10px; color: #627864; }
 .ranking-class { font: 9px ui-monospace, monospace; text-transform: uppercase; letter-spacing: .06em; color: #627864; }
-.ranking-class[data-controller-type='script'] { padding: 2px 6px; border: 1px solid #eacb86; border-radius: 4px; background: #fff0cd; color: #885513; }
 .ranking-actions { margin-top: 20px; }
 .ranking-actions > span { margin-left: auto; color: #627864; font-size: 11px; }
 .ranking-actions button, .ranking-cancel { min-height: 44px; }

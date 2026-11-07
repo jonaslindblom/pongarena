@@ -1,4 +1,4 @@
-export const COMPETITION_PROTOCOL = 'paired-round-robin-v1'
+export const COMPETITION_PROTOCOL = 'paired-round-robin'
 
 export const DIVISIONS = [
   { id: 'small', name: 'Small', maxParams: 256, maxMacs: 1024 },
@@ -11,10 +11,8 @@ export interface CompetitionEntrant {
   id: string
   sha256: string
   name: string
-  // Omitted in existing weights-only records.
-  type?: 'weights' | 'script'
-  params: number | null
-  macs: number | null
+  params: number
+  macs: number
 }
 export interface CompetitionSpec {
   rulesId: string
@@ -62,21 +60,18 @@ export type PlayCompetitionMatch = (request: {
   signal?: AbortSignal
 }) => Promise<MatchResult>
 
-type BudgetStats = Pick<CompetitionEntrant, 'params' | 'macs'> & { type?: string }
+type BudgetStats = Pick<CompetitionEntrant, 'params' | 'macs'>
 
 export function fitsDivision(stats: BudgetStats, id: Division) {
   const limit = DIVISIONS.find((d) => d.id === id)!
-  return (stats.type === undefined || stats.type === 'weights') &&
-    stats.params !== null && Number.isSafeInteger(stats.params) && stats.params >= 0 && stats.params <= limit.maxParams &&
-    stats.macs !== null && Number.isSafeInteger(stats.macs) && stats.macs >= 0 && stats.macs <= limit.maxMacs
+  return Number.isSafeInteger(stats.params) && stats.params >= 0 && stats.params <= limit.maxParams &&
+    Number.isSafeInteger(stats.macs) && stats.macs >= 0 && stats.macs <= limit.maxMacs
 }
 export function smallestDivision(stats: BudgetStats): Division | null {
   return DIVISIONS.find((d) => fitsDivision(stats, d.id))?.id ?? null
 }
 
 export function fitsCompetition(entrant: CompetitionEntrant, division: CompetitionClass) {
-  if (entrant.type === 'script')
-    return division === 'all' && entrant.params === null && entrant.macs === null
   return fitsDivision(entrant, division === 'all' ? 'large' : division)
 }
 
@@ -92,15 +87,15 @@ export async function sha256(bytes: Uint8Array) {
 function normalizeSpec(spec: CompetitionSpec): CompetitionSpec {
   if (!spec || typeof spec.rulesId !== 'string' || !spec.rulesId ||
     typeof spec.contractId !== 'string' || !spec.contractId)
-    throw new Error('A rules version and input/output contract are required.')
+    throw new Error('Game rules and an input/output contract are required.')
   if (spec.division !== 'all' && !DIVISIONS.some((d) => d.id === spec.division)) throw new Error('Choose a valid competition class.')
-  if (!Array.isArray(spec.entrants) || spec.entrants.length < 2) throw new Error('Select at least two different controllers.')
+  if (!Array.isArray(spec.entrants) || spec.entrants.length < 2) throw new Error('Select at least two different models.')
   const hashes = new Set<string>(), ids = new Set<string>()
   for (const entrant of spec.entrants) {
-    if (!/^[a-f0-9]{64}$/.test(entrant.sha256)) throw new Error('Every controller needs its SHA-256 identity.')
-    if (hashes.has(entrant.sha256)) throw new Error('Identical controllers can enter only once.')
+    if (!/^[a-f0-9]{64}$/.test(entrant.sha256)) throw new Error('Every model needs its SHA-256 identity.')
+    if (hashes.has(entrant.sha256)) throw new Error('Identical models can enter only once.')
     if (typeof entrant.id !== 'string' || !entrant.id || ids.has(entrant.id) || typeof entrant.name !== 'string')
-      throw new Error('Controller identifiers must be unique and names must be text.')
+      throw new Error('Model identifiers must be unique and names must be text.')
     if (!fitsCompetition(entrant, spec.division)) throw new Error(entrant.name + ' is ineligible for this class or exceeds its budget.')
     hashes.add(entrant.sha256)
     ids.add(entrant.id)
@@ -125,8 +120,7 @@ export async function benchmarkIdentity(spec: CompetitionSpec) {
     division: normalized.division,
     budget: normalized.division === 'all' ? null : DIVISIONS.find((d) => d.id === normalized.division),
     seeds: normalized.seeds,
-    roster: normalized.entrants.map(({ sha256: hash, type, params, macs }) =>
-      type === 'script' ? { hash, type, params, macs } : { hash, params, macs }),
+    roster: normalized.entrants.map(({ sha256: hash, params, macs }) => ({ hash, params, macs })),
     ralliesPerMatch: 5,
     matchesPerContest: 2,
     scoring: 'aggregate-rally-points; contest-win=1,draw=0.5,loss=0; equal-league-points-share-rank',

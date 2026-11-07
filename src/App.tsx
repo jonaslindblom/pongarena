@@ -18,18 +18,19 @@ import {
 import { Arena, ModelIcon } from './Arena'
 import { keyboard, loadModel, loadPresets, presets, type Controller } from './models'
 import type { Pair, Side } from './game'
-import { ArchivedModelError, DenseModelError, MAX_BYTES, MAX_DENSE_HIDDEN_LAYERS } from './validate'
+import { MAX_BYTES, MAX_DENSE_HIDDEN_LAYERS } from './validate'
 import { savedModels, saveModel } from './storage'
 import { useMatch } from './useMatch'
 import { Architecture } from './Architecture'
 import { ControllerBadge } from './ControllerBadge'
-import { CLASSIC } from './rules'
+import { PONG } from './rules'
 import { Ranking } from './Ranking'
 import { browserCompetitionMatch } from './runCompetition'
 import { sha256, smallestDivision, type CompetitionEntrant } from './competition'
 import { DeviceTest } from './DeviceTest'
 import { finishStartup, getStartupSnapshot, markArenaReady, recordStartupFailure, recordStartupTiming } from './startup'
 import { assetPath } from './assets'
+import quillSourceUrl from '../handwritten/quill.py?url'
 import './App.css'
 type Page = 'Arena' | 'Rankings' | 'Model library' | 'Field guide' | 'Device test'
 const tabs: { page: Page; label: string; icon: typeof Gamepad2 }[] = [
@@ -40,12 +41,12 @@ const tabs: { page: Page; label: string; icon: typeof Gamepad2 }[] = [
 ]
 const descriptions: Record<Page, string> = {
   Arena: 'Move with A/D or ←/→. Press R to restart.',
-  Rankings: 'One field, common serves, both sides. See how the controllers compare.',
-  'Model library': 'Choose a controller, download a baseline, or bring your own weights.',
+  Rankings: 'Handwritten and trained models, tested on the same serves from both sides.',
+  'Model library': 'Play against a model, inspect its brain, or bring your own weights.',
   'Field guide': 'The game rules, observations, actions, and submission contract.',
   'Device test': 'Measure this device with a repeatable workload, then copy the report to compare.',
 }
-const rules = CLASSIC
+const rules = PONG
 const inputs = [
   ['Ball X', 'Centered at 0. Negative toward your end, positive toward your opponent.'],
   ['Ball Y', 'Simulation Y, centered at 0. On screen, negative is left and positive is right.'],
@@ -66,7 +67,7 @@ function Guide({ onDeviceTest }: { onDeviceTest: () => void }) {
           wins.
         </p>
         <p>
-          When two models or scripts repeat the same ball and paddle state after a return, their rally is
+          When two models repeat the same ball and paddle state after a return, their rally is
           drawn early: the same decisions would repeat forever. Matches with a human use the
           full time limit. Drawn rallies award no points.
         </p>
@@ -85,24 +86,18 @@ function Guide({ onDeviceTest }: { onDeviceTest: () => void }) {
           decisions; pausing preserves the exact game state.
         </p>
         <p>
-          The amber Script badge marks a deterministic program: Attacker plans shot placement,
-          Defender plans catches and recovery, and Interceptor follows the predicted landing point.
-          They use the same six observations and movement limits as weight models. Choose one
-          as your opponent, or use Play against on its model card.
-        </p>
-        <p>
-          The blue Handcrafted weights badge marks a dense neural network whose weights were
-          designed manually and generated from fixed formulas, without training. Vector and
-          Prism use this method. Their decisions run through the neural network.
+          Quill is a neural network with handwritten weights: its ball prediction and paddle control
+          are built directly into dense matrices. Small and Large are trained in PyTorch.
+          All three receive the same observations and choose from the same moves.
         </p>
         <div className="section-code">02 / OBSERVATION</div>
         <h2>What your model sees</h2>
         <p>
           One float32 tensor named <code>observation</code> with shape <code>[1, {rules.inputSize}]</code>.
-          Models keep the original simulation coordinates: your paddle is on the left from the
+          Models use simulation coordinates: your paddle is on the left from the
           model’s perspective, and the court is 360 by 160 units, with positions scaled to −1 and +1
           at the edges. On screen, this court is rotated: simulation X runs between the paddles,
-          and simulation Y runs left to right. Existing models use the same inputs and actions.
+          and simulation Y runs left to right.
         </p>
         <p>
           For each velocity input, the arena divides the ball’s movement in one tick by 6. This
@@ -128,7 +123,7 @@ function Guide({ onDeviceTest }: { onDeviceTest: () => void }) {
         </p>
         <p>
           Show brain opens the model’s real neuron activations and highlights its selected action.
-          Pause to inspect a decision. Scripts and human players have no neural network.
+          Pause to inspect a decision. Human players have no neural network.
         </p>
       </article>
       <aside className="panel guide guide-side">
@@ -157,23 +152,22 @@ function Guide({ onDeviceTest }: { onDeviceTest: () => void }) {
           feature calculations, input products, and output processing are rejected. Put
           model knowledge in the dense weights and biases.
         </p>
-        <a className="secondary-btn" href={assetPath('models/tracker.onnx')} download>
-          <ArrowDownToLine size={16} />
-          Starter ONNX
+        <a className="secondary-btn" href={assetPath('models/quill.onnx')} download>
+          <ArrowDownToLine size={16} /> Quill ONNX
         </a>
-        <h3>Train independently</h3>
+        <h3>Handwrite a model</h3>
         <p>
-          The v4 package includes exact rules, a headless example, a Python reference, and
-          deterministic test cases. Follow the dense-network contract above when exporting;
-          the frozen package retains the older general-graph export description.
+          Quill turns geometric rules into weights and biases, inspired by{' '}
+          <a href="https://rikiyat.github.io/blog/weight-space-programming/" target="_blank" rel="noreferrer">
+            weight-space programming
+          </a>. Read <a href={quillSourceUrl} download="quill.py">Quill’s Python source</a>, change a formula, and compare
+          the resulting model in the league.
         </p>
-        <a className="secondary-btn" href={assetPath('training/pong-v4.zip')} download>
-          <ArrowDownToLine size={16} /> Training package
-        </a>
-        <h3>First weight edit</h3>
+        <h3>Train a model</h3>
         <p>
-          In Tracker, change <code>w1[0, 3]</code> from 0 to 0.525. The paddle now accounts for
-          ball velocity across the court (simulation Y). Import the edited file and compare it with Tracker.
+          The repository’s <code>training/</code> folder contains a standalone PyTorch recipe for
+          Small and Large, with the game physics, scripted teachers, evaluation and ONNX export.
+          Start with its README, then import your exported model here.
         </p>
         <h3>Check your device</h3>
         <p>Measure inference and animation with the same workload on different devices.</p>
@@ -190,7 +184,7 @@ export default function App() {
   const [loadingComplete, setLoadingComplete] = useState(false)
   const [models, setModels] = useState<Controller[]>([keyboard])
   const currentModels = useRef(models)
-  const [ids, setIds] = useState<Pair<string>>(['keyboard', 'tracker'])
+  const [ids, setIds] = useState<Pair<string>>(['keyboard', 'quill'])
   const [error, setError] = useState(''),
     [notice, setNotice] = useState('')
   const [importSide, setImportSide] = useState<Side>(0),
@@ -201,7 +195,7 @@ export default function App() {
     fileInput = useRef<HTMLInputElement>(null)
   const eligibleModels = models.filter((model) => model.id === 'keyboard' ||
     model.inputSize === rules.inputSize && model.outputSize === rules.outputSize)
-  const ready = models.some((p) => p.id === 'tracker')
+  const ready = models.some((p) => p.id === 'quill')
   useEffect(() => {
     if (ready) { markArenaReady(); setStartup(getStartupSnapshot()) }
   }, [ready])
@@ -233,7 +227,6 @@ export default function App() {
         const restoreStartedAt = performance.now()
         try {
           const restored: Controller[] = []
-          let retiredModels = false
           for (const item of await savedModels()) {
             try {
               restored.push(
@@ -244,17 +237,14 @@ export default function App() {
                   description: 'Saved in this browser.',
                 }),
               )
-            } catch (error) {
-              if (error instanceof DenseModelError) retiredModels = true
-              else if (active && !(error instanceof ArchivedModelError)) {
+            } catch {
+              if (active) {
                 recordStartupFailure('A previously saved model could not be loaded.')
                 setError('A previously saved model could not be loaded.')
               }
             }
           }
           if (active && restored.length) appendModels(restored)
-          if (active && retiredModels)
-            setNotice('Some saved models do not meet the dense network contract and were not restored. Import a plain dense network with six inputs and three outputs.')
         } catch {
           if (active) {
             recordStartupFailure('Browser storage was unavailable.')
@@ -304,7 +294,7 @@ export default function App() {
     if (next === mode) return
     m.reset()
     setMode(next)
-    setIds(next === 'play' ? ['keyboard', ids[1]] : ['prism-small-v4', 'quill-plus-v4'])
+    setIds(next === 'play' ? ['keyboard', ids[1]] : ['large', 'quill'])
     setError('')
   }
   async function importFile(file: File | undefined) {
@@ -425,8 +415,7 @@ export default function App() {
         {page === 'Device test' && <DeviceTest models={eligibleModels} startup={startup} loadingComplete={loadingComplete} />}
         {page === 'Rankings' && (
           <Ranking key={rules.id} entrants={eligibleModels.filter((model) => model.type !== 'human' && model.sha256).map((model) => ({
-            id: model.id, name: model.name, sha256: model.sha256!, type: model.type as 'weights' | 'script',
-            params: model.type === 'script' ? null : model.params, macs: model.type === 'script' ? null : model.macs,
+            id: model.id, name: model.name, sha256: model.sha256!, params: model.params, macs: model.macs,
           } satisfies CompetitionEntrant))} rulesId={rules.id} contractId={rules.contractId}
             handcraftedHashes={eligibleModels.filter((model) => model.handcrafted && model.sha256).map((model) => model.sha256!)}
             playMatch={browserCompetitionMatch(eligibleModels, rules)} onStart={m.pause} onPlay={playAgainst} />
@@ -449,33 +438,17 @@ export default function App() {
                   <small>{c.kind}</small>
                   <h2>{c.name}</h2>
                   <ControllerBadge model={c} />
-                  <details className="model-details"><summary>About this controller</summary>
+                  <details className="model-details"><summary>About this model</summary>
                   <p>{c.description}</p>
                   <Architecture model={c} />
                   <dl>
-                    {c.type === 'weights' ? <>
                     <dt>Parameters</dt>
                     <dd>{c.params.toLocaleString()}</dd>
                     <dt>MACs / tick</dt>
                     <dd>{c.macs.toLocaleString()}</dd>
                     <dt>Smallest class</dt>
                     <dd>{smallestDivision(c) ?? '—'}</dd>
-                    </> : <>
-                    <dt>Controller</dt>
-                    <dd>Scripted logic</dd>
-                    <dt>Weights</dt>
-                    <dd>None</dd>
-                    <dt>Observations / actions</dt>
-                    <dd>6 / 3</dd>
-                    </>}
-                    <dt>Game contract</dt>
-                    <dd>Classic v4</dd>
                   </dl>
-                  {c.report && (
-                    <a className="training-link" href={assetPath(c.report)} target="_blank" rel="noreferrer">
-                      {c.handcrafted ? 'Weight design & evaluation ↗' : 'Learning curves & evaluation ↗'}
-                    </a>
-                  )}
                   </details>
                   <div className="library-actions">
                     <button className="secondary-btn" onClick={() => playAgainst(c.id)}>
@@ -486,7 +459,7 @@ export default function App() {
                       onClick={() => {
                         m.reset()
                         setMode('watch')
-                        setIds([c.id, c.id === 'quill-plus-v4' ? 'prism-small-v4' : 'quill-plus-v4'])
+                        setIds([c.id, c.id === 'quill' ? 'large' : 'quill'])
                         setPage('Arena')
                         setError('')
                         m.play()
@@ -513,7 +486,7 @@ export default function App() {
         {page === 'Field guide' && <Guide onDeviceTest={() => navigate('Device test')} />}
         <footer>
           <span>
-            <FlaskConical size={13} /> PongArena <b>/</b> Classic v4
+            <FlaskConical size={13} /> PongArena <b>/</b> Neural network playground
           </span>
           <span>
             <Monitor size={14} /> Runs in your browser
@@ -585,8 +558,8 @@ export default function App() {
             {fileError}
           </p>
         )}
-        <a className="starter-link" href={assetPath('models/tracker.onnx')} download>
-          <ArrowDownToLine size={15} /> Download the starter paddle
+        <a className="starter-link" href={assetPath('models/quill.onnx')} download>
+          <ArrowDownToLine size={15} /> Download Quill
         </a>
       </dialog>
     </>

@@ -2,6 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync, readdirSync } from 'node:fs'
 import pb from 'onnx-proto'
+import { encode, network } from './modelFactory'
 import { activationLevels, createBrainGraph } from '../src/brain'
 
 test('inspection exposes every hidden activation without changing the competing network or its identity', () => {
@@ -41,9 +42,11 @@ test('inspection supports an eligible linear policy with no hidden layers', () =
   assert.equal(pb.onnx.ModelProto.decode(inspection.bytes).graph!.output!.length,1)
 })
 
-test('inspection cannot turn a retired physics program into a playable dense model', () => {
-  const bytes = readFileSync(new URL('./fixtures/models/counter-attacker-v4.onnx', import.meta.url))
-  assert.throws(() => createBrainGraph(bytes), /plain dense network/)
+test('inspection cannot make a branched graph eligible for play', () => {
+  const model = network([6, 4, 3])
+  model.graph!.node[2].input![0] = 'residual'
+  model.graph!.node.splice(2, 0, { opType: 'Add', input: ['linear0', 'hidden0'], output: ['residual'] })
+  assert.throws(() => createBrainGraph(encode(model)), /plain dense network/)
 })
 
 

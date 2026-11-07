@@ -1,6 +1,6 @@
 // Public development benchmark. Changing the seed set creates a new benchmark.
 // These published seeds are not a private holdout for training claims.
-export const LEAGUE_SEED_SET = 'public-league-v1'
+export const LEAGUE_SEED_SET = 'public-league'
 export const LEAGUE_SEEDS = [
   1153541941, 1229251971, 1468069226, 1817080241,
   2245385025, 3647935327, 3691036299, 3888870560,

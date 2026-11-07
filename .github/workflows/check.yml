@@ -46,3 +46,28 @@ jobs:
           retention-days: 7
       - run: npm run build
         if: ${{ !cancelled() }}
+
+  training:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: training/requirements.txt
+      - name: Install CPU training dependencies
+        run: |
+          python -m pip install torch==2.15.0 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r training/requirements.txt
+      - name: Exercise training and ONNX export
+        run: |
+          python training/train.py --size small --smoke --out "$RUNNER_TEMP/training-smoke"
+          python training/check.py --models public/models --run "$RUNNER_TEMP/training-smoke"
+      - name: Reproduce handwritten weights independently
+        run: |
+          python handwritten/quill.py --out "$RUNNER_TEMP/quill.onnx"
+          cmp "$RUNNER_TEMP/quill.onnx" public/models/quill.onnx

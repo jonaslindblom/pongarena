@@ -5,8 +5,7 @@ export interface SavedModel {
 }
 function database(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
-    // Keep the existing storage namespace so saved data survives the product rename.
-    const req = indexedDB.open('rally-lab-models', 1)
+    const req = indexedDB.open('pongarena-models', 1)
     req.onupgradeneeded = () => req.result.createObjectStore('models', { keyPath: 'id' })
     req.onsuccess = () => resolve(req.result)
     req.onerror = () => reject(req.error)
