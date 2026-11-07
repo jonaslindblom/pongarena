@@ -238,6 +238,13 @@ h1 {
   position: relative;
   box-shadow: 0 3px 9px #243f2814;
 }
+/* iOS can select a child label even when its parent disables selection. */
+.court,
+.court * {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
 .court-top,
 .court-foot,
 .score-player small,
@@ -369,9 +376,6 @@ h1 {
 .court-center-circle { position: absolute; top: 50%; left: 50%; width: 32.5%; aspect-ratio: 1; border: 1px solid #bad2c22e; border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; }
 .court.human-controlled {
   touch-action: none;
-  user-select: none;
-  -webkit-user-select: none;
-  -webkit-touch-callout: none;
   cursor: pointer;
 }
 /* Touch zones are a background layer, so they never reduce the court's size. */
@@ -1307,9 +1311,6 @@ html.game-fullscreen #root {
   border-radius: 0;
   touch-action: none;
   overscroll-behavior: none;
-  user-select: none;
-  -webkit-user-select: none;
-  -webkit-touch-callout: none;
 }
 .court-fullscreen .court-top {
   flex: none;
