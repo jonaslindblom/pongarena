@@ -138,13 +138,11 @@ export function HumanControls({ m, humanSides }: Props) {
   }, [enabled, left, right, m.seed, m.history])
 
   if (!left && !right) return null
-  const instruction = m.tick < m.history.length - 1
-    ? 'Replay · controls resume when you reach live play.'
-    : !m.playing
-      ? 'Press Play, then hold the left or right half of the court.'
-      : left && right
-        ? 'In your top or bottom half, hold left or right to move.'
-        : 'Hold the left half to move left, or the right half to move right. Lift to stop.'
+  const instruction = !m.playing
+    ? 'Start the match, then hold the left or right half of the court.'
+    : left && right
+      ? 'In your top or bottom half, hold left or right to move.'
+      : 'Hold the left half to move left, or the right half to move right. Lift to stop.'
   return (
     <section className="panel human-controls" aria-label="Human paddle controls">
       <div className="human-control-heading">

@@ -6,10 +6,8 @@
 [data-weight-origin='handcrafted'] > .controller-badge { color: #315f9a; background: #edf3ff; border-color: #bacde9; }
 .controller-size { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 3px 6px; }
 .controller-class { font-weight: 700; color: #596b58; }
-.controller-class[data-division='nano'] { color: #49711f; }
 .controller-class[data-division='small'] { color: #1e7474; }
-.controller-class[data-division='standard'] { color: #73539b; }
-.controller-class[data-division='open'] { color: #a14e6d; }
+.controller-class[data-division='large'] { color: #73539b; }
 .controller-params { color: #6c796b; white-space: nowrap; }
 .score-player .controller-identity { margin-top: 2px; gap: 3px 6px; min-height: 22px; align-content: flex-start; }
 .score-player.right .controller-identity, .score-player.right .controller-size { justify-content: flex-end; }
@@ -17,10 +15,8 @@
 .court [data-controller-type='script'] > .controller-badge { color: #f5d28b; border-color: #d1a65261; background: #e9b94b14; }
 .court [data-controller-type='human'] > .controller-badge { color: #c5d4cd; border-color: #b6c8be40; background: #baccc313; }
 .court [data-weight-origin='handcrafted'] > .controller-badge { color: #b3d0ff; border-color: #80a5df70; background: #759ee31a; }
-.court .controller-class[data-division='nano'] { color: #d1e79a; }
 .court .controller-class[data-division='small'] { color: #93d8cb; }
-.court .controller-class[data-division='standard'] { color: #d4bce9; }
-.court .controller-class[data-division='open'] { color: #f4bace; }
+.court .controller-class[data-division='large'] { color: #d4bce9; }
 .court .controller-params { color: #b1c3b5; }
 .pick-details { margin: 7px 2px 0; }
 .pick-details .pick-architecture { margin: 5px 0 0; }

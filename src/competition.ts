@@ -1,10 +1,8 @@
 export const COMPETITION_PROTOCOL = 'paired-round-robin-v1'
 
 export const DIVISIONS = [
-  { id: 'nano', name: 'Nano', maxParams: 512, maxMacs: 2048 },
-  { id: 'small', name: 'Small', maxParams: 2048, maxMacs: 8192 },
-  { id: 'standard', name: 'Standard', maxParams: 20480, maxMacs: 65536 },
-  { id: 'open', name: 'Open', maxParams: 65536, maxMacs: 65536 },
+  { id: 'small', name: 'Small', maxParams: 256, maxMacs: 1024 },
+  { id: 'large', name: 'Large', maxParams: 65536, maxMacs: 65536 },
 ] as const
 export type Division = typeof DIVISIONS[number]['id']
 export type CompetitionClass = Division | 'all'
@@ -79,7 +77,7 @@ export function smallestDivision(stats: BudgetStats): Division | null {
 export function fitsCompetition(entrant: CompetitionEntrant, division: CompetitionClass) {
   if (entrant.type === 'script')
     return division === 'all' && entrant.params === null && entrant.macs === null
-  return fitsDivision(entrant, division === 'all' ? 'open' : division)
+  return fitsDivision(entrant, division === 'all' ? 'large' : division)
 }
 
 export async function sha256(bytes: Uint8Array) {

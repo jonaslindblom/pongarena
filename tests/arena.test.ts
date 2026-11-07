@@ -297,7 +297,7 @@ test('v4 releases use the evaluated learned weights and expose their larger arch
   }
 })
 
-test('Plain Nano publishes the confirmed trained candidate within the Nano budget', () => {
+test('Plain Nano preserves the confirmed trained candidate in the current Large class', () => {
   const bytes = readFileSync(modelFile('plain-nano-v4'))
   assert.equal(createHash('sha256').update(bytes).digest('hex'),
     'fd59c8f08927f3e0b9a196919ad80674dcd92bdc44087065e3d0a9fa54406e3c',
@@ -308,7 +308,7 @@ test('Plain Nano publishes the confirmed trained candidate within the Nano budge
   assert.deepEqual(stats.architecture.operations.map((node) => node.op),
     ['Gemm', 'Relu', 'Gemm', 'Relu', 'Gemm', 'Relu', 'Gemm'])
   assert.deepEqual([stats.params, stats.macs, stats.nodes], [447, 408, 7])
-  assert.equal(smallestDivision(stats), 'nano')
+  assert.equal(smallestDivision(stats), 'large')
 })
 
 test('Refined Nano preserves the evaluated 163-parameter candidate', () => {
@@ -320,10 +320,10 @@ test('Refined Nano preserves the evaluated 163-parameter candidate', () => {
   assert.deepEqual(stats.architecture.widths, [6, 16, 3])
   assert.deepEqual(stats.architecture.operations.map((node) => node.op), ['Gemm', 'Tanh', 'Gemm'])
   assert.deepEqual([stats.params, stats.macs, stats.nodes], [163, 144, 3])
-  assert.equal(smallestDivision(stats), 'nano')
+  assert.equal(smallestDivision(stats), 'small')
 })
 
-test('Vector Nano publishes its frozen plain dense weights within the Nano budget', () => {
+test('Vector Nano preserves its frozen plain dense weights in the current Large class', () => {
   const bytes = readFileSync(modelFile('vector-nano-v4'))
   assert.equal(createHash('sha256').update(bytes).digest('hex'),
     'ad41b0b8b9be1264c7b3daea95aec2341ab14f4802038ef175aea5d4898ac551')
@@ -333,12 +333,12 @@ test('Vector Nano publishes its frozen plain dense weights within the Nano budge
   assert.deepEqual(stats.architecture.operations.map((node) => node.op),
     ['Gemm', 'Relu', 'Gemm', 'Relu', 'Gemm'])
   assert.deepEqual([stats.params, stats.macs, stats.nodes], [487, 447, 5])
-  assert.equal(smallestDivision(stats), 'nano')
+  assert.equal(smallestDivision(stats), 'large')
   const model = pb.onnx.ModelProto.decode(bytes)
   assert.match(model.metadataProps.find((p) => p.key === 'method')!.value!, /no fitting\/training/)
 })
 
-test('Prism Nano publishes its frozen plain dense weights within the Nano budget', () => {
+test('Prism Nano preserves its frozen plain dense weights in the current Large class', () => {
   const bytes = readFileSync(modelFile('prism-nano-v4'))
   assert.equal(createHash('sha256').update(bytes).digest('hex'),
     '1eedf32a2fff0721aa101d4ba8a925a6fac7734f259daa9180ecb6523f65991a')
@@ -348,12 +348,12 @@ test('Prism Nano publishes its frozen plain dense weights within the Nano budget
   assert.deepEqual(stats.architecture.operations.map((node) => node.op),
     ['Gemm', 'Relu', 'Gemm', 'Relu', 'Gemm'])
   assert.deepEqual([stats.params, stats.macs, stats.nodes], [503, 462, 5])
-  assert.equal(smallestDivision(stats), 'nano')
+  assert.equal(smallestDivision(stats), 'large')
   const model = pb.onnx.ModelProto.decode(bytes)
   assert.match(model.metadataProps.find((p) => p.key === 'method')!.value!, /no training/)
 })
 
-test('Prism Small publishes its frozen plain dense weights within the Small budget', () => {
+test('Prism Small preserves its frozen plain dense weights in the current Large class', () => {
   const bytes = readFileSync(modelFile('prism-small-v4'))
   assert.equal(createHash('sha256').update(bytes).digest('hex'),
     '64b6f14a604fd6d7ff72b91a2861b7a061f6568b6edde80d4697c2e2160e31ca')
@@ -363,7 +363,7 @@ test('Prism Small publishes its frozen plain dense weights within the Small budg
   assert.deepEqual(stats.architecture.operations.map((node) => node.op),
     ['Gemm', 'Relu', 'Gemm', 'Relu', 'Gemm'])
   assert.deepEqual([stats.params, stats.macs, stats.nodes], [1815, 1737, 5])
-  assert.equal(smallestDivision(stats), 'small')
+  assert.equal(smallestDivision(stats), 'large')
   const model = pb.onnx.ModelProto.decode(bytes)
   assert.match(model.metadataProps.find((p) => p.key === 'method')!.value!, /no training/)
 })
@@ -383,7 +383,7 @@ test('the retired handcrafted policies remain inspectable archives but cannot en
     assert.deepEqual([stats.inputSize, stats.outputSize], [6, 3])
     assert.deepEqual([stats.params, stats.macs, stats.nodes],
       [expected.arena.params, expected.arena.macs, expected.arena.nodes])
-    assert.equal(smallestDivision(stats), size)
+    assert.equal(smallestDivision(stats), 'large')
     assert.equal(stats.architecture.widths, null)
     assert.throws(() => validateArenaModel(bytes), DenseModelError,
       'Correct ports and an old Nano/Small label must not admit a physics graph')
@@ -404,7 +404,7 @@ test('the archived counter retains its frozen bytes but is ineligible under the 
   assert.deepEqual([stats.inputSize, stats.outputSize], [6, 3])
   assert.deepEqual([stats.params, stats.macs, stats.nodes],
     [verification.arena.params, verification.arena.macs, verification.arena.nodes])
-  assert.equal(smallestDivision(stats), 'small')
+  assert.equal(smallestDivision(stats), 'large')
   assert.equal(stats.architecture.widths, null)
   assert.throws(() => validateArenaModel(bytes), DenseModelError)
 })

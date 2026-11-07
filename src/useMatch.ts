@@ -29,6 +29,7 @@ export function useMatch(
   arenaActive: boolean,
   rules: Ruleset,
   onTick?: (sample: MatchTickTiming) => void,
+  keyboardShortcuts = false,
 ) {
   const observer = useRef(onTick)
   observer.current = onTick
@@ -90,20 +91,15 @@ export function useMatch(
     setTick(0)
     present()
   }
-  function seek(at: number) {
-    pause()
-    cursor.current = Math.max(0, Math.min(at, history.current.length - 1))
-    setTick(cursor.current)
-    present()
-  }
   function play() {
-    if (endedMatch(history.current[cursor.current])) {
-      cursor.current = 0
-      setTick(0)
-      present()
-    }
+    if (endedMatch(history.current[cursor.current])) reset()
     running.current = true
     setPlaying(true)
+  }
+  function restart() {
+    if (!players[0] || !players[1]) return
+    reset()
+    play()
   }
   function toggle() {
     if (running.current) pause()
@@ -210,6 +206,21 @@ export function useMatch(
 
   useEffect(() => { reset() }, [rules])
 
+  useEffect(() => {
+    if (!arenaActive || !keyboardShortcuts) return
+    function keydown(event: KeyboardEvent) {
+      if (event.code !== 'KeyR' || event.repeat || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey || event.defaultPrevented) return
+      if (document.querySelector('dialog[open]')) return
+      const target = event.target
+      if (target instanceof Element && target.closest('input, select, textarea, dialog, [contenteditable]:not([contenteditable="false"])')) return
+      if (!players[0] || !players[1]) return
+      event.preventDefault()
+      restart()
+    }
+    window.addEventListener('keydown', keydown)
+    return () => window.removeEventListener('keydown', keydown)
+  }, [arenaActive, keyboardShortcuts, players[0], players[1], seed, rules])
+
   const usesKeyboard = arenaActive && players.some((p) => p?.id === 'keyboard')
   useEffect(() => {
     if (!usesKeyboard) return
@@ -263,17 +274,8 @@ export function useMatch(
     toggle,
     pause,
     play,
-    seek,
     reset,
-    newServes: () => reset(newSeed()),
-    step: () => {
-      pause()
-      const version = revision.current
-      void (async () => {
-        await pending.current
-        if (version === revision.current) await advanceOne()
-      })()
-    },
+    restart,
   }
 }
 export type Match = ReturnType<typeof useMatch>

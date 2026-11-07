@@ -15,6 +15,7 @@ for (const path of [...sourceFiles('src'), 'index.html', 'package-lock.json', 'v
   sourceHash.update(path).update('\0').update(readFileSync(path)).update('\0')
 
 export default defineConfig({
+  base: './',
   plugins: [react()],
   define: { 'import.meta.env.VITE_SOURCE_ID': JSON.stringify(sourceHash.digest('hex').slice(0, 16)) },
 })

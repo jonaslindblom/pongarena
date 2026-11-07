@@ -49,17 +49,17 @@ test('the active contract allows width and depth tradeoffs through four hidden l
   assert.deepEqual(validateArenaModel(encode(ordinary)).architecture.widths, [6, 4, 4, 3])
 })
 
-test('deeper dense networks stay Nano only within the same parameter and compute budgets', () => {
-  const nano = validateArenaModel(encode(network([6, 16, 12, 8, 3], 'Relu')))
-  assert.deepEqual([nano.params, nano.macs, smallestDivision(nano)], [447, 408, 'nano'])
-  const wider = validateArenaModel(encode(network([6, 16, 16, 8, 3], 'Relu')))
-  assert.equal(wider.params, 547)
-  assert.equal(fitsDivision(wider, 'nano'), false, 'Extra depth does not grant a larger parameter budget')
+test('deeper dense networks stay Small only within the same parameter and compute budgets', () => {
+  const compact = validateArenaModel(encode(network([6, 4, 4, 3], 'Relu')))
+  assert.deepEqual([compact.params, compact.macs, smallestDivision(compact)], [63, 52, 'small'])
+  const wider = validateArenaModel(encode(network([6, 16, 12, 8, 3], 'Relu')))
+  assert.equal(wider.params, 447)
+  assert.equal(fitsDivision(wider, 'small'), false, 'Extra depth does not grant a larger parameter budget')
 })
 
-test('five hidden layers exceed the structural limit even within Nano resource budgets', () => {
+test('five hidden layers exceed the structural limit even within Small resource budgets', () => {
   const bytes = encode(network([6, 2, 2, 2, 2, 2, 3]))
-  assert.equal(smallestDivision(validateModel(bytes)), 'nano')
+  assert.equal(smallestDivision(validateModel(bytes)), 'small')
   assert.throws(() => validateArenaModel(bytes), DenseModelError,
     'A small parameter count does not permit an unbounded instruction chain')
 })

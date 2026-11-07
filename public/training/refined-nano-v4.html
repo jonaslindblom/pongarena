@@ -3,18 +3,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>PongArena · Refined Nano v4</title>
-<link rel="icon" href="/mark.svg">
+<link rel="icon" href="../mark.svg">
 <style>
 *{box-sizing:border-box}body{margin:0;background:#f5f6f0;color:#203c30;font:15px/1.65 system-ui,sans-serif}main{max-width:1080px;margin:auto;padding:36px 24px 64px}nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:40px}a{color:#376e43}h1{font-size:clamp(36px,6vw,64px);line-height:1.05;letter-spacing:-.05em;max-width:900px;margin:12px 0 22px}h2{font-size:26px;line-height:1.2;letter-spacing:-.025em;margin:0 0 16px}p{color:#5a6b5b;max-width:930px}.eyebrow{font:11px monospace;letter-spacing:.14em;color:#75935c}.notice{display:inline-block;font-size:12px;color:#466445;background:#e5eddc;padding:6px 12px;border-radius:30px}section{background:#fdfef9;border:1px solid #dce3d5;border-radius:12px;padding:24px;margin-top:22px}.table-wrap{overflow-x:auto;max-width:100%}table{border-collapse:collapse;width:100%;font-size:13px;text-align:left}th,td{padding:12px 10px;border-bottom:1px solid #e2e7dc;white-space:nowrap}th{font-weight:500;color:#70816c}.note,footer{font-size:12px;color:#70816c}.downloads{display:flex;flex-wrap:wrap;gap:12px}.download{display:inline-block;border:1px solid #b8c7ab;border-radius:8px;padding:10px 14px;text-decoration:none}code{background:#edf1e7;border-radius:4px;padding:2px 5px;overflow-wrap:anywhere}footer{margin-top:30px}@media(max-width:650px){main{padding:26px 14px 44px}section{padding:18px}nav{margin-bottom:28px}h2{font-size:23px}}
 </style>
 <main>
-<nav><a href="/">← Arena</a><a href="quill-plus-v4.html">Quill Plus report</a></nav>
+<nav><a href="../">← Arena</a><a href="quill-plus-v4.html">Quill Plus report</a></nav>
 <div class="eyebrow">PONGARENA / TRAINED NANO REFINEMENT</div>
 <h1>A stronger trained Nano.<br>Still 163 parameters.</h1>
 <span class="notice">6→16→3 Tanh · 163 parameters · 144 MACs</span>
 <p>Refined Nano improves the previous trained 163-parameter model from <strong>26.62% to 30.46% mean rally score</strong> against six unchanged reference opponents. The improvement holds on an independent confirmation set. It remains weaker than Plain Nano 447 and, in a separate fresh comparison, handwritten Quill Plus.</p>
 <p>The submitted player is an ordinary dense network with one hidden layer, six raw observations and three action scores. All weights and biases count toward the 163 parameters. There is no weight sharing, runtime augmentation or added physics logic.</p>
-<div class="downloads"><a class="download" href="/training/retired-v4-models.zip" download>Archived Refined Nano weights (ZIP) ↓</a><a class="download" href="refined-nano-v4-evidence.zip" download>Protocols, code and evidence ↓</a></div>
+<div class="downloads"><a class="download" href="retired-v4-models.zip" download>Archived Refined Nano weights (ZIP) ↓</a><a class="download" href="refined-nano-v4-evidence.zip" download>Protocols, code and evidence ↓</a></div>
 <section>
 <h2>Improvement over the trained baseline</h2>
 <p>The selected model was frozen before <strong>256 paired seeds × both sides × five rallies = 2,560 rallies per matchup</strong>. Rally score counts a win as one and a draw as half. Each of the six opponents contributes equally to the field mean.</p>
@@ -56,6 +56,6 @@
 <p class="note">Model SHA-256: <code>3772611174d50c181668ed5f4984b65d6e8fbaad6b438a942941ad9901497633</code></p>
 <p class="note">The compact evidence bundle preserves the selected model and checkpoint, original starting and reference weights, both frozen protocols, selection and confirmation results, complete Quill comparison match records, development summaries, relevant code and source snapshots, amendments, runtime verification and final audits. Its SHA256.json hashes every other entry. It omits discarded checkpoint weights, optimizer states, large probe arrays and redundant progress files. The original local runs retain the full search artifacts; this bundle is an evidence and evaluation snapshot, not a complete training-history backup.</p>
 </section>
-<footer>PongArena · Refined Nano v4 · <a href="/">Arena</a></footer>
+<footer>PongArena · Refined Nano v4 · <a href="../">Arena</a></footer>
 </main>
 </html>

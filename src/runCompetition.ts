@@ -1,6 +1,7 @@
 import { infer, type Controller } from './models'
-import { endedMatch, endedRally, type Pair, type Scores, type Ruleset } from './rules'
+import type { Pair, Ruleset } from './rules'
 import type { PlayCompetitionMatch } from './competition'
+import { competitionMatch } from './competitionMatch'
 
 export function browserCompetitionMatch(models: Controller[], rules: Ruleset): PlayCompetitionMatch {
   return async ({ left, right, seed, signal }) => {
@@ -9,26 +10,7 @@ export function browserCompetitionMatch(models: Controller[], rules: Ruleset): P
       model.outputSize === rules.outputSize))
     if (players.some((player) => !player || (player.type === 'script' ? !player.script : !player.session)))
       throw new Error('A controller is unavailable for these rules.')
-    let frame = rules.serve(seed)
-    const loops = rules.detector()
-    let yieldedAt = performance.now()
-    while (!endedMatch(frame)) {
-      signal?.throwIfAborted()
-      if (endedRally(frame)) frame = rules.serve(seed, frame)
-      else {
-        const scores: Scores[] = []
-        for (const side of [0, 1] as const) {
-          scores.push(await infer(players[side]!, rules.observation(frame, side)))
-          signal?.throwIfAborted()
-        }
-        frame = rules.advance(frame, scores as Pair<Scores>, loops)
-      }
-      // Yield to input and paint even when WASM inference resolves immediately.
-      if (performance.now() - yieldedAt >= 8) {
-        await new Promise<void>((resolve) => setTimeout(resolve, 0))
-        yieldedAt = performance.now()
-      }
-    }
-    return { points: frame.points, rallies: 5 }
+    return competitionMatch(players.map((player) => (input: Float32Array) => infer(player!, input)) as
+      Pair<(input: Float32Array) => ReturnType<typeof infer>>, rules, seed, signal)
   }
 }

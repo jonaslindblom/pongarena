@@ -29,17 +29,18 @@ import { browserCompetitionMatch } from './runCompetition'
 import { sha256, smallestDivision, type CompetitionEntrant } from './competition'
 import { DeviceTest } from './DeviceTest'
 import { finishStartup, getStartupSnapshot, markArenaReady, recordStartupFailure, recordStartupTiming } from './startup'
+import { assetPath } from './assets'
+import './App.css'
 type Page = 'Arena' | 'Rankings' | 'Model library' | 'Field guide' | 'Device test'
-const tabs: { page: Page; icon: typeof Gamepad2 }[] = [
-  { page: 'Arena', icon: Gamepad2 },
-  { page: 'Rankings', icon: Trophy },
-  { page: 'Model library', icon: Layers3 },
-  { page: 'Field guide', icon: BookOpen },
-  { page: 'Device test', icon: Smartphone },
+const tabs: { page: Page; label: string; icon: typeof Gamepad2 }[] = [
+  { page: 'Arena', label: 'Play', icon: Gamepad2 },
+  { page: 'Rankings', label: 'League', icon: Trophy },
+  { page: 'Model library', label: 'Models', icon: Layers3 },
+  { page: 'Field guide', label: 'Guide', icon: BookOpen },
 ]
 const descriptions: Record<Page, string> = {
-  Arena: 'Pit two controllers against each other and watch every decision unfold.',
-  Rankings: 'Compare models and scripts in local tournaments with paired serves and reproducible results.',
+  Arena: 'Move with A/D or ←/→. Press R to restart.',
+  Rankings: 'One field, common serves, both sides. See how the controllers compare.',
   'Model library': 'Choose a controller, download a baseline, or bring your own weights.',
   'Field guide': 'The game rules, observations, actions, and submission contract.',
   'Device test': 'Measure this device with a repeatable workload, then copy the report to compare.',
@@ -53,7 +54,7 @@ const inputs = [
   ['Your paddle Y', 'Position of your paddle across the screen, using the same scale as ball Y.'],
   ['Opponent paddle Y', 'Position of the opposing paddle across the screen, using the same scale as ball Y.'],
 ]
-function Guide() {
+function Guide({ onDeviceTest }: { onDeviceTest: () => void }) {
   return (
     <div className="guide-grid">
       <article className="panel guide">
@@ -77,18 +78,17 @@ function Guide() {
           positions across the court. Each paddle receives serves moving both left and right. Restart repeats the set.
         </p>
         <p>
-          Every match uses a vertical court. Choose Human to play from the bottom. Hold the left
+          Every match uses a vertical court. You play from the bottom. Hold the left
           half to move left or the right half to move right, and lift to stop. You can also use A/D,
-          ←/→, or the on-screen buttons. In a two-human match, P1 is at the bottom with A/D
-          and P2 is at the top with ←/→. Full screen hides the workspace and locks page scrolling.
+          ←/→, or the on-screen buttons. Press R to restart immediately. Full screen hides the workspace and locks page scrolling.
           Touch and pointer controls steer through the same movement limit. Animation fills the space between
-          decisions; paused frames and replays preserve the exact game state.
+          decisions; pausing preserves the exact game state.
         </p>
         <p>
           The amber Script badge marks a deterministic program: Attacker plans shot placement,
           Defender plans catches and recovery, and Interceptor follows the predicted landing point.
-          They use the same six observations and movement limits as weight models. Pick one as
-          Player 02, then press Play yourself to face it.
+          They use the same six observations and movement limits as weight models. Choose one
+          as your opponent, or use Play against on its model card.
         </p>
         <p>
           The blue Handcrafted weights badge marks a dense neural network whose weights were
@@ -127,10 +127,8 @@ function Guide() {
           Ties go to the earliest action. Ordinary moves cover two court units.
         </p>
         <p>
-          The inspector shows the raw scores for the move that produced the displayed frame. Bars
-          start at zero in the center and scale to the largest absolute score for that player and
-          tick. Scripts show a 1 for their chosen action and 0 for the others; these are decisions,
-          not confidence scores.
+          Show brain opens the model’s real neuron activations and highlights its selected action.
+          Pause to inspect a decision. Scripts and human players have no neural network.
         </p>
       </article>
       <aside className="panel guide guide-side">
@@ -159,7 +157,7 @@ function Guide() {
           feature calculations, input products, and output processing are rejected. Put
           model knowledge in the dense weights and biases.
         </p>
-        <a className="secondary-btn" href="/models/tracker.onnx" download>
+        <a className="secondary-btn" href={assetPath('models/tracker.onnx')} download>
           <ArrowDownToLine size={16} />
           Starter ONNX
         </a>
@@ -169,14 +167,17 @@ function Guide() {
           deterministic test cases. Follow the dense-network contract above when exporting;
           the frozen package retains the older general-graph export description.
         </p>
-        <a className="secondary-btn" href="/training/pong-v4.zip" download>
+        <a className="secondary-btn" href={assetPath('training/pong-v4.zip')} download>
           <ArrowDownToLine size={16} /> Training package
         </a>
         <h3>First weight edit</h3>
         <p>
           In Tracker, change <code>w1[0, 3]</code> from 0 to 0.525. The paddle now accounts for
-          ball velocity across the court (simulation Y). Compare it with the bundled Anticipator.
+          ball velocity across the court (simulation Y). Import the edited file and compare it with Tracker.
         </p>
+        <h3>Check your device</h3>
+        <p>Measure inference and animation with the same workload on different devices.</p>
+        <button className="secondary-btn" onClick={onDeviceTest}><Smartphone size={16} /> Device test</button>
       </aside>
     </div>
   )
@@ -184,11 +185,12 @@ function Guide() {
 
 export default function App() {
   const [page, setPage] = useState<Page>('Arena')
+  const [mode, setMode] = useState<'play' | 'watch'>('play')
   const [startup, setStartup] = useState(getStartupSnapshot)
   const [loadingComplete, setLoadingComplete] = useState(false)
   const [models, setModels] = useState<Controller[]>([keyboard])
   const currentModels = useRef(models)
-  const [ids, setIds] = useState<Pair<string>>(['prism-small-v4', 'quill-plus-v4'])
+  const [ids, setIds] = useState<Pair<string>>(['keyboard', 'tracker'])
   const [error, setError] = useState(''),
     [notice, setNotice] = useState('')
   const [importSide, setImportSide] = useState<Side>(0),
@@ -207,7 +209,7 @@ export default function App() {
     if (loadingComplete) { finishStartup(ready); setStartup(getStartupSnapshot()) }
   }, [loadingComplete, ready])
   const players = ids.map((id) => models.find((p) => p.id === id)) as Pair<Controller | undefined>
-  const m = useMatch(players, setError, page === 'Arena', rules)
+  const m = useMatch(players, setError, page === 'Arena', rules, undefined, true)
   const currentMatch = useRef(m)
   currentMatch.current = m
   function appendModels(entries: Controller[]) {
@@ -228,8 +230,6 @@ export default function App() {
         if (!active) return
         recordStartupTiming('Bundled controller loading', bundledStartedAt)
         appendModels(builtins)
-        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && initialView.current)
-          m.play()
         const restoreStartedAt = performance.now()
         try {
           const restored: Controller[] = []
@@ -277,9 +277,7 @@ export default function App() {
       active = false
     }
   }, [])
-  const initialView = useRef(true)
   function navigate(next: Page) {
-    initialView.current = false
     if (next !== page) m.pause()
     setPage(next)
   }
@@ -289,20 +287,27 @@ export default function App() {
     setError('')
   }
   function openImport() {
-    initialView.current = false
     m.pause()
     setFileError('')
-    setImportSide(0)
+    setImportSide(mode === 'play' ? 1 : 0)
     dialog.current?.showModal()
   }
   function playAgainst(opponent: string) {
-    initialView.current = false
     m.reset()
     m.setSpeed(1)
     setIds(['keyboard', opponent])
+    setMode('play')
     setPage('Arena')
     setError('')
     m.play()
+  }
+  function changeMode(next: 'play' | 'watch') {
+    if (next === mode) return
+    m.reset()
+    m.setSpeed(1)
+    setMode(next)
+    setIds(next === 'play' ? ['keyboard', ids[1]] : ['prism-small-v4', 'quill-plus-v4'])
+    setError('')
   }
   async function importFile(file: File | undefined) {
     if (!file || uploading) return
@@ -353,45 +358,37 @@ export default function App() {
               navigate('Arena')
             }}
           >
-            <img src="/mark.svg" alt="" />
+            <img src={assetPath('mark.svg')} alt="" />
             <span>
               Pong<span className="brand-light">Arena</span>
             </span>
           </a>
           <nav aria-label="Main navigation">
-            {tabs.map(({ page: t, icon: Icon }) => (
+            {tabs.map(({ page: t, label, icon: Icon }) => (
               <button
                 key={t}
                 aria-current={page === t ? 'page' : undefined}
                 onClick={() => navigate(t)}
               >
                 <Icon size={16} />
-                {t}
+                {label}
               </button>
             ))}
           </nav>
-          <span className="local-status">
-            <i className="online-dot" /> Local workspace
-          </span>
         </div>
       </header>
       <main className="shell">
         <div className="page-head">
           <div>
-            <div className="eyebrow">
-              <i /> NEURAL GAME LAB <span>/</span> {rules.name.toUpperCase()}
-            </div>
-            <h1>{page === 'Arena' ? 'Match arena' : page}</h1>
+            <h1>{page === 'Arena' ? mode === 'play' ? 'Play Pong' : 'Watch models' : page === 'Rankings' ? 'League' : page}</h1>
             <p>{descriptions[page]}</p>
           </div>
           <div className="page-actions">
-            {page === 'Arena' && (
-              <button className="secondary-btn" disabled={!ready}
-                onClick={() => playAgainst(ids[1] === 'keyboard' ? 'tracker' : ids[1])}>
-                <Gamepad2 size={17} /> Play yourself
-              </button>
-            )}
-            {page !== 'Device test' && <button className="import-btn" disabled={!ready} onClick={openImport}>
+            {page === 'Arena' && <div className="play-mode" role="group" aria-label="Game mode">
+              <button aria-pressed={mode === 'play'} onClick={() => changeMode('play')}>You play</button>
+              <button aria-pressed={mode === 'watch'} onClick={() => changeMode('watch')}>Watch models</button>
+            </div>}
+            {page === 'Model library' && <button className="import-btn" disabled={!ready} onClick={openImport}>
               <Plus size={17} /> Import model
             </button>}
           </div>
@@ -415,6 +412,7 @@ export default function App() {
         )}
         {page === 'Arena' && (
           <Arena
+            mode={mode}
             models={eligibleModels}
             ids={ids}
             pick={select}
@@ -433,7 +431,7 @@ export default function App() {
             params: model.type === 'script' ? null : model.params, macs: model.type === 'script' ? null : model.macs,
           } satisfies CompetitionEntrant))} rulesId={rules.id} contractId={rules.contractId}
             handcraftedHashes={eligibleModels.filter((model) => model.handcrafted && model.sha256).map((model) => model.sha256!)}
-            playMatch={browserCompetitionMatch(eligibleModels, rules)} onStart={m.pause} />
+            playMatch={browserCompetitionMatch(eligibleModels, rules)} onStart={m.pause} onPlay={playAgainst} />
         )}
         {page === 'Model library' && (
           <div className="library">
@@ -453,6 +451,7 @@ export default function App() {
                   <small>{c.kind}</small>
                   <h2>{c.name}</h2>
                   <ControllerBadge model={c} />
+                  <details className="model-details"><summary>About this controller</summary>
                   <p>{c.description}</p>
                   <Architecture model={c} />
                   <dl>
@@ -475,10 +474,11 @@ export default function App() {
                     <dd>Classic v4</dd>
                   </dl>
                   {c.report && (
-                    <a className="training-link" href={c.report} target="_blank" rel="noreferrer">
+                    <a className="training-link" href={assetPath(c.report)} target="_blank" rel="noreferrer">
                       {c.handcrafted ? 'Weight design & evaluation ↗' : 'Learning curves & evaluation ↗'}
                     </a>
                   )}
+                  </details>
                   <div className="library-actions">
                     <button className="secondary-btn" onClick={() => playAgainst(c.id)}>
                       <Gamepad2 size={14} /> Play against
@@ -486,18 +486,23 @@ export default function App() {
                     <button
                       className="secondary-btn"
                       onClick={() => {
-                        select(0, c.id)
+                        m.reset()
+                        m.setSpeed(1)
+                        setMode('watch')
+                        setIds([c.id, c.id === 'quill-plus-v4' ? 'prism-small-v4' : 'quill-plus-v4'])
                         setPage('Arena')
+                        setError('')
+                        m.play()
                       }}
                     >
-                      Use as P1 <ArrowRight size={14} />
+                      Watch <ArrowRight size={14} />
                     </button>
                     {presets.some((p) => p.id === c.id) && (
                       <a
                         aria-label={'Download ' + c.name}
                         title="Download ONNX"
                         className="icon-btn"
-                        href={'/models/' + c.id + '.onnx'}
+                        href={assetPath('models/' + c.id + '.onnx')}
                         download
                       >
                         <ArrowDownToLine size={16} />
@@ -508,13 +513,13 @@ export default function App() {
               ))}
           </div>
         )}
-        {page === 'Field guide' && <Guide />}
+        {page === 'Field guide' && <Guide onDeviceTest={() => navigate('Device test')} />}
         <footer>
           <span>
-            <FlaskConical size={13} /> PongArena <b>/</b> Local edition
+            <FlaskConical size={13} /> PongArena <b>/</b> Classic v4
           </span>
           <span>
-            <Monitor size={14} /> Browser inference
+            <Monitor size={14} /> Runs in your browser
           </span>
         </footer>
       </main>
@@ -541,7 +546,7 @@ export default function App() {
         <div className="section-code">{rules.name.toUpperCase()} / LOCAL IMPORT</div>
         <h2>Import a model</h2>
         <p>Choose a self-contained ONNX file with six observations and three action scores: up, stay, down in simulation coordinates (left, stay, right on screen). Your weights stay in this browser.</p>
-        <fieldset disabled={uploading}>
+        {mode === 'watch' && <fieldset disabled={uploading}>
           <legend>Assign to paddle</legend>
           <div className="side-options">
             {([0, 1] as const).map((i) => (
@@ -550,7 +555,7 @@ export default function App() {
               </button>
             ))}
           </div>
-        </fieldset>
+        </fieldset>}
         <button
           className={'dropzone ' + (drag ? 'drag' : '')}
           disabled={uploading}
@@ -583,7 +588,7 @@ export default function App() {
             {fileError}
           </p>
         )}
-        <a className="starter-link" href="/models/tracker.onnx" download>
+        <a className="starter-link" href={assetPath('models/tracker.onnx')} download>
           <ArrowDownToLine size={15} /> Download the starter paddle
         </a>
       </dialog>

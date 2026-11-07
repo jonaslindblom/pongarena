@@ -135,7 +135,7 @@ function BrainView({ model, side, frame, previous, start, rules }: {
   return (
     <div className="brain-view">
       <div className="brain-source"><span>{model.name}</span><span>{snapshot ? `DECISION TICK ${snapshot.tick}` : loading ? 'OPENING MODEL' : 'AWAITING DECISION'}</span></div>
-      {error ? <p className="brain-message" role="status">{error}</p> : snapshot ? <Network snapshot={snapshot} /> : <p className="brain-message">{loading ? 'Reading the network…' : 'Play or step the match to see real neuron activations.'}</p>}
+      {error ? <p className="brain-message" role="status">{error}</p> : snapshot ? <Network snapshot={snapshot} /> : <p className="brain-message">{loading ? 'Reading the network…' : 'Start the match to see real neuron activations.'}</p>}
       <div className="brain-legend"><span><i /> Positive</span><span><i /> Negative</span><span>Dark = zero</span></div>
       <p className="brain-caption">Real model values · sampled up to 4 times/s. Brightness is scaled within each layer and emphasizes small values; hover a node for its value. Active counts show nonzero values; zero is normal for ReLU. Lines show layer flow, not connection strengths.{snapshot?.layers.some((layer) => layer.width > 256) ? ' First 256 neurons per layer shown.' : ''}</p>
     </div>
@@ -144,7 +144,11 @@ function BrainView({ model, side, frame, previous, start, rules }: {
 
 export function BrainPanel({ m, controllers, bottom }: { m: Match; controllers: Pair<Controller | undefined>; bottom: Side }) {
   const [open, setOpen] = useState(false)
-  const [side, setSide] = useState<Side>(0)
+  const [side, setSide] = useState<Side>(controllers[0]?.type === 'human' ? 1 : 0)
+  useEffect(() => {
+    if (controllers[0]?.type === 'human') setSide(1)
+    else if (controllers[1]?.type === 'human') setSide(0)
+  }, [controllers[0]?.type, controllers[1]?.type])
   const model = controllers[side]
   return (
     <section className={'panel brain-panel' + (open ? ' is-open' : '')} aria-label="Model brain">

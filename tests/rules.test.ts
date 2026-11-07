@@ -87,14 +87,14 @@ test('a repeated physical position cannot draw a burst rally while either resour
   assert.equal(BURST.advance(incoming, still5, detector).drawReason, 'loop')
 })
 
-test('size-study downloads are the evaluated plain eight-input/five-output weights in their stated classes', () => {
+test('size-study downloads are the evaluated plain eight-input/five-output weights within the current size budgets', () => {
   const manifest = JSON.parse(readFileSync(new URL('./fixtures/training/results/burst-study/models/release/manifest.json', import.meta.url), 'utf8'))
   for (const [name, widths, params, macs, division] of [
-    ['micro', [8, 16, 5], 229, 208, 'nano'],
-    ['tiny', [8, 16, 16, 5], 501, 464, 'nano'],
-    ['small', [8, 32, 32, 5], 1509, 1440, 'small'],
-    ['medium', [8, 64, 64, 5], 5061, 4928, 'standard'],
-    ['large', [8, 128, 128, 5], 18309, 18048, 'standard'],
+    ['micro', [8, 16, 5], 229, 208, 'small'],
+    ['tiny', [8, 16, 16, 5], 501, 464, 'large'],
+    ['small', [8, 32, 32, 5], 1509, 1440, 'large'],
+    ['medium', [8, 64, 64, 5], 5061, 4928, 'large'],
+    ['large', [8, 128, 128, 5], 18309, 18048, 'large'],
   ] as const) {
     const bytes = readFileSync(modelFile(`burst-${name}`))
     assert.equal(createHash('sha256').update(bytes).digest('hex'),
@@ -121,13 +121,13 @@ test('a model cannot mix the classic observation port with burst actions or vice
   assert.throws(() => validateModel(pb.onnx.ModelProto.encode(legacy).finish()), /action_scores/)
 })
 
-test('the focused follow-up remains a separately identified Standard model with its evaluated weights', () => {
+test('the focused follow-up remains a separately identified Large model with its evaluated weights', () => {
   const bytes = readFileSync(modelFile('burst-focus'))
   const frozen = JSON.parse(readFileSync(new URL('./fixtures/training/results/burst-study/models/followup-release/manifest.json', import.meta.url), 'utf8'))
   assert.equal(createHash('sha256').update(bytes).digest('hex'), frozen.onnx_sha256)
   const stats = validateModel(bytes)
   assert.deepEqual([stats.inputSize, stats.outputSize, stats.params, stats.macs], [8, 5, 18309, 18048])
   assert.deepEqual(stats.architecture.widths, [8, 128, 128, 5])
-  assert.equal(smallestDivision(stats), 'standard')
+  assert.equal(smallestDivision(stats), 'large')
   assert.deepEqual(stats.architecture.operations.map((node) => node.op), ['Gemm', 'Tanh', 'Gemm', 'Tanh', 'Gemm'])
 })

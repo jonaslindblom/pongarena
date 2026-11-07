@@ -7,7 +7,9 @@
     "dev": "vite --host 127.0.0.1",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 127.0.0.1",
-    "test": "node --import tsx --test tests/*.test.ts"
+    "test": "node --import tsx --test tests/*.test.ts",
+    "league": "node --import tsx scripts/generate-league.ts",
+    "league:check": "node --import tsx scripts/generate-league.ts --check"
   },
   "dependencies": {
     "@fontsource-variable/manrope": "^5.2.0",

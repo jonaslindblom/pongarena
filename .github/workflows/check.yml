@@ -1,0 +1,48 @@
+name: Check and rank
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - name: Reproduce the published league
+        if: ${{ !cancelled() }}
+        run: npm run league:check -- --output "$RUNNER_TEMP/league"
+      - name: Show candidate standings
+        if: always()
+        run: |
+          if test -f "$RUNNER_TEMP/league/league.md"; then
+            cat "$RUNNER_TEMP/league/league.md" >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Upload regenerated results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: league-results
+          path: ${{ runner.temp }}/league/
+          if-no-files-found: ignore
+          retention-days: 7
+      - run: npm run build
+        if: ${{ !cancelled() }}

@@ -1,5 +1,5 @@
 .brain-panel { overflow: hidden; }
-.brain-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 15px 18px; }
+.brain-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 15px 18px; }
 .brain-toggle { display: flex; align-items: center; gap: 9px; padding: 0; border: 0; background: none; color: var(--forest); font: inherit; font-weight: 700; cursor: pointer; }
 .brain-toggle svg:last-child { transition: transform .15s; }
 .brain-panel.is-open .brain-toggle svg:last-child { transform: rotate(180deg); }
@@ -31,16 +31,3 @@
   .brain-source { flex-direction: column; gap: 5px; }
 }
 @media (prefers-reduced-motion: reduce) { .brain-toggle svg:last-child { transition: none; } }
-@media (max-width: 720px) {
-  .arena-grid .brain-panel { grid-row: 3; }
-  .arena-grid .side-column { grid-row: 4; }
-  .arena-grid .feed { grid-row: 5; }
-  .arena-grid:has(.human-controls) .brain-panel { grid-row: 4; }
-  .arena-grid:has(.human-controls) .side-column { grid-row: 5; }
-  .arena-grid:has(.human-controls) .feed { grid-row: 6; }
-}
-@media (pointer: coarse) and (orientation: landscape) and (max-height: 600px) {
-  .arena-grid .brain-panel, .arena-grid:has(.human-controls) .brain-panel { grid-column: 1 / -1; grid-row: 3; }
-  .arena-grid .side-column, .arena-grid:has(.human-controls) .side-column { grid-row: 4; }
-  .arena-grid .feed, .arena-grid:has(.human-controls) .feed { grid-row: 5; }
-}

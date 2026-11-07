@@ -1,33 +1,23 @@
 import {
-  Activity,
   ArrowLeft,
   ArrowLeftRight,
   ArrowRight,
-  AudioLines,
   ChevronDown,
   CircleDot,
   Code2,
   Cpu,
   Dna,
-  FastForward,
-  Gamepad2,
   Keyboard,
-  List,
   Maximize,
-  Minus,
   Minimize,
   Pause,
   Play,
   RotateCcw,
-  Shuffle,
-  SkipBack,
-  SkipForward,
   SlidersHorizontal,
   Waves,
 } from 'lucide-react'
 import { useLayoutEffect, useRef, useState } from 'react'
 import {
-  choice,
   endedMatch,
   endedRally,
   RALLIES,
@@ -38,7 +28,6 @@ import {
 } from './rules'
 import { type Controller } from './models'
 import type { Match } from './useMatch'
-import { architectureLabel } from './Architecture'
 import { BrainPanel } from './BrainPanel'
 import { HumanControls, useCourtPointerControls } from './HumanControls'
 import { interpolate, progress } from './presentation'
@@ -68,8 +57,15 @@ function eventText(f: Frame, names: Pair<string>) {
     return f.drawReason === 'loop' ? 'Rally drawn · repeating loop' : `Rally drawn at ${RALLY_TICK_LIMIT.toLocaleString()} ticks`
   return names[f.actor!] + ' returns the ball'
 }
-function Court({ m, names, controllers, ready, humanSides, bottom }: {
-  m: Match; names: Pair<string>; controllers: Pair<Controller | undefined>; ready: boolean; humanSides: Pair<boolean>; bottom: Side
+type Mode = 'play' | 'watch'
+function playLabel(m: Match, mode: Mode) {
+  if (m.playing) return 'Pause'
+  if (endedMatch(m.frame)) return mode === 'play' ? 'Play again' : 'Watch again'
+  if (m.tick) return 'Resume'
+  return mode === 'play' ? 'Play' : 'Watch'
+}
+function Court({ m, names, controllers, ready, humanSides, bottom, mode }: {
+  m: Match; names: Pair<string>; controllers: Pair<Controller | undefined>; ready: boolean; humanSides: Pair<boolean>; bottom: Side; mode: Mode
 }) {
   const f = m.frame
   const { active, ...input } = useCourtPointerControls(m, humanSides)
@@ -153,18 +149,15 @@ function Court({ m, names, controllers, ready, humanSides, bottom }: {
     draw(performance.now())
     return () => cancelAnimationFrame(raf)
   }, [m.presentation, m.tick, m.seed, m.playing, m.speed])
-  const replay = m.tick < m.history.length - 1
   const status = !ready
     ? 'Loading'
     : endedMatch(f)
       ? 'Full time'
-      : replay
-        ? 'Replay'
-        : m.playing
-          ? 'Live'
-          : f.tick
-            ? 'Paused'
-            : 'Ready'
+      : m.playing
+        ? 'Live'
+        : f.tick
+          ? 'Paused'
+          : 'Ready'
   return (
     <section {...input} ref={court}
       className={'court court-vertical' + (active ? ' human-controlled' : '') + (fullscreen ? ' court-fullscreen' : '')}
@@ -182,11 +175,10 @@ function Court({ m, names, controllers, ready, humanSides, bottom }: {
         <div className="court-actions">
           {fullscreen && <>
             <button className="court-control" disabled={!ready} onClick={m.toggle}
-              aria-label={m.playing ? 'Pause match' : endedMatch(f) ? 'Replay match' : 'Play match'}
-              title={m.playing ? 'Pause match' : endedMatch(f) ? 'Replay match' : 'Play match'}>
+              aria-label={playLabel(m, mode)} title={playLabel(m, mode)}>
               {m.playing ? <Pause size={18} /> : <Play size={18} />}
             </button>
-            <button className="court-control" onClick={() => m.reset()} aria-label="Restart match" title="Restart match">
+            <button className="court-control" disabled={!ready} onClick={m.restart} aria-label="Restart match" title="Restart match (R)">
               <RotateCcw size={18} />
             </button>
           </>}
@@ -335,87 +327,27 @@ function Court({ m, names, controllers, ready, humanSides, bottom }: {
     </section>
   )
 }
-function Transport({ m, ready }: { m: Match; ready: boolean }) {
-  const end = m.history.length - 1,
-    f = m.frame
+function MatchControls({ m, ready, mode }: { m: Match; ready: boolean; mode: Mode }) {
+  function showCourt(button: HTMLButtonElement) {
+    if (window.matchMedia('(max-width: 720px), (pointer: coarse)').matches)
+      button.closest('.main-column')?.querySelector('.court')?.scrollIntoView({ block: 'start' })
+  }
   return (
-    <section className="panel transport" aria-label="Replay controls">
-      <div className="transport-head">
-        <h3>
-          <Activity size={16} /> Playback
-        </h3>
-        <span className="mono">
-          FRAME {String(m.tick).padStart(4, '0')} / {String(end).padStart(4, '0')}
-        </span>
-      </div>
-      <input
-        className="timeline"
-        aria-label="Replay frame"
-        type="range"
-        min={0}
-        max={Math.max(1, end)}
-        value={m.tick}
-        disabled={end === 0}
-        onChange={(e) => m.seek(Number(e.target.value))}
-        style={{
-          backgroundImage:
-            'linear-gradient(to right, var(--forest) ' +
-            (end ? (100 * m.tick) / end : 0) +
-            '%, var(--line) 0%)',
-        }}
-      />
-      <div className="transport-row">
-        <button className="play-btn" disabled={!ready} onClick={m.toggle}>
-          {m.playing ? (
-            <Pause size={15} fill="currentColor" />
-          ) : (
-            <Play size={15} fill="currentColor" />
-          )}
-          {m.playing ? 'Pause' : endedMatch(f) ? 'Replay match' : 'Play match'}
-        </button>
-        <button
-          className="icon-btn"
-          title="Previous tick"
-          aria-label="Previous tick"
-          disabled={!m.tick}
-          onClick={() => m.seek(m.tick - 1)}
-        >
-          <SkipBack size={17} />
-        </button>
-        <button
-          className="icon-btn"
-          title="Next tick"
-          aria-label="Next tick"
-          disabled={!ready || endedMatch(f)}
-          onClick={m.step}
-        >
-          <SkipForward size={17} />
-        </button>
-        <span className="divider" />
-        <label className="speed">
-          <FastForward size={14} />
-          <select
-            aria-label="Playback speed"
-            value={m.speed}
-            onChange={(e) => m.setSpeed(Number(e.target.value))}
-          >
-            {[0.5, 1, 2, 4].map((x) => (
-              <option key={x} value={x}>
-                {x}×
-              </option>
-            ))}
-          </select>
-        </label>
-        <button
-          className="restart"
-          aria-label="Restart"
-          onClick={() => m.reset()}
-          title="Restart the same five serves"
-        >
-          <RotateCcw size={15} />
-          <span>Restart</span>
-        </button>
-      </div>
+    <section className="panel match-controls" aria-label="Match controls">
+      <button className="play-btn" disabled={!ready} onClick={(event) => {
+        m.toggle()
+        if (!m.playing) showCourt(event.currentTarget)
+      }}>
+        {m.playing ? <Pause size={16} fill="currentColor" /> : <Play size={16} fill="currentColor" />}
+        {playLabel(m, mode)}
+      </button>
+      <button className="secondary-btn" disabled={!ready} onClick={(event) => {
+        m.restart()
+        showCourt(event.currentTarget)
+      }} title="Restart the same serves (R)">
+        <RotateCcw size={16} /> Restart <kbd>R</kbd>
+      </button>
+      <span>{mode === 'play' ? 'Move with A/D or ←/→' : 'Five rallies per match'}</span>
     </section>
   )
 }
@@ -426,72 +358,39 @@ interface Props {
   pick: (index: Side, id: string) => void
   swap: () => void
   ready: boolean
+  mode?: Mode
 }
-export function Arena({ m, models, ids, pick, swap, ready }: Props) {
-  const [side, setSide] = useState<Side>(0)
+export function Arena({ m, models, ids, pick, swap, ready, mode = 'watch' }: Props) {
   const humanSides: Pair<boolean> = [ids[0] === 'keyboard', ids[1] === 'keyboard']
   const bottom: Side = humanSides[1] && !humanSides[0] ? 1 : 0
-  const actions = ['Left', 'Stay', 'Right', 'Burst left', 'Burst right'].slice(0, m.rules.outputSize)
   const controllers = ids.map((id) => models.find((model) => model.id === id)) as Pair<Controller | undefined>
   const names = ids.map(
     (id, i) => controllers[i]?.name ?? id[0].toUpperCase() + id.slice(1),
   ) as Pair<string>
   const groups = [
-    { name: 'Human', models: models.filter((c) => c.type === 'human') },
     { name: 'Scripts', models: models.filter((c) => c.type === 'script') },
     ...DIVISIONS.map((d) => ({ name: d.name + ' weights',
       models: models.filter((c) => c.type === 'weights' && smallestDivision(c) === d.id) })),
     { name: 'Unclassified weights', models: models.filter((c) => c.type === 'weights' && !smallestDivision(c)) },
   ].filter((group) => group.models.length)
-  const inspected = controllers[side]
-  const discrete = inspected?.type === 'human' || inspected?.type === 'script'
-  const scores = m.frame.scores[side]
-  const chosen = scores ? choice(scores) : -1
-  const max = Math.max(0.001, ...(scores ?? []).map(Math.abs))
-  const recent: Frame[] = []
-  for (let at = m.tick; at >= 0 && recent.length < 5; at--)
-    if (m.history[at].event) recent.push(m.history[at])
   return (
     <div className="arena-grid">
       <div className="main-column">
-        <Court m={m} names={names} controllers={controllers} ready={ready} humanSides={humanSides} bottom={bottom} />
+        <MatchControls m={m} ready={ready} mode={mode} />
+        <Court m={m} names={names} controllers={controllers} ready={ready} humanSides={humanSides} bottom={bottom} mode={mode} />
         <HumanControls m={m} humanSides={humanSides} />
-        <Transport m={m} ready={ready} />
-        <BrainPanel m={m} controllers={controllers} bottom={bottom} />
-        <section className="panel feed">
-          <div className="panel-heading">
-            <h2>
-              <List size={18} /> Match log
-            </h2>
-            <span className="mini-tag">THIS MATCH</span>
-          </div>
-          {recent.map((f) => (
-            <button
-              key={f.tick}
-              onClick={() => m.seek(f.tick)}
-              className="event-row"
-              title="Jump to this frame"
-            >
-              <span className="event-marker" data-event={f.event} />
-              <span>{eventText(f, names)}</span>
-              <small>TICK {String(f.tick).padStart(4, '0')}</small>
-              <ArrowRight size={14} />
-            </button>
-          ))}
-        </section>
       </div>
       <aside className="side-column">
         <section className="panel matchup">
           <div className="panel-heading">
             <h2>
-              <SlidersHorizontal size={17} /> Match setup
+              <SlidersHorizontal size={17} /> {mode === 'play' ? 'Choose an opponent' : 'Choose the players'}
             </h2>
-            <span className="mini-tag">1 VS 1</span>
           </div>
           <div className="picker-stack">
-            {([0, 1] as const).map((i) => (
+            {([0, 1] as const).filter((i) => mode === 'watch' || i !== bottom).map((i) => (
               <div key={i}>
-                {i === 1 && (
+                {mode === 'watch' && i === 1 && (
                   <div className="swap-row">
                     <span />
                     <button aria-label="Swap players" title="Swap players" onClick={swap}>
@@ -503,7 +402,7 @@ export function Arena({ m, models, ids, pick, swap, ready }: Props) {
                 <label className={'pick side-' + i}>
                   <span className="pick-label">
                     <i />
-                    PLAYER 0{i + 1}
+                    {mode === 'play' ? 'OPPONENT' : `PLAYER 0${i + 1}`}
                     <span>/</span>
                     {i === bottom ? 'BOTTOM' : 'TOP'}
                   </span>
@@ -518,7 +417,7 @@ export function Arena({ m, models, ids, pick, swap, ready }: Props) {
                     <ChevronDown size={15} />
                   </span>
                   <select
-                    aria-label={i === bottom ? 'Bottom controller' : 'Top controller'}
+                    aria-label={mode === 'play' ? 'Opponent' : i === bottom ? 'Bottom controller' : 'Top controller'}
                     value={ids[i]}
                     onChange={(e) => pick(i, e.target.value)}
                   >
@@ -533,108 +432,12 @@ export function Arena({ m, models, ids, pick, swap, ready }: Props) {
                 </label>
                 <div className="pick-details">
                   <ControllerBadge model={controllers[i]} />
-                  {controllers[i]?.type === 'weights' && (
-                    <div className="pick-architecture">{architectureLabel(controllers[i])}</div>
-                  )}
                 </div>
               </div>
             ))}
           </div>
-          <p className="controller-class-note">Weight classes follow parameter and compute budgets: Nano, Small, Standard, Open. Size is not a skill rating.</p>
-          <div className="setup-note">
-            <Gamepad2 size={15} />
-            {ids.includes('keyboard')
-              ? ids.every((x) => x === 'keyboard')
-                ? 'Hold left/right in your half · Bottom: A/D · Top: ←/→'
-                : 'Hold the left or right half to move · Lift to stop · A/D or ←/→'
-              : 'Select Human to play against a script or weights.'}
-          </div>
-          <div className="seed-row">
-            <span>SEED {String(m.seed).padStart(4, '0')}</span>
-            <button onClick={m.newServes}>
-              <Shuffle size={13} /> New serves
-            </button>
-          </div>
         </section>
-        <section className="panel inspector">
-          <div className="panel-heading">
-            <h2>
-              <AudioLines size={17} /> {inspected?.type === 'script' ? 'Script decision' : inspected?.type === 'human' ? 'Human input' : 'Action scores'}
-            </h2>
-            <div className="segmented">
-              {([0, 1] as const).map((i) => (
-                <button
-                  key={i}
-                  aria-pressed={side === i}
-                  aria-label={'Inspect player ' + (i + 1)}
-                  onClick={() => setSide(i)}
-                >
-                  P{i + 1}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="inspect-body">
-            <div className="inspect-source">
-              <i className={side === 0 ? 'p1-dot' : 'p2-dot'} />
-              {names[side]}
-              <span>{discrete ? 'CHOSEN ACTION' : 'RAW OUTPUT'}</span>
-            </div>
-            <div className="inspect-controller"><ControllerBadge model={inspected} /></div>
-            {actions.map((a, i) => {
-              const Icon = [ArrowLeft, Minus, ArrowRight, ArrowLeft, ArrowRight][i],
-                v = scores?.[i] ?? 0
-              return (
-                <div className={'score-row ' + (chosen === i ? 'chosen' : '')} key={a}>
-                  <span>
-                    <Icon size={14} />
-                    {a}
-                  </span>
-                  <div className={'score-track' + (discrete ? ' discrete' : '')}>
-                    <i
-                      style={{
-                        width: (Math.abs(v) / max) * (discrete ? 100 : 50) + '%',
-                        left: discrete ? '0%' : v < 0 ? 50 - (Math.abs(v) / max) * 50 + '%' : '50%',
-                        background: side === 0 ? '#329c79' : '#d07849',
-                      }}
-                    />
-                  </div>
-                  <output>{scores ? discrete ? v.toFixed(0) : (v >= 0 ? '+' : '') + v.toFixed(2) : '—'}</output>
-                </div>
-              )
-            })}
-            <div className="decision">
-              <span>SELECTED MOVE</span>
-              <b>{chosen >= 0 ? actions[chosen] : 'Awaiting tick'}</b>
-            </div>
-            {inspected?.type === 'script' && <p className="controller-decision-note">One-hot decision: 1 marks the action chosen by the script; 0 marks the others.</p>}
-            <div className="trace">
-              <span>LAST 40 DECISIONS</span>
-              <div
-                className="trace-bars"
-                role="img"
-                aria-label={'Movement history for ' + names[side] + ', from oldest to newest'}
-              >
-                {m.history.slice(Math.max(0, m.tick - 39), m.tick + 1).map((f, i, arr) => {
-                  const score = f.scores[side],
-                    move = score ? choice(score) : null
-                  return (
-                    <i
-                      key={f.tick}
-                      title={'Tick ' + f.tick + ' · ' + (move === null ? 'Serve' : actions[move])}
-                      style={{
-                        gridColumn: 41 - arr.length + i,
-                        gridRow: move === null ? 2 : move === 3 ? 1 : move === 4 ? 3 : move + 1,
-                        background:
-                          move === null ? 'transparent' : side === 0 ? '#488866' : '#be7648',
-                      }}
-                    />
-                  )
-                })}
-              </div>
-            </div>
-          </div>
-        </section>
+        <BrainPanel m={m} controllers={controllers} bottom={bottom} />
       </aside>
     </div>
   )

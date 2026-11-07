@@ -10,9 +10,9 @@ The active game is **Classic v4** (`pong-v4`). The current competition contract 
 | --- | ---: | --- |
 | Robust Strong v4 | 17,795 | Strongest retained full-size learned policy from the robustness confirmation study |
 | Plain Nano v4 | 447 | Trained Nano with local CMA refinement |
-| Quill Plus v4 | 163 | Four handwritten refinements; default right player |
+| Quill Plus v4 | 163 | Four handwritten refinements; initial opponent in Watch models |
 | Vector Nano v4 | 487 | Handcrafted dense Nano alternative |
-| Prism Small v4 | 1,815 | Handcrafted dense Small model; default left player |
+| Prism Small v4 | 1,815 | Handcrafted dense model in the Large class; initial player in Watch models |
 | Tracker | 163 | Simple baseline and human-play starter |
 
 Robust Strong and Plain Nano still have substantial weaknesses against adaptive scripts. Smaller models do not preserve full-size strength. These are retained study conclusions, not a newly run championship; see [evidence.md](evidence.md).
@@ -70,7 +70,7 @@ Use explicit fresh seeds, both side assignments and five rallies per side. This 
   --output training/runs/my-final-evaluation.json
 ```
 
-The default field is Robust Strong, archived Pacer, Attacker, Defender and Interceptor. `--opponents` accepts active or archived catalog IDs or `attack`, `defend`, `interceptor`. A finite field and a small seed set do not establish universal strength. Use development results to select a frozen candidate, then open the independent final set once. App rankings remain a separate local round-robin protocol.
+The default field is Robust Strong, archived Pacer, Attacker, Defender and Interceptor. `--opponents` accepts active or archived catalog IDs or `attack`, `defend`, `interceptor`. A finite field and a small seed set do not establish universal strength. Use development results to select a frozen candidate, then open the independent final set once. The app's [reference league](../public/league.md) and optional local leagues use the separate [round-robin protocol](COMPETITION.md).
 
 ## Reconstruct handcrafted weights
 
