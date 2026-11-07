@@ -61,6 +61,23 @@ function Court({ m, names, ready, humanSides, bottom, mode, onModeChange }: {
   const fullscreenControl = useRef<HTMLButtonElement>(null)
   const fullscreenWanted = useRef(false)
   const [fullscreen, setFullscreen] = useState(false)
+  useLayoutEffect(() => {
+    const element = court.current!
+    const preventSelection = (event: Event) => event.preventDefault()
+    function preventTouchGesture(event: TouchEvent) {
+      // iOS long-press defaults also need a non-passive touch listener.
+      // Keep native button taps and scrolling while the match is paused.
+      if (active && event.cancelable && !(event.target as Element).closest('button')) event.preventDefault()
+    }
+    element.addEventListener('selectstart', preventSelection)
+    element.addEventListener('contextmenu', preventSelection)
+    element.addEventListener('touchstart', preventTouchGesture, { passive: false })
+    return () => {
+      element.removeEventListener('selectstart', preventSelection)
+      element.removeEventListener('contextmenu', preventSelection)
+      element.removeEventListener('touchstart', preventTouchGesture)
+    }
+  }, [active])
   function exitFullscreen() {
     fullscreenWanted.current = false
     if (document.fullscreenElement === court.current)
