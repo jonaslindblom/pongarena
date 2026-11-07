@@ -17,7 +17,7 @@ export interface Ruleset {
 }
 
 export const PONG: Ruleset = {
-  id: 'pong-v2', name: 'Pong', contractId: 'dense-mlp',
+  id: 'pong-v3', name: 'Pong', contractId: 'dense-mlp',
   inputSize: 6, outputSize: 3, actions: game.ACTIONS,
   serve: game.serve,
   observation: game.observation,

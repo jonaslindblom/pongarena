@@ -5,7 +5,7 @@ import { PONG } from '../src/rules'
 import { validateModelCollection, type ValidatedModel } from './validate-models'
 
 export const EVALUATION_PLAN_SCHEMA = 'pongarena-evaluation-plan-v1'
-export const DEFAULT_EVALUATION_SEEDS = 128
+export const DEFAULT_EVALUATION_SEEDS = 512
 export const MAX_EVALUATION_SEEDS = 512
 
 // Runtime and contract changes invalidate previously sampled evaluation plans.
@@ -14,6 +14,7 @@ export const EVALUATOR_FILES = [
   'package-lock.json', 'scripts/evaluation-plan.ts', 'scripts/generate-league.ts',
   'scripts/validate-models.ts', 'src/competition.ts', 'src/competitionMatch.ts',
   'scripts/submission-roster.ts', 'src/submitter.ts', 'src/game.ts', 'src/rules.ts', 'src/validate.ts',
+  'src/leagueUncertainty.ts',
 ] as const
 const root = new URL('../', import.meta.url)
 const digest = (value: string | Uint8Array) => createHash('sha256').update(value).digest('hex')

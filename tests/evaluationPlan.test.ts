@@ -5,12 +5,12 @@ import { createEvaluationPlan, evaluationInputIdentity, readLeagueInputs,
 import { generateLeague, leagueMarkdown } from '../scripts/generate-league'
 import { benchmarkIdentity } from '../src/competition'
 
-test('evaluation plans draw 128 distinct shared seeds after identifying the exact submitted models', async () => {
+test('evaluation plans draw 512 distinct shared seeds after identifying the exact submitted models', async () => {
   const inputs = await readLeagueInputs()
   const first = createEvaluationPlan(inputs)
   const second = createEvaluationPlan(inputs)
-  assert.equal(first.seeds.length, 128)
-  assert.equal(new Set(first.seeds).size, 128)
+  assert.equal(first.seeds.length, 512)
+  assert.equal(new Set(first.seeds).size, 512)
   assert(first.seeds.every(seed => Number.isInteger(seed) && seed >= 0 && seed <= 0xffffffff))
   assert.deepEqual(first.seeds, [...first.seeds].sort((a, b) => a - b))
   assert.notDeepEqual(first.seeds, second.seeds)

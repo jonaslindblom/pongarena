@@ -26,7 +26,9 @@ The [normal checks](../.github/workflows/check.yml) validate models, run tests, 
 
 The [model submission gate](../.github/workflows/model-evaluation.yml) uses `pull_request_target` and executes only the trusted base evaluator. PR ONNX files and roster metadata supply data; PR scripts and workflows are not executed by this gate. Model and evaluator changes must use separate PRs.
 
-For model-file changes, the gate freezes model hashes, draws 128 shared serve sets and evaluates all proposed entrants with paired sides. It retains `evaluation-plan-<PR>-<identity>` and `model-league-<PR>-<identity>` for 90 days. Retries and display-name changes reuse the saved plan; changed model bytes get fresh serves. A missing or expired recorded plan fails instead of silently rerolling. Documentation-only PRs do not redraw serves.
+For model-file changes, the gate freezes model hashes, draws 512 shared serve sets and evaluates all proposed entrants with paired sides. It retains `evaluation-plan-<PR>-<identity>` and `model-league-<PR>-<identity>` for 90 days. Retries and display-name changes reuse the saved plan; changed model bytes get fresh serves. A missing or expired recorded plan fails instead of silently rerolling. Documentation-only PRs do not redraw serves.
+
+The evaluator's shared default and publication check both require 512 sets. The `pong-v3` rule change creates a new identity and plan, preserving earlier 128-set artifacts as historical results. Reports include the same paired-seed bootstrap score intervals displayed in the app.
 
 Configure branch protection to require **Validate and evaluate submitted models**, **Browser end-to-end tests** and up-to-date branches. A failing workflow check blocks merging only when the repository requires it. Rebase and reevaluate if another model merge changes the roster before yours merges.
 

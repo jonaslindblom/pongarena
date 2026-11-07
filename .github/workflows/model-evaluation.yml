@@ -79,7 +79,7 @@ jobs:
         if: steps.scope.outputs.model-changes == 'true' && steps.plan.outputs.found != 'true'
         run: |
           mkdir -p "$RUNNER_TEMP/model-plan"
-          npm run league -- --create-plan "$RUNNER_TEMP/model-plan/evaluation-plan.json" --count 128 --models-dir ../submission/public/models --roster ../submission/src/roster.ts
+          npm run league -- --create-plan "$RUNNER_TEMP/model-plan/evaluation-plan.json" --models-dir ../submission/public/models --roster ../submission/src/roster.ts
       - name: Persist the serve plan before running any matches
         if: steps.scope.outputs.model-changes == 'true' && steps.plan.outputs.found != 'true'
         uses: actions/upload-artifact@v7

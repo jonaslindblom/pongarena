@@ -67,10 +67,10 @@ export function serve(seed: number, prior?: Frame): Frame {
   const firstSlope = sign()
   const secondSlope = sign()
   const directions = [firstSlope, secondSlope, -firstSlope, -secondSlope, sign()]
-  // Five varied angle bands, all within 15–20° of the receiving axis.
+  // Five varied angle bands, all within 10–15° of the receiving axis.
   // Hundredth-unit velocities keep the independent Python implementation exact.
-  const openings = [134, 144, 154, 164, 174].map((minimum) =>
-    (minimum + Math.floor(random() * 8)) / 100)
+  const openings = [89, 98, 107, 116, 125].map((minimum) =>
+    (minimum + Math.floor(random() * 9)) / 100)
   for (let i = openings.length - 1; i > 0; i--) {
     const j = Math.floor(random() * (i + 1))
     ;[openings[i], openings[j]] = [openings[j], openings[i]]

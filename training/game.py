@@ -7,7 +7,7 @@ import numpy as np
 MAX_BALL_VX = 13
 MAX_BALL_VY = 9
 RALLY_TICK_LIMIT = 1600
-RULES_ID = 'pong-v2'
+RULES_ID = 'pong-v3'
 
 
 def f32(value):
@@ -32,9 +32,9 @@ def serve(seed, prior=None):
     first_vx = 5 * sign()
     a, b = sign(), sign()
     directions = [a, b, -a, -b, sign()]
-    # The same five 15–20° angle bands and hundredth-unit velocities as game.ts.
-    openings = [(minimum + math.floor(random() * 8)) / 100
-                for minimum in [134, 144, 154, 164, 174]]
+    # The same five 10–15° angle bands and hundredth-unit velocities as game.ts.
+    openings = [(minimum + math.floor(random() * 9)) / 100
+                for minimum in [89, 98, 107, 116, 125]]
     for i in range(4, 0, -1):
         j = math.floor(random() * (i + 1))
         openings[i], openings[j] = openings[j], openings[i]

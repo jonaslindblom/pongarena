@@ -1,6 +1,6 @@
 # Game and model rules
 
-PongArena accepts plain dense neural networks. Parameters may be handwritten or trained; eligibility depends on the validated graph and resource limits. The rules identifier is `pong-v2`, the model contract is `dense-mlp`, and league scoring uses `paired-round-robin`.
+PongArena accepts plain dense neural networks. Parameters may be handwritten or trained; eligibility depends on the validated graph and resource limits. The rules identifier is `pong-v3`, the model contract is `dense-mlp`, and league scoring uses `paired-round-robin`.
 
 ## Game
 
@@ -8,9 +8,9 @@ Each match contains five seeded rallies. Both players act from the same state at
 
 The simulation court is 360 × 160, with paddle contact planes at x = 15 and x = 345. The ball starts with horizontal speed 5, gains one per return up to 13, and reflects at y = 4 and y = 156. Its contact offset sets its outgoing vertical velocity, rounded to an integer with magnitude at most 9. Exact update and serve-generation rules are in [game.ts](../src/game.ts).
 
-Every serve begins at the center, (180, 80), with both paddles centered at 80. Its angle is 15–20° from the receiving axis in simulation coordinates: lateral speed is 1.34–1.81 units per tick. Five shuffled angle bands vary the openings; receivers alternate, and each receiver faces both lateral directions in the first four rallies. No opening hits a wall before the paddle, and a paddle moving toward the landing position after a 300 ms reaction delay can catch every serve. Return physics and speed progression are unchanged.
+Every serve begins at the center, (180, 80), with both paddles centered at 80. Its angle is 10–15° from the receiving axis in simulation coordinates: lateral speed is 0.89–1.33 units per tick. Five shuffled angle bands vary the openings; receivers alternate, and each receiver faces both lateral directions in the first four rallies. No opening hits a wall before the paddle, and a paddle moving toward the landing position after a 600 ms reaction delay can catch every serve. Return physics and speed progression are unchanged.
 
-Interactive new matches, including **Play again**, draw a fresh seed. **Restart** and **R** replay the same seed. League evaluations keep paired, replayable seed sets. `pong-v2` changes the opening distribution from the original `pong` rules, so its benchmark identity and standings are new. Model observations, actions, eligibility and shipped weights are unchanged; retraining is not required.
+Interactive new matches, including **Play again**, draw a fresh seed. **Restart** and **R** replay the same seed. League evaluations keep paired, replayable seed sets. `pong-v3` changes the opening distribution from the original `pong` rules, so its benchmark identity and standings are new. Model observations, actions, eligibility and shipped weights are unchanged; retraining is not required.
 
 A rally draws after 1,600 ticks. For deterministic automated players, an exactly repeated post-return physical state also ends the rally: the same decisions would repeat indefinitely. Human matches use the full time limit.
 
@@ -63,7 +63,11 @@ npm run league        # write public/league.json and public/league.md
 npm run league:check  # replay and require exact matches
 ```
 
-Model PRs include both regenerated development files; [normal CI](../.github/workflows/check.yml) checks them. The separate [submission gate](../.github/workflows/model-evaluation.yml) freezes the full proposed roster before drawing 128 fresh shared serve sets. It saves the plan and results, reuses the plan on retries, and draws new serves for changed model bytes. Missing or expired recorded plans fail instead of rerolling. Pages publishes the verified results matching the merged models and evaluator. See [contributing](../CONTRIBUTING.md).
+Model PRs include both regenerated development files; [normal CI](../.github/workflows/check.yml) checks them. The separate [submission gate](../.github/workflows/model-evaluation.yml) freezes the full proposed roster before drawing 512 fresh shared serve sets. It saves the plan and results, reuses the plan on retries, and draws new serves for changed model bytes. Missing or expired recorded plans fail instead of rerolling. Pages publishes the verified results matching the merged models and evaluator. See [contributing](../CONTRIBUTING.md).
+
+For five models, the published evaluation contains 10,240 games: 1,024 games and 5,120 rallies per matchup. Seeds are the independent sampling units; each seed supplies paired games against every opponent. Replaying a deterministic match does not add observations. The older 128-set evaluations remain historical records under their original evaluator identity; `pong-v3` publication requires a new recorded 512-set plan.
+
+Standings and league reports show approximate 95% confidence intervals for each model's league-point rate (points divided by available points). The percentile bootstrap uses 5,000 reproducible resamples of whole shared serve sets, preserving both sides and every matchup together. Intervals describe uncertainty across serves, not variability between training runs or confidence in a rank. Fewer than two sets, or no observed variation in a model's score across sets, produces no interval instead of a misleading zero-width estimate. Small local leagues give coarse estimates; published results use all 512 sets.
 
 ## Reproducibility
 

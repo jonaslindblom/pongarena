@@ -4,7 +4,7 @@ import { PONG } from '../src/rules'
 import { advance, observation, serve } from '../src/game'
 
 test('every play mode uses the same six-input, three-action Pong rules', () => {
-  assert.deepEqual([PONG.id, PONG.contractId], ['pong-v2', 'dense-mlp'])
+  assert.deepEqual([PONG.id, PONG.contractId], ['pong-v3', 'dense-mlp'])
   assert.deepEqual([PONG.inputSize, PONG.outputSize, PONG.actions], [6, 3, ['Up', 'Stay', 'Down']])
   const start = PONG.serve(24)
   assert.deepEqual(start, serve(24))

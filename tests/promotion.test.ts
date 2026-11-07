@@ -16,7 +16,7 @@ test('publication accepts only a complete league bound to the frozen models and 
   const run: CompetitionRun = { protocol: plan.protocol, benchmark: await benchmarkIdentity(spec), spec,
     status: 'complete', contests, completedMatches: contests.length * 2, totalMatches: contests.length * 2 }
   assert.equal((await verifyEvaluationBundle(plan, run, inputs)).run.benchmark, run.benchmark)
-  await assert.rejects(verifyEvaluationBundle(createEvaluationPlan(inputs, 1), run, inputs), /128/)
+  await assert.rejects(verifyEvaluationBundle(createEvaluationPlan(inputs, 128), run, inputs), /512/)
   await assert.rejects(verifyEvaluationBundle(plan, { ...run, status: 'failed' }, inputs), /complete/)
   await assert.rejects(verifyEvaluationBundle(plan, { ...run, contests: contests.slice(1) }, inputs), /incomplete/)
   const otherPlan = createEvaluationPlan(inputs)

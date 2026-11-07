@@ -44,6 +44,8 @@
 .ranking-table td { white-space: nowrap; }
 .ranking-table td:nth-child(2) { min-width: 150px; }
 .ranking-table small { display: block; margin-top: 5px; color: #71836e; font-size: 10px; }
+.ranking-table .ranking-interval { color: #496848; }
+.ranking-uncertainty-note { margin-top: 12px; max-width: 85ch; }
 @media (max-width: 700px) {
   .ranking-config, .ranking-results { padding: 18px; }
   .ranking-fields, .ranking-roster { grid-template-columns: 1fr; gap: 12px; }

@@ -60,13 +60,13 @@ Training, development and final evaluation use disjoint seed ranges.
 `--models ../public/models` also checks the shipped model and recipe hashes.
 Fixed seeds and single-threaded CPU runs reproduced both ONNX files byte for byte
 under the original `pong` rules. The shipped weights remain frozen. Current training
-and evaluation use `pong-v2` centered serves; to reproduce the original weights and
+and evaluation use `pong-v3` centered serves; to reproduce the original weights and
 historical results, use the [pre-v2 training source](https://github.com/jonaslindblom/pongarena/tree/a46ecd8d53d46d49b00723f9b1059d9c0155b3d9/training).
 Floating-point results can vary across platforms.
 
 ## Results
 
-These are historical `pong` results. The current `pong-v2` comparison reuses the
+These are historical `pong` results. The current `pong-v3` comparison reuses the
 same model bytes and is recorded in the [reference league](../public/league.md).
 Changing the serve distribution does not require retraining; scores from the two
 rule versions should not be compared directly.

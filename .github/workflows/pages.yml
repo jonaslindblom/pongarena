@@ -69,7 +69,7 @@ jobs:
         if: steps.evaluation.outputs.bootstrap == 'true' && steps.main-plan.outputs.found != 'true'
         run: |
           mkdir -p "$RUNNER_TEMP/accepted-league"
-          npm run league -- --create-plan "$RUNNER_TEMP/accepted-league/evaluation-plan.json" --count 128
+          npm run league -- --create-plan "$RUNNER_TEMP/accepted-league/evaluation-plan.json"
       - name: Persist the trusted-main plan before evaluation
         if: steps.evaluation.outputs.bootstrap == 'true' && steps.main-plan.outputs.found != 'true'
         uses: actions/upload-artifact@v7

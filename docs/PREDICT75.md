@@ -31,7 +31,7 @@ It can keep following a forecast while the ball travels away.
 This is the frozen 75-parameter candidate from the model-size exploration.
 Bot evaluation does not establish that it beats human players.
 Its weights are unchanged; the checked-in league evaluates them under the
-current `pong-v2` centered-serve rules.
+current `pong-v3` centered-serve rules.
 
 ## Reproduce
 

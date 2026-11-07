@@ -25,7 +25,7 @@ npm run dev
 
 Open the localhost URL and press **P** to play. **P** also pauses, resumes, or plays again after game over. Move with **A/D** or **←/→**; on a touch screen, hold the left or right half of the court. **R** restarts with the same serves. **F** toggles full screen; **Esc** exits it.
 
-New matches and **Play again** use fresh serve sets. Each rally starts at the center of the circle, alternates the receiving end, and launches at a gentle 15–20° angle toward it. Opening serves reach the paddle without a wall bounce; returns build the difficulty. Restart replays the current set for practice.
+New matches and **Play again** use fresh serve sets. Each rally starts at the center of the circle, alternates the receiving end, and launches at a gentle 10–15° angle toward it. Opening serves reach the paddle without a wall bounce; returns build the difficulty. Restart replays the current set for practice.
 
 Faint arrows and shaded halves show the touch controls directly on the court. Hold either half to move, slide across to change direction, and release to stop. The held half lights up gently; no separate movement buttons take space from the game.
 
@@ -35,9 +35,11 @@ To play from a phone on the same Wi-Fi, use `npm run dev -- --host 0.0.0.0` and 
 
 ## League
 
-The deployed League page uses verified PR evaluation results: 128 shared serve sets sampled after model hashes are frozen, with both side assignments. Saved seeds and hashes make the results replayable. The checked-in [standings](public/league.md) remain a 16-seed development benchmark: **320 games** for Follow, Predict75, Quill, Small and Large.
+The deployed League page uses verified PR evaluation results: **512 unique shared serve sets**, sampled after model hashes are frozen and played from both sides. That is **10,240 games** across Follow, Predict75, Quill, Small and Large. Saved seeds and hashes make the results replayable. The checked-in [standings](public/league.md) remain a fast 16-seed development benchmark: **320 games**.
 
-The current `pong-v2` benchmark uses centered, gentle serves with the same frozen model files; its scores are separate from the original `pong` results.
+The current `pong-v3` benchmark uses centered, gentle serves with the same frozen model files; its scores are separate from earlier `pong` and `pong-v2` results.
+
+Standings show approximate 95% score intervals, calculated by resampling entire serve sets with both sides and all opponents together. No model retraining is needed.
 
 Each pair of five-rally games forms one contest. Its winner earns one league point; a draw earns half. Equal totals share rank. Compare scores within the same opponent field and serve set.
 

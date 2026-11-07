@@ -4,7 +4,7 @@ import type { Scores } from './rules'
 import type { MatchTickTiming } from './useMatch'
 
 export const DEVICE_TEST = {
-  version: 'pong-device-v2',
+  version: 'pong-device-v3',
   seed: 902,
   inputCount: 512,
   warmup: 128,

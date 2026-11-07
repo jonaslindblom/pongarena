@@ -11,6 +11,7 @@ import { LEAGUE_JSON, LEAGUE_MARKDOWN, LEAGUE_SEEDS, LEAGUE_SEED_SET } from '../
 import { createEvaluationPlan, readLeagueInputs, validateEvaluationPlan,
   type EvaluationPlan, type LeagueInputs } from './evaluation-plan'
 import { readSubmissionRoster } from './submission-roster'
+import { leagueScoreIntervals, LEAGUE_INTERVAL_RESAMPLES } from '../src/leagueUncertainty'
 
 const root = new URL('../', import.meta.url)
 type Decision = (input: Float32Array) => Promise<Scores>
@@ -50,6 +51,7 @@ export async function generateLeague(seeds: readonly number[] = LEAGUE_SEEDS, fr
 const cell = (text: string) => text.replaceAll('|', '\\|').replace(/[\r\n]/g, ' ')
 
 export function leagueMarkdown(run: CompetitionRun, plan?: EvaluationPlan) {
+  const intervals = leagueScoreIntervals(run)
   const rows = standings(run).map((row) => {
     const entrant = row.entrant
     const preset = presets.find((p) => p.id === entrant.id)
@@ -58,14 +60,19 @@ export function leagueMarkdown(run: CompetitionRun, plan?: EvaluationPlan) {
     // report independent of the base checkout's display-only roster metadata.
     const kind = plan ? 'Submitted weights' : preset?.handcrafted ? 'Handwritten weights' : 'Trained weights'
     const size = smallestDivision(entrant) === 'small' ? 'Small' : 'Large'
-    return `| ${row.rank} | ${cell(entrant.name)} | ${kind} | ${size} | ${row.leaguePoints} / ${row.played} | ${row.wins} / ${row.draws} / ${row.losses} | ${entrant.params} |`
+    const score = intervals.get(entrant.sha256)
+    const interval = score?.interval
+      ? score.interval.map(rate => (rate * 100).toFixed(1) + '%').join('–')
+      : score?.reason === 'no-variation' ? 'No variation observed' : 'Not estimated'
+    return `| ${row.rank} | ${cell(entrant.name)} | ${kind} | ${size} | ${row.leaguePoints} / ${row.played} | ${interval} | ${row.wins} / ${row.draws} / ${row.losses} | ${entrant.params} |`
   })
   return [
     '# PongArena league', '',
     `All ${run.spec.entrants.length} bundled models, ${run.spec.seeds.length} paired serve sets per matchup, ${run.totalMatches} games.`, '',
-    '| Rank | Model | Kind | Size | Points | W / D / L | Parameters |',
-    '| ---: | --- | --- | --- | ---: | --- | ---: |', ...rows, '',
+    '| Rank | Model | Kind | Size | Points | 95% score interval | W / D / L | Parameters |',
+    '| ---: | --- | --- | --- | ---: | --- | --- | ---: |', ...rows, '',
     'Each contest combines two five-rally games with swapped sides on the same seed. A contest win earns one point; a tie earns half. Equal points share rank.', '',
+    `Approximate 95% score intervals are percentages of available league points. A reproducible percentile bootstrap draws ${LEAGUE_INTERVAL_RESAMPLES.toLocaleString('en-US')} resamples of whole shared serve sets, retaining both sides and every matchup together. They describe seed-set uncertainty, not training variation or certainty about ranks. With fewer than two serve sets or no observed score variation, an interval is not estimated.`, '',
     `Rules: \`${run.spec.rulesId}\` · Contract: \`${run.spec.contractId}\` · Protocol: \`${run.protocol}\` · Seeds: \`${plan ? 'pr-evaluation' : LEAGUE_SEED_SET}\`.`, '',
     `Benchmark: \`${run.benchmark}\`.`, '',
     plan

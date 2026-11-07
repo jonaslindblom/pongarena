@@ -1,5 +1,5 @@
 import { ArrowDownToLine, Gamepad2, Play, RotateCcw, Shuffle, Square } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   DIVISIONS, fitsCompetition, restoreCompetition, runCompetition, smallestDivision, standings,
   type CompetitionClass, type CompetitionEntrant, type CompetitionRun, type CompetitionSpec,
@@ -7,10 +7,12 @@ import {
 } from './competition'
 import { assetPath } from './assets'
 import { RankBadge } from './RankBadge'
+import { leagueScoreIntervals } from './leagueUncertainty'
 import './Ranking.css'
 
 const STORAGE_KEY = 'pongarena-last-league'
 const numbers = (n: number) => n.toLocaleString()
+const percent = (n: number) => (n * 100).toFixed(1) + '%'
 function freshSeeds() {
   const seeds = new Set<number>()
   while (seeds.size < 16) seeds.add(crypto.getRandomValues(new Uint32Array(1))[0])
@@ -23,23 +25,35 @@ function StandingsTable({ run, entrants, handcraftedHashes, onPlay }: {
   handcraftedHashes: readonly string[]
   onPlay: (id: string) => void
 }) {
-  return <div className="ranking-table-wrap"><table className="ranking-table">
+  const intervals = useMemo(() => leagueScoreIntervals(run), [run])
+  return <><div className="ranking-table-wrap"><table className="ranking-table">
     <thead><tr><th>Rank</th><th>Model</th><th>Points</th><th>W / D / L</th><th><span className="visually-hidden">Play</span></th></tr></thead>
     <tbody>{standings(run).map((row) => {
       const entrant = row.entrant
       const loaded = entrants.find((current) => current.sha256 === entrant.sha256)
+      const score = intervals.get(entrant.sha256)
       return <tr key={entrant.sha256}>
         <td><RankBadge rank={row.rank} /></td>
         <td><strong>{entrant.name}</strong><small>
           <span className="ranking-class">{smallestDivision(entrant)}</span>
           {' · '}{numbers(entrant.params)} params{handcraftedHashes.includes(entrant.sha256) ? ' · Handwritten' : ''}
         </small></td>
-        <td>{numbers(row.leaguePoints)}<small>of {row.played}</small></td>
+        <td>{numbers(row.leaguePoints)}<small>of {row.played}{score && <> · {percent(score.rate)}</>}</small>
+          {score && <small className="ranking-interval" aria-label={entrant.name + ' score uncertainty'}>
+            {score.interval ? <>95% CI {percent(score.interval[0])}–{percent(score.interval[1])}</>
+              : score.reason === 'no-variation' ? 'No variation observed' : 'Too few serve sets for an interval'}
+          </small>}
+        </td>
         <td>{row.wins} / {row.draws} / {row.losses}</td>
         <td><button className="secondary-btn ranking-play" disabled={!loaded} onClick={() => loaded && onPlay(loaded.id)} aria-label={'Play against ' + entrant.name}><Gamepad2 size={14} /><span>Play</span></button></td>
       </tr>
     })}</tbody>
   </table></div>
+    {run.status === 'complete' && <p className="ranking-note ranking-uncertainty-note">
+      Approximate 95% intervals show score variation across serve sets, keeping both sides and all opponents together.
+      They estimate the percentage of available league points. No interval is shown when the sample has no score variation.
+    </p>}
+  </>
 }
 
 export function Ranking({ entrants, handcraftedHashes, rulesId, contractId, playMatch, onStart, onPlay }: {

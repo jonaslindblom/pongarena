@@ -14,14 +14,14 @@ class ServeTests(unittest.TestCase):
                 start = serve(seed, prior)
                 self.assertEqual((start['x'], start['y']), (180, 80))
                 angle = math.degrees(math.atan2(abs(start['vy']), abs(start['vx'])))
-                self.assertTrue(15 <= angle <= 20)
+                self.assertTrue(10 <= angle <= 15)
                 receiver = 0 if start['vx'] < 0 else 1
                 landing = start['y'] + 33 * start['vy']
                 frame = start
                 arena.load([start])
                 for tick in range(1, 34):
                     actions = [1, 1]
-                    if tick > 9:
+                    if tick > 18:
                         error = landing - frame['paddles'][receiver]
                         actions[receiver] = 1 if abs(error) <= 1 else 0 if error < 0 else 2
                     frame = advance(frame, np.eye(3, dtype=int)[actions].tolist())

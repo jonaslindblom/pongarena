@@ -75,7 +75,7 @@ test('centered serves vary their angles and give both receivers both directions'
     for (const [index, frame] of rallies.entries()) {
       assert.deepEqual([frame.x, frame.y, ...frame.paddles], [180, 80, 80, 80])
       const angle = Math.atan2(Math.abs(frame.vy), Math.abs(frame.vx)) * 180 / Math.PI
-      assert.ok(angle >= 15 && angle <= 20, `Opening angle ${angle} must stay within 15–20°`)
+      assert.ok(angle >= 10 && angle <= 15, `Opening angle ${angle} must stay within 10–15°`)
       if (index) assert.equal(frame.vx, -rallies[index - 1].vx, 'Receivers alternate')
     }
     openingSides.add(rallies[0].vx)
@@ -91,7 +91,7 @@ test('centered serves vary their angles and give both receivers both directions'
   }
   assert.equal(openingSides.size, 2)
 })
-test('every opening is catchable after a 300 ms reaction delay, with no wall bounce', () => {
+test('every opening is catchable after a 600 ms reaction delay, with no wall bounce', () => {
   for (let i = 0; i < 1000; i++) {
     const seed = Math.imul(i, 2654435761) >>> 0
     let prior: ReturnType<typeof serve> | undefined
@@ -102,7 +102,7 @@ test('every opening is catchable after a 300 ms reaction delay, with no wall bou
       let frame = start
       for (let tick = 1; tick <= 33; tick++) {
         const scores: Pair<Scores> = [[0, 1, 0], [0, 1, 0]]
-        if (tick > 9) { // Nine decisions at 30 Hz allow 300 ms to react.
+        if (tick > 18) { // Eighteen decisions at 30 Hz allow 600 ms to react.
           const error = landing - frame.paddles[receiver]
           scores[receiver] = Math.abs(error) <= 1 ? [0, 1, 0]
             : error < 0 ? [1, 0, 0] : [0, 0, 1]

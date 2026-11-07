@@ -275,7 +275,7 @@ export async function checkScope(get: GetJson, options: { repository: string; pr
   const paths = files.flatMap(file => [file.filename, ...(file.previous_filename ? [file.previous_filename] : [])])
   const modelChanges = paths.some(path => path.startsWith('public/models/') && path.endsWith('.onnx'))
   const protectedPaths = new Set(['src/game.ts', 'src/rules.ts', 'src/validate.ts', 'src/submitter.ts',
-    'src/competition.ts', 'src/competitionMatch.ts', 'package.json', 'package-lock.json'])
+    'src/competition.ts', 'src/competitionMatch.ts', 'src/leagueUncertainty.ts', 'package.json', 'package-lock.json'])
   const evaluatorChanges = paths.some(path => protectedPaths.has(path) ||
     path.startsWith('scripts/') || path.startsWith('.github/workflows/'))
   if (modelChanges && evaluatorChanges)
