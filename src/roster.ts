@@ -12,6 +12,10 @@ export const presets = [
     description: 'A larger neural network trained in PyTorch from a reproducible recipe. It receives the same observations and uses the same movement limits as every other player.',
   },
   {
+    id: 'predict75', name: 'Predict75', kind: 'Handwritten weights', handcrafted: true, submittedBy: 'jonaslindblom',
+    description: 'A 75-parameter handwritten ReLU network that predicts the ball’s landing point and reflects one wall bounce. It uses 63 MACs per decision, without Quill’s recovery gate or opponent-dependent aiming.',
+  },
+  {
     id: 'follow', name: 'Follow', kind: 'Handwritten weights', handcrafted: true, submittedBy: 'jonaslindblom',
     description: 'Thirteen parameters and one hidden neuron: Follow moves toward the ball’s current position. Its handwritten weights are the interactive example in Understanding the weights. It does not predict bounces or aim returns.',
   },

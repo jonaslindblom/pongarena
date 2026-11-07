@@ -56,7 +56,7 @@ Each unordered model pair plays every seed twice, swapping sides. Both games rep
 
 Returns, rally duration, size and speed do not break ties. Pairwise results remain in the JSON because matchups can be non-transitive. An inference failure stops the league as failed; incomplete runs receive no ranks.
 
-The checked-in development field is **Follow, Quill, Small and Large**, using 16 fixed public seeds in [league.ts](../src/league.ts): 96 paired contests, or **192 games**. The generator uses single-threaded ONNX Runtime Web CPU/WASM and the same game and scoring code as the browser.
+The checked-in development field is **Follow, Predict75, Quill, Small and Large**, using 16 fixed public seeds in [league.ts](../src/league.ts): 160 paired contests, or **320 games**. The generator uses single-threaded ONNX Runtime Web CPU/WASM and the same game and scoring code as the browser.
 
 ```sh
 npm run league        # write public/league.json and public/league.md
