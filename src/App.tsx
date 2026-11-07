@@ -72,6 +72,10 @@ function Guide({ onDeviceTest }: { onDeviceTest: () => void }) {
           wins.
         </p>
         <p>
+          Serves start at the center with gentle, varied angles and alternate ends.
+          New games use fresh serves. Restart repeats the same serves for practice.
+        </p>
+        <p>
           When two models repeat the same ball and paddle state after a return, their rally is
           drawn early: the same decisions would repeat forever. Matches with a human use the
           full time limit. Drawn rallies award no points.

@@ -47,7 +47,7 @@ test('the next shot depends only on observed state, with the same aiming law on 
         vx: (side === 0 ? -1 : 1) * speed, vy: 0 }
       const next = advance(before, still)
       assert.equal(Math.abs(next.vx), Math.min(13, speed + 1))
-      assert.equal(next.vy, Math.round(9 * Math.min(13, speed + 1) * offset / 195))
+      assert.equal(next.vy, Math.round(9 * Math.min(13, speed + 1) * offset / 195) || 0)
       const counted = advance({ ...before, returns: 100, rallyTick: 700 }, still)
       assert.deepEqual([next.x, next.y, next.vx, next.vy], [counted.x, counted.y, counted.vx, counted.vy])
     }
@@ -65,14 +65,19 @@ test('five seeded rallies reproduce and a missed ball awards exactly one point',
     if (rally < 5) f = serve(902, f)
   }
 })
-test('both paddles face rising and falling serves across five distinct height bands', () => {
+test('centered serves vary their angles and give both receivers both directions', () => {
   const openingSides = new Set<number>()
   for (let i = 0; i < 100; i++) {
     const seed = Math.imul(i, 2654435761) >>> 0
     const rallies = [serve(seed)]
     while (rallies.length < RALLIES) rallies.push(serve(seed, rallies[rallies.length - 1]))
-    const bands = rallies.map((f) => Math.floor((f.y - 22) / 24))
-    assert.deepEqual(bands.sort(), [0, 1, 2, 3, 4])
+    assert.equal(new Set(rallies.map((f) => Math.abs(f.vy))).size, 5)
+    for (const [index, frame] of rallies.entries()) {
+      assert.deepEqual([frame.x, frame.y, ...frame.paddles], [180, 80, 80, 80])
+      const angle = Math.atan2(Math.abs(frame.vy), Math.abs(frame.vx)) * 180 / Math.PI
+      assert.ok(angle >= 15 && angle <= 20, `Opening angle ${angle} must stay within 15–20°`)
+      if (index) assert.equal(frame.vx, -rallies[index - 1].vx, 'Receivers alternate')
+    }
     openingSides.add(rallies[0].vx)
     for (const vx of [-5, 5]) {
       const received = rallies.filter((f) => f.vx === vx)
@@ -85,6 +90,32 @@ test('both paddles face rising and falling serves across five distinct height ba
     }
   }
   assert.equal(openingSides.size, 2)
+})
+test('every opening is catchable after a 300 ms reaction delay, with no wall bounce', () => {
+  for (let i = 0; i < 1000; i++) {
+    const seed = Math.imul(i, 2654435761) >>> 0
+    let prior: ReturnType<typeof serve> | undefined
+    for (let rally = 1; rally <= RALLIES; rally++) {
+      const start = serve(seed, prior)
+      const receiver = start.vx < 0 ? 0 : 1
+      const landing = start.y + start.vy * 33
+      let frame = start
+      for (let tick = 1; tick <= 33; tick++) {
+        const scores: Pair<Scores> = [[0, 1, 0], [0, 1, 0]]
+        if (tick > 9) { // Nine decisions at 30 Hz allow 300 ms to react.
+          const error = landing - frame.paddles[receiver]
+          scores[receiver] = Math.abs(error) <= 1 ? [0, 1, 0]
+            : error < 0 ? [1, 0, 0] : [0, 0, 1]
+        }
+        frame = advance(frame, scores)
+        assert.ok(frame.y >= 4 && frame.y <= 156)
+        if (tick < 33) assert.equal(frame.vy, start.vy, 'No opening wall bounce')
+      }
+      assert.equal(frame.event, 'return', `Seed ${seed}, rally ${rally} must be catchable`)
+      assert.equal(frame.actor, receiver)
+      prior = frame
+    }
+  }
 })
 test('a rally timeout is a draw and a last-tick point takes precedence', () => {
   const f = { ...serve(24), rallyTick: RALLY_TICK_LIMIT - 1 }

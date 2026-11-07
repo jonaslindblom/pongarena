@@ -8,7 +8,7 @@ import type { Controller } from '../src/models'
 import { validateArenaModel } from '../src/validate'
 
 test('device measurements cover every shipped model and a playable match', () => {
-  assert.equal(DEVICE_TEST.version, 'pong-device')
+  assert.equal(DEVICE_TEST.version, 'pong-device-v2')
   assert.deepEqual(DEVICE_TEST.modelIds, ['quill', 'small', 'large', 'follow'])
   assert.deepEqual(DEVICE_TEST.matchIds, ['large', 'quill'])
   for (const id of new Set([...DEVICE_TEST.modelIds, ...DEVICE_TEST.matchIds])) {

@@ -2,8 +2,10 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { advance, LoopDetector, observation, serve, type Frame, type Pair, type Scores } from '../src/game'
+import { PONG } from '../src/rules'
 
 const fixture = JSON.parse(readFileSync(new URL('../training/fixtures/game.json', import.meta.url), 'utf8')) as {
+  rulesId: string
   serves: { seed: number; frames: Frame[] }[]
   traces: { name: string; initial: Frame; actions: Pair<number>[]; states: number[][]; observations: Pair<number[]> }[]
 }
@@ -17,6 +19,7 @@ function state(frame: Frame) {
 }
 
 test('browser serves match the independent Python training simulator for every rally', () => {
+  assert.equal(fixture.rulesId, PONG.id)
   for (const { seed, frames } of fixture.serves) {
     let prior: Frame | undefined
     for (const expected of frames) {

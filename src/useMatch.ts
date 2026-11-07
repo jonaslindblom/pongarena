@@ -12,10 +12,7 @@ import { infer, type Controller } from './models'
 import { boundedDeadline, frameDuration, TICK_MS, type Presentation } from './presentation'
 import { humanKeyAction } from './humanInput'
 import { matchShortcut } from './matchShortcuts'
-
-function newSeed() {
-  return crypto.getRandomValues(new Uint32Array(1))[0] % 1000000
-}
+import { newMatchSeed } from './matchSeed'
 
 export interface MatchTickTiming {
   completedAt: number
@@ -34,7 +31,7 @@ export function useMatch(
 ) {
   const observer = useRef(onTick)
   observer.current = onTick
-  const [seed, setSeed] = useState(newSeed)
+  const [seed, setSeed] = useState(newMatchSeed)
   const history = useRef<Frame[]>([])
   const loops = useRef(rules.detector())
   if (history.current.length === 0) history.current.push(rules.serve(seed))
@@ -80,7 +77,7 @@ export function useMatch(
     clearHumanInput()
     present()
   }
-  function reset(nextSeed = seed) {
+  function reset(nextSeed = newMatchSeed(seed)) {
     pause()
     setSeed(nextSeed)
     history.current = [rules.serve(nextSeed)]
@@ -96,7 +93,7 @@ export function useMatch(
   }
   function restart() {
     if (!players[0] || !players[1]) return
-    reset()
+    reset(seed)
     play()
   }
   function toggle() {
