@@ -216,6 +216,7 @@ h1 {
   align-items: start;
 }
 .main-column { width: clamp(340px, calc((100dvh - 304px) * .666667 + 62px), 630px); }
+.side-column { max-width: 740px; }
 .main-column,
 .side-column {
   display: grid;

@@ -1,4 +1,4 @@
-.brain-panel { overflow: hidden; }
+.brain-panel { width: 100%; max-width: 740px; overflow: hidden; }
 .brain-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 15px 18px; }
 .brain-toggle { display: flex; align-items: center; gap: 9px; padding: 0; border: 0; background: none; color: var(--forest); font: inherit; font-weight: 700; cursor: pointer; }
 .brain-toggle svg:last-child { transition: transform .15s; }
