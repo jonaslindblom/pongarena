@@ -625,6 +625,7 @@ h1 {
 .serve-countdown span { position: absolute; bottom: calc(50% + 52px); font: 14px var(--mono); }
 .serve-countdown strong { font: 80px/1 var(--mono); text-box-trim: trim-both; text-box-edge: cap alphabetic; }
 .is-counting-down .moving-ball, .is-counting-down .ball-trail { visibility: hidden; }
+.moving-ball, .ball-trail { transform-box: fill-box; transform-origin: center; transform: scaleY(var(--ball-y-scale, 1)); }
 .match-over { position: absolute; z-index: 2; inset: 0; display: grid; place-items: center; padding: 12px; background: #10271fbb; }
 .match-over-card { width: min(330px, 100%); padding: 24px 20px; border: 1px solid #a7ce83; border-radius: 14px; background: #203e30; text-align: center; box-shadow: 0 12px 40px #08160e70; }
 .match-over-label { color: #bfe690; font: 11px var(--mono); letter-spacing: .15em; }

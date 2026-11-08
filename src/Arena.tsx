@@ -62,6 +62,19 @@ function Court({ m, names, ready, humanSides, bottom, mode, onModeChange }: {
   const fullscreenWanted = useRef(false)
   const [fullscreen, setFullscreen] = useState(() => new URLSearchParams(window.location.search).get('fullscreen') === '1')
   useLayoutEffect(() => {
+    const svg = field.current!
+    function resize() {
+      const { width, height } = svg.getBoundingClientRect()
+      // The court stretches independently on each axis. Compensate in the
+      // rotated ball's local Y axis so its screen-space diameter stays equal.
+      if (width && height) svg.style.setProperty('--ball-y-scale', String((height / 360) / (width / 160)))
+    }
+    const observer = new ResizeObserver(resize)
+    observer.observe(svg)
+    resize()
+    return () => observer.disconnect()
+  }, [])
+  useLayoutEffect(() => {
     const element = court.current!
     const preventSelection = (event: Event) => event.preventDefault()
     function preventTouchGesture(event: TouchEvent) {
