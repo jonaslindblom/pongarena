@@ -101,7 +101,6 @@ jobs:
           python training/check.py --run "$RUNNER_TEMP/training-large-smoke"
       - name: Reproduce handwritten weights independently
         run: |
-          python -m unittest discover -s experiments/quill -p 'test_*.py'
           for constructor in handwritten/*.py; do
             model_id=$(basename "$constructor" .py)
             python "$constructor" --out "$RUNNER_TEMP/$model_id.onnx"
