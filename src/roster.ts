@@ -1,5 +1,13 @@
 export const presets = [
   {
+    id: 'quill_geometry', name: 'Quill Geometry', kind: 'Handwritten weights', handcrafted: true, submittedBy: 'jonaslindblom',
+    description: 'A 41,430-parameter handwritten network with speed-specific flight timing, multiple wall reflections and geometric recovery. Every decision runs through five dense layers; no training or fitting.',
+  },
+  {
+    id: 'quill_speed', name: 'Quill Speed', kind: 'Handwritten weights', handcrafted: true, submittedBy: 'jonaslindblom',
+    description: 'A 229-parameter Quill variant that adds bounded extra anticipation for slower incoming balls. Its fixed weights use no training, optimizer or learned checkpoint.',
+  },
+  {
     id: 'quill', name: 'Quill', kind: 'Handwritten weights', handcrafted: true, submittedBy: 'jonaslindblom',
     description: 'A 163-parameter neural network written by hand. Its dense ReLU layers predict the ball’s landing point and choose a paddle position. No optimizer or training data is used to construct its weights.',
   },

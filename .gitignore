@@ -9,6 +9,7 @@ dist/
 .venv/
 __pycache__/
 *.pyc
+/scratch/
 training/runs/
 
 /training/results/

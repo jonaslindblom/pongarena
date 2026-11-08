@@ -36,3 +36,7 @@ npm test
 The constructor includes its ONNX exporter and requires no training files or PyTorch. Rebuilding is deterministic and replaces the chosen output file.
 
 Quill approximates travel time using the maximum horizontal speed and models one wall reflection. Its small network cannot represent exact planning for every position or speed. Compare it with the trained models in the [reference league](../public/league.md); those results measure this opponent field and serve set rather than universal strength.
+
+[Quill Speed and Quill Geometry](QUILL_VARIANTS.md) test slow-flight correction,
+speed-specific timing, multiple wall reflections and geometric recovery without
+training. They are separate models; this original 163-parameter Quill is preserved.
