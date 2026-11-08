@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>PongArena social card</title>
+<style>
+@font-face { font-family: Manrope; src: url('../node_modules/@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2'); font-weight: 200 800; }
+* { box-sizing: border-box; }
+body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: #f5f6f0; color: #1b302a; font-family: Manrope, sans-serif; }
+.brand { position: absolute; left: 58px; top: 46px; display: flex; align-items: center; gap: 13px; font-size: 30px; letter-spacing: -1.5px; }
+.brand img { width: 45px; height: 45px; }
+.brand b { font-weight: 800; }.brand span { font-weight: 500; }
+.copy { position: absolute; left: 58px; top: 174px; }
+h1 { margin: 0; font-size: 66px; line-height: 1.12; letter-spacing: -3.8px; font-weight: 800; }
+h1 span { display: block; }
+.subtitle { margin-top: 28px; font-size: 23px; line-height: 1.5; color: #52675c; letter-spacing: -.6px; }
+.footer { position: absolute; left: 58px; bottom: 45px; font: 12px ui-monospace, monospace; letter-spacing: 1.6px; color: #617169; }
+.footer::before { content: ''; display: inline-block; width: 7px; height: 7px; background: #8baf64; margin-right: 12px; }
+.lab { position: absolute; left: 600px; top: 46px; width: 542px; height: 538px; background: #fdfef9; border: 1px solid #dce1d6; border-radius: 20px; overflow: hidden; }
+.lab-head { height: 68px; padding: 23px 25px; border-bottom: 1px solid #dce1d6; display: flex; justify-content: space-between; align-items: center; }
+.lab-head strong { font-size: 19px; letter-spacing: -.5px; }
+.lab-head span { font: 12px ui-monospace, monospace; color: #617169; }
+.court { position: absolute; left: 20px; top: 88px; width: 226px; height: 425px; border-radius: 11px; background: #17382d; }
+.network { position: absolute; left: 266px; top: 133px; width: 254px; }
+.label { color: #617169; font: 10px ui-monospace, monospace; letter-spacing: 1.5px; }
+.network h2 { font-size: 19px; font-weight: 700; margin: 11px 0 7px; letter-spacing: -.5px; }
+.network p { font-size: 13px; line-height: 1.6; margin: 0; color: #617169; }
+.arch { margin-top: 16px; font: 12px ui-monospace, monospace; letter-spacing: 1px; color: #385d4b; }
+.note { margin-top: 25px !important; padding-top: 17px; border-top: 1px solid #dce1d6; font-size: 12px !important; }
+</style>
+<div class="brand"><img src="../public/mark.svg" alt=""><div><b>Pong</b><span>Arena</span></div></div>
+<div class="copy"><h1><span>Small brains.</span><span>Big rallies.</span></h1><p class="subtitle">Play Pong.<br>Explore neural networks.</p></div>
+<div class="footer">A NEURAL NETWORK PLAYGROUND</div>
+<section class="lab">
+  <div class="lab-head"><strong>Counter97</strong><span>97 parameters</span></div>
+  <svg class="court" viewBox="0 0 226 425" aria-label="Vertical Pong court">
+    <defs><pattern id="grid" width="22" height="23" patternUnits="userSpaceOnUse"><path d="M22 0H0V23" fill="none" stroke="#bdd1c5" stroke-width=".5" opacity=".18"/></pattern><radialGradient id="glow"><stop stop-color="#dafa9c" stop-opacity=".3"/><stop offset="1" stop-color="#dafa9c" stop-opacity="0"/></radialGradient></defs>
+    <rect x="13" y="14" width="200" height="397" fill="url(#grid)" stroke="#aec7b6" stroke-opacity=".4"/>
+    <path d="M13 212.5H213" stroke="#bdd2c1" stroke-dasharray="4 5" opacity=".5"/>
+    <circle cx="113" cy="212.5" r="42" fill="none" stroke="#bad2c2" opacity=".15"/>
+    <path d="M13 25V14H24 M202 14H213V25 M13 400V411H24 M202 411H213V400" fill="none" stroke="#b4c7b7" stroke-width="2"/>
+    <rect x="135" y="27" width="46" height="6" rx="2" fill="#ffaa75"/>
+    <rect x="58" y="392" width="46" height="6" rx="2" fill="#84efbb"/>
+    <path d="M91 282L121 221" stroke="#dafa9c" opacity=".18" stroke-width="2" stroke-dasharray="2 7"/>
+    <circle cx="124" cy="214" r="21" fill="url(#glow)"/><circle cx="124" cy="214" r="4.5" fill="#f1ffd9"/>
+  </svg>
+  <div class="network"><div class="label">INSIDE THE OPPONENT</div><h2>Handwritten weights.</h2><p>A tiny network. A real challenge.</p><svg id="network" width="250" height="158" viewBox="0 0 250 158" aria-label="Counter97 network architecture"></svg><div class="arch">6 → 6 → 4 → 3 → 3</div><p class="note">Six observations.<br>Three possible moves.</p></div>
+</section>
+<script>
+const svg = document.querySelector('#network'), widths = [6, 6, 4, 3, 3];
+const positions = widths.map((count, layer) => Array.from({length: count}, (_, i) => [12 + layer * 56, 79 + (i - (count - 1) / 2) * 22]));
+function element(tag, attributes) { const e = document.createElementNS('http://www.w3.org/2000/svg', tag); for (const [key, value] of Object.entries(attributes)) e.setAttribute(key, value); svg.append(e); }
+for (let l = 1; l < positions.length; l++) for (const [x1, y1] of positions[l-1]) for (const [x2, y2] of positions[l]) element('line', { x1, y1, x2, y2, stroke: '#799782', 'stroke-opacity': '.22', 'stroke-width': '.8' });
+positions.forEach((layer, l) => layer.forEach(([cx, cy]) => element('circle', {cx, cy, r: 5, fill: l === 4 ? '#f4d0af' : l === 0 ? '#fdfef9' : '#d9e9c6', stroke: l === 4 ? '#b77e50' : '#65826b', 'stroke-width': 1.2})));
+</script>
+</html>
