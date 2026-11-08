@@ -198,7 +198,7 @@ export function WeightsLab({ model, onPlay }: { model: Controller | undefined; o
   return (
     <div className="weights-lab">
       <header className="weights-heading">
-        <div><span className="section-code">UNDERSTANDING THE WEIGHTS</span><h1>A tiny brain you can read.</h1><p>Meet Follow: one neuron that turns “follow the ball” into a playable model. Its weights are written directly, with no training.</p></div>
+        <div><span className="section-code">UNDERSTANDING THE WEIGHTS</span><h1>A tiny brain you can read.</h1><p>Start here: move the ball and paddle, then trace how weights turn their positions into a decision. Follow shares one neuron between left and right, with no training.</p></div>
         <button className="import-btn" onClick={onPlay} disabled={!model}><Play size={15} fill="currentColor" />Play against Follow</button>
       </header>
       <section className="panel weights-workbench" aria-label="Interactive Follow model">

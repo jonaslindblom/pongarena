@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import pb from 'onnx-proto'
 import * as ort from 'onnxruntime-web/wasm'
-import { ATTACK_SCENARIOS, getAttackExplanation, inspectAttackModel, type AttackModelId } from '../src/attackExplanation'
+import { ATTACK_SCENARIOS, createCounterIntervention, getAttackExplanation, inspectAttackModel, type AttackModelId } from '../src/attackExplanation'
 import { observation, serve } from '../src/game'
 
 const ids = ['attack75', 'counter97'] as const
@@ -129,4 +129,80 @@ test('the intended corner reads the real opponent hinges, while missing or misma
       await session.release()
     }
   }
+})
+
+test('muting the outgoing detector changes only a teaching copy and its downstream departure behavior', async () => {
+  ort.env.wasm.numThreads = 1
+  const inspection = await inspectAttackModel(bytes.counter97, 'counter97')
+  const beforeBytes = Uint8Array.from(inspection.bytes)
+  const beforeLayers = structuredClone(inspection.denseLayers)
+  const muted = createCounterIntervention(inspection)
+  assert.equal(muted.intervention, 'outgoing-detector-muted')
+  assert.deepEqual(Uint8Array.from(inspection.bytes), beforeBytes, 'The normal inspection must remain byte-for-byte unchanged')
+  assert.deepEqual(inspection.denseLayers, beforeLayers, 'The normal inspector must retain its stored weights')
+  assert.notEqual(muted.bytes, inspection.bytes)
+  assert.deepEqual(muted.denseLayers[0].weights[4], [0, 0, 0, 0, 0, 0])
+  assert.equal(muted.denseLayers[0].biases[4], 0)
+  for (let layer = 0; layer < inspection.denseLayers.length; layer++) {
+    for (let neuron = 0; neuron < inspection.denseLayers[layer].width; neuron++) {
+      if (layer === 0 && neuron === 4) continue
+      assert.deepEqual(muted.denseLayers[layer].weights[neuron], inspection.denseLayers[layer].weights[neuron])
+      assert.equal(muted.denseLayers[layer].biases[neuron], inspection.denseLayers[layer].biases[neuron])
+    }
+  }
+  const beforeGraph = pb.onnx.ModelProto.decode(inspection.bytes).graph!
+  const mutedGraph = pb.onnx.ModelProto.decode(muted.bytes).graph!
+  assert.deepEqual(mutedGraph.node, beforeGraph.node)
+  assert.deepEqual(mutedGraph.output, beforeGraph.output, 'Both runs expose identical tensor names')
+  for (let i = 2; i < beforeGraph.initializer!.length; i++)
+    assert.deepEqual(mutedGraph.initializer![i], beforeGraph.initializer![i], 'Every downstream weight stays unchanged')
+  assert.throws(() => createCounterIntervention(muted), /unmodified Counter97/)
+  assert.throws(() => createCounterIntervention({ ...inspection, id: 'attack75' }), /unmodified Counter97/)
+  // The normal frozen-weight validator must keep rejecting this altered copy.
+  const playableMuted = pb.onnx.ModelProto.decode(muted.bytes)
+  playableMuted.graph!.output = playableMuted.graph!.output!.filter(output => output.name === 'action_scores')
+  await assert.rejects(inspectAttackModel(pb.onnx.ModelProto.encode(playableMuted).finish(), 'counter97'), /frozen.*weights/)
+
+  const normalSession = await ort.InferenceSession.create(inspection.bytes, { executionProviders: ['wasm'] })
+  const mutedSession = await ort.InferenceSession.create(muted.bytes, { executionProviders: ['wasm'] })
+  try {
+    for (const velocity of [-13, -5, 5, 13]) {
+      const input = observation({ ...serve(1), x: 184, y: 120, vx: velocity, vy: 0, paddles: [100, 80] }, 0)
+      const feed = { observation: new ort.Tensor('float32', input, [1, 6]) }
+      const normalResult = await normalSession.run(feed)
+      const mutedResult = await mutedSession.run(feed)
+      const activations = Object.fromEntries(Object.entries(mutedResult).map(([name, tensor]) =>
+        [name, Array.from(tensor.data as Float32Array)]))
+      const explanation = getAttackExplanation('counter97', input, activations, activations.action_scores, muted)
+      assert.equal(activations.hidden_0[4], 0, 'The intervention must force the detector output to zero')
+      for (const neuron of explanation.neurons) {
+        close(neuron.bias + neuron.contributions.reduce((sum, part) => sum + part.product, 0), neuron.preActivation,
+          'The modified inspector must still account for the actual ONNX computation', .00002)
+      }
+      if (velocity < 0) {
+        for (const [name, tensor] of Object.entries(normalResult)) {
+          const expected = Array.from(tensor.data as Float32Array)
+          // Its affine value becomes zero rather than negative; ReLU already
+          // yielded zero, so every post-activation and downstream value agrees.
+          if (name === inspection.denseLayers[0].linearName) expected[4] = 0
+          assert.deepEqual(activations[name], expected, 'An already inactive detector has no downstream effect on approach')
+        }
+      } else {
+        assert.notDeepEqual(activations.action_scores, Array.from(normalResult.action_scores.data as Float32Array))
+        assert.equal(explanation.chosen, 2, 'The muted network follows the forecast to the right')
+        close(explanation.target, 127.4359, 'Without the detector, downstream circuits keep the forecast active')
+        assert.equal(explanation.incomingGate, 1)
+        assert.notEqual(explanation.activeForecast, null)
+        const normalActivations = Object.fromEntries(Object.entries(normalResult).map(([name, tensor]) =>
+          [name, Array.from(tensor.data as Float32Array)]))
+        const normal = getAttackExplanation('counter97', input, normalActivations, normalActivations.action_scores, inspection)
+        assert.equal(normal.chosen, 0, 'The normal network instead recovers toward center')
+        assert.equal(normal.activeForecast, null)
+      }
+    }
+  } finally {
+    await normalSession.release()
+    await mutedSession.release()
+  }
+  assert.deepEqual(Uint8Array.from(inspection.bytes), beforeBytes, 'Inference must leave the normal model unchanged too')
 })

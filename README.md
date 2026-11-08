@@ -24,7 +24,7 @@ The handwritten models encode their strategies directly in dense weights. The tr
 
 All stored weights and biases count, including zeros. A MAC is a multiply-accumulate. Handwritten weights do not supply training labels, opponents or checkpoint-selection results for the learned models; they meet after the models are frozen. League results compare these particular controllers and serves; they do not establish performance against human players.
 
-The project is inspired by [Sparks of Weight-Space Programming](https://rikiyat.github.io/blog/weight-space-programming/). Start with [Follow’s 13 parameters](docs/FOLLOW.md) on the interactive **Weights** page. Then compare Attack75 and Counter97 on the same situations: prediction, wall reflections, corner aiming and recovery. Select a neuron to inspect its stored weights, input contributions, bias and real ONNX activations, or expand every parameter. The model cards link directly to their explainers.
+The project is inspired by [Sparks of Weight-Space Programming](https://rikiyat.github.io/blog/weight-space-programming/). Start with [Follow’s 13 parameters](docs/FOLLOW.md) on the interactive **Weights** page. Continue with Counter97 in three focused experiments: detect a wall, switch between tracking and recovery, and aim a return. Mute the outgoing detector in an isolated ONNX copy to test its contribution without changing the playable model. Attack75 appears only as a short comparison about direction awareness. Expand the inspector for stored weights, input contributions, formulas and real ONNX activations. Follow and Counter97 model cards link directly to their explainers.
 
 ## Play and explore
 

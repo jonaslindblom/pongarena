@@ -57,7 +57,9 @@ export interface AttackDenseLayer {
 
 export interface AttackInspection {
   id: AttackModelId
+  // Identity of the frozen source model, before teaching outputs or interventions.
   sha256: string
+  intervention?: 'outgoing-detector-muted'
   bytes: Uint8Array
   layers: BrainLayer[]
   denseLayers: AttackDenseLayer[]
@@ -105,6 +107,36 @@ export async function inspectAttackModel(bytes: Uint8Array, id: AttackModelId): 
   })
   return { id, sha256: hash, bytes: pb.onnx.ModelProto.encode(model).finish(), layers: brain.layers,
     denseLayers, params: stats.params, macs: stats.macs }
+}
+
+// Mute H1.5 on an isolated teaching copy. Removing this detector lets all of its
+// downstream connections read zero; it does not recreate Attack75's policy.
+export function createCounterIntervention(inspection: AttackInspection): AttackInspection {
+  if (inspection.id !== 'counter97' || inspection.sha256 !== models.counter97.hash || inspection.intervention)
+    throw new Error('The outgoing-detector experiment needs an unmodified Counter97 inspection.')
+  const model = pb.onnx.ModelProto.decode(Uint8Array.from(inspection.bytes))
+  const first = model.graph!.node!.find(node => node.opType === 'Gemm')!
+  const transposed = first.attribute?.some(attribute => attribute.name === 'transB' && Number(attribute.i) === 1)
+  const denseLayers = inspection.denseLayers.map(layer => ({ ...layer,
+    weights: layer.weights.map(row => [...row]), biases: [...layer.biases], roles: [...layer.roles],
+  }))
+  const dense = denseLayers[0], neuron = 4
+  const weightTensor = model.graph!.initializer!.find(tensor => tensor.name === first.input![1])!
+  const biasTensor = model.graph!.initializer!.find(tensor => tensor.name === first.input![2])!
+  function replaceTensor(tensor: pb.onnx.ITensorProto, flat: number[]) {
+    const raw = new Uint8Array(flat.length * 4)
+    const view = new DataView(raw.buffer)
+    flat.forEach((value, i) => view.setFloat32(i * 4, value, true))
+    tensor.rawData = raw
+    tensor.floatData = []
+  }
+  dense.weights[neuron].fill(0)
+  dense.biases[neuron] = 0
+  replaceTensor(weightTensor, transposed ? dense.weights.flat() :
+    Array.from({ length: dense.inputWidth }, (_, i) => dense.weights.map(row => row[i])).flat())
+  replaceTensor(biasTensor, dense.biases)
+  return { ...inspection, intervention: 'outgoing-detector-muted',
+    bytes: pb.onnx.ModelProto.encode(model).finish(), denseLayers }
 }
 
 export interface AttackNeuron {
