@@ -16,6 +16,14 @@ export const presets = [
     description: 'A 75-parameter handwritten ReLU network that predicts the ball’s landing point and reflects one wall bounce. It uses 63 MACs per decision, without Quill’s recovery gate or opponent-dependent aiming.',
   },
   {
+    id: 'attack75', name: 'Attack75', kind: 'Handwritten weights', handcrafted: true, submittedBy: 'jonaslindblom',
+    description: 'An aggressive 75-parameter fork of Predict75. Its handwritten ReLU weights predict a bounded landing point, reflect a wall bounce and offset contact to aim toward a corner away from the opponent. No training or automated fitting.',
+  },
+  {
+    id: 'counter97', name: 'Counter97', kind: 'Handwritten weights', handcrafted: true, submittedBy: 'jonaslindblom',
+    description: 'A 97-parameter handwritten network with a longer landing forecast, opponent-aware corner aiming and center recovery while the ball travels away. Its four dense layers use no training or automated fitting.',
+  },
+  {
     id: 'follow', name: 'Follow', kind: 'Handwritten weights', handcrafted: true, submittedBy: 'jonaslindblom',
     description: 'Thirteen parameters and one hidden neuron: Follow moves toward the ball’s current position. Its handwritten weights are the interactive example in Understanding the weights. It does not predict bounces or aim returns.',
   },

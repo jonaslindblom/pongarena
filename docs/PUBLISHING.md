@@ -17,7 +17,7 @@ npm run build
 git status --short
 ```
 
-Review and commit the model files, metadata and both league results. The app and league need no Python dependencies. A separate CI job installs the training environment, runs a small pipeline check and reproduces Follow, Predict75 and Quill from their standalone constructors. Full training stays outside PR checks. After the required PR checks pass, merge the reviewed changes into `main`. For a separate deployment of your own fork, push its reviewed `main` branch:
+Review and commit the model files, metadata and both league results. The app and league need no Python dependencies. A separate CI job installs the training environment, runs a small pipeline check and reproduces Follow, Predict75, Attack75, Counter97 and Quill from their standalone constructors. Full training stays outside PR checks. After the required PR checks pass, merge the reviewed changes into `main`. For a separate deployment of your own fork, push its reviewed `main` branch:
 
 ```sh
 git push -u origin main
