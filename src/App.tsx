@@ -97,7 +97,7 @@ function Guide({ onDeviceTest }: { onDeviceTest: () => void }) {
         <p>
           Quill is a neural network with handwritten weights: its ball prediction and paddle control
           are built directly into dense matrices. Small and Large are trained in PyTorch.
-          The Weights tab explains Follow’s single neuron, Attack75’s corner aiming, and Counter97’s prediction and recovery.
+          The Weights tab starts with Follow’s single neuron, then explores how Counter97 detects walls, switches behavior and aims returns.
           Every model receives the same observations and chooses from the same moves.
         </p>
         <div className="section-code">02 / OBSERVATION</div>
@@ -471,7 +471,7 @@ export default function App() {
                   </dl>
                   </details>
                   <div className="library-actions">
-                    {(c.id === 'follow' || c.id === 'attack75' || c.id === 'counter97') && <button className="secondary-btn" onClick={() => {
+                    {(c.id === 'follow' || c.id === 'counter97') && <button className="secondary-btn" onClick={() => {
                       setExplainer(c.id as ExplainerId)
                       navigate('Understanding the weights')
                     }}><Network size={14} /> Explain weights</button>}
