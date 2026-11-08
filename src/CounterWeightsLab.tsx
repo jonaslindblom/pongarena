@@ -184,7 +184,7 @@ export function CounterWeightsLab({ model, onPlay }: { model: Controller | undef
   }
   return <div className="weights-lab behavior-lab">
     <header className="weights-heading">
-      <div><span className="section-code">02 / COUNTER97 · 97 PARAMETERS</span><h1>Know when to stop chasing.</h1><p>The ball is on the right. Should the paddle follow it? Counter uses the ball’s direction to choose between meeting a return and getting ready for the next one.</p></div>
+      <div><span className="section-code">02 / COUNTER · 97 PARAMETERS</span><h1>Know when to stop chasing.</h1><p>The ball is on the right. Should the paddle follow it? Counter uses the ball’s direction to choose between meeting a return and getting ready for the next one.</p></div>
       <button className="import-btn" onClick={onPlay} disabled={!model}><Play size={15} fill="currentColor" />Play against Counter</button>
     </header>
     <section className="panel behavior-workbench" aria-label="Counter behavior experiment">
@@ -205,7 +205,7 @@ export function CounterWeightsLab({ model, onPlay }: { model: Controller | undef
             <p className="behavior-court-note">One frozen moment. The arrow shows ball direction; the outline shows the paddle’s target.</p>
           </div>
           <div className="behavior-observation">
-            <span className="section-code">COUNTER97’S ORIGINAL DECISION</span>
+            <span className="section-code">COUNTER’S ORIGINAL DECISION</span>
             <ol className="behavior-reasoning">
               <li><span className="reasoning-number">1</span><div><h3>Is the ball leaving?</h3><p>A single neuron reads its direction.</p><span className={'detector-signal' + (detectorOn ? ' is-on' : '')}><i /><output aria-label="Outgoing detector state">{detectorOn ? 'On · ball moving away' : 'Off · ball coming back'}</output></span></div></li>
               <li><span className="reasoning-number">2</span><div><h3>{away ? 'Pause the chase' : 'Use the landing forecast'}</h3><p>{away ? 'That signal tells later neurons to set aside the landing forecast and aim back toward center.' : 'With no departure signal, later neurons use the landing forecast to position the paddle for a return.'}</p></div></li>
