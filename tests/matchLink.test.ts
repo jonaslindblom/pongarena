@@ -2,7 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readMatchLink, writeMatchLink } from '../src/matchLink'
 
-test('new games default to a human facing Counter97', () => {
+test('new games default to a human facing Counter', () => {
   assert.deepEqual(readMatchLink(''), { mode: 'play', ids: ['keyboard', 'counter97'] })
   assert.deepEqual(readMatchLink('?model=follow'), { mode: 'play', ids: ['keyboard', 'follow'] })
 })

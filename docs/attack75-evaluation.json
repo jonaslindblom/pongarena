@@ -140,7 +140,7 @@
     "entrants": [
       {
         "id": "attack75",
-        "name": "Attack75",
+        "name": "Attack",
         "sha256": "646d1a1365e3e307bd4431fc73930c5efa19de16b7cc22bbb9200608c2b720f8",
         "params": 75,
         "macs": 63
@@ -161,7 +161,7 @@
       },
       {
         "id": "predict75",
-        "name": "Predict75",
+        "name": "Predict",
         "sha256": "0d405fe22a0a5f568c1d23d76356893e12aae1ef1c9a7f26150e8f35520b3cad",
         "params": 75,
         "macs": 63

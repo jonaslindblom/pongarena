@@ -27,6 +27,11 @@ export async function openModels(page: Page) {
 
 test('bundled cards show their actual ONNX layouts, counts and linked submitters', async ({ page }) => {
   await openModels(page)
+  await expect(page.getByRole('region', { name: 'Handwritten models', exact: true }).locator('.library-card h2'))
+    .toHaveText(['Follow', 'Predict', 'Attack', 'Counter', 'Quill'])
+  await expect(page.getByRole('region', { name: 'Trained models', exact: true }).locator('.library-card h2'))
+    .toHaveText(['Small', 'Large'])
+  await expect(page.getByRole('region', { name: 'Your models', exact: true })).toHaveCount(0)
   for (const model of presets) {
     const bytes = readFileSync(`public/models/${model.id}.onnx`)
     const stats = validateArenaModel(bytes)

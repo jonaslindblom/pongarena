@@ -1,8 +1,7 @@
-import { ArrowRight, Code2, Download, Pause, Play } from 'lucide-react'
+import { ArrowRight, Download, Pause, Play } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import * as ort from 'onnxruntime-web/wasm'
 import pb from 'onnx-proto'
-import followSourceUrl from '../handwritten/follow.py?url'
 import { assetPath } from './assets'
 import { createBrainGraph } from './brain'
 import type { Controller } from './models'
@@ -101,7 +100,7 @@ function Network({ parameters, snapshot }: { parameters: Parameters; snapshot: S
   )
 }
 
-export function WeightsLab({ model, onPlay }: { model: Controller | undefined; onPlay: () => void }) {
+export function WeightsLab({ model, onPlay, onNext }: { model: Controller | undefined; onPlay: () => void; onNext: () => void }) {
   const [positions, setPositions] = useState({ ball: 0.5, paddle: -0.3 })
   const [animate, setAnimate] = useState(false)
   const [reducedMotion, setReducedMotion] = useState(false)
@@ -198,7 +197,7 @@ export function WeightsLab({ model, onPlay }: { model: Controller | undefined; o
   return (
     <div className="weights-lab">
       <header className="weights-heading">
-        <div><span className="section-code">UNDERSTANDING THE WEIGHTS</span><h1>A tiny brain you can read.</h1><p>Start here: move the ball and paddle, then trace how weights turn their positions into a decision. Follow shares one neuron between left and right, with no training.</p></div>
+        <div><span className="section-code">01 / FOLLOW · 13 PARAMETERS</span><h1>One neuron. Follow the ball.</h1><p>Move the ball and paddle, then trace the decision. This handwritten network shares one hidden neuron between left and right. Every weight has a job you can see.</p></div>
         <button className="import-btn" onClick={onPlay} disabled={!model}><Play size={15} fill="currentColor" />Play against Follow</button>
       </header>
       <section className="panel weights-workbench" aria-label="Interactive Follow model">
@@ -239,9 +238,10 @@ export function WeightsLab({ model, onPlay }: { model: Controller | undefined; o
           </div>
         </details>}
       </section>
+      <button className="lesson-next" onClick={onNext}><span><strong>Following is only the start.</strong><span>What if the ball is moving away? Meet the neuron that helps Counter return to center.</span></span><span>Next lesson <ArrowRight size={16} /></span></button>
       <section className="weights-context" aria-label="Weight programming and source files">
         <div><h2>A small program, written in weights.</h2><p>Follow tracks the ball’s current position. It cannot anticipate bounces or aim a return. <a href="https://rikiyat.github.io/blog/weight-space-programming/" target="_blank" rel="noreferrer">Sparks of Weight-Space Programming <ArrowRight size={13} /></a> explores LLMs reading and writing weights directly. Here, the open question is practical: how far can handwritten models go against independently trained ones?</p></div>
-        <div className="weights-downloads"><a href={assetPath('models/follow.onnx')} download="follow.onnx"><Download size={15} />Download model</a><a href={followSourceUrl} download="follow.py"><Code2 size={15} />Read the constructor</a></div>
+        <div className="weights-downloads"><a href={assetPath('models/follow.onnx')} download="follow.onnx"><Download size={15} />Download model</a></div>
       </section>
     </div>
   )

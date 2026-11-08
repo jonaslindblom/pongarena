@@ -7,6 +7,7 @@ import {
   CircuitBoard,
   FlaskConical,
   Gamepad2,
+  Github,
   Layers3,
   Monitor,
   Network,
@@ -38,12 +39,12 @@ import { assetPath } from './assets'
 import { DEFAULT_MODEL, readMatchLink, writeMatchLink } from './matchLink'
 import quillSourceUrl from '../handwritten/quill.py?url'
 import './App.css'
-type Page = 'Arena' | 'Rankings' | 'Model library' | 'Understanding the weights' | 'Field guide' | 'Device test'
+type Page = 'Arena' | 'Rankings' | 'Model library' | 'How it thinks' | 'Field guide' | 'Device test'
 const tabs: { page: Page; label: string; icon: typeof Gamepad2 }[] = [
   { page: 'Arena', label: 'Play', icon: Gamepad2 },
   { page: 'Rankings', label: 'League', icon: Trophy },
   { page: 'Model library', label: 'Models', icon: Layers3 },
-  { page: 'Understanding the weights', label: 'Weights', icon: Network },
+  { page: 'How it thinks', label: 'How it thinks', icon: Network },
   { page: 'Field guide', label: 'Guide', icon: BookOpen },
 ]
 const descriptions = {
@@ -99,7 +100,7 @@ function Guide({ onDeviceTest }: { onDeviceTest: () => void }) {
         <p>
           Quill is a neural network with handwritten weights: its ball prediction and paddle control
           are built directly into dense matrices. Small and Large are trained in PyTorch.
-          The Weights tab starts with Follow’s single neuron, then explores how Counter97 detects walls, switches behavior and aims returns.
+          How it thinks starts with Follow’s single neuron, then shows how Counter uses ball direction to switch between interception and recovery.
           Every model receives the same observations and chooses from the same moves.
         </p>
         <div className="section-code">02 / OBSERVATION</div>
@@ -366,6 +367,7 @@ export default function App() {
         <div className="topinner">
           <a
             className="brand"
+            aria-label="PongArena home"
             href="#arena"
             onClick={(e) => {
               e.preventDefault()
@@ -389,11 +391,14 @@ export default function App() {
               </button>
             ))}
           </nav>
+          <a className="github-link" href="https://github.com/jonaslindblom/pongarena" target="_blank" rel="noopener noreferrer" aria-label="Source on GitHub" title="Source on GitHub">
+            <Github size={18} aria-hidden="true" /><span>GitHub</span>
+          </a>
         </div>
       </header>
       <main className={'shell' + (page === 'Arena' ? ' shell-arena' : '')}>
         {page === 'Arena' && <h1 className="visually-hidden">Pong arena</h1>}
-        {page !== 'Arena' && page !== 'Understanding the weights' && <div className="page-head">
+        {page !== 'Arena' && page !== 'How it thinks' && <div className="page-head">
           <div>
             <h1>{page === 'Rankings' ? 'League' : page}</h1>
             <p>{descriptions[page]}</p>
@@ -437,7 +442,7 @@ export default function App() {
           />
         )}
         {page === 'Device test' && <DeviceTest models={eligibleModels} startup={startup} loadingComplete={loadingComplete} />}
-        {page === 'Understanding the weights' && <WeightExplainers models={models} selected={explainer} onSelect={setExplainer} onPlay={playAgainst} />}
+        {page === 'How it thinks' && <WeightExplainers models={models} selected={explainer} onSelect={setExplainer} onPlay={playAgainst} />}
         {page === 'Rankings' && (
           <Ranking key={rules.id} entrants={eligibleModels.filter((model) => model.type !== 'human' && model.sha256).map((model) => ({
             id: model.id, name: model.name, sha256: model.sha256!, params: model.params, macs: model.macs,
@@ -450,10 +455,15 @@ export default function App() {
           <p className="library-rank-note" role="status">{referenceRanks.error
             ? 'Reference ranks unavailable: ' + referenceRanks.error
             : referenceRanks.loading ? 'Loading reference league ranks…' : 'Ranks from the reference league, matched to the exact model weights.'}</p>
+          {[
+            { title: 'Handwritten', description: 'From following the ball to prediction, aiming and recovery.', models: eligibleModels.filter(model => model.handcrafted && !model.id.startsWith('local-')).sort((a, b) => a.params - b.params) },
+            { title: 'Trained', description: 'Neural networks learned in PyTorch, from small to large.', models: eligibleModels.filter(model => model.type === 'weights' && !model.handcrafted && !model.id.startsWith('local-')).sort((a, b) => a.params - b.params) },
+            { title: 'Your models', description: 'Models imported and saved in this browser.', models: eligibleModels.filter(model => model.id.startsWith('local-')) },
+          ].filter(group => group.models.length > 0).map(group => (
+          <section className="library-group" key={group.title} aria-label={`${group.title} models`}>
+          <div className="library-group-heading"><h2>{group.title}</h2><p>{group.description}</p></div>
           <div className="library">
-            {eligibleModels
-              .filter((c) => c.id !== 'keyboard')
-              .map((c) => (
+            {group.models.map((c) => (
                 <article className="panel library-card" key={c.id} aria-label={`${c.name} model`}
                   data-model-id={c.id}
                   data-weight-origin={c.handcrafted ? 'handcrafted' : undefined}>
@@ -487,8 +497,8 @@ export default function App() {
                   <div className="library-actions">
                     {(c.id === 'follow' || c.id === 'counter97') && <button className="secondary-btn" onClick={() => {
                       setExplainer(c.id as ExplainerId)
-                      navigate('Understanding the weights')
-                    }}><Network size={14} /> Explain weights</button>}
+                      navigate('How it thinks')
+                    }}><Network size={14} /> How it thinks</button>}
                     <button className="secondary-btn" onClick={() => playAgainst(c.id)}>
                       <Gamepad2 size={14} /> Play against
                     </button>
@@ -520,6 +530,8 @@ export default function App() {
                 </article>
               ))}
           </div>
+          </section>
+          ))}
           </>
         )}
         {page === 'Field guide' && <Guide onDeviceTest={() => navigate('Device test')} />}

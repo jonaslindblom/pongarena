@@ -7,9 +7,7 @@ import { choice, observation, serve, type Frame, type Scores } from '../src/game
 const moves = ['Left', 'Stay', 'Right']
 type LabFrame = Pick<Frame, 'x' | 'y' | 'vx' | 'vy' | 'paddles'>
 // Physical situations are independent of the production explanation and presets.
-const wallFrame: LabFrame = { x: 240, y: 80, vx: -13, vy: 3, paddles: [100, 80] }
 const recoveryFrame: LabFrame = { x: 184, y: 120, vx: 13, vy: 0, paddles: [100, 80] }
-const aimFrame: LabFrame = { x: 16, y: 80, vx: -13, vy: 0, paddles: [80, 80] }
 const browserErrors = new WeakMap<Page, string[]>()
 
 ort.env.wasm.numThreads = 1
@@ -28,26 +26,21 @@ test.afterEach(async ({ page }) => {
 async function openWeights(page: Page) {
   await page.goto('/')
   await page.getByRole('navigation', { name: 'Main navigation' })
-    .getByRole('button', { name: 'Weights', exact: true }).click()
-  await expect(page.getByRole('group', { name: 'Choose a weight explainer' })).toBeVisible()
+    .getByRole('button', { name: 'How it thinks', exact: true }).click()
+  await expect(page.getByRole('group', { name: 'Choose a lesson' })).toBeVisible()
 }
 
 async function openCounter(page: Page) {
   await openWeights(page)
-  await page.getByRole('button', { name: 'Building behavior · Counter97', exact: true }).click()
-  await expect(page.getByLabel('Counter97 chosen move', { exact: true })).toBeVisible({ timeout: 30_000 })
-}
-
-async function experiment(page: Page, name: 'Detect a wall' | 'Switch behavior' | 'Aim a return') {
-  await page.getByRole('group', { name: 'Choose an experiment' }).getByRole('button', { name: new RegExp(name) }).click()
-  await expect(page.getByLabel('Counter97 chosen move', { exact: true })).toBeVisible()
+  await page.getByRole('button', { name: '2 · Know when to return', exact: true }).click()
+  await expect(page.getByLabel('Counter chosen move', { exact: true })).toBeVisible({ timeout: 30_000 })
 }
 
 async function inspectWeights(page: Page) {
   const summary = page.locator('summary').filter({ hasText: 'Inspect weights and formulas' })
   const details = summary.locator('..')
   if (!await details.evaluate(element => (element as HTMLDetailsElement).open)) await summary.click()
-  const inspector = page.getByRole('region', { name: 'Counter97 weight inspection', exact: true })
+  const inspector = page.getByRole('region', { name: 'Counter weight inspection', exact: true })
   await expect(inspector).toBeVisible()
   return inspector
 }
@@ -66,25 +59,25 @@ async function setRange(slider: Locator, value: number) {
 async function expectOriginalDecision(page: Page, session: ort.InferenceSession, frame: LabFrame) {
   const result = await session.run({ observation: new ort.Tensor('float32', observation({ ...serve(1), ...frame }, 0), [1, 6]) })
   const scores = Array.from(result.action_scores.data as Float32Array) as Scores
-  const card = page.getByRole('article', { name: 'Counter97 decision', exact: true })
-  await expect(card.getByLabel('Counter97 chosen move', { exact: true })).toHaveText(moves[choice(scores)])
+  const card = page.getByRole('article', { name: 'Counter decision', exact: true })
+  await expect(card.getByLabel('Counter chosen move', { exact: true })).toHaveText(moves[choice(scores)])
   // The logits encode signed target error; keep the displayed target unclamped.
   const target = frame.paddles[0] + 80 * (scores[2] - scores[0]) / 2
-  await expect(card.getByLabel('Counter97 paddle target', { exact: true })).toHaveText(target.toFixed(2))
+  await expect(card.getByLabel('Counter paddle target', { exact: true })).toHaveText(target.toFixed(2))
   await inspectWeights(page)
   for (let action = 0; action < moves.length; action++) {
-    await expect.poll(async () => Number(await page.getByLabel(`Counter97 ${moves[action]} score`, { exact: true }).textContent()))
+    await expect.poll(async () => Number(await page.getByLabel(`Counter ${moves[action]} score`, { exact: true }).textContent()))
       .toBeCloseTo(scores[action], 5)
   }
   return scores
 }
 
-test('two explainers lead from Follow’s shared neuron to Counter97’s three experiments', async ({ page }) => {
+test('Follow stays fully inspectable and leads directly to the recovery lesson', async ({ page }) => {
   await openWeights(page)
-  const picker = page.getByRole('group', { name: 'Choose a weight explainer' })
+  const picker = page.getByRole('group', { name: 'Choose a lesson' })
   await expect(picker.getByRole('button')).toHaveCount(2)
-  await expect(picker.getByRole('button', { name: 'Basics · Follow', exact: true })).toHaveAttribute('aria-pressed', 'true')
-  await expect(picker.getByRole('button', { name: /Attack75/ })).toHaveCount(0)
+  await expect(picker.getByRole('button', { name: '1 · Follow the ball', exact: true })).toHaveAttribute('aria-pressed', 'true')
+  await expect(picker.getByRole('button', { name: /Attack/ })).toHaveCount(0)
   const follow = page.getByRole('region', { name: 'Interactive Follow model' })
   await expect(follow.getByRole('img', { name: /error 0\.800, Tanh 0\.664\. Follow chooses Right/ }))
     .toBeVisible({ timeout: 30_000 })
@@ -95,44 +88,36 @@ test('two explainers lead from Follow’s shared neuron to Counter97’s three e
   await follow.getByText('See all 13 parameters', { exact: false }).click()
   await expect(follow.getByText('5 nonzero · zeros count too', { exact: true })).toBeVisible()
   await expect(follow.getByRole('table')).toHaveCount(2)
-  await page.getByRole('button', { name: 'Play against Follow', exact: true }).click()
-  await expect(page.getByRole('combobox', { name: 'Opponent', exact: true })).toHaveValue('follow')
+  await page.getByRole('button', { name: /Next lesson/ }).click()
+  await expect(page.getByRole('heading', { name: 'Know when to stop chasing.' })).toBeInViewport()
+  await expect(page.getByLabel('Counter chosen move', { exact: true })).toHaveText('Left')
 })
 
-test('the wall experiment crosses a real neuron threshold while preserving the original ONNX decisions', async ({ page }) => {
+test('changing only direction switches the original model between recovery and interception', async ({ page }) => {
   await openCounter(page)
-  const experiments = page.getByRole('group', { name: 'Choose an experiment' })
-  await expect(experiments.getByRole('button')).toHaveCount(3)
-  await expect(experiments.getByRole('button', { name: /Detect a wall/ })).toHaveAttribute('aria-pressed', 'true')
   await expect(page.getByRole('combobox', { name: 'Neuron', exact: true })).toBeHidden()
-  await expect(page.getByLabel('Wall neuron activation', { exact: true })).toHaveText('0.000000')
-  await expect(page.getByRole('slider', { name: 'Ball position', exact: true })).toHaveValue('80')
-  const inspector = await inspectWeights(page)
-  await inspector.getByRole('combobox', { name: 'Neuron', exact: true }).selectOption('2:1')
   const session = await ort.InferenceSession.create(readFileSync('public/models/counter97.onnx'), { executionProviders: ['wasm'] })
   try {
-    for (const y of [40, 150]) {
-      await setRange(page.getByRole('slider', { name: 'Ball position', exact: true }), y)
-      await expectOriginalDecision(page, session, { ...wallFrame, y })
-      const activation = inspector.getByLabel('Neuron activation', { exact: true })
-      if (y === 40) await expect(activation).toHaveText('0.000000')
-      else await expect.poll(async () => Number(await activation.textContent())).toBeGreaterThan(0)
+    for (const [vx, direction, move, signal] of [[13, 'Away from you', 'Left', 'On'], [-13, 'Toward you', 'Right', 'Off']] as const) {
+      await page.getByRole('button', { name: direction, exact: true }).click()
+      await expectOriginalDecision(page, session, { ...recoveryFrame, vx })
+      await expect(page.getByLabel('Counter chosen move', { exact: true })).toHaveText(move)
+      await expect(page.getByLabel('Outgoing detector state', { exact: true })).toContainText(signal)
     }
   } finally { await session.release() }
-  await expect(page.getByRole('link', { name: 'Download Counter97', exact: true }))
+  await expect(page.getByRole('link', { name: 'Download Counter', exact: true }))
     .toHaveAttribute('href', /\/models\/counter97\.onnx$/)
-  await expect(page.getByRole('link', { name: 'Read Counter97’s constructor', exact: true }))
-    .toHaveAttribute('download', 'counter97.py')
+  await expect(page.getByRole('link', { name: 'Source on GitHub', exact: true }))
+    .toHaveAttribute('href', 'https://github.com/jonaslindblom/pongarena')
 })
 
 test('muting the outgoing detector changes recovery but leaves incoming decisions and the original model intact', async ({ page }) => {
   await openCounter(page)
-  await experiment(page, 'Switch behavior')
   const session = await ort.InferenceSession.create(readFileSync('public/models/counter97.onnx'), { executionProviders: ['wasm'] })
   try {
     const original = await expectOriginalDecision(page, session, recoveryFrame)
-    await expect(page.getByLabel('Counter97 paddle target', { exact: true })).toHaveText('80.00')
-    const toggle = page.getByRole('button', { name: 'Mute outgoing detector', exact: true })
+    await expect(page.getByLabel('Counter paddle target', { exact: true })).toHaveText('80.00')
+    const toggle = page.getByRole('button', { name: /^(Switch off|Restore) the departure neuron$/ })
     await toggle.click()
     await expect(toggle).toHaveAttribute('aria-pressed', 'true')
     const muted = page.getByRole('article', { name: 'Muted detector decision', exact: true })
@@ -140,7 +125,7 @@ test('muting the outgoing detector changes recovery but leaves incoming decision
     await expect(muted.getByLabel('Muted detector chosen move', { exact: true })).toHaveText('Right')
     await expect.poll(async () => Number(await muted.getByLabel('Muted detector paddle target', { exact: true }).textContent())).not.toBe(80)
     await expectOriginalDecision(page, session, recoveryFrame)
-    await page.getByRole('button', { name: 'Reverse ball direction', exact: true }).click()
+    await page.getByRole('button', { name: 'Toward you', exact: true }).click()
     const incoming = await expectOriginalDecision(page, session, { ...recoveryFrame, vx: -13 })
     expect(incoming).not.toEqual(original)
     await expect(muted.getByLabel('Muted detector chosen move', { exact: true })).toHaveText(moves[choice(incoming)])
@@ -150,34 +135,30 @@ test('muting the outgoing detector changes recovery but leaves incoming decision
     await expect(toggle).toHaveAttribute('aria-pressed', 'false')
     await expect(muted).toHaveCount(0)
   } finally { await session.release() }
-  await page.getByRole('button', { name: 'Play against Counter97', exact: true }).click()
+  await page.getByRole('button', { name: 'Play against Counter', exact: true }).click()
   await expect(page.getByRole('combobox', { name: 'Opponent', exact: true })).toHaveValue('counter97')
 })
 
-test('aiming responds to the opponent and switching experiments restores each focused starting state', async ({ page }) => {
-  await openCounter(page)
-  await experiment(page, 'Aim a return')
-  const opponent = page.getByRole('slider', { name: 'Opponent position', exact: true })
-  const session = await ort.InferenceSession.create(readFileSync('public/models/counter97.onnx'), { executionProviders: ['wasm'] })
-  try {
-    for (const [position, move] of [[60, 'Left'], [100, 'Right']] as const) {
-      await setRange(opponent, position)
-      await expectOriginalDecision(page, session, { ...aimFrame, paddles: [80, position] })
-      await expect(page.getByLabel('Counter97 chosen move', { exact: true })).toHaveText(move)
+test('every designed neuron role opens the matching real weights, and model cards open their lesson', async ({ page }) => {
+  await page.goto('/')
+  await page.getByRole('navigation').getByRole('button', { name: 'Models', exact: true }).click()
+  const card = page.locator('.library-card').filter({ has: page.getByRole('heading', { name: 'Counter', exact: true }) })
+  await card.getByRole('button', { name: 'How it thinks', exact: true }).click()
+  await expect(page.getByLabel('Counter chosen move', { exact: true })).toHaveText('Left')
+  const roles = page.getByRole('region', { name: 'Counter neuron roles', exact: true })
+  await expect(roles.getByRole('button')).toHaveCount(16)
+  await expect(roles).toContainText('13 hidden neurons. A job for each.')
+  await expect(roles).toContainText('not evidence that every neuron in a trained network has one neat purpose')
+  for (const [layer, width] of [[0, 6], [1, 4], [2, 3], [3, 3]]) {
+    for (let neuron = 0; neuron < width; neuron++) {
+      const id = layer === 3 ? moves[neuron] : `H${layer + 1}.${neuron + 1}`
+      await roles.getByRole('button', { name: new RegExp(`^Inspect ${id}:`) }).click()
+      await expect(page.getByRole('combobox', { name: 'Neuron', exact: true })).toHaveValue(`${layer}:${neuron}`)
+      await expect(page.getByLabel('Neuron activation', { exact: true })).toBeVisible()
     }
-    await experiment(page, 'Switch behavior')
-    await page.getByRole('button', { name: 'Mute outgoing detector', exact: true }).click()
-    await page.getByRole('button', { name: 'Reverse ball direction', exact: true }).click()
-    await experiment(page, 'Aim a return')
-    await expect(opponent).toHaveValue('80')
-    await expect(page.getByRole('article', { name: 'Muted detector decision', exact: true })).toHaveCount(0)
-    await expectOriginalDecision(page, session, aimFrame)
-    await experiment(page, 'Switch behavior')
-    await expect(page.getByRole('button', { name: 'Mute outgoing detector', exact: true })).toHaveAttribute('aria-pressed', 'false')
-    await expectOriginalDecision(page, session, recoveryFrame)
-    await experiment(page, 'Detect a wall')
-    await expect(page.getByRole('slider', { name: 'Ball position', exact: true })).toHaveValue('80')
-  } finally { await session.release() }
+  }
+  await page.getByText('See all 97 parameters', { exact: true }).click()
+  await expect(page.getByRole('table', { name: /stored parameters/ })).toHaveCount(4)
 })
 
 test('advanced neuron contributions expose the real direction weight and ReLU cutoff', async ({ page }) => {
@@ -195,11 +176,10 @@ test('advanced neuron contributions expose the real direction weight and ReLU cu
   const bias = values(first.input![2])[4]
   expect(weights).toEqual([0, 0, 1, 0, 0, 0])
   await openCounter(page)
-  await experiment(page, 'Switch behavior')
   const inspector = await inspectWeights(page)
   await inspector.getByRole('combobox', { name: 'Neuron', exact: true }).selectOption('0:4')
   for (const vx of [13, -13]) {
-    if (vx < 0) await page.getByRole('button', { name: 'Reverse ball direction', exact: true }).click()
+    if (vx < 0) await page.getByRole('button', { name: 'Toward you', exact: true }).click()
     const input = observation({ ...serve(1), ...recoveryFrame, vx }, 0)
     const rows = inspector.getByRole('table', { name: 'Neuron weight contributions' }).locator('tbody tr')
     await expect(rows).toHaveCount(6)
@@ -218,46 +198,44 @@ test('advanced neuron contributions expose the real direction weight and ReLU cu
   }
 })
 
-test('mobile and reduced-motion users can run all experiments using labelled keyboard controls', async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 })
+for (const width of [390, 320]) test(`the lesson works with keyboard and reduced motion at ${width}px`, async ({ page }) => {
+  await page.setViewportSize({ width, height: 844 })
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await openWeights(page)
   await expect(page.getByRole('img', { name: /Follow chooses Right/ })).toBeVisible({ timeout: 30_000 })
   await expect(page.getByRole('button', { name: 'Animate', exact: true })).toBeDisabled()
-  const counter = page.getByRole('button', { name: 'Building behavior · Counter97', exact: true })
+  const counter = page.getByRole('button', { name: '2 · Know when to return', exact: true })
   await counter.focus()
   await counter.press('Enter')
   await expect(counter).toHaveAttribute('aria-pressed', 'true')
-  await expect(page.getByLabel('Counter97 chosen move', { exact: true })).toBeVisible()
-  const ball = page.getByRole('slider', { name: 'Ball position', exact: true })
-  await ball.focus()
-  await ball.press('ArrowRight')
-  await expect(ball).toHaveValue('81')
-  const recovery = page.getByRole('group', { name: 'Choose an experiment' }).getByRole('button', { name: /Switch behavior/ })
-  await recovery.focus()
-  await recovery.press('Enter')
-  const mute = page.getByRole('button', { name: 'Mute outgoing detector', exact: true })
+  await expect(page.getByLabel('Counter chosen move', { exact: true })).toHaveText('Left')
+  const mute = page.getByRole('button', { name: /^(Switch off|Restore) the departure neuron$/ })
   await mute.focus()
   await mute.press('Enter')
   await expect(mute).toHaveAttribute('aria-pressed', 'true')
-  const inspector = await inspectWeights(page)
-  const neuron = inspector.getByRole('combobox', { name: 'Neuron', exact: true })
-  await neuron.focus()
-  await expect(neuron).toBeFocused()
-  await neuron.selectOption('3:2')
-  await expect(inspector).toContainText('Linear output')
-  for (const name of ['Counter97', 'Muted detector']) {
+  await expect(page.getByLabel('Muted detector chosen move', { exact: true })).toHaveText('Right')
+  const toward = page.getByRole('button', { name: 'Toward you', exact: true })
+  await toward.focus()
+  await toward.press('Enter')
+  await expect(page.getByText('No change this time.', { exact: true })).toBeVisible()
+  for (const name of ['Counter', 'Muted detector']) {
     const card = page.getByRole('article', { name: `${name} decision`, exact: true })
     await card.scrollIntoViewIfNeeded()
     const bounds = await card.boundingBox()
     expect(bounds).not.toBeNull()
     expect(bounds!.x).toBeGreaterThanOrEqual(0)
-    expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(390)
+    expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width)
   }
-  await experiment(page, 'Aim a return')
-  const opponent = page.getByRole('slider', { name: 'Opponent position', exact: true })
-  await opponent.focus()
-  await opponent.press('ArrowRight')
-  await expect(opponent).toHaveValue('81')
+  await page.getByRole('button', { name: 'Reset', exact: true }).click()
+  await expect(page.getByLabel('Counter chosen move', { exact: true })).toHaveText('Left')
+  await expect(page.getByRole('article', { name: 'Muted detector decision', exact: true })).toHaveCount(0)
+  const role = page.getByRole('button', { name: 'Inspect H1.5: Outgoing detector', exact: true })
+  await role.focus()
+  await role.press('Enter')
+  const inspector = await inspectWeights(page)
+  const neuron = inspector.getByRole('combobox', { name: 'Neuron', exact: true })
+  await expect(neuron).toHaveValue('0:4')
+  await neuron.selectOption('3:2')
+  await expect(inspector).toContainText('Linear output')
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
 })

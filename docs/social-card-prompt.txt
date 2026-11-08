@@ -5,7 +5,7 @@ Play Pong. Explore neural networks.
 
 Use the app's cream background, forest-green text, existing mark.svg logo,
 Manrope font, vertical court, mint paddle and muted orange opponent.
-Include Counter97's actual 6 → 6 → 4 → 3 → 3 architecture and 97 parameters.
+Include Counter's actual 6 → 6 → 4 → 3 → 3 architecture and 97 parameters.
 Keep the scientific lab character: thin grid and connections, minimal glow.
 
 Final asset: public/social-card.png (1200 × 630)

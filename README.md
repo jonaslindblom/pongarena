@@ -15,16 +15,16 @@ The handwritten models encode their strategies directly in dense weights. The tr
 | Model | How it is made | Layer widths | Parameters | MACs / decision |
 | --- | --- | --- | ---: | ---: |
 | [Follow](docs/FOLLOW.md) | Handwritten ball follower | `6 → 1 → 3` | 13 | 9 |
-| [Predict75](docs/PREDICT75.md) | Handwritten landing and bounce prediction | `6 → 6 → 3 → 3` | 75 | 63 |
-| [Attack75](docs/ATTACK75.md) | Handwritten prediction and opponent-aware corner aiming | `6 → 6 → 3 → 3` | 75 | 63 |
-| [Counter97](docs/COUNTER97.md) | Handwritten prediction, corner aiming and center recovery | `6 → 6 → 4 → 3 → 3` | 97 | 81 |
+| [Predict](docs/PREDICT75.md) | Handwritten landing and bounce prediction | `6 → 6 → 3 → 3` | 75 | 63 |
+| [Attack](docs/ATTACK75.md) | Handwritten prediction and opponent-aware corner aiming | `6 → 6 → 3 → 3` | 75 | 63 |
+| [Counter](docs/COUNTER97.md) | Handwritten prediction, corner aiming and center recovery | `6 → 6 → 4 → 3 → 3` | 97 | 81 |
 | [Quill](docs/QUILL.md) | Handwritten prediction, recovery and aiming | `6 → 12 → 4 → 3 → 3` | 163 | 141 |
 | [Small](training/README.md) | Trained with imitation learning | `6 → 16 → 6 → 3` | 235 | 210 |
 | [Large](training/README.md) | Trained with imitation learning and PPO | `6 → 128 → 128 → 128 → 128 → 3` | 50,819 | 50,304 |
 
 All stored weights and biases count, including zeros. A MAC is a multiply-accumulate. Handwritten weights do not supply training labels, opponents or checkpoint-selection results for the learned models; they meet after the models are frozen. League results compare these particular controllers and serves; they do not establish performance against human players.
 
-The project is inspired by [Sparks of Weight-Space Programming](https://rikiyat.github.io/blog/weight-space-programming/). Start with [Follow’s 13 parameters](docs/FOLLOW.md) on the interactive **Weights** page. Continue with Counter97 in three focused experiments: detect a wall, switch between tracking and recovery, and aim a return. Mute the outgoing detector in an isolated ONNX copy to test its contribution without changing the playable model. Attack75 appears only as a short comparison about direction awareness. Expand the inspector for stored weights, input contributions, formulas and real ONNX activations. Follow and Counter97 model cards link directly to their explainers.
+The project is inspired by [Sparks of Weight-Space Programming](https://rikiyat.github.io/blog/weight-space-programming/). Start with [Follow’s 13 parameters](docs/FOLLOW.md) on the interactive **How it thinks** page. Then explore one Counter decision: the same ball position calls for a different move when its direction changes. Switch off the departure neuron in an isolated ONNX copy and compare the result. A map names the designed jobs of all 13 hidden neurons and three action scores; select any job to inspect its stored weights and real ONNX activations. These are deliberately constructed roles, not a claim that trained networks have one purpose per neuron. Follow and Counter model cards link directly to their lessons.
 
 ## Play and explore
 
@@ -90,7 +90,7 @@ The checked-in [development standings](public/league.md) use **16 fixed public s
 
 - [Contributing](CONTRIBUTING.md): submit a model and run the PR checks.
 - [Training](training/README.md): independent PyTorch recipes and evaluation.
-- [Handwritten models](handwritten/): standalone constructors for Follow, Predict75, Attack75, Counter97 and Quill.
+- [Handwritten models](handwritten/): standalone constructors for Follow, Predict, Attack, Counter and Quill.
 - [Rules](docs/RULES.md): observations, actions, physics, model limits and scoring.
 - [Publishing](docs/PUBLISHING.md): GitHub Actions, required checks and Pages.
 - `src/`, `scripts/`, `tests/`, `e2e/`: the app, evaluators and automated checks.

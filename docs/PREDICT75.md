@@ -1,6 +1,6 @@
-# Predict75: prediction in 75 parameters
+# Predict: prediction in 75 parameters
 
-Predict75 is a handwritten dense network with layout **6 → 6 → 3 → 3**.
+Predict is a handwritten dense network with layout **6 → 6 → 3 → 3**.
 The two hidden layers use ReLU; the output contains three linear action
 scores. It stores **75 parameters** and uses **63 MACs per decision**, including
 the weights that are zero. It belongs to the Small class.
@@ -22,7 +22,7 @@ reflection or other position helper runs outside the network during play.
 
 ## Tradeoffs
 
-Predict75 uses 54% fewer parameters than Quill. It anticipates incoming balls
+Predict uses 54% fewer parameters than Quill. It anticipates incoming balls
 and reflects one predicted wall bounce, but its coarse flight approximation
 loses accuracy. It ignores the opponent position and horizontal velocity input,
 so it has no opponent-dependent aiming or direction-dependent center recovery.
@@ -49,4 +49,4 @@ The constructor preserves the original exploration graph name
 0d405fe22a0a5f568c1d23d76356893e12aae1ef1c9a7f26150e8f35520b3cad
 ```
 
-The displayed name is Predict75. Its submitter is recorded in the model roster.
+The displayed name is Predict. Its submitter is recorded in the model roster.

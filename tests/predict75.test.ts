@@ -8,7 +8,7 @@ import { validateArenaModel } from '../src/validate'
 
 const bytes = readFileSync(new URL('../public/models/predict75.onnx', import.meta.url))
 
-test('Predict75 preserves the frozen Small model with 75 parameters and 63 MACs', async () => {
+test('Predict preserves the frozen Small model with 75 parameters and 63 MACs', async () => {
   const stats = validateArenaModel(bytes)
   assert.deepEqual([stats.params, stats.macs, stats.nodes], [75, 63, 5])
   assert.deepEqual(stats.architecture.widths, [6, 6, 3, 3])
@@ -16,7 +16,7 @@ test('Predict75 preserves the frozen Small model with 75 parameters and 63 MACs'
   assert.equal(await sha256(bytes), '0d405fe22a0a5f568c1d23d76356893e12aae1ef1c9a7f26150e8f35520b3cad')
 })
 
-test('Predict75 anticipates and reflects through its actual WASM network', async () => {
+test('Predict anticipates and reflects through its actual WASM network', async () => {
   ort.env.wasm.numThreads = 1
   const session = await ort.InferenceSession.create(bytes, { executionProviders: ['wasm'] })
   const scores = async (changes: Partial<Frame>): Promise<Scores> => {

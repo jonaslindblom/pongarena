@@ -1,10 +1,10 @@
-# Attack75: corner aiming in 75 parameters
+# Attack: corner aiming in 75 parameters
 
-Attack75 is an aggressive handwritten fork of [Predict75](PREDICT75.md).
+Attack is an aggressive handwritten fork of [Predict](PREDICT75.md).
 Both retain the **6 → 6 → 3 → 3** ReLU layout, **75 parameters** and **63 MACs
-per decision**. Predict75's constructor and ONNX bytes are unchanged.
+per decision**. Predict's constructor and ONNX bytes are unchanged.
 
-Attack75 trades two of Predict75's forecast hinges for opponent-dependent
+Attack trades two of Predict's forecast hinges for opponent-dependent
 shot placement. The [constructor](../handwritten/attack75.py) writes fixed
 formulas. Designs were adjusted manually and compared through play; no
 optimizer, training data, learned checkpoint or automated weight search was
@@ -38,7 +38,7 @@ The aiming coefficients come from the game's return law: at horizontal speed
 13, a return reaches the other paddle after 26 ticks, and each unit of
 contact offset shifts its unfolded landing by `26 · 9 / 15 = 78 / 5` units.
 Moving slightly off the predicted landing therefore sends the ball toward
-the selected corner. The output keeps Predict75's 1.1-unit movement deadband.
+the selected corner. The output keeps Predict's 1.1-unit movement deadband.
 
 ## Evaluation
 
@@ -48,13 +48,13 @@ Web CPU/WASM with one thread. The saved [evaluation summary](attack75-evaluation
 includes the exact plan, seeds, evaluator identity, model hashes and shot counts.
 These seeds were not used for subsequent weight changes.
 
-Attack75 won **128 of 128 paired contests against Predict75**. Across their
+Attack won **128 of 128 paired contests against Predict**. Across their
 1,280 rallies it won 1,123, lost 71 and drew 86: a **91.1% rally score**,
 counting a draw as half a win.
 
 Against the same four other opponents:
 
-| Opponent | Predict75 rally score | Attack75 rally score |
+| Opponent | Predict rally score | Attack rally score |
 | --- | ---: | ---: |
 | Follow | 60.3% | 78.7% |
 | Quill | 3.6% | 9.5% |
@@ -72,9 +72,9 @@ landings (`y < 28` or `y > 132`, after wall reflection) rose from **18.3% to
 34.9%**. These are pooled fractions of each model's own returns; match lengths
 and shot opportunities differ. They describe placement, not guaranteed winners.
 
-Attack75 still loses to Quill and Large overall. Its bounded forecast is an
+Attack still loses to Quill and Large overall. Its bounded forecast is an
 approximation, it folds only one predicted wall bounce, and it retains
-Predict75's lack of horizontal-speed awareness and center recovery while the
+Predict's lack of horizontal-speed awareness and center recovery while the
 ball travels away. The results measure these bots and serves, not human strength.
 
 ## Reproduce
@@ -91,7 +91,7 @@ npm run build
 npx playwright test
 ```
 
-Expected Attack75 SHA-256:
+Expected Attack SHA-256:
 
 ```text
 646d1a1365e3e307bd4431fc73930c5efa19de16b7cc22bbb9200608c2b720f8

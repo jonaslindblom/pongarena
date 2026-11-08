@@ -6,9 +6,9 @@ All 7 bundled models, 16 paired serve sets per matchup, 672 games.
 | ---: | --- | --- | --- | ---: | --- | --- | ---: |
 | 1 | Large | Trained weights | Large | 93 / 96 | 94.3%–99.0% | 91 / 4 / 1 | 50819 |
 | 2 | Quill | Handwritten weights | Small | 81 / 96 | 82.3%–87.0% | 80 / 2 / 14 | 163 |
-| 3 | Counter97 | Handwritten weights | Small | 61.5 / 96 | 60.9%–66.7% | 61 / 1 / 34 | 97 |
-| 4 | Attack75 | Handwritten weights | Small | 47 / 96 | 47.4%–50.0% | 46 / 2 / 48 | 75 |
-| 5 | Predict75 | Handwritten weights | Small | 30 / 96 | 29.2%–32.8% | 28 / 4 / 64 | 75 |
+| 3 | Counter | Handwritten weights | Small | 61.5 / 96 | 60.9%–66.7% | 61 / 1 / 34 | 97 |
+| 4 | Attack | Handwritten weights | Small | 47 / 96 | 47.4%–50.0% | 46 / 2 / 48 | 75 |
+| 5 | Predict | Handwritten weights | Small | 30 / 96 | 29.2%–32.8% | 28 / 4 / 64 | 75 |
 | 6 | Small | Trained weights | Small | 20 / 96 | 17.7%–24.0% | 14 / 12 / 70 | 235 |
 | 7 | Follow | Handwritten weights | Small | 3.5 / 96 | 1.0%–6.8% | 0 / 7 / 89 | 13 |
 

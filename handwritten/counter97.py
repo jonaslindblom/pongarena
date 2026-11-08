@@ -1,4 +1,4 @@
-"""Build Counter97's 97 handwritten parameters. No training or fitting required."""
+"""Build Counter's 97 handwritten parameters. No training or fitting required."""
 import argparse
 import hashlib
 from pathlib import Path
@@ -36,7 +36,7 @@ def weights():
 
     # Quill's recovery cancellation shrinks the opponent-dependent offset
     # to exactly zero at speed 13. At slower legal speeds it stays within
-    # three court units of center. Incoming aiming retains Attack75's law.
+    # three court units of center. Incoming aiming retains Attack's law.
     # The final two layers reflect the forecast at +/- .95 and compare the
     # offset target to our paddle, with the same 1.1-unit movement deadband.
     w3 = np.array([[aim_scale, -1, -4 * aim_scale, -aim_offset],

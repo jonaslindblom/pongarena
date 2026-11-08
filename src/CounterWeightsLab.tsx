@@ -1,7 +1,6 @@
-import { Code2, Download, Play, ArrowRight, RotateCcw } from 'lucide-react'
+import { Download, Play, ArrowLeft, ArrowRight, RotateCcw } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import * as ort from 'onnxruntime-web/wasm'
-import counterSourceUrl from '../handwritten/counter97.py?url'
 import { assetPath } from './assets'
 import type { Controller } from './models'
 import { observation, serve, type Frame, type Scores } from './game'
@@ -14,126 +13,65 @@ type LabFrame = Pick<Frame, 'x' | 'y' | 'vx' | 'vy' | 'paddles'>
 type Inspection = Awaited<ReturnType<typeof inspectAttackModel>>
 type Explanation = ReturnType<typeof getAttackExplanation>
 interface ModelSample { inspection: Inspection; explanation: Explanation }
-interface Snapshot { experiment: Experiment; frame: LabFrame; original: ModelSample; muted: ModelSample }
+interface Snapshot { frame: LabFrame; original: ModelSample; muted: ModelSample }
 const number = (n: number, digits = 2) => (Math.abs(n) < .5 * 10 ** -digits ? 0 : n).toFixed(digits)
 const frameKey = (frame: LabFrame) => [frame.x, frame.y, frame.vx, frame.vy, ...frame.paddles].join(',')
-const clampPaddle = (n: number) => Math.max(15, Math.min(145, n))
-const experiments = [
-  { id: 'wall', title: 'Detect a wall', question: 'How can a neuron detect a boundary?',
-    task: 'Move the ball until its forecast crosses the right wall. Watch the wall neuron wake up and the landing estimate turn back.',
-    frame: { x: 240, y: 80, vx: -13, vy: 3, paddles: [100, 80] } },
-  { id: 'recovery', title: 'Switch behavior', question: 'What makes the network stop chasing?',
-    task: 'Reverse the ball direction, then mute the outgoing detector. Test whether this neuron helps cause recovery.',
-    frame: { x: 184, y: 120, vx: 13, vy: 0, paddles: [100, 80] } },
-  { id: 'aim', title: 'Aim a return', question: 'How does interception become an attacking shot?',
-    task: 'Move the opponent across center. Keep the ball fixed and watch a small paddle offset change the intended corner.',
-    frame: { x: 16, y: 80, vx: -13, vy: 0, paddles: [80, 80] } },
-] satisfies { id: string; title: string; question: string; task: string; frame: LabFrame }[]
-type Experiment = typeof experiments[number]['id']
-const startingNeuron: Record<Experiment, string> = { wall: '2:1', recovery: '0:4', aim: '0:5' }
+const startingFrame: LabFrame = { x: 184, y: 120, vx: 13, vy: 0, paddles: [100, 80] }
 const neuronValue = (explanation: Explanation, layer: number, index: number) => explanation.neurons.find(n => n.layer === layer && n.index === index)!.value
+const layerJobs = [
+  { title: 'Read the scene', labels: ['Forecast ramp +', 'Forecast ramp −', 'Carry ball information', 'Carry paddle position', 'Detect departure', 'Read opponent side'] },
+  { title: 'Choose a target', labels: ['Gate the forecast', 'Combine paddle + aim', 'Detect approach', 'Limit aim + recover'] },
+  { title: 'Account for walls', labels: ['Form the target gap', 'Measure right overshoot', 'Measure left overshoot'] },
+  { title: 'Score the moves', labels: ['Left score', 'Stay score', 'Right score'] },
+]
 
-function Court({ name, frame, explanation, experiment }: { name: string; frame: LabFrame; explanation: Explanation; experiment: Experiment }) {
-  const target = clampPaddle(explanation.target)
-  const tipX = Math.max(4, Math.min(156, frame.y + frame.vy * 2))
-  const tipY = Math.max(4, Math.min(356, 360 - frame.x - frame.vx * 2))
-  return <div className="attack-court-wrap">
-    <span className="attack-end-label">OPPONENT</span>
-    <svg className="attack-court" viewBox="0 0 160 360" role="img" aria-label={`${name}: ball at ${number(frame.y)}, paddle at ${number(frame.paddles[0])}, target ${number(explanation.target)}. ${actions[explanation.chosen]}.`}>
-      <rect className="attack-boundary" x="1" y="1" width="158" height="358" rx="3" />
-      <line className="attack-midline" x1="1" x2="159" y1="180" y2="180" />
-      <line className="attack-centerline" x1="80" x2="80" y1="1" y2="359" />
-      {explanation.reflected !== null && <>
-        <line className="attack-estimate-line" x1={frame.y} y1={360 - frame.x} x2={explanation.reflected} y2="331" />
-        <circle className="attack-estimate" cx={explanation.reflected} cy="331" r="4" />
-      </>}
-      {experiment === 'aim' && explanation.cornerTarget !== null && <path className="attack-corner" d={`M ${explanation.cornerTarget} 25 l 5 6 l -5 6 l -5 -6 Z`} />}
-      <rect className="attack-opponent" x={frame.paddles[1] - 15} y="8" width="30" height="5" rx="1.5" />
-      <rect className="attack-own-paddle" x={frame.paddles[0] - 15} y="347" width="30" height="5" rx="1.5" />
-      <rect className="attack-target" x={target - 15} y="341" width="30" height="16" rx="3" />
-      <line className="attack-velocity" x1={frame.y} y1={360 - frame.x} x2={tipX} y2={tipY} />
-      <circle className="attack-ball" cx={frame.y} cy={360 - frame.x} r="4" />
-      <circle className="attack-velocity-tip" cx={tipX} cy={tipY} r="1.5" />
-    </svg>
-    <span className="attack-end-label">{frame.vx > 0 ? 'BALL MOVING AWAY' : 'BALL APPROACHING'}</span>
-  </div>
-}
-
-function Decision({ sample, frame, experiment, muted = false }: { sample: ModelSample; frame: LabFrame; experiment: Experiment; muted?: boolean }) {
-  const name = muted ? 'Muted detector' : 'Counter97'
+function Decision({ sample, frame, muted = false }: { sample: ModelSample; frame: LabFrame; muted?: boolean }) {
+  const name = muted ? 'Muted detector' : 'Counter'
   const e = sample.explanation
+  const target = Math.max(15, Math.min(145, e.target))
+  const ballDepth = 360 - frame.x
+  const tipDepth = ballDepth - frame.vx * 3
   return <article className={'attack-model' + (muted ? ' is-muted' : '')} aria-label={`${name} decision`}>
-    <div className="attack-model-heading"><h3>{name}</h3><span>{muted ? 'H1.5 held at zero' : 'Original weights'}</span></div>
-    <Court name={name} frame={frame} explanation={e} experiment={experiment} />
-    <div className="attack-decision"><output aria-label={`${name} chosen move`}>{actions[e.chosen]}</output><span>Paddle target <output aria-label={`${name} paddle target`}>{number(e.target)}</output>{e.target < 15 || e.target > 145 ? ' · beyond reach' : ''}</span></div>
-    <p className="attack-decision-caption">{e.activeForecast === null ? 'Forecast off · recovering toward center' : 'Forecast on · tracking and aiming'}</p>
+    <div className="attack-model-heading"><h3>{muted ? 'Neuron switched off' : 'Counter'}</h3><span>{muted ? 'Same scene · one change' : 'Original network'}</span></div>
+    <svg className="attack-court" viewBox="0 0 200 400" role="img" aria-label={`${name}: ball on the right, moving ${frame.vx > 0 ? 'away from' : 'toward'} your paddle. Move ${actions[e.chosen].toLowerCase()}.`}>
+      <text className="attack-court-label" x="100" y="13" textAnchor="middle">OPPONENT</text>
+      <rect className="attack-boundary" x="20" y="20" width="160" height="360" rx="4" />
+      <line className="attack-midline" x1="20" x2="180" y1="200" y2="200" />
+      <line className="attack-centerline" x1="100" x2="100" y1="25" y2="370" />
+      <rect className="attack-opponent" x={20 + frame.paddles[1] - 15} y="28" width="30" height="5" rx="1.5" />
+      <line className="attack-velocity" x1={20 + frame.y} y1={20 + ballDepth} x2={20 + frame.y} y2={20 + tipDepth} />
+      <path className="attack-velocity" d={`M ${15 + frame.y} ${20 + tipDepth + (frame.vx > 0 ? 7 : -7)} l 5 ${frame.vx > 0 ? -7 : 7} l 5 ${frame.vx > 0 ? 7 : -7}`} />
+      <circle className="attack-ball" cx={20 + frame.y} cy={20 + ballDepth} r="4" />
+      <rect className="attack-target" x={20 + target - 15} y="361" width="30" height="16" rx="3" />
+      <rect className="attack-own-paddle" x={20 + frame.paddles[0] - 15} y="367" width="30" height="5" rx="1.5" />
+      <text className="attack-court-label" x="100" y="397" textAnchor="middle">YOUR PADDLE</text>
+    </svg>
+    <div className="attack-decision">{e.chosen === 0 ? <ArrowLeft size={22} /> : e.chosen === 2 ? <ArrowRight size={22} /> : null}<output aria-label={`${name} chosen move`}>{actions[e.chosen]}</output></div>
+    <p className="attack-decision-caption">{e.activeForecast === null ? 'Return toward center' : 'Move toward the predicted return'}</p>
+    <output className="visually-hidden" aria-label={`${name} paddle target`}>{number(e.target)}</output>
   </article>
 }
 
-function Readout({ label, value, note, active }: { label: string; value: string; note: string; active?: boolean }) {
-  return <div className={'behavior-readout' + (active ? ' is-active' : '')}>
-    <span>{label}</span><output aria-label={label}>{value}</output><small>{note}</small>
-  </div>
+function NeuronMap({ sample, onInspect }: { sample: ModelSample; onInspect: (neuron: string) => void }) {
+  return <section className="neuron-map" aria-label="Counter neuron roles">
+    <div className="neuron-map-heading"><span className="section-code">THE REST OF THE NETWORK</span><h2>13 hidden neurons. A job for each.</h2><p>Counter’s weights were written by hand, so we know what each neuron was built to do. Some detect a condition; others carry or combine numbers. Together they predict, aim and recover.</p></div>
+    <div className="neuron-layers">{sample.inspection.denseLayers.map((dense, l) => <div className="neuron-layer" key={l}>
+      <span className="section-code">{dense.activation ? `HIDDEN LAYER ${l + 1} · ${dense.width} NEURONS` : 'OUTPUT · 3 SCORES'}</span>
+      <h3>{layerJobs[l].title}</h3>
+      <ul>{dense.roles.map((role, i) => <li key={i}><button className={l === 0 && i === 4 ? 'is-featured' : undefined} onClick={() => onInspect(`${l}:${i}`)} aria-label={`Inspect ${dense.activation ? `H${l + 1}.${i + 1}` : actions[i]}: ${role}`}>
+        <span className="neuron-id">{dense.activation ? `H${l + 1}.${i + 1}` : `A${i + 1}`}</span><span>{layerJobs[l].labels[i]}</span>{l === 0 && i === 4 && <small>THIS LESSON</small>}
+      </button></li>)}</ul>
+    </div>)}</div>
+    <p className="neuron-map-note">Select a job to inspect its weights. These are designed roles, not evidence that every neuron in a trained network has one neat purpose. A behavior can need several neurons, and a neuron can contribute to several behaviors.</p>
+  </section>
 }
 
-function ExperimentReadouts({ experiment, sample }: { experiment: Experiment; sample: ModelSample }) {
-  const e = sample.explanation
-  if (experiment === 'wall') {
-    const wall = neuronValue(e, 2, 1)
-    return <>
-      <Readout label="Unfolded forecast" value={number(e.forecast)} note="Before the wall correction · court units" />
-      <Readout label="Wall neuron activation" value={number(wall, 6)} note="H3.2 · right wall overshoot, normalized" active={wall > 0} />
-      <Readout label="Reflected forecast" value={number(e.reflected!)} note="After subtracting twice the overshoot" />
-    </>
-  }
-  if (experiment === 'recovery') return <>
-    <Readout label="Outgoing detector activation" value={number(neuronValue(e, 0, 4), 6)} note="H1.5 · ReLU of depth velocity ÷ 6" active={neuronValue(e, 0, 4) > 0} />
-    <Readout label="Incoming gate activation" value={number(e.incomingGate!, 6)} note="H2.3 · 1 on approach, 0 on departure" active={e.incomingGate! > 0} />
-    <Readout label="Forecast carrier activation" value={number(neuronValue(e, 1, 0), 6)} note="H2.1 · carries the forecast + 4, or zero" active={neuronValue(e, 1, 0) > 0} />
-  </>
-  return <>
-    <Readout label="Aim signal" value={number(e.aimSignal!, 6)} note="Two ramps clip opponent preference to −1…+1" active={e.aimSignal !== 0} />
-    <Readout label="Aim offset" value={number(e.aimOffset)} note="Paddle target minus landing estimate · court units" />
-    <Readout label="Intended corner" value={e.cornerTarget! < 79 ? 'Left' : e.cornerTarget! > 81 ? 'Right' : 'Center'} note="Aiming assumes a fast return; it is not a guarantee" />
-  </>
-}
-
-function Lesson({ experiment }: { experiment: Experiment }) {
-  switch (experiment) {
-    case 'wall': return <>
-      <h3>A threshold becomes a geometric operation.</h3>
-      <p>The wall neuron is quiet until the forecast passes 156, the ball-center boundary. Beyond it, ReLU measures the overshoot. Later weights subtract twice that amount to reflect the estimate.</p>
-      <p className="behavior-design"><strong>Design idea</strong> Turn “beyond a boundary” into a threshold neuron, then let the next layer use its signal. A second neuron handles the other wall.</p>
-    </>
-    case 'recovery': return <>
-      <h3>Test a role by removing its signal.</h3>
-      <p>The outgoing detector feeds several later neurons. Together they suppress the forecast and cancel the aiming offset on departure. Muting H1.5 tests its contribution while keeping all six inputs fixed.</p>
-      <p className="behavior-design"><strong>Design idea</strong> Detect a condition, then use it to gate a calculation. Reverse to approach: muting makes no difference because H1.5 is already zero.</p>
-      <details className="behavior-comparison-note"><summary>Why spend a neuron on direction?</summary><p>Attack75 gives depth velocity zero weight everywhere, so reversing only that input cannot change its decision. Counter97 uses a direction detector and extra downstream structure to recover. Muting one Counter97 neuron does not recreate Attack75.</p></details>
-    </>
-    case 'aim': return <>
-      <h3>Aiming adjusts an existing target.</h3>
-      <p>The forecast stays fixed. The opponent ramp and a later clipping neuron choose a corner away from the opponent. A small shift of our paddle changes where the ball strikes it, angling the return.</p>
-      <p className="behavior-design"><strong>Design idea</strong> Reuse the landing estimate and add an aiming correction. One task can need several neurons; one signal can serve several tasks.</p>
-    </>
-  }
-}
-
-function Formulas({ experiment }: { experiment: Experiment }) {
-  return <div className="behavior-formulas">
-    <p>Formula positions use centered, normalized units: <code>f = (court forecast − 80) / 80</code>. The main readouts show court units unless marked normalized.</p>
-    {experiment === 'wall' ? <><p><code>right hinge = ReLU(f − 0.95)</code></p><p><code>reflected f = f − 2 × right hinge + 2 × left hinge</code></p><p>Counter97 approximates flight time with two forecast ramps and an 18-tick lead cap. It does not divide distance by incoming speed. This fold does not handle arbitrarily many wall bounces.</p></>
-      : experiment === 'recovery' ? <><p><code>outgoing = ReLU(depth velocity ÷ 6)</code></p><p><code>forecast carrier = ReLU(f + 4 − 20 × outgoing)</code></p><p>Other connections remove the carry offset and cancel aiming. Recovery is exactly centered at departure speed 13; at slower legal speeds its remaining offset is less than three court units.</p></>
-        : <><p><code>s = clip(80 × opponent input + 4 × ball input, −1, 1)</code></p><p><code>target = (83 / 78) × reflected f + (19 / 312) × s</code></p><p>The target formula uses centered, normalized positions. The ball term breaks ties near center. The aiming constants assume a fast return.</p></>}
-    <p>Left and right scores have opposite signs; Stay has bias 1.1 / 80. The highest score wins, giving a 1.1-unit deadband. The court clamps unreachable paddle targets to 15–145.</p>
-  </div>
-}
 function NeuronInspector({ sample, neuron, onNeuron }: { sample: ModelSample; neuron: string; onNeuron: (value: string) => void }) {
   const { inspection, explanation } = sample
   const [layer, index] = neuron.split(':').map(Number)
   const current = explanation.neurons.find(value => value.layer === layer && value.index === index)!
   const dense = inspection.denseLayers[layer]
-  return <section className="attack-neuron" aria-label={'Counter97 weight inspection'}>
+  return <section className="attack-neuron" aria-label={'Counter weight inspection'}>
     <label className="attack-neuron-picker">Neuron
       <select aria-label="Neuron" value={neuron} onChange={event => onNeuron(event.target.value)}>
         {inspection.denseLayers.map((dense, l) => <optgroup key={l} label={dense.activation ? `Hidden layer ${l + 1}` : 'Action scores'}>
@@ -171,14 +109,14 @@ function NeuronInspector({ sample, neuron, onNeuron }: { sample: ModelSample; ne
 }
 
 export function CounterWeightsLab({ model, onPlay }: { model: Controller | undefined; onPlay: () => void }) {
-  const [experiment, setExperiment] = useState<Experiment>('wall')
-  const [frame, setFrame] = useState<LabFrame>(experiments[0].frame)
+  const [frame, setFrame] = useState<LabFrame>(startingFrame)
   const [muted, setMuted] = useState(false)
   const [snapshot, setSnapshot] = useState<Snapshot | null>(null)
   const [error, setError] = useState('')
-  const [neuron, setNeuron] = useState('2:1')
-  const latest = useRef({ frame, experiment })
-  latest.current = { frame, experiment }
+  const [neuron, setNeuron] = useState('0:4')
+  const advanced = useRef<HTMLDetailsElement>(null)
+  const latest = useRef(frame)
+  latest.current = frame
 
   useEffect(() => {
     let disposed = false, busy = false, previous = ''
@@ -189,7 +127,7 @@ export function CounterWeightsLab({ model, onPlay }: { model: Controller | undef
     if (!model) return
     async function open() {
       try {
-        if (!model?.modelBytes) throw new Error('Counter97’s model bytes are unavailable.')
+        if (!model?.modelBytes) throw new Error('Counter’s model bytes are unavailable.')
         const original = await inspectAttackModel(model.modelBytes, 'counter97')
         if (disposed) return
         for (const inspection of [original, createCounterIntervention(original)]) {
@@ -199,8 +137,8 @@ export function CounterWeightsLab({ model, onPlay }: { model: Controller | undef
         }
         async function sample() {
           if (disposed || busy) return
-          const request = latest.current, current = request.frame
-          const key = request.experiment + ':' + frameKey(current)
+          const current = latest.current
+          const key = frameKey(current)
           if (key === previous) return
           busy = true
           try {
@@ -213,11 +151,11 @@ export function CounterWeightsLab({ model, onPlay }: { model: Controller | undef
               const values = Object.fromEntries(Object.entries(outputs).map(([name, tensor]) => [name, tensor.data as Float32Array]))
               result.push({ inspection, explanation: getAttackExplanation('counter97', input, values, Array.from(values.action_scores) as Scores, inspection) })
             }
-            if (key !== latest.current.experiment + ':' + frameKey(latest.current.frame)) return
+            if (key !== frameKey(latest.current)) return
             previous = key
-            setSnapshot({ experiment: request.experiment, frame: current, original: result[0], muted: result[1] })
+            setSnapshot({ frame: current, original: result[0], muted: result[1] })
           } catch (reason) {
-            if (!disposed) { clearInterval(timer); setSnapshot(null); setError(reason instanceof Error ? reason.message : 'Could not inspect Counter97.') }
+            if (!disposed) { clearInterval(timer); setSnapshot(null); setError(reason instanceof Error ? reason.message : 'Could not inspect Counter.') }
           } finally { busy = false }
         }
         timer = setInterval(() => { void sample() }, 50)
@@ -234,52 +172,69 @@ export function CounterWeightsLab({ model, onPlay }: { model: Controller | undef
     }
   }, [model])
 
-  const current = snapshot?.experiment === experiment ? snapshot : null
-  const preset = experiments.find(value => value.id === experiment)!
-  const reset = (id: Experiment) => {
-    setExperiment(id); setFrame(experiments.find(value => value.id === id)!.frame)
-    setMuted(false); setNeuron(startingNeuron[id])
+  const current = snapshot
+  const away = current ? current.frame.vx > 0 : frame.vx > 0
+  const detectorOn = current ? neuronValue(current.original.explanation, 0, 4) > 0 : false
+  function inspect(neuron: string) {
+    setNeuron(neuron)
+    if (advanced.current) {
+      advanced.current.open = true
+      advanced.current.scrollIntoView({ block: 'start' })
+    }
   }
   return <div className="weights-lab behavior-lab">
     <header className="weights-heading">
-      <div><span className="section-code">BUILDING BEHAVIOR / COUNTER97</span><h1>Small jobs. A working strategy.</h1><p>Three experiments in a handwritten network: detect a boundary, switch behavior, and adjust a target. See what each signal contributes.</p></div>
-      <button className="import-btn" onClick={onPlay} disabled={!model}><Play size={15} fill="currentColor" />Play against Counter97</button>
+      <div><span className="section-code">02 / COUNTER97 · 97 PARAMETERS</span><h1>Know when to stop chasing.</h1><p>The ball is on the right. Should the paddle follow it? Counter uses the ball’s direction to choose between meeting a return and getting ready for the next one.</p></div>
+      <button className="import-btn" onClick={onPlay} disabled={!model}><Play size={15} fill="currentColor" />Play against Counter</button>
     </header>
-    <div className="behavior-experiments" role="group" aria-label="Choose an experiment">{experiments.map((value, i) =>
-      <button key={value.id} aria-pressed={experiment === value.id} onClick={() => reset(value.id)}><span>0{i + 1}</span>{value.title}<ArrowRight size={14} /></button>)}
-    </div>
-    <section className="panel behavior-workbench" aria-label="Counter97 behavior experiment">
-      <div className="behavior-prompt"><span className="section-code">{experiment === 'wall' ? 'DETECT' : experiment === 'recovery' ? 'GATE' : 'COMBINE'}</span><h2>{preset.question}</h2><p>{preset.task}</p></div>
+    <section className="panel behavior-workbench" aria-label="Counter behavior experiment">
+      <div className="behavior-prompt"><h2>Same position. Different direction.</h2><p>Change only the ball’s direction. Watch the move change.</p></div>
       <div className="behavior-controls">
-        {experiment === 'wall' && <label>Ball position <output>{frame.y}</output><input aria-label="Ball position" type="range" min="40" max="150" step="1" value={frame.y} onChange={event => setFrame(f => ({ ...f, y: Number(event.target.value) }))} /><span>The ball moves sideways; depth and velocity stay fixed.</span></label>}
-        {experiment === 'recovery' && <div className="behavior-switches"><button className="secondary-btn" onClick={() => setFrame(f => ({ ...f, vx: -f.vx }))}><RotateCcw size={14} />Reverse ball direction</button><button className="secondary-btn" aria-pressed={muted} onClick={() => setMuted(value => !value)}>Mute outgoing detector</button><span>Same position and speed · only direction changes</span></div>}
-        {experiment === 'aim' && <label>Opponent position <output>{frame.paddles[1]}</output><input aria-label="Opponent position" type="range" min="15" max="145" step="1" value={frame.paddles[1]} onChange={event => setFrame(f => ({ ...f, paddles: [f.paddles[0], Number(event.target.value)] }))} /><span>0 left · 80 center · 160 right</span></label>}
-        <button className="behavior-reset" onClick={() => reset(experiment)}><RotateCcw size={13} />Reset experiment</button>
+        <div className="behavior-direction" role="group" aria-label="Ball direction">
+          <button aria-pressed={frame.vx > 0} onClick={() => setFrame(f => ({ ...f, vx: 13 }))}>Away from you</button>
+          <button aria-pressed={frame.vx < 0} onClick={() => setFrame(f => ({ ...f, vx: -13 }))}>Toward you</button>
+        </div>
+        <button className="behavior-reset" onClick={() => { setFrame(startingFrame); setMuted(false); setNeuron('0:4') }}><RotateCcw size={13} />Reset</button>
       </div>
-      {error ? <p className="weights-status" role="alert">{error}</p> : !current ? <p className="weights-status" role="status">Reading Counter97’s signals…</p> : <>
-        <div className={'behavior-workspace' + (muted ? ' has-comparison' : '')} aria-busy={frameKey(current.frame) !== frameKey(frame)}>
+      {error ? <p className="weights-status" role="alert">{error}</p> : !current ? <p className="weights-status" role="status">Reading Counter’s signals…</p> : <>
+        <div className="behavior-workspace" aria-busy={frameKey(current.frame) !== frameKey(frame)}>
           <div className={'behavior-decisions' + (muted ? ' has-comparison' : '')}>
-            <Decision sample={current.original} frame={current.frame} experiment={experiment} />
-            {muted && <Decision sample={current.muted} frame={current.frame} experiment={experiment} muted />}
-            <div className="attack-court-legend"><span><i className="legend-target" />Paddle target</span><span><i className="legend-estimate" />Landing estimate</span>{experiment === 'aim' && <span><i className="legend-corner" />Intended corner</span>}</div>
-            <p className="behavior-court-note">Frozen decision, not a match. The dotted guide is a landing estimate, not a simulated flight path.</p>
+            <Decision sample={current.original} frame={current.frame} />
+            {muted && <Decision sample={current.muted} frame={current.frame} muted />}
+            <div className="attack-court-legend"><span><i className="legend-paddle" />Paddle now</span><span><i className="legend-target" />Target</span></div>
+            <p className="behavior-court-note">One frozen moment. The arrow shows ball direction; the outline shows the paddle’s target.</p>
           </div>
           <div className="behavior-observation">
-            <span className="section-code">ORIGINAL NETWORK · LIVE SIGNALS</span>
-            <div className="behavior-readouts"><ExperimentReadouts experiment={experiment} sample={current.original} /></div>
-            {muted && <p className="behavior-test-result" role="status">{current.frame.vx > 0 ? <>With H1.5 muted, the forecast stays on: target <strong>{number(current.muted.explanation.target)}</strong> instead of <strong>{number(current.original.explanation.target)}</strong>. The network keeps chasing.</> : <>Both copies give the same result on approach. The detector was already zero.</>}</p>}
-            <div className="behavior-lesson"><Lesson experiment={experiment} /></div>
+            <span className="section-code">COUNTER97’S ORIGINAL DECISION</span>
+            <ol className="behavior-reasoning">
+              <li><span className="reasoning-number">1</span><div><h3>Is the ball leaving?</h3><p>A single neuron reads its direction.</p><span className={'detector-signal' + (detectorOn ? ' is-on' : '')}><i /><output aria-label="Outgoing detector state">{detectorOn ? 'On · ball moving away' : 'Off · ball coming back'}</output></span></div></li>
+              <li><span className="reasoning-number">2</span><div><h3>{away ? 'Pause the chase' : 'Use the landing forecast'}</h3><p>{away ? 'That signal tells later neurons to set aside the landing forecast and aim back toward center.' : 'With no departure signal, later neurons use the landing forecast to position the paddle for a return.'}</p></div></li>
+              <li><span className="reasoning-number">3</span><div><h3>{away ? 'Move left to recover' : 'Move right to intercept'}</h3><p>{away ? 'The paddle is right of center. Moving left gets it ready for the next return.' : 'The predicted return is to the paddle’s right. Moving right gets it into position.'}</p></div></li>
+            </ol>
+            <div className="behavior-intervention">
+              <h3>Does that neuron really matter?</h3><p>Switch it off and compare. The ball, paddles and every other weight stay the same.</p>
+              <button className="secondary-btn" aria-pressed={muted} onClick={() => setMuted(value => !value)}>{muted ? 'Restore the departure neuron' : 'Switch off the departure neuron'}</button>
+              {muted && <p className="behavior-test-result" role="status">{away ? <><strong>The move flips.</strong> Without the signal, the network moves right toward the predicted return even though the ball is leaving.</> : <><strong>No change this time.</strong> The departure neuron was already off. Both copies move right to meet the return.</>}</p>}
+            </div>
           </div>
         </div>
-        <details className="behavior-advanced" key={experiment}>
-          <summary>Inspect weights and formulas <span>6 → 6 → 4 → 3 → 3 · 97 parameters</span></summary>
-          <Formulas experiment={experiment} />
-          <div className="behavior-action-scores"><span className="section-code">ORIGINAL ACTION SCORES</span><div className="attack-scores">{current.original.explanation.scores.map((value, index) => <div key={index}><span>{actions[index]}</span><output aria-label={`Counter97 ${actions[index]} score`}>{number(value, 6)}</output></div>)}</div></div>
-          <NeuronInspector sample={current.original} neuron={neuron} onNeuron={setNeuron} />
-          {muted && <p className="behavior-formulas">The inspector shows the original network. The comparison copy sets all six input weights and the bias of H1.5 to zero; every downstream weight stays fixed. It runs in ONNX and is used only for this experiment.</p>}
-        </details>
       </>}
     </section>
-    <section className="weights-context"><div><h2>Design a role. Then test it.</h2><p>These roles were deliberately written into Counter97. In trained networks, tasks can be spread across neurons and a neuron can support several tasks. Activation suggests a role; removing a signal tests its contribution in that situation.</p></div><div className="weights-downloads"><a href={assetPath('models/counter97.onnx')} download="counter97.onnx"><Download size={15} />Download Counter97</a><a href={counterSourceUrl} download="counter97.py"><Code2 size={15} />Read Counter97’s constructor</a></div></section>
+    {current && <>
+      <NeuronMap sample={current.original} onInspect={inspect} />
+      <details className="panel behavior-advanced" ref={advanced}>
+        <summary>Inspect weights and formulas <span>6 inputs → 13 hidden neurons → 3 action scores</span></summary>
+        <div className="behavior-formulas">
+          <p><strong>The departure neuron, H1.5:</strong> its only nonzero weight reads the velocity between paddles. Its bias is zero.</p>
+          <p><code>departure signal = ReLU(depth velocity ÷ 6)</code></p>
+          <p>ReLU keeps positive values and clips negative ones to zero. Here the signal is {number(neuronValue(current.original.explanation, 0, 4), 6)}. Later weights use it to suppress the forecast and cancel the aiming offset.</p>
+          <p>This example uses speed 13, where recovery is exactly centered. At slower legal speeds the target can remain slightly off-center. It demonstrates this circuit’s contribution to one decision, not its effect on a whole match.</p>
+          {muted && <p>The comparison sets all input weights and the bias of H1.5 to zero in a separate ONNX copy. The inspector below shows the original model.</p>}
+        </div>
+        <div className="behavior-action-scores"><span className="section-code">ORIGINAL ACTION SCORES · HIGHEST WINS</span><div className="attack-scores">{current.original.explanation.scores.map((value, index) => <div key={index}><span>{actions[index]}</span><output aria-label={`Counter ${actions[index]} score`}>{number(value, 6)}</output></div>)}</div></div>
+        <NeuronInspector sample={current.original} neuron={neuron} onNeuron={setNeuron} />
+      </details>
+    </>}
+    <section className="weights-context"><div><h2>A signal becomes a strategy.</h2><p>The departure neuron does not move the paddle by itself. Its connections let later neurons change the target. Follow shares one signal between actions; Counter combines signals into a strategy. Both are programs written directly in weights.</p></div><div className="weights-downloads"><a href={assetPath('models/counter97.onnx')} download="counter97.onnx"><Download size={15} />Download Counter</a></div></section>
   </div>
 }

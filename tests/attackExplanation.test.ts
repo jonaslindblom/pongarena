@@ -96,11 +96,11 @@ test('the same legal scenarios expose opposite decisions without changing scores
   assert.equal(recovery.reflected, null)
   assert.equal(recovery.cornerTarget, null, 'A recovery action has no intended return corner')
   close(recovery.target, 80, 'Maximum-speed departure should recover to court center')
-  close(explanations.get('attack75:outgoing')!.target, 127.4359, 'Attack75 continues following its forecast on departure')
-  close(explanations.get('attack75:long')!.forecast, 118.25, 'Attack75 retains its twelve-tick lead cap')
-  close(explanations.get('counter97:long')!.forecast, 136.25, 'Counter97 extends the lead to eighteen ticks')
-  close(explanations.get('attack75:bounce')!.reflected!, 143.75, 'Attack75 folds its shorter forecast')
-  close(explanations.get('counter97:bounce')!.reflected!, 125.75, 'Counter97 anticipates the return from the wall earlier')
+  close(explanations.get('attack75:outgoing')!.target, 127.4359, 'Attack continues following its forecast on departure')
+  close(explanations.get('attack75:long')!.forecast, 118.25, 'Attack retains its twelve-tick lead cap')
+  close(explanations.get('counter97:long')!.forecast, 136.25, 'Counter extends the lead to eighteen ticks')
+  close(explanations.get('attack75:bounce')!.reflected!, 143.75, 'Attack folds its shorter forecast')
+  close(explanations.get('counter97:bounce')!.reflected!, 125.75, 'Counter anticipates the return from the wall earlier')
 })
 
 test('the intended corner reads the real opponent hinges, while missing or mismatched samples fail explicitly', async () => {
@@ -156,8 +156,8 @@ test('muting the outgoing detector changes only a teaching copy and its downstre
   assert.deepEqual(mutedGraph.output, beforeGraph.output, 'Both runs expose identical tensor names')
   for (let i = 2; i < beforeGraph.initializer!.length; i++)
     assert.deepEqual(mutedGraph.initializer![i], beforeGraph.initializer![i], 'Every downstream weight stays unchanged')
-  assert.throws(() => createCounterIntervention(muted), /unmodified Counter97/)
-  assert.throws(() => createCounterIntervention({ ...inspection, id: 'attack75' }), /unmodified Counter97/)
+  assert.throws(() => createCounterIntervention(muted), /unmodified Counter/)
+  assert.throws(() => createCounterIntervention({ ...inspection, id: 'attack75' }), /unmodified Counter/)
   // The normal frozen-weight validator must keep rejecting this altered copy.
   const playableMuted = pb.onnx.ModelProto.decode(muted.bytes)
   playableMuted.graph!.output = playableMuted.graph!.output!.filter(output => output.name === 'action_scores')

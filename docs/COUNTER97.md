@@ -1,10 +1,10 @@
-# Counter97: prediction, aiming and recovery under 100 parameters
+# Counter: prediction, aiming and recovery under 100 parameters
 
-Counter97 is a separate handwritten model with **97 parameters** and **81 MACs
+Counter is a separate handwritten model with **97 parameters** and **81 MACs
 per decision**. Its layout is **6 → 6 → 4 → 3 → 3**, with ReLU hidden layers
-and three linear action scores. Predict75 and Attack75 remain unchanged.
+and three linear action scores. Predict and Attack remain unchanged.
 
-The [constructor](../handwritten/counter97.py) combines Attack75's bounded
+The [constructor](../handwritten/counter97.py) combines Attack's bounded
 forecast and corner selection with Quill's direction gate and center recovery.
 Manual designs at 75 parameters or fewer sacrificed too much interception
 quality. The extra layer allows these behaviors to coexist while staying below
@@ -29,10 +29,10 @@ While the ball approaches, the unfolded forecast in court units is:
 ball_y + sign(ball_vy) · min(0.4 · distance, 18 · |ball_vy|) + 0.75 · ball_vy
 ```
 
-Here `distance` is distance to our contact plane. Counter97 extends Attack75's
+Here `distance` is distance to our contact plane. Counter extends Attack's
 12-tick lead cap to 18 ticks; the 0.75-tick term accounts approximately for
 discrete contact. The network reflects the prediction at normalized heights
-`±0.95`. Its incoming target retains Attack75's aiming law:
+`±0.95`. Its incoming target retains Attack's aiming law:
 
 ```text
 s = clip(80 · opponent_input + 4 · ball_y_input, −1, 1)
@@ -59,28 +59,28 @@ CPU/WASM with one thread. No weights changed after seeing these results. The
 [saved summary](counter97-evaluation.json) includes the complete plan, seeds,
 model hashes, evaluator identity and counts.
 
-Against Attack75, Counter97 won **127 paired contests, drew one and lost none**.
+Against Attack, Counter won **127 paired contests, drew one and lost none**.
 It won **1,130 of 1,280 rallies**, with 150 losses and no draws: **88.3%**.
 
 Comparison against all five opponents shared by both models:
 
-| Opponent | Attack75 rally score | Counter97 rally score |
+| Opponent | Attack rally score | Counter rally score |
 | --- | ---: | ---: |
 | Follow | 77.5% | 85.4% |
 | Quill | 9.1% | 15.2% |
 | Small | 69.5% | 56.8% |
 | Large | 3.5% | 15.7% |
-| Predict75 | 92.0% | 91.0% |
+| Predict | 92.0% | 91.0% |
 | Mean | **50.3%** | **52.8%** |
 
 Rally score counts draws as half a win. The mean gain is **2.5 percentage
 points**, with an approximate 95% paired bootstrap interval of **1.5–3.4
 points**, resampling whole shared serve sets with all five opponents and both
-sides together. These results support a strong direct advantage over Attack75
+sides together. These results support a strong direct advantage over Attack
 and a modest improvement across this field, with a substantial regression
-against Small. Quill and Large still beat Counter97 overall.
+against Small. Quill and Large still beat Counter overall.
 
-Counter97 uses horizontal velocity for recovery, but still approximates flight
+Counter uses horizontal velocity for recovery, but still approximates flight
 time instead of dividing distance by actual incoming speed. Difficult fast
 returns and multiple real wall bounces remain weaknesses. Bot results do not
 establish strength against human players.
@@ -118,5 +118,5 @@ npm run league -- --plan /tmp/counter97-plan.json --output /tmp/counter97-replay
 
 The saved plan requires the exact seven-model roster and evaluator. If future
 models are added, isolate the saved roster as shown in
-[Attack75's historical replay](ATTACK75.md#reproduce). Future weight changes
+[Attack's historical replay](ATTACK75.md#reproduce). Future weight changes
 require a new evaluation seed set.

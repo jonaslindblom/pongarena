@@ -2,3 +2,7 @@
 .model-details summary { cursor: pointer; min-height: 36px; padding: 8px 0; }
 .library-card .library-actions { margin-top: 18px; }
 .library-rank-note { margin: 0 0 18px; color: var(--muted); font-size: 12px; }
+.library-group + .library-group { margin-top: 32px; }
+.library-group-heading { margin-bottom: 16px; }
+.library-group-heading h2 { font-size: 22px; letter-spacing: -.5px; }
+.library-group-heading p { margin-top: 6px; color: var(--muted); font-size: 13px; line-height: 1.7; }

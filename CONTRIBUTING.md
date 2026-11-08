@@ -40,7 +40,7 @@ Small allows at most **256 parameters and 1,024 MACs** per decision. Large allow
 
 ## PR checks
 
-The [normal checks](.github/workflows/check.yml) validate models, run tests, replay the committed 16-seed development league and build the app. A separate job checks the training pipeline and reproduces all five handwritten models: Follow, Predict75, Attack75, Counter97 and Quill. Keep both committed league files current when changing the roster.
+The [normal checks](.github/workflows/check.yml) validate models, run tests, replay the committed 16-seed development league and build the app. A separate job checks the training pipeline and reproduces all five handwritten models: Follow, Predict, Attack, Counter and Quill. Keep both committed league files current when changing the roster.
 
 The [model submission gate](.github/workflows/model-evaluation.yml) runs the trusted base evaluator against PR model files and parses roster metadata as data. It freezes all model hashes, then draws **512 shared serve sets** and evaluates the complete proposed roster on both sides. Invalid submissions fail before ranking. Model bytes and evaluator identity determine the saved plan; retries and display-name changes reuse it, while changed model bytes get fresh serves. Keep model and evaluator changes in separate PRs.
 

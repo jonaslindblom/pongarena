@@ -4,9 +4,9 @@ import { readFileSync } from 'node:fs'
 import { validateArenaModel } from '../src/validate'
 
 for (const [id, name, hash] of [
-  ['predict75', 'Predict75', '0d405fe22a0a5f568c1d23d76356893e12aae1ef1c9a7f26150e8f35520b3cad'],
-  ['attack75', 'Attack75', '646d1a1365e3e307bd4431fc73930c5efa19de16b7cc22bbb9200608c2b720f8'],
-  ['counter97', 'Counter97', '5f7a480b98c982cf403f2f8849fac1e5e02503ff12e6b0b5d1e377856534e35c'],
+  ['predict75', 'Predict', '0d405fe22a0a5f568c1d23d76356893e12aae1ef1c9a7f26150e8f35520b3cad'],
+  ['attack75', 'Attack', '646d1a1365e3e307bd4431fc73930c5efa19de16b7cc22bbb9200608c2b720f8'],
+  ['counter97', 'Counter', '5f7a480b98c982cf403f2f8849fac1e5e02503ff12e6b0b5d1e377856534e35c'],
 ]) test(`${name} is attributed, downloadable and playable as a bundled controller`, async ({ page }) => {
   const bytes = readFileSync(`public/models/${id}.onnx`)
   const stats = validateArenaModel(bytes)

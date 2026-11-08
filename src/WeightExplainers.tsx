@@ -11,12 +11,12 @@ export function WeightExplainers({ models, selected, onSelect, onPlay }: {
   onPlay: (id: string) => void
 }) {
   return <>
-    <div className="weight-explainer-picker" role="group" aria-label="Choose a weight explainer">
-      {([['follow', 'Basics · Follow'], ['counter97', 'Building behavior · Counter97']] as const).map(([id, name]) =>
+    <div className="weight-explainer-picker" role="group" aria-label="Choose a lesson">
+      {([['follow', '1 · Follow the ball'], ['counter97', '2 · Know when to return']] as const).map(([id, name]) =>
         <button key={id} className="secondary-btn" aria-pressed={selected === id} onClick={() => onSelect(id)}>{name}</button>)}
     </div>
     {selected === 'follow'
-      ? <WeightsLab model={models.find(model => model.id === 'follow')} onPlay={() => onPlay('follow')} />
+      ? <WeightsLab model={models.find(model => model.id === 'follow')} onPlay={() => onPlay('follow')} onNext={() => { onSelect('counter97'); window.scrollTo({ top: 0 }) }} />
       : <CounterWeightsLab model={models.find(model => model.id === 'counter97')} onPlay={() => onPlay('counter97')} />}
   </>
 }

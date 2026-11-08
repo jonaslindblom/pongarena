@@ -1,4 +1,4 @@
-"""Build Predict75's 75 handwritten parameters. No training or checkpoints required."""
+"""Build Predict's 75 handwritten parameters. No training or checkpoints required."""
 import argparse
 import hashlib
 from pathlib import Path

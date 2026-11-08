@@ -72,7 +72,7 @@ export interface AttackInspection {
 // outputs so the explanation reads real inference instead of running a policy.
 export async function inspectAttackModel(bytes: Uint8Array, id: AttackModelId): Promise<AttackInspection> {
   const expected = models[id]
-  if (!expected) throw new Error('Choose Attack75 or Counter97 for this explanation.')
+  if (!expected) throw new Error('Choose Attack or Counter for this explanation.')
   const stats = validateArenaModel(bytes)
   if (stats.architecture.widths.join(',') !== expected.widths.join(',') ||
     stats.architecture.operations.some(operation => operation.op !== 'Gemm' && operation.op !== 'Relu'))
@@ -110,10 +110,10 @@ export async function inspectAttackModel(bytes: Uint8Array, id: AttackModelId): 
 }
 
 // Mute H1.5 on an isolated teaching copy. Removing this detector lets all of its
-// downstream connections read zero; it does not recreate Attack75's policy.
+// downstream connections read zero; it does not recreate Attack's policy.
 export function createCounterIntervention(inspection: AttackInspection): AttackInspection {
   if (inspection.id !== 'counter97' || inspection.sha256 !== models.counter97.hash || inspection.intervention)
-    throw new Error('The outgoing-detector experiment needs an unmodified Counter97 inspection.')
+    throw new Error('The outgoing-detector experiment needs an unmodified Counter inspection.')
   const model = pb.onnx.ModelProto.decode(Uint8Array.from(inspection.bytes))
   const first = model.graph!.node!.find(node => node.opType === 'Gemm')!
   const transposed = first.attribute?.some(attribute => attribute.name === 'transB' && Number(attribute.i) === 1)

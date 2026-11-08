@@ -107,6 +107,24 @@ dl {
 .brand-light {
   font-weight: 480;
 }
+.github-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  flex: none;
+  min-width: 44px;
+  min-height: 44px;
+  margin-left: auto;
+  padding: 8px;
+  border-radius: 7px;
+  color: #44613f;
+  font-size: 12px;
+  font-weight: 650;
+}
+.github-link:hover {
+  background: #e8eedf;
+}
 nav {
   display: flex;
   gap: 7px;
@@ -966,7 +984,16 @@ legend {
 }
 @media (max-width: 920px) {
   .topinner {
-    gap: 25px;
+    flex-wrap: wrap;
+    height: auto;
+    gap: 0;
+    justify-content: space-between;
+    padding-top: 12px;
+  }
+  .topinner nav {
+    order: 2;
+    width: 100%;
+    margin: 10px 0 7px;
   }
   .arena-grid {
     grid-template-columns: auto minmax(0, 1fr);
@@ -1152,12 +1179,17 @@ legend {
     gap: 14px;
   }
   .topinner nav {
+    order: 0;
     width: auto;
     margin: 0;
   }
   .topinner nav button {
     min-height: 44px;
     padding: 7px 8px;
+  }
+  .brand > span,
+  .github-link > span {
+    display: none;
   }
   .page-head p {
     display: none;

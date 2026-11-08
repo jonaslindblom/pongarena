@@ -8,7 +8,7 @@ import { validateArenaModel } from '../src/validate'
 
 const bytes = readFileSync(new URL('../public/models/counter97.onnx', import.meta.url))
 
-test('Counter97 adds recovery within 100 parameters while preserving the existing handwritten models', async () => {
+test('Counter adds recovery within 100 parameters while preserving the existing handwritten models', async () => {
   const stats = validateArenaModel(bytes)
   assert.deepEqual([stats.params, stats.macs, stats.nodes], [97, 81, 7])
   assert.deepEqual(stats.architecture.widths, [6, 6, 4, 3, 3])
@@ -23,7 +23,7 @@ test('Counter97 adds recovery within 100 parameters while preserving the existin
   }
 })
 
-test('Counter97 anticipates incoming shots, reflects walls and selects the open corner in WASM', async () => {
+test('Counter anticipates incoming shots, reflects walls and selects the open corner in WASM', async () => {
   ort.env.wasm.numThreads = 1
   const session = await ort.InferenceSession.create(bytes, { executionProviders: ['wasm'] })
   const action = async (changes: Partial<Frame>) => {
@@ -52,7 +52,7 @@ test('Counter97 anticipates incoming shots, reflects walls and selects the open 
   }
 })
 
-test('Counter97 recovers toward center on both sides without chasing an outgoing ball', async () => {
+test('Counter recovers toward center on both sides without chasing an outgoing ball', async () => {
   ort.env.wasm.numThreads = 1
   const session = await ort.InferenceSession.create(bytes, { executionProviders: ['wasm'] })
   const scores = async (frame: Frame, side: Side): Promise<Scores> => {
@@ -97,7 +97,7 @@ test('Counter97 recovers toward center on both sides without chasing an outgoing
   }
 })
 
-test('Counter97 still creates real angled corner returns after adding recovery', async () => {
+test('Counter still creates real angled corner returns after adding recovery', async () => {
   ort.env.wasm.numThreads = 1
   const session = await ort.InferenceSession.create(bytes, { executionProviders: ['wasm'] })
   try {

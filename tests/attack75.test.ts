@@ -8,7 +8,7 @@ import { validateArenaModel } from '../src/validate'
 
 const bytes = readFileSync(new URL('../public/models/attack75.onnx', import.meta.url))
 
-test('Attack75 remains a separate Small model with Predict75’s 75-parameter layout', async () => {
+test('Attack remains a separate Small model with Predict’s 75-parameter layout', async () => {
   const stats = validateArenaModel(bytes)
   assert.deepEqual([stats.params, stats.macs, stats.nodes], [75, 63, 5])
   assert.deepEqual(stats.architecture.widths, [6, 6, 3, 3])
@@ -19,7 +19,7 @@ test('Attack75 remains a separate Small model with Predict75’s 75-parameter la
     'Adding an aggressive fork must preserve the original controller')
 })
 
-test('Attack75 anticipates bounces and changes shot placement with the opponent in WASM', async () => {
+test('Attack anticipates bounces and changes shot placement with the opponent in WASM', async () => {
   ort.env.wasm.numThreads = 1
   const session = await ort.InferenceSession.create(bytes, { executionProviders: ['wasm'] })
   const action = async (changes: Partial<Frame>) => {
@@ -46,7 +46,7 @@ test('Attack75 anticipates bounces and changes shot placement with the opponent 
   }
 })
 
-test('Attack75’s aiming produces angled corner returns through real collision physics on both sides', async () => {
+test('Attack’s aiming produces angled corner returns through real collision physics on both sides', async () => {
   ort.env.wasm.numThreads = 1
   const session = await ort.InferenceSession.create(bytes, { executionProviders: ['wasm'] })
   try {

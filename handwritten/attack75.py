@@ -1,4 +1,4 @@
-"""Build Attack75's 75 handwritten parameters. No training or fitting required."""
+"""Build Attack's 75 handwritten parameters. No training or fitting required."""
 import argparse
 import hashlib
 from pathlib import Path
@@ -10,7 +10,7 @@ from onnx import TensorProto, helper, numpy_helper
 
 def weights():
     """Return three dense layers implementing a forecast, wall fold and aiming."""
-    # Reuse Predict75's layout, spending two forecast hinges on shot selection.
+    # Reuse Predict's layout, spending two forecast hinges on shot selection.
     # d = (ball_x - 15) / 180; v = ball_vy / 6. For d >= 0,
     # ReLU(d+v)-ReLU(d-v)-v = sign(v)*min(d, abs(v)).
     # Scale by .9: the forecast leads by at most 12 ticks, with a .75-tick
