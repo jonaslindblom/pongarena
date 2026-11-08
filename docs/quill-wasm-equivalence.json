@@ -1,0 +1,16 @@
+{
+  "schema": "pongarena-parallel-equivalence-v1",
+  "planSha256": "67e51459db36054049c7d925d57b586a476915cd47762ceb53e9213c5708467b",
+  "evaluatorSha256": "0b00c71f490ddedec8a317942360cf4383ebe11a2e464c971f2f81fb9c1257cd",
+  "wrapperSha256": "7b2d0e2fa5a93767801ca77f6ec9b7dd8c4613e059af32322ceffddc4d5b7d05",
+  "backend": "ONNX Runtime Web CPU/WASM, one thread per child",
+  "workers": 2,
+  "benchmark": "e2a0a3467925a4e85e81a92e65b9ea0c4b52098ed95515318ab5d862055d4519",
+  "seeds": [
+    16700985,
+    19170181
+  ],
+  "games": 144,
+  "exactJson": true,
+  "exactMarkdown": true
+}

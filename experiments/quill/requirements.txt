@@ -1,0 +1,4 @@
+# Weight construction and CPU experiments only; no training framework.
+numpy==2.3.5
+onnx==1.23.2
+onnxruntime==1.31.1
