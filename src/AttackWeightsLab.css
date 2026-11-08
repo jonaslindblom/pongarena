@@ -1,0 +1,101 @@
+.weight-explainer-picker { display: flex; flex-wrap: wrap; gap: 9px; padding-top: 25px; }
+.weight-explainer-picker button[aria-pressed='true'] { background: #294735; border-color: #294735; color: #eff4e8; }
+.attack-workbench { overflow: hidden; }
+.attack-controls { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 24px; padding: 22px 24px 12px; }
+.attack-controls label { min-width: 0; font-size: 12px; font-weight: 700; }
+.attack-controls output { float: right; color: var(--muted); font: 12px var(--mono); }
+.attack-controls select, .attack-neuron-picker select { display: block; width: 100%; min-width: 0; margin-top: 9px; padding: 9px; border: 1px solid var(--line); border-radius: 6px; color: var(--ink); background: var(--paper); font: inherit; }
+.attack-controls input[type='range'] { display: block; width: 100%; margin: 14px 0 0; accent-color: #436e38; cursor: pointer; }
+.attack-situation { padding: 0 24px 20px; color: var(--muted); font-size: 12px; line-height: 1.7; }
+.attack-comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: #49634d; }
+.attack-model { min-width: 0; padding: 21px 26px 17px; color: #e1ecd4; background: #1b332a; }
+.attack-model.is-inspected { background: #203c2e; }
+.attack-model-heading { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 7px; }
+.attack-model-heading h2 { font-size: 17px; }
+.attack-model-heading > span { color: #bbccad; font: 10px var(--mono); }
+.attack-court-wrap { width: min(100%, 175px); margin: 17px auto 16px; }
+.attack-court { display: block; width: 100%; height: 260px; margin: 7px 0; overflow: visible; }
+.attack-end-label { display: block; text-align: center; color: #bbccad; font: 9px var(--mono); line-height: 1.7; }
+.attack-boundary { stroke: #66826c; fill: #19382b; }
+.attack-midline, .attack-centerline { stroke: #55715c; stroke-width: 1; stroke-dasharray: 4 6; }
+.attack-centerline { opacity: .5; }
+.attack-own-paddle { fill: #e8f1db; }
+.attack-opponent { fill: #eead78; }
+.attack-target { stroke: #c5f77e; stroke-width: 2; stroke-dasharray: 4 3; fill: none; }
+.attack-estimate { stroke: #f5cd91; stroke-width: 2; fill: #19382b; }
+.attack-estimate-line { stroke: #b6c8a6; stroke-width: 1; stroke-dasharray: 2 5; opacity: .6; }
+.attack-corner { fill: #c3bbf1; }
+.attack-ball { fill: #e8f1db; }
+.attack-velocity, .attack-velocity-tip { stroke: #e8f1db; fill: #e8f1db; }
+.attack-court.stage-2 .attack-corner { stroke: #e8e2ff; stroke-width: 2; }
+.attack-court.stage-0 .attack-estimate, .attack-court.stage-1 .attack-estimate { stroke-width: 4; }
+.attack-court.stage-3 .attack-target, .attack-court.stage-4 .attack-target { stroke-width: 3; }
+.attack-decision { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-bottom: 13px; }
+.attack-decision > output { color: #c5f77e; font-size: 19px; font-weight: 700; }
+.attack-decision > span { color: #bbccad; font: 11px var(--mono); }
+.attack-scores { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.attack-scores > div { display: flex; flex-direction: column; gap: 6px; padding: 10px 8px; border: 1px solid #49634d; border-radius: 6px; }
+.attack-scores > div.is-chosen { border-color: #a7ca78; background: #344f32; }
+.attack-scores span { color: #bbccad; font-size: 11px; }
+.attack-scores output { font: 11px var(--mono); }
+.attack-stage-value { margin-top: 15px; color: #e1ecd4; font: 12px var(--mono); line-height: 1.7; }
+.attack-court-legend { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px 24px; padding: 17px 20px 8px; background: #1b332a; }
+.attack-court-legend span { display: flex; align-items: center; gap: 8px; color: #c4d4b9; font-size: 11px; }
+.attack-court-legend i { display: inline-block; width: 18px; height: 8px; }
+.attack-court-legend .legend-target { border: 1px dashed #c5f77e; border-radius: 2px; }
+.attack-court-legend .legend-estimate { width: 8px; height: 8px; border: 2px solid #f5cd91; border-radius: 50%; }
+.attack-court-legend .legend-corner { width: 7px; height: 7px; background: #c3bbf1; transform: rotate(45deg); }
+.attack-comparison-caption { padding: 7px 24px 20px; color: #bbccad; background: #1b332a; text-align: center; font-size: 12px; line-height: 1.7; }
+.attack-stage-picker { display: flex; flex-wrap: wrap; gap: 8px; padding: 22px 24px 0; }
+.attack-stage-picker button { display: flex; align-items: center; gap: 8px; padding: 10px 13px; border: 1px solid var(--line); border-radius: 7px; color: var(--ink); background: transparent; cursor: pointer; font-size: 12px; font-weight: 600; }
+.attack-stage-picker button > span { color: #668258; font: 10px var(--mono); }
+.attack-stage-picker button[aria-pressed='true'] { border-color: #527447; background: #e4ebd9; }
+.attack-stage-explanation { padding: 23px 24px; max-width: 850px; }
+.attack-stage-explanation h2 { margin: 7px 0 10px; font-size: 18px; letter-spacing: -.3px; }
+.attack-stage-explanation p { margin-top: 8px; color: var(--muted); font-size: 13px; line-height: 1.8; }
+.attack-stage-explanation strong { color: #304d37; }
+.attack-neuron { padding: 23px 24px; border-top: 1px solid var(--line); min-width: 0; }
+.attack-neuron-picker { display: block; max-width: 580px; font-size: 12px; font-weight: 700; }
+.attack-neuron-description { display: flex; flex-wrap: wrap; gap: 7px 18px; padding: 18px 0 12px; font-size: 12px; line-height: 1.6; }
+.attack-neuron-description span { color: var(--muted); }
+.attack-table-scroll { overflow-x: auto; max-width: 100%; }
+.attack-table-hint { display: none; }
+.attack-neuron table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.attack-neuron th, .attack-neuron td { padding: 8px 12px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+.attack-neuron th:first-child { text-align: left; }
+.attack-neuron th { font-weight: 500; }
+.attack-neuron td { font: 11px var(--mono); }
+.attack-neuron thead th { color: var(--muted); font-size: 11px; }
+.attack-neuron .is-zero { color: var(--muted); }
+.attack-neuron-sum { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; padding: 20px 0 13px; }
+.attack-neuron-sum > div { display: flex; flex-direction: column; gap: 8px; }
+.attack-neuron-sum span { color: var(--muted); font-size: 11px; }
+.attack-neuron-sum output { color: #304d37; font: 15px var(--mono); }
+.attack-caption { color: var(--muted); font-size: 11px; line-height: 1.8; }
+.attack-all-weights { margin-top: 20px; border-top: 1px solid var(--line); }
+.attack-all-weights summary { padding: 18px 0 0; font-size: 12px; font-weight: 700; cursor: pointer; }
+.attack-all-weights caption { padding: 20px 0 10px; text-align: left; font-weight: 700; }
+@media (max-width: 850px) {
+  .attack-model { padding: 19px 17px; }
+  .attack-controls { gap: 18px; }
+  .attack-model-heading { flex-direction: column; }
+}
+@media (max-width: 600px) {
+  .weight-explainer-picker { gap: 7px; }
+  .weight-explainer-picker .secondary-btn { flex: 1 0 160px; justify-content: center; }
+  .attack-controls { grid-template-columns: 1fr; gap: 19px; padding: 20px 17px; }
+  .attack-controls select, .attack-neuron-picker select { font-size: 16px; }
+  .attack-controls input[type='range'] { min-height: 24px; margin-top: 5px; }
+  .attack-situation { padding: 0 17px 19px; }
+  .attack-comparison { grid-template-columns: 1fr; }
+  .attack-model { padding: 20px 17px; }
+  .attack-model-heading { flex-direction: row; }
+  .attack-court { height: 245px; }
+  .attack-stage-picker { padding: 20px 17px 0; }
+  .attack-stage-picker button { min-height: 44px; flex: 1 0 125px; }
+  .attack-stage-explanation, .attack-neuron { padding: 20px 17px; }
+  .attack-neuron-sum { grid-template-columns: 1fr; gap: 13px; }
+  .attack-neuron-sum > div { flex-direction: row; justify-content: space-between; align-items: baseline; }
+  .attack-neuron th, .attack-neuron td { padding: 8px; }
+  .attack-table-hint { display: block; margin-bottom: 10px; font-size: 11px; color: var(--muted); }
+}

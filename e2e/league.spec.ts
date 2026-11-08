@@ -27,7 +27,7 @@ for (const width of [390, 1280]) {
     const reference = page.getByRole('region', { name: 'Reference league' })
     await expect(reference.locator('tbody tr')).toHaveCount(spec.entrants.length)
     await expect(reference).toContainText('512 paired serve sets per opponent')
-    await expect(reference).toContainText('10,240 games')
+    await expect(reference).toContainText(`${run.totalMatches.toLocaleString('en-US')} games`)
     for (const entrant of spec.entrants) {
       await expect(page.getByLabel(entrant.name + ' score uncertainty', { exact: true }))
         .toHaveText(/95% CI \d+\.\d%–\d+\.\d%|No variation observed/)

@@ -29,7 +29,7 @@ import { PONG } from './rules'
 import { Ranking } from './Ranking'
 import { RankBadge } from './RankBadge'
 import { useReferenceRanks } from './useReferenceRanks'
-import { WeightsLab } from './WeightsLab'
+import { WeightExplainers, type ExplainerId } from './WeightExplainers'
 import { browserCompetitionMatch } from './runCompetition'
 import { sha256, smallestDivision, type CompetitionEntrant } from './competition'
 import { DeviceTest } from './DeviceTest'
@@ -97,7 +97,7 @@ function Guide({ onDeviceTest }: { onDeviceTest: () => void }) {
         <p>
           Quill is a neural network with handwritten weights: its ball prediction and paddle control
           are built directly into dense matrices. Small and Large are trained in PyTorch.
-          Follow is a tiny handwritten example explained in the Weights tab.
+          The Weights tab explains Follow’s single neuron, Attack75’s corner aiming, and Counter97’s prediction and recovery.
           Every model receives the same observations and chooses from the same moves.
         </p>
         <div className="section-code">02 / OBSERVATION</div>
@@ -189,6 +189,7 @@ function Guide({ onDeviceTest }: { onDeviceTest: () => void }) {
 
 export default function App() {
   const [page, setPage] = useState<Page>('Arena')
+  const [explainer, setExplainer] = useState<ExplainerId>('follow')
   const referenceRanks = useReferenceRanks(page === 'Model library')
   const [mode, setMode] = useState<'play' | 'watch'>('play')
   const [startup, setStartup] = useState(getStartupSnapshot)
@@ -422,7 +423,7 @@ export default function App() {
           />
         )}
         {page === 'Device test' && <DeviceTest models={eligibleModels} startup={startup} loadingComplete={loadingComplete} />}
-        {page === 'Understanding the weights' && <WeightsLab model={models.find((model) => model.id === 'follow')} onPlay={() => playAgainst('follow')} />}
+        {page === 'Understanding the weights' && <WeightExplainers models={models} selected={explainer} onSelect={setExplainer} onPlay={playAgainst} />}
         {page === 'Rankings' && (
           <Ranking key={rules.id} entrants={eligibleModels.filter((model) => model.type !== 'human' && model.sha256).map((model) => ({
             id: model.id, name: model.name, sha256: model.sha256!, params: model.params, macs: model.macs,
@@ -470,6 +471,10 @@ export default function App() {
                   </dl>
                   </details>
                   <div className="library-actions">
+                    {(c.id === 'follow' || c.id === 'attack75' || c.id === 'counter97') && <button className="secondary-btn" onClick={() => {
+                      setExplainer(c.id as ExplainerId)
+                      navigate('Understanding the weights')
+                    }}><Network size={14} /> Explain weights</button>}
                     <button className="secondary-btn" onClick={() => playAgainst(c.id)}>
                       <Gamepad2 size={14} /> Play against
                     </button>
