@@ -35,6 +35,7 @@ import { sha256, smallestDivision, type CompetitionEntrant } from './competition
 import { DeviceTest } from './DeviceTest'
 import { finishStartup, getStartupSnapshot, markArenaReady, recordStartupFailure, recordStartupTiming } from './startup'
 import { assetPath } from './assets'
+import { DEFAULT_MODEL, readMatchLink, writeMatchLink } from './matchLink'
 import quillSourceUrl from '../handwritten/quill.py?url'
 import './App.css'
 type Page = 'Arena' | 'Rankings' | 'Model library' | 'Understanding the weights' | 'Field guide' | 'Device test'
@@ -73,6 +74,7 @@ function Guide({ onDeviceTest }: { onDeviceTest: () => void }) {
         </p>
         <p>
           Serves start at the center with gentle, varied angles and alternate ends.
+          Human games count down three seconds before each serve.
           New games use fresh serves. Restart repeats the same serves for practice.
         </p>
         <p>
@@ -191,12 +193,13 @@ export default function App() {
   const [page, setPage] = useState<Page>('Arena')
   const [explainer, setExplainer] = useState<ExplainerId>('follow')
   const referenceRanks = useReferenceRanks(page === 'Model library')
-  const [mode, setMode] = useState<'play' | 'watch'>('play')
+  const [initialMatch] = useState(() => readMatchLink(window.location.search))
+  const [mode, setMode] = useState(initialMatch.mode)
   const [startup, setStartup] = useState(getStartupSnapshot)
   const [loadingComplete, setLoadingComplete] = useState(false)
   const [models, setModels] = useState<Controller[]>([keyboard])
   const currentModels = useRef(models)
-  const [ids, setIds] = useState<Pair<string>>(['keyboard', 'quill'])
+  const [ids, setIds] = useState<Pair<string>>(initialMatch.ids)
   const [error, setError] = useState(''),
     [notice, setNotice] = useState('')
   const [importSide, setImportSide] = useState<Side>(0),
@@ -207,7 +210,7 @@ export default function App() {
     fileInput = useRef<HTMLInputElement>(null)
   const eligibleModels = models.filter((model) => model.id === 'keyboard' ||
     model.inputSize === rules.inputSize && model.outputSize === rules.outputSize)
-  const ready = models.some((p) => p.id === 'quill')
+  const ready = ids.every((id) => eligibleModels.some((model) => model.id === id))
   useEffect(() => {
     if (ready) { markArenaReady(); setStartup(getStartupSnapshot()) }
   }, [ready])
@@ -216,6 +219,17 @@ export default function App() {
   }, [loadingComplete, ready])
   const players = ids.map((id) => models.find((p) => p.id === id)) as Pair<Controller | undefined>
   const m = useMatch(players, setError, page === 'Arena', rules, undefined, true)
+  useEffect(() => {
+    if (!loadingComplete || !models.some((model) => model.id === DEFAULT_MODEL)) return
+    const fallback: Pair<string> = mode === 'play' ? ['keyboard', DEFAULT_MODEL] : [DEFAULT_MODEL, 'quill']
+    if (ids.some((id) => !eligibleModels.some((model) => model.id === id))) {
+      setIds(ids.map((id, side) => eligibleModels.some((model) => model.id === id) ? id : fallback[side]) as Pair<string>)
+      setNotice('A linked model is unavailable in this browser. Using a bundled model instead.')
+      return
+    }
+    const url = writeMatchLink(new URL(window.location.href), mode, ids)
+    window.history.replaceState(null, '', url)
+  }, [loadingComplete, mode, ids, models])
   const currentMatch = useRef(m)
   currentMatch.current = m
   function appendModels(entries: Controller[]) {
@@ -306,7 +320,7 @@ export default function App() {
     if (next === mode) return
     m.reset()
     setMode(next)
-    setIds(next === 'play' ? ['keyboard', ids[1]] : ['large', 'quill'])
+    setIds(next === 'play' ? ['keyboard', ids[1]] : ['large', DEFAULT_MODEL])
     setError('')
   }
   async function importFile(file: File | undefined) {

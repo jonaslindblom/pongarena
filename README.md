@@ -98,3 +98,11 @@ The checked-in [development standings](public/league.md) use **16 fixed public s
 ## License
 
 PongArena’s original source code, documentation and bundled ONNX model weights use the [MIT License](LICENSE). Contributions, including model submissions, are accepted under MIT. Third-party dependencies and assets retain their own licenses; their [notices](public/THIRD_PARTY_NOTICES.txt) ship with the website.
+
+Arena links accept `?model=counter97` to choose a human opponent, or
+`?mode=watch&model=counter97&opponent=quill` to watch two models.
+Add `&fullscreen=1` to open the court in a viewport-filling layout. Games open
+ready to start with Play (or P). Model and fullscreen changes update the URL
+for copying. Imported models are available only in browsers where they were saved;
+unavailable linked models fall back to bundled models with a notice.
+Human games show a three-second countdown before every serve.

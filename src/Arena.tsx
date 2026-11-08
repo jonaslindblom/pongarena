@@ -45,7 +45,7 @@ type Mode = 'play' | 'watch'
 function playLabel(m: Match, mode: Mode) {
   if (m.playing) return 'Pause'
   if (endedMatch(m.frame)) return mode === 'play' ? 'Play again' : 'Watch again'
-  if (m.tick) return 'Resume'
+  if (m.started) return 'Resume'
   return mode === 'play' ? 'Play' : 'Watch'
 }
 function Court({ m, names, ready, humanSides, bottom, mode, onModeChange }: {
@@ -60,7 +60,7 @@ function Court({ m, names, ready, humanSides, bottom, mode, onModeChange }: {
   const court = useRef<HTMLElement>(null)
   const fullscreenControl = useRef<HTMLButtonElement>(null)
   const fullscreenWanted = useRef(false)
-  const [fullscreen, setFullscreen] = useState(false)
+  const [fullscreen, setFullscreen] = useState(() => new URLSearchParams(window.location.search).get('fullscreen') === '1')
   useLayoutEffect(() => {
     const element = court.current!
     const preventSelection = (event: Event) => event.preventDefault()
@@ -104,6 +104,10 @@ function Court({ m, names, ready, humanSides, bottom, mode, onModeChange }: {
     return () => window.removeEventListener('keydown', keydown)
   }, [fullscreen])
   useLayoutEffect(() => {
+    const url = new URL(window.location.href)
+    if (fullscreen) url.searchParams.set('fullscreen', '1')
+    else url.searchParams.delete('fullscreen')
+    window.history.replaceState(null, '', url)
     if (!fullscreen) return
     const scrollX = window.scrollX, scrollY = window.scrollY
     const previousFocus = document.activeElement as HTMLElement | null
@@ -180,7 +184,7 @@ function Court({ m, names, ready, humanSides, bottom, mode, onModeChange }: {
       ? 'Game over'
       : m.playing
         ? 'Live'
-        : f.tick
+        : m.started
           ? 'Paused'
           : 'Ready'
   const finished = endedMatch(f)
@@ -248,7 +252,7 @@ function Court({ m, names, ready, humanSides, bottom, mode, onModeChange }: {
           <strong>{names[1]}</strong>
         </div>
       </div>
-      <div className="court-field">
+      <div className={'court-field' + (m.playing && m.countdown !== null ? ' is-counting-down' : '')}>
         {!finished && <CourtTouchHints humanSides={humanSides} directions={directions} playing={m.playing} />}
         <div className="court-surface">
           <svg
@@ -320,6 +324,10 @@ function Court({ m, names, ready, humanSides, bottom, mode, onModeChange }: {
           </svg>
           <span className="court-center-circle" aria-hidden="true" />
         </div>
+        {m.playing && m.countdown !== null && <div className="serve-countdown" role="status" aria-live="polite">
+          <span>Get ready</span>
+          <strong>{m.countdown}</strong>
+        </div>}
         {finished && <div className="match-over" role="status">
           <div className="match-over-card">
             <p className="match-over-label">GAME OVER</p>

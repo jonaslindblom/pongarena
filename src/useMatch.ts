@@ -46,6 +46,8 @@ export function useMatch(
   const [position, setPosition] = useState({ tick: 0 }),
     [playing, setPlaying] = useState(false),
     [runVersion, setRunVersion] = useState(0)
+  const [started, setStarted] = useState(false)
+  const [countdown, setCountdown] = useState<number | null>(null)
   const tick = position.tick
   const setTick = (tick: number) => setPosition({ tick })
   const presentation = useRef<Presentation>({
@@ -74,11 +76,13 @@ export function useMatch(
     setRunVersion((version) => version + 1)
     running.current = false
     setPlaying(false)
+    setCountdown(null)
     clearHumanInput()
     present()
   }
   function reset(nextSeed = newMatchSeed(seed)) {
     pause()
+    setStarted(false)
     setSeed(nextSeed)
     history.current = [rules.serve(nextSeed)]
     loops.current = rules.detector()
@@ -89,6 +93,7 @@ export function useMatch(
   function play() {
     if (endedMatch(history.current[cursor.current])) reset()
     running.current = true
+    setStarted(true)
     setPlaying(true)
   }
   function restart() {
@@ -161,9 +166,27 @@ export function useMatch(
   useEffect(() => {
     if (!playing || !arenaActive || !players[0] || !players[1]) return
     let alive = true, pumping = false, raf = 0
+    const humanMatch = players.some((player) => player?.type === 'human')
+    let serveAt: number | null = null
     let due = performance.now() + frameDuration(history.current[cursor.current])
+    function prepareServe(now: number) {
+      if (humanMatch && history.current[cursor.current].event === 'serve') {
+        serveAt = now + 3000
+        setCountdown(3)
+      }
+    }
+    prepareServe(performance.now())
     async function pump(now: number) {
       if (pumping || pending.current) return
+      if (serveAt !== null) {
+        if (now < serveAt) {
+          setCountdown(Math.ceil((serveAt - now) / 1000))
+          return
+        }
+        serveAt = null
+        setCountdown(null)
+        due = now
+      }
       pumping = true
       // Deadlines follow the simulation cadence rather than inference completion.
       // At most four states are advanced per animation callback after a stall.
@@ -171,6 +194,8 @@ export function useMatch(
       for (let count = 0; count < 4 && alive && running.current && now >= due; count++) {
         if (!await advanceOne(due)) break
         due += frameDuration(history.current[cursor.current])
+        prepareServe(performance.now())
+        if (serveAt !== null) break
       }
       pumping = false
     }
@@ -246,6 +271,8 @@ export function useMatch(
     tick,
     seed,
     playing,
+    started,
+    countdown,
     setHumanAction,
     rules,
     toggle,
