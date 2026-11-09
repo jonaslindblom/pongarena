@@ -139,7 +139,7 @@
     ],
     "entrants": [
       {
-        "id": "attack75",
+        "id": "attack",
         "name": "Attack",
         "sha256": "646d1a1365e3e307bd4431fc73930c5efa19de16b7cc22bbb9200608c2b720f8",
         "params": 75,
@@ -160,7 +160,7 @@
         "macs": 50304
       },
       {
-        "id": "predict75",
+        "id": "predict",
         "name": "Predict",
         "sha256": "0d405fe22a0a5f568c1d23d76356893e12aae1ef1c9a7f26150e8f35520b3cad",
         "params": 75,
@@ -181,7 +181,7 @@
         "macs": 210
       }
     ],
-    "sha256": "1d36b2b637b1c3f7b44409353db130a12168179dec00926d6412ef54fb89cea1"
+    "sha256": "0700cfee52b0ad19eb1e3397ffddb12a0dc7782ea1b156134e9b621f9f38ef17"
   },
   "runtime": "ONNX Runtime Web CPU/WASM, one thread",
   "rallies_per_opponent": 1280,
@@ -193,7 +193,7 @@
     "small",
     "large"
   ],
-  "predict75": {
+  "predict": {
     "opponents": {
       "follow": {
         "shots": 7112,
@@ -242,7 +242,7 @@
         "wins": 0,
         "losses": 1280,
         "draws": 0,
-        "rally_score": 0.0,
+        "rally_score": 0,
         "contest_wins": 0,
         "contest_draws": 0,
         "contest_losses": 128
@@ -256,7 +256,7 @@
       "away": 3429
     }
   },
-  "attack75": {
+  "attack": {
     "opponents": {
       "follow": {
         "shots": 3350,
@@ -310,7 +310,7 @@
         "contest_draws": 0,
         "contest_losses": 128
       },
-      "predict75": {
+      "predict": {
         "shots": 3411,
         "straight": 341,
         "corners": 2047,

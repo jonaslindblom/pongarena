@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type MouseEvent } from 'react'
 import {
   ArrowDownToLine,
   ArrowRight,
@@ -40,6 +40,22 @@ import { DEFAULT_MODEL, readMatchLink, writeMatchLink } from './matchLink'
 import quillSourceUrl from '../handwritten/quill.py?url'
 import './App.css'
 type Page = 'Arena' | 'Rankings' | 'Model library' | 'How it thinks' | 'Field guide' | 'Device test'
+const pageHashes: Record<Page, string> = {
+  Arena: '#play',
+  Rankings: '#league',
+  'Model library': '#models',
+  'How it thinks': '#how-it-thinks',
+  'Field guide': '#guide',
+  'Device test': '#device-test',
+}
+const counterLessonHash = '#how-it-thinks/counter'
+
+function readPage(hash: string): { page: Page; explainer: ExplainerId } {
+  if (hash === counterLessonHash) return { page: 'How it thinks', explainer: 'counter' }
+  const page = (Object.keys(pageHashes) as Page[]).find(page => pageHashes[page] === hash) ?? 'Arena'
+  return { page, explainer: 'follow' }
+}
+
 const tabs: { page: Page; label: string; icon: typeof Gamepad2 }[] = [
   { page: 'Arena', label: 'Play', icon: Gamepad2 },
   { page: 'Rankings', label: 'League', icon: Trophy },
@@ -191,8 +207,7 @@ function Guide({ onDeviceTest }: { onDeviceTest: () => void }) {
 }
 
 export default function App() {
-  const [page, setPage] = useState<Page>('Arena')
-  const [explainer, setExplainer] = useState<ExplainerId>('follow')
+  const [{ page, explainer }, setRoute] = useState(() => readPage(window.location.hash))
   const referenceRanks = useReferenceRanks(page === 'Model library')
   const [initialMatch] = useState(() => readMatchLink(window.location.search))
   const [mode, setMode] = useState(initialMatch.mode)
@@ -228,11 +243,27 @@ export default function App() {
       setNotice('A linked model is unavailable in this browser. Using a bundled model instead.')
       return
     }
-    const url = writeMatchLink(new URL(window.location.href), mode, ids)
-    window.history.replaceState(null, '', url)
-  }, [loadingComplete, mode, ids, models])
+    if (page === 'Arena') {
+      const url = writeMatchLink(new URL(window.location.href), mode, ids)
+      window.history.replaceState(null, '', url)
+    }
+  }, [loadingComplete, mode, ids, models, page])
   const currentMatch = useRef(m)
   currentMatch.current = m
+  useEffect(() => {
+    function restoreRoute() {
+      const route = readPage(window.location.hash)
+      currentMatch.current.pause()
+      if (route.page === 'Arena') {
+        const match = readMatchLink(window.location.search)
+        setMode(match.mode)
+        setIds(match.ids)
+      }
+      setRoute(route)
+    }
+    window.addEventListener('popstate', restoreRoute)
+    return () => window.removeEventListener('popstate', restoreRoute)
+  }, [])
   function appendModels(entries: Controller[]) {
     const next = [...currentModels.current]
     for (const entry of entries) {
@@ -294,9 +325,23 @@ export default function App() {
       active = false
     }
   }, [])
-  function navigate(next: Page) {
+  function pageUrl(next: Page, lesson: ExplainerId = 'follow') {
+    const url = new URL(window.location.href)
+    url.hash = next === 'How it thinks' && lesson === 'counter' ? counterLessonHash : pageHashes[next]
+    if (next === 'Arena') return writeMatchLink(url, mode, ids)
+    for (const param of ['model', 'mode', 'opponent', 'fullscreen']) url.searchParams.delete(param)
+    return url
+  }
+  function navigate(next: Page, lesson: ExplainerId = 'follow') {
     if (next !== page) m.pause()
-    setPage(next)
+    const url = pageUrl(next, lesson)
+    if (url.href !== window.location.href) window.history.pushState(null, '', url)
+    setRoute({ page: next, explainer: lesson })
+  }
+  function followTab(event: MouseEvent<HTMLAnchorElement>, next: Page) {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+    event.preventDefault()
+    navigate(next)
   }
   function select(index: Side, id: string) {
     currentMatch.current.reset()
@@ -313,7 +358,7 @@ export default function App() {
     m.reset()
     setIds(['keyboard', opponent])
     setMode('play')
-    setPage('Arena')
+    navigate('Arena')
     setError('')
     m.play()
   }
@@ -351,7 +396,7 @@ export default function App() {
         entry = currentModels.current.find((c) => c.id === id)!
       }
       select(importSide, id)
-      setPage('Arena')
+      navigate('Arena')
       setNotice(entry.name + ' assigned to player 0' + (importSide + 1) + '. ' + entry.description)
       dialog.current?.close()
     } catch (e) {
@@ -368,11 +413,8 @@ export default function App() {
           <a
             className="brand"
             aria-label="PongArena home"
-            href="#arena"
-            onClick={(e) => {
-              e.preventDefault()
-              navigate('Arena')
-            }}
+            href={pageUrl('Arena').href}
+            onClick={event => followTab(event, 'Arena')}
           >
             <img src={assetPath('mark.svg')} alt="" />
             <span>
@@ -381,14 +423,15 @@ export default function App() {
           </a>
           <nav aria-label="Main navigation">
             {tabs.map(({ page: t, label, icon: Icon }) => (
-              <button
+              <a
                 key={t}
                 aria-current={page === t ? 'page' : undefined}
-                onClick={() => navigate(t)}
+                href={pageUrl(t).href}
+                onClick={event => followTab(event, t)}
               >
                 <Icon size={16} />
                 {label}
-              </button>
+              </a>
             ))}
           </nav>
           <a className="github-link" href="https://github.com/jonaslindblom/pongarena" target="_blank" rel="noopener noreferrer" aria-label="Source on GitHub" title="Source on GitHub">
@@ -442,7 +485,7 @@ export default function App() {
           />
         )}
         {page === 'Device test' && <DeviceTest models={eligibleModels} startup={startup} loadingComplete={loadingComplete} />}
-        {page === 'How it thinks' && <WeightExplainers models={models} selected={explainer} onSelect={setExplainer} onPlay={playAgainst} />}
+        {page === 'How it thinks' && <WeightExplainers models={models} selected={explainer} onSelect={lesson => navigate('How it thinks', lesson)} onPlay={playAgainst} />}
         {page === 'Rankings' && (
           <Ranking key={rules.id} entrants={eligibleModels.filter((model) => model.type !== 'human' && model.sha256).map((model) => ({
             id: model.id, name: model.name, sha256: model.sha256!, params: model.params, macs: model.macs,
@@ -495,9 +538,8 @@ export default function App() {
                   </dl>
                   </details>
                   <div className="library-actions">
-                    {(c.id === 'follow' || c.id === 'counter97') && <button className="secondary-btn" onClick={() => {
-                      setExplainer(c.id as ExplainerId)
-                      navigate('How it thinks')
+                    {(c.id === 'follow' || c.id === 'counter') && <button className="secondary-btn" onClick={() => {
+                      navigate('How it thinks', c.id as ExplainerId)
                     }}><Network size={14} /> How it thinks</button>}
                     <button className="secondary-btn" onClick={() => playAgainst(c.id)}>
                       <Gamepad2 size={14} /> Play against
@@ -508,7 +550,7 @@ export default function App() {
                         m.reset()
                         setMode('watch')
                         setIds([c.id, c.id === 'quill' ? 'large' : 'quill'])
-                        setPage('Arena')
+                        navigate('Arena')
                         setError('')
                         m.play()
                       }}

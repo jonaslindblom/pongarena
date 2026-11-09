@@ -6,7 +6,7 @@ import { choice, observation, serve, type Frame, type Scores } from '../src/game
 import { sha256, smallestDivision } from '../src/competition'
 import { validateArenaModel } from '../src/validate'
 
-const bytes = readFileSync(new URL('../public/models/predict75.onnx', import.meta.url))
+const bytes = readFileSync(new URL('../public/models/predict.onnx', import.meta.url))
 
 test('Predict preserves the frozen Small model with 75 parameters and 63 MACs', async () => {
   const stats = validateArenaModel(bytes)

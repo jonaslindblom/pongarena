@@ -4,7 +4,7 @@ import { sha256 } from './competition'
 import { choice, type Frame, type Scores } from './game'
 import { validateArenaModel } from './validate'
 
-export type AttackModelId = 'attack75' | 'counter97'
+export type AttackModelId = 'attack' | 'counter'
 
 export const ATTACK_SCENARIOS: {
   id: string; title: string; description: string
@@ -24,7 +24,7 @@ const inputRoles = ['Ball depth', 'Ball position', 'Depth velocity', 'Sideways v
 const outputRoles = ['Left score', 'Stay score', 'Right score']
 const wallRoles = ['Target error carrier', 'Right wall hinge', 'Left wall hinge']
 const models = {
-  attack75: {
+  attack: {
     hash: '646d1a1365e3e307bd4431fc73930c5efa19de16b7cc22bbb9200608c2b720f8',
     widths: [6, 6, 3, 3],
     roles: [
@@ -32,7 +32,7 @@ const models = {
       wallRoles, outputRoles,
     ],
   },
-  counter97: {
+  counter: {
     hash: '5f7a480b98c982cf403f2f8849fac1e5e02503ff12e6b0b5d1e377856534e35c',
     widths: [6, 6, 4, 3, 3],
     roles: [
@@ -112,7 +112,7 @@ export async function inspectAttackModel(bytes: Uint8Array, id: AttackModelId): 
 // Mute H1.5 on an isolated teaching copy. Removing this detector lets all of its
 // downstream connections read zero; it does not recreate Attack's policy.
 export function createCounterIntervention(inspection: AttackInspection): AttackInspection {
-  if (inspection.id !== 'counter97' || inspection.sha256 !== models.counter97.hash || inspection.intervention)
+  if (inspection.id !== 'counter' || inspection.sha256 !== models.counter.hash || inspection.intervention)
     throw new Error('The outgoing-detector experiment needs an unmodified Counter inspection.')
   const model = pb.onnx.ModelProto.decode(Uint8Array.from(inspection.bytes))
   const first = model.graph!.node!.find(node => node.opType === 'Gemm')!
@@ -193,7 +193,7 @@ export function getAttackExplanation(id: AttackModelId, input: ArrayLike<number>
     }))
   })
 
-  const counter = id === 'counter97', foldLayer = dense.length - 2
+  const counter = id === 'counter', foldLayer = dense.length - 2
   const incomingGate = counter ? hidden[1][2] : null
   const recovering = incomingGate === 0
   // Undo only the stored carry/threshold offsets on observed affine tensors.

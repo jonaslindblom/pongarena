@@ -139,14 +139,14 @@
     ],
     "entrants": [
       {
-        "id": "attack75",
+        "id": "attack",
         "name": "Attack",
         "sha256": "646d1a1365e3e307bd4431fc73930c5efa19de16b7cc22bbb9200608c2b720f8",
         "params": 75,
         "macs": 63
       },
       {
-        "id": "counter97",
+        "id": "counter",
         "name": "Counter",
         "sha256": "5f7a480b98c982cf403f2f8849fac1e5e02503ff12e6b0b5d1e377856534e35c",
         "params": 97,
@@ -167,7 +167,7 @@
         "macs": 50304
       },
       {
-        "id": "predict75",
+        "id": "predict",
         "name": "Predict",
         "sha256": "0d405fe22a0a5f568c1d23d76356893e12aae1ef1c9a7f26150e8f35520b3cad",
         "params": 75,
@@ -188,7 +188,7 @@
         "macs": 210
       }
     ],
-    "sha256": "cec7229fa43cf2e656c95820943f3fb1247699845e99a7abda5905740b0e2c45"
+    "sha256": "2e5cc6830b80ed295ce9559608f5a80b0de75574c6226ed0f5b9651cff1ae93e"
   },
   "runtime": "ONNX Runtime Web CPU/WASM, one thread",
   "rallies_per_opponent": 1280,
@@ -198,9 +198,9 @@
     "quill",
     "small",
     "large",
-    "predict75"
+    "predict"
   ],
-  "counter97": {
+  "counter": {
     "opponents": {
       "follow": {
         "wins": 1082,
@@ -238,7 +238,7 @@
         "contest_draws": 1,
         "contest_losses": 127
       },
-      "predict75": {
+      "predict": {
         "wins": 1123,
         "draws": 83,
         "losses": 74,
@@ -247,7 +247,7 @@
         "contest_draws": 0,
         "contest_losses": 0
       },
-      "attack75": {
+      "attack": {
         "wins": 1130,
         "draws": 0,
         "losses": 150,
@@ -259,7 +259,7 @@
     },
     "mean_common_field_rally_score": 0.528125
   },
-  "attack75": {
+  "attack": {
     "opponents": {
       "follow": {
         "wins": 962,
@@ -297,7 +297,7 @@
         "contest_draws": 0,
         "contest_losses": 128
       },
-      "predict75": {
+      "predict": {
         "wins": 1137,
         "draws": 82,
         "losses": 61,

@@ -71,7 +71,7 @@ def export(path):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--out', type=Path, default=Path('public/models/attack75.onnx'))
+    parser.add_argument('--out', type=Path, default=Path('public/models/attack.onnx'))
     args = parser.parse_args()
     export(args.out)
     print(f'{args.out}: {hashlib.sha256(args.out.read_bytes()).hexdigest()}')

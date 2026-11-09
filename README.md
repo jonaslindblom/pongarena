@@ -15,9 +15,9 @@ The handwritten models encode their strategies directly in dense weights. The tr
 | Model | How it is made | Layer widths | Parameters | MACs / decision |
 | --- | --- | --- | ---: | ---: |
 | [Follow](docs/FOLLOW.md) | Handwritten ball follower | `6 → 1 → 3` | 13 | 9 |
-| [Predict](docs/PREDICT75.md) | Handwritten landing and bounce prediction | `6 → 6 → 3 → 3` | 75 | 63 |
-| [Attack](docs/ATTACK75.md) | Handwritten prediction and opponent-aware corner aiming | `6 → 6 → 3 → 3` | 75 | 63 |
-| [Counter](docs/COUNTER97.md) | Handwritten prediction, corner aiming and center recovery | `6 → 6 → 4 → 3 → 3` | 97 | 81 |
+| [Predict](docs/PREDICT.md) | Handwritten landing and bounce prediction | `6 → 6 → 3 → 3` | 75 | 63 |
+| [Attack](docs/ATTACK.md) | Handwritten prediction and opponent-aware corner aiming | `6 → 6 → 3 → 3` | 75 | 63 |
+| [Counter](docs/COUNTER.md) | Handwritten prediction, corner aiming and center recovery | `6 → 6 → 4 → 3 → 3` | 97 | 81 |
 | [Quill](docs/QUILL.md) | Handwritten prediction, recovery and aiming | `6 → 12 → 4 → 3 → 3` | 163 | 141 |
 | [Small](training/README.md) | Trained with imitation learning | `6 → 16 → 6 → 3` | 235 | 210 |
 | [Large](training/README.md) | Trained with imitation learning and PPO | `6 → 128 → 128 → 128 → 128 → 3` | 50,819 | 50,304 |
@@ -99,8 +99,10 @@ The checked-in [development standings](public/league.md) use **16 fixed public s
 
 PongArena’s original source code, documentation and bundled ONNX model weights use the [MIT License](LICENSE). Contributions, including model submissions, are accepted under MIT. Third-party dependencies and assets retain their own licenses; their [notices](public/THIRD_PARTY_NOTICES.txt) ship with the website.
 
-Arena links accept `?model=counter97` to choose a human opponent, or
-`?mode=watch&model=counter97&opponent=quill` to watch two models.
+Arena links accept `?model=counter` to choose a human opponent, or
+`?mode=watch&model=counter&opponent=quill` to watch two models.
+Link directly to a tab with `#play`, `#league`, `#models`, `#how-it-thinks`,
+or `#guide`. Use `#how-it-thinks/counter` to open the Counter lesson.
 Add `&fullscreen=1` to open the court in a viewport-filling layout. Games open
 ready to start with Play (or P). Model and fullscreen changes update the URL
 for copying. Imported models are available only in browsers where they were saved;

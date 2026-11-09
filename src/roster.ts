@@ -12,15 +12,15 @@ export const presets = [
     description: 'A larger neural network trained in PyTorch from a reproducible recipe. It receives the same observations and uses the same movement limits as every other player.',
   },
   {
-    id: 'predict75', name: 'Predict', kind: 'Handwritten weights', handcrafted: true, submittedBy: 'jonaslindblom',
+    id: 'predict', name: 'Predict', kind: 'Handwritten weights', handcrafted: true, submittedBy: 'jonaslindblom',
     description: 'A 75-parameter handwritten ReLU network that predicts the ball’s landing point and reflects one wall bounce. It uses 63 MACs per decision, without Quill’s recovery gate or opponent-dependent aiming.',
   },
   {
-    id: 'attack75', name: 'Attack', kind: 'Handwritten weights', handcrafted: true, submittedBy: 'jonaslindblom',
+    id: 'attack', name: 'Attack', kind: 'Handwritten weights', handcrafted: true, submittedBy: 'jonaslindblom',
     description: 'An aggressive 75-parameter fork of Predict. Its handwritten ReLU weights predict a bounded landing point, reflect a wall bounce and offset contact to aim toward a corner away from the opponent. No training or automated fitting.',
   },
   {
-    id: 'counter97', name: 'Counter', kind: 'Handwritten weights', handcrafted: true, submittedBy: 'jonaslindblom',
+    id: 'counter', name: 'Counter', kind: 'Handwritten weights', handcrafted: true, submittedBy: 'jonaslindblom',
     description: 'A 97-parameter handwritten network with a longer landing forecast, opponent-aware corner aiming and center recovery while the ball travels away. Its four dense layers use no training or automated fitting.',
   },
   {

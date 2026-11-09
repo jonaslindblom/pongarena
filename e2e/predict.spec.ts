@@ -4,16 +4,16 @@ import { readFileSync } from 'node:fs'
 import { validateArenaModel } from '../src/validate'
 
 for (const [id, name, hash] of [
-  ['predict75', 'Predict', '0d405fe22a0a5f568c1d23d76356893e12aae1ef1c9a7f26150e8f35520b3cad'],
-  ['attack75', 'Attack', '646d1a1365e3e307bd4431fc73930c5efa19de16b7cc22bbb9200608c2b720f8'],
-  ['counter97', 'Counter', '5f7a480b98c982cf403f2f8849fac1e5e02503ff12e6b0b5d1e377856534e35c'],
+  ['predict', 'Predict', '0d405fe22a0a5f568c1d23d76356893e12aae1ef1c9a7f26150e8f35520b3cad'],
+  ['attack', 'Attack', '646d1a1365e3e307bd4431fc73930c5efa19de16b7cc22bbb9200608c2b720f8'],
+  ['counter', 'Counter', '5f7a480b98c982cf403f2f8849fac1e5e02503ff12e6b0b5d1e377856534e35c'],
 ]) test(`${name} is attributed, downloadable and playable as a bundled controller`, async ({ page }) => {
   const bytes = readFileSync(`public/models/${id}.onnx`)
   const stats = validateArenaModel(bytes)
   const errors: string[] = []
   page.on('pageerror', error => errors.push(error.message))
   await page.goto('/')
-  const models = page.getByRole('navigation', { name: 'Main navigation' }).getByRole('button', { name: 'Models', exact: true })
+  const models = page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name: 'Models', exact: true })
   await models.click()
   const card = page.getByRole('article', { name: `${name} model`, exact: true })
   await expect(card).toBeVisible({ timeout: 30_000 })
@@ -25,7 +25,7 @@ for (const [id, name, hash] of [
   const downloading = page.waitForEvent('download')
   await card.getByRole('link', { name: `Download ${name}`, exact: true }).click()
   const download = await downloading
-  expect(download.suggestedFilename()).toBe(`${id}.onnx`)
+  expect(download.suggestedFilename()).toBe(`${name.toLowerCase()}.onnx`)
   const chunks: Buffer[] = []
   for await (const chunk of await download.createReadStream()) chunks.push(Buffer.from(chunk))
   const downloaded = Buffer.concat(chunks)

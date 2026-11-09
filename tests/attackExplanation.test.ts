@@ -6,7 +6,7 @@ import * as ort from 'onnxruntime-web/wasm'
 import { ATTACK_SCENARIOS, createCounterIntervention, getAttackExplanation, inspectAttackModel, type AttackModelId } from '../src/attackExplanation'
 import { observation, serve } from '../src/game'
 
-const ids = ['attack75', 'counter97'] as const
+const ids = ['attack', 'counter'] as const
 const bytes = Object.fromEntries(ids.map(id => [id,
   readFileSync(new URL(`../public/models/${id}.onnx`, import.meta.url))])) as Record<AttackModelId, Uint8Array>
 const close = (actual: number, expected: number, message: string, tolerance = .0002) =>
@@ -22,8 +22,8 @@ test('explanation inspection preserves the frozen policy and exposes its real af
     assert.deepEqual(after.graph!.node, before.graph!.node)
     assert.deepEqual(after.graph!.initializer, before.graph!.initializer,
       'Teaching labels must never replace or rewrite stored weights')
-    assert.equal(inspection.params, id === 'attack75' ? 75 : 97)
-    assert.equal(inspection.macs, id === 'attack75' ? 63 : 81)
+    assert.equal(inspection.params, id === 'attack' ? 75 : 97)
+    assert.equal(inspection.macs, id === 'attack' ? 63 : 81)
     assert.equal(inspection.denseLayers.reduce((sum, layer) =>
       sum + layer.weights.flat().length + layer.biases.length, 0), inspection.params,
     'The inspector must expose every stored zero and bias, not only active connections')
@@ -37,14 +37,14 @@ test('explanation inspection preserves the frozen policy and exposes its real af
 })
 
 test('circuit labels reject malformed files, the wrong architecture, and changed weights of the same shape', async () => {
-  await assert.rejects(inspectAttackModel(new Uint8Array([1, 2, 3]), 'attack75'), /plain dense network/)
-  await assert.rejects(inspectAttackModel(bytes.counter97, 'attack75'), /architecture/)
-  await assert.rejects(inspectAttackModel(bytes.attack75, 'counter97'), /architecture/)
-  const altered = pb.onnx.ModelProto.decode(Uint8Array.from(bytes.attack75))
+  await assert.rejects(inspectAttackModel(new Uint8Array([1, 2, 3]), 'attack'), /plain dense network/)
+  await assert.rejects(inspectAttackModel(bytes.counter, 'attack'), /architecture/)
+  await assert.rejects(inspectAttackModel(bytes.attack, 'counter'), /architecture/)
+  const altered = pb.onnx.ModelProto.decode(Uint8Array.from(bytes.attack))
   const raw = altered.graph!.initializer![0].rawData!
   const view = new DataView(raw.buffer, raw.byteOffset, raw.byteLength)
   view.setFloat32(0, view.getFloat32(0, true) + .25, true)
-  await assert.rejects(inspectAttackModel(pb.onnx.ModelProto.encode(altered).finish(), 'attack75'), /frozen.*weights/,
+  await assert.rejects(inspectAttackModel(pb.onnx.ModelProto.encode(altered).finish(), 'attack'), /frozen.*weights/,
     'A shape-compatible model must not receive explanations for different weights')
 })
 
@@ -86,21 +86,21 @@ test('the same legal scenarios expose opposite decisions without changing scores
     }
   }
   for (const [scenario, attackAction, counterAction] of [['outgoing', 2, 0], ['long', 0, 2], ['bounce', 2, 0]] as const) {
-    assert.equal(explanations.get(`attack75:${scenario}`)!.chosen, attackAction)
-    assert.equal(explanations.get(`counter97:${scenario}`)!.chosen, counterAction)
+    assert.equal(explanations.get(`attack:${scenario}`)!.chosen, attackAction)
+    assert.equal(explanations.get(`counter:${scenario}`)!.chosen, counterAction)
   }
-  const recovery = explanations.get('counter97:outgoing')!
+  const recovery = explanations.get('counter:outgoing')!
   close(recovery.forecast, 120, 'Show what the forecast circuit computed before the gate')
   assert.equal(recovery.incomingGate, 0)
   assert.equal(recovery.activeForecast, null, 'Do not present a disabled forecast as a real center landing')
   assert.equal(recovery.reflected, null)
   assert.equal(recovery.cornerTarget, null, 'A recovery action has no intended return corner')
   close(recovery.target, 80, 'Maximum-speed departure should recover to court center')
-  close(explanations.get('attack75:outgoing')!.target, 127.4359, 'Attack continues following its forecast on departure')
-  close(explanations.get('attack75:long')!.forecast, 118.25, 'Attack retains its twelve-tick lead cap')
-  close(explanations.get('counter97:long')!.forecast, 136.25, 'Counter extends the lead to eighteen ticks')
-  close(explanations.get('attack75:bounce')!.reflected!, 143.75, 'Attack folds its shorter forecast')
-  close(explanations.get('counter97:bounce')!.reflected!, 125.75, 'Counter anticipates the return from the wall earlier')
+  close(explanations.get('attack:outgoing')!.target, 127.4359, 'Attack continues following its forecast on departure')
+  close(explanations.get('attack:long')!.forecast, 118.25, 'Attack retains its twelve-tick lead cap')
+  close(explanations.get('counter:long')!.forecast, 136.25, 'Counter extends the lead to eighteen ticks')
+  close(explanations.get('attack:bounce')!.reflected!, 143.75, 'Attack folds its shorter forecast')
+  close(explanations.get('counter:bounce')!.reflected!, 125.75, 'Counter anticipates the return from the wall earlier')
 })
 
 test('the intended corner reads the real opponent hinges, while missing or mismatched samples fail explicitly', async () => {
@@ -122,7 +122,7 @@ test('the intended corner reads the real opponent hinges, while missing or misma
         assert.throws(() => getAttackExplanation(id, input, { ...activations, linear_0: [] }, activations.action_scores, inspection), /linear_0/)
         assert.throws(() => getAttackExplanation(id, input, activations, [0, NaN, 0], inspection), /finite/)
         assert.throws(() => getAttackExplanation(id, input, activations, [0, 0, 0], inspection), /different action scores/)
-        assert.throws(() => getAttackExplanation(id === 'attack75' ? 'counter97' : 'attack75', input, activations,
+        assert.throws(() => getAttackExplanation(id === 'attack' ? 'counter' : 'attack', input, activations,
           activations.action_scores, inspection), /must match/)
       }
     } finally {
@@ -133,7 +133,7 @@ test('the intended corner reads the real opponent hinges, while missing or misma
 
 test('muting the outgoing detector changes only a teaching copy and its downstream departure behavior', async () => {
   ort.env.wasm.numThreads = 1
-  const inspection = await inspectAttackModel(bytes.counter97, 'counter97')
+  const inspection = await inspectAttackModel(bytes.counter, 'counter')
   const beforeBytes = Uint8Array.from(inspection.bytes)
   const beforeLayers = structuredClone(inspection.denseLayers)
   const muted = createCounterIntervention(inspection)
@@ -157,11 +157,11 @@ test('muting the outgoing detector changes only a teaching copy and its downstre
   for (let i = 2; i < beforeGraph.initializer!.length; i++)
     assert.deepEqual(mutedGraph.initializer![i], beforeGraph.initializer![i], 'Every downstream weight stays unchanged')
   assert.throws(() => createCounterIntervention(muted), /unmodified Counter/)
-  assert.throws(() => createCounterIntervention({ ...inspection, id: 'attack75' }), /unmodified Counter/)
+  assert.throws(() => createCounterIntervention({ ...inspection, id: 'attack' }), /unmodified Counter/)
   // The normal frozen-weight validator must keep rejecting this altered copy.
   const playableMuted = pb.onnx.ModelProto.decode(muted.bytes)
   playableMuted.graph!.output = playableMuted.graph!.output!.filter(output => output.name === 'action_scores')
-  await assert.rejects(inspectAttackModel(pb.onnx.ModelProto.encode(playableMuted).finish(), 'counter97'), /frozen.*weights/)
+  await assert.rejects(inspectAttackModel(pb.onnx.ModelProto.encode(playableMuted).finish(), 'counter'), /frozen.*weights/)
 
   const normalSession = await ort.InferenceSession.create(inspection.bytes, { executionProviders: ['wasm'] })
   const mutedSession = await ort.InferenceSession.create(muted.bytes, { executionProviders: ['wasm'] })
@@ -173,7 +173,7 @@ test('muting the outgoing detector changes only a teaching copy and its downstre
       const mutedResult = await mutedSession.run(feed)
       const activations = Object.fromEntries(Object.entries(mutedResult).map(([name, tensor]) =>
         [name, Array.from(tensor.data as Float32Array)]))
-      const explanation = getAttackExplanation('counter97', input, activations, activations.action_scores, muted)
+      const explanation = getAttackExplanation('counter', input, activations, activations.action_scores, muted)
       assert.equal(activations.hidden_0[4], 0, 'The intervention must force the detector output to zero')
       for (const neuron of explanation.neurons) {
         close(neuron.bias + neuron.contributions.reduce((sum, part) => sum + part.product, 0), neuron.preActivation,
@@ -195,7 +195,7 @@ test('muting the outgoing detector changes only a teaching copy and its downstre
         assert.notEqual(explanation.activeForecast, null)
         const normalActivations = Object.fromEntries(Object.entries(normalResult).map(([name, tensor]) =>
           [name, Array.from(tensor.data as Float32Array)]))
-        const normal = getAttackExplanation('counter97', input, normalActivations, normalActivations.action_scores, inspection)
+        const normal = getAttackExplanation('counter', input, normalActivations, normalActivations.action_scores, inspection)
         assert.equal(normal.chosen, 0, 'The normal network instead recovers toward center')
         assert.equal(normal.activeForecast, null)
       }

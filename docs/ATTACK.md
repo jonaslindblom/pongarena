@@ -1,11 +1,11 @@
 # Attack: corner aiming in 75 parameters
 
-Attack is an aggressive handwritten fork of [Predict](PREDICT75.md).
+Attack is an aggressive handwritten fork of [Predict](PREDICT.md).
 Both retain the **6 → 6 → 3 → 3** ReLU layout, **75 parameters** and **63 MACs
 per decision**. Predict's constructor and ONNX bytes are unchanged.
 
 Attack trades two of Predict's forecast hinges for opponent-dependent
-shot placement. The [constructor](../handwritten/attack75.py) writes fixed
+shot placement. The [constructor](../handwritten/attack.py) writes fixed
 formulas. Designs were adjusted manually and compared through play; no
 optimizer, training data, learned checkpoint or automated weight search was
 used. Every decision runs through the ordinary dense ONNX layers.
@@ -44,7 +44,7 @@ the selected corner. The output keeps Predict's 1.1-unit movement deadband.
 
 After freezing the model, 128 fresh shared serve sets were drawn and all six
 models played both sides: **3,840 games** under `pong-v3`, using ONNX Runtime
-Web CPU/WASM with one thread. The saved [evaluation summary](attack75-evaluation.json)
+Web CPU/WASM with one thread. The saved [evaluation summary](attack-evaluation.json)
 includes the exact plan, seeds, evaluator identity, model hashes and shot counts.
 These seeds were not used for subsequent weight changes.
 
@@ -82,7 +82,7 @@ ball travels away. The results measure these bots and serves, not human strength
 Only NumPy and ONNX are needed to rebuild the weights; PyTorch is not required:
 
 ```sh
-python handwritten/attack75.py --out public/models/attack75.onnx
+python handwritten/attack.py --out public/models/attack.onnx
 npm run models:check
 npm run league
 npm test
@@ -107,8 +107,8 @@ import { copyFileSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } fro
 import { execFileSync } from 'node:child_process'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-const { plan } = JSON.parse(readFileSync('docs/attack75-evaluation.json', 'utf8'))
-const directory = mkdtempSync(join(tmpdir(), 'attack75-replay-'))
+const { plan } = JSON.parse(readFileSync('docs/attack-evaluation.json', 'utf8'))
+const directory = mkdtempSync(join(tmpdir(), 'attack-replay-'))
 mkdirSync(join(directory, 'models'))
 for (const { id } of plan.entrants)
   copyFileSync(`public/models/${id}.onnx`, join(directory, 'models', `${id}.onnx`))

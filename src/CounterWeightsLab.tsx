@@ -128,7 +128,7 @@ export function CounterWeightsLab({ model, onPlay }: { model: Controller | undef
     async function open() {
       try {
         if (!model?.modelBytes) throw new Error('Counter’s model bytes are unavailable.')
-        const original = await inspectAttackModel(model.modelBytes, 'counter97')
+        const original = await inspectAttackModel(model.modelBytes, 'counter')
         if (disposed) return
         for (const inspection of [original, createCounterIntervention(original)]) {
           const session = await ort.InferenceSession.create(inspection.bytes, { executionProviders: ['wasm'] })
@@ -149,7 +149,7 @@ export function CounterWeightsLab({ model, onPlay }: { model: Controller | undef
               const outputs = await pending as ort.InferenceSession.ReturnType
               if (disposed) return
               const values = Object.fromEntries(Object.entries(outputs).map(([name, tensor]) => [name, tensor.data as Float32Array]))
-              result.push({ inspection, explanation: getAttackExplanation('counter97', input, values, Array.from(values.action_scores) as Scores, inspection) })
+              result.push({ inspection, explanation: getAttackExplanation('counter', input, values, Array.from(values.action_scores) as Scores, inspection) })
             }
             if (key !== frameKey(latest.current)) return
             previous = key
@@ -235,6 +235,6 @@ export function CounterWeightsLab({ model, onPlay }: { model: Controller | undef
         <NeuronInspector sample={current.original} neuron={neuron} onNeuron={setNeuron} />
       </details>
     </>}
-    <section className="weights-context"><div><h2>A signal becomes a strategy.</h2><p>The departure neuron does not move the paddle by itself. Its connections let later neurons change the target. Follow shares one signal between actions; Counter combines signals into a strategy. Both are programs written directly in weights.</p></div><div className="weights-downloads"><a href={assetPath('models/counter97.onnx')} download="counter97.onnx"><Download size={15} />Download Counter</a></div></section>
+    <section className="weights-context"><div><h2>A signal becomes a strategy.</h2><p>The departure neuron does not move the paddle by itself. Its connections let later neurons change the target. Follow shares one signal between actions; Counter combines signals into a strategy. Both are programs written directly in weights.</p></div><div className="weights-downloads"><a href={assetPath('models/counter.onnx')} download="counter.onnx"><Download size={15} />Download Counter</a></div></section>
   </div>
 }

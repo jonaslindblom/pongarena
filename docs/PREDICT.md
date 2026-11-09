@@ -38,7 +38,7 @@ current `pong-v3` centered-serve rules.
 Install the Python dependencies from `training/requirements.txt`, then run:
 
 ```sh
-python handwritten/predict75.py --out public/models/predict75.onnx
+python handwritten/predict.py --out public/models/predict.onnx
 npm run models:check
 ```
 

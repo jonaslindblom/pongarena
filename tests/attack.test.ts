@@ -6,7 +6,7 @@ import { advance, choice, endedRally, observation, serve, type Frame, type Pair,
 import { sha256, smallestDivision } from '../src/competition'
 import { validateArenaModel } from '../src/validate'
 
-const bytes = readFileSync(new URL('../public/models/attack75.onnx', import.meta.url))
+const bytes = readFileSync(new URL('../public/models/attack.onnx', import.meta.url))
 
 test('Attack remains a separate Small model with Predict’s 75-parameter layout', async () => {
   const stats = validateArenaModel(bytes)
@@ -14,7 +14,7 @@ test('Attack remains a separate Small model with Predict’s 75-parameter layout
   assert.deepEqual(stats.architecture.widths, [6, 6, 3, 3])
   assert.equal(smallestDivision(stats), 'small')
   assert.equal(await sha256(bytes), '646d1a1365e3e307bd4431fc73930c5efa19de16b7cc22bbb9200608c2b720f8')
-  assert.equal(await sha256(readFileSync(new URL('../public/models/predict75.onnx', import.meta.url))),
+  assert.equal(await sha256(readFileSync(new URL('../public/models/predict.onnx', import.meta.url))),
     '0d405fe22a0a5f568c1d23d76356893e12aae1ef1c9a7f26150e8f35520b3cad',
     'Adding an aggressive fork must preserve the original controller')
 })

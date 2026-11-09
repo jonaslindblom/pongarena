@@ -4,7 +4,7 @@ Counter is a separate handwritten model with **97 parameters** and **81 MACs
 per decision**. Its layout is **6 → 6 → 4 → 3 → 3**, with ReLU hidden layers
 and three linear action scores. Predict and Attack remain unchanged.
 
-The [constructor](../handwritten/counter97.py) combines Attack's bounded
+The [constructor](../handwritten/counter.py) combines Attack's bounded
 forecast and corner selection with Quill's direction gate and center recovery.
 Manual designs at 75 parameters or fewer sacrificed too much interception
 quality. The extra layer allows these behaviors to coexist while staying below
@@ -56,7 +56,7 @@ and zero at speed 13.
 After freezing the model, 128 new shared serve sets were drawn and all seven
 models played both sides: **5,376 games** under `pong-v3`, using ONNX Runtime Web
 CPU/WASM with one thread. No weights changed after seeing these results. The
-[saved summary](counter97-evaluation.json) includes the complete plan, seeds,
+[saved summary](counter-evaluation.json) includes the complete plan, seeds,
 model hashes, evaluator identity and counts.
 
 Against Attack, Counter won **127 paired contests, drew one and lost none**.
@@ -90,7 +90,7 @@ establish strength against human players.
 The standalone constructor needs NumPy and ONNX, not PyTorch:
 
 ```sh
-python handwritten/counter97.py --out public/models/counter97.onnx
+python handwritten/counter.py --out public/models/counter.onnx
 npm run models:check
 npm run league
 npm test
@@ -110,13 +110,13 @@ Replay the separate 128-set evaluation without overwriting development results:
 ```sh
 node --input-type=module <<'JS'
 import { readFileSync, writeFileSync } from 'node:fs'
-const { plan } = JSON.parse(readFileSync('docs/counter97-evaluation.json', 'utf8'))
-writeFileSync('/tmp/counter97-plan.json', JSON.stringify(plan))
+const { plan } = JSON.parse(readFileSync('docs/counter-evaluation.json', 'utf8'))
+writeFileSync('/tmp/counter-plan.json', JSON.stringify(plan))
 JS
-npm run league -- --plan /tmp/counter97-plan.json --output /tmp/counter97-replay
+npm run league -- --plan /tmp/counter-plan.json --output /tmp/counter-replay
 ```
 
 The saved plan requires the exact seven-model roster and evaluator. If future
 models are added, isolate the saved roster as shown in
-[Attack's historical replay](ATTACK75.md#reproduce). Future weight changes
+[Attack's historical replay](ATTACK.md#reproduce). Future weight changes
 require a new evaluation seed set.

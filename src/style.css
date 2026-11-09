@@ -129,7 +129,7 @@ nav {
   display: flex;
   gap: 7px;
 }
-nav button {
+nav a {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -139,7 +139,7 @@ nav button {
   font-weight: 650;
   color: #607168;
 }
-nav button[aria-current='page'] {
+nav a[aria-current='page'] {
   background: #e8eedf;
   color: #244633;
 }
@@ -1040,8 +1040,9 @@ legend {
     margin: 10px 0 7px;
     gap: 3px;
   }
-  nav button {
+  nav a {
     font-size: 11px;
+    text-align: center;
     padding: 6px 2px;
     min-width: 0;
     flex: 1;
@@ -1108,7 +1109,7 @@ legend {
   }
 }
 @media (max-width: 720px), (pointer: coarse) {
-  nav button,
+  nav a,
   .import-btn,
   .play-btn,
   .icon-btn,
@@ -1183,7 +1184,7 @@ legend {
     width: auto;
     margin: 0;
   }
-  .topinner nav button {
+  .topinner nav a {
     min-height: 44px;
     padding: 7px 8px;
   }

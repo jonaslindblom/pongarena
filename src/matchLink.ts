@@ -1,6 +1,6 @@
 import type { Pair } from './rules'
 
-export const DEFAULT_MODEL = 'counter97'
+export const DEFAULT_MODEL = 'counter'
 
 export function readMatchLink(search: string): { mode: 'play' | 'watch'; ids: Pair<string> } {
   const params = new URLSearchParams(search)

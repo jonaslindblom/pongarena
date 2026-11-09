@@ -26,7 +26,7 @@ test.afterEach(async ({ page }) => {
 async function openWeights(page: Page) {
   await page.goto('/')
   await page.getByRole('navigation', { name: 'Main navigation' })
-    .getByRole('button', { name: 'How it thinks', exact: true }).click()
+    .getByRole('link', { name: 'How it thinks', exact: true }).click()
   await expect(page.getByRole('group', { name: 'Choose a lesson' })).toBeVisible()
 }
 
@@ -35,6 +35,23 @@ async function openCounter(page: Page) {
   await page.getByRole('button', { name: '2 · Know when to return', exact: true }).click()
   await expect(page.getByLabel('Counter chosen move', { exact: true })).toBeVisible({ timeout: 30_000 })
 }
+
+test('a shared lesson URL survives reload and tab navigation history', async ({ page }) => {
+  await page.goto('/#how-it-thinks/counter')
+  const counter = page.getByRole('heading', { name: 'Know when to stop chasing.' })
+  await expect(counter).toBeVisible()
+  await page.reload()
+  await expect(counter).toBeVisible()
+
+  const models = page.getByRole('navigation').getByRole('link', { name: 'Models', exact: true })
+  await expect(models).toHaveAttribute('href', /\/#models$/)
+  await models.click()
+  await expect(page.getByRole('heading', { name: 'Model library', exact: true })).toBeVisible()
+  await page.goBack()
+  await expect(counter).toBeVisible()
+  await page.goForward()
+  await expect(models).toHaveAttribute('aria-current', 'page')
+})
 
 async function inspectWeights(page: Page) {
   const summary = page.locator('summary').filter({ hasText: 'Inspect weights and formulas' })
@@ -96,7 +113,7 @@ test('Follow stays fully inspectable and leads directly to the recovery lesson',
 test('changing only direction switches the original model between recovery and interception', async ({ page }) => {
   await openCounter(page)
   await expect(page.getByRole('combobox', { name: 'Neuron', exact: true })).toBeHidden()
-  const session = await ort.InferenceSession.create(readFileSync('public/models/counter97.onnx'), { executionProviders: ['wasm'] })
+  const session = await ort.InferenceSession.create(readFileSync('public/models/counter.onnx'), { executionProviders: ['wasm'] })
   try {
     for (const [vx, direction, move, signal] of [[13, 'Away from you', 'Left', 'On'], [-13, 'Toward you', 'Right', 'Off']] as const) {
       await page.getByRole('button', { name: direction, exact: true }).click()
@@ -106,14 +123,14 @@ test('changing only direction switches the original model between recovery and i
     }
   } finally { await session.release() }
   await expect(page.getByRole('link', { name: 'Download Counter', exact: true }))
-    .toHaveAttribute('href', /\/models\/counter97\.onnx$/)
+    .toHaveAttribute('href', /\/models\/counter\.onnx$/)
   await expect(page.getByRole('link', { name: 'Source on GitHub', exact: true }))
     .toHaveAttribute('href', 'https://github.com/jonaslindblom/pongarena')
 })
 
 test('muting the outgoing detector changes recovery but leaves incoming decisions and the original model intact', async ({ page }) => {
   await openCounter(page)
-  const session = await ort.InferenceSession.create(readFileSync('public/models/counter97.onnx'), { executionProviders: ['wasm'] })
+  const session = await ort.InferenceSession.create(readFileSync('public/models/counter.onnx'), { executionProviders: ['wasm'] })
   try {
     const original = await expectOriginalDecision(page, session, recoveryFrame)
     await expect(page.getByLabel('Counter paddle target', { exact: true })).toHaveText('80.00')
@@ -136,12 +153,12 @@ test('muting the outgoing detector changes recovery but leaves incoming decision
     await expect(muted).toHaveCount(0)
   } finally { await session.release() }
   await page.getByRole('button', { name: 'Play against Counter', exact: true }).click()
-  await expect(page.getByRole('combobox', { name: 'Opponent', exact: true })).toHaveValue('counter97')
+  await expect(page.getByRole('combobox', { name: 'Opponent', exact: true })).toHaveValue('counter')
 })
 
 test('every designed neuron role opens the matching real weights, and model cards open their lesson', async ({ page }) => {
   await page.goto('/')
-  await page.getByRole('navigation').getByRole('button', { name: 'Models', exact: true }).click()
+  await page.getByRole('navigation').getByRole('link', { name: 'Models', exact: true }).click()
   const card = page.locator('.library-card').filter({ has: page.getByRole('heading', { name: 'Counter', exact: true }) })
   await card.getByRole('button', { name: 'How it thinks', exact: true }).click()
   await expect(page.getByLabel('Counter chosen move', { exact: true })).toHaveText('Left')
@@ -162,7 +179,7 @@ test('every designed neuron role opens the matching real weights, and model card
 })
 
 test('advanced neuron contributions expose the real direction weight and ReLU cutoff', async ({ page }) => {
-  const graph = pb.onnx.ModelProto.decode(readFileSync('public/models/counter97.onnx')).graph!
+  const graph = pb.onnx.ModelProto.decode(readFileSync('public/models/counter.onnx')).graph!
   const first = graph.node!.find(node => node.opType === 'Gemm')!
   expect(Number(first.attribute!.find(attribute => attribute.name === 'transB')!.i)).toEqual(1)
   const values = (name: string) => {

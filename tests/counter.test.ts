@@ -6,7 +6,7 @@ import { advance, choice, endedRally, observation, serve, type Frame, type Pair,
 import { sha256, smallestDivision } from '../src/competition'
 import { validateArenaModel } from '../src/validate'
 
-const bytes = readFileSync(new URL('../public/models/counter97.onnx', import.meta.url))
+const bytes = readFileSync(new URL('../public/models/counter.onnx', import.meta.url))
 
 test('Counter adds recovery within 100 parameters while preserving the existing handwritten models', async () => {
   const stats = validateArenaModel(bytes)
@@ -15,8 +15,8 @@ test('Counter adds recovery within 100 parameters while preserving the existing 
   assert.equal(smallestDivision(stats), 'small')
   assert.equal(await sha256(bytes), '5f7a480b98c982cf403f2f8849fac1e5e02503ff12e6b0b5d1e377856534e35c')
   for (const [id, hash] of [
-    ['predict75', '0d405fe22a0a5f568c1d23d76356893e12aae1ef1c9a7f26150e8f35520b3cad'],
-    ['attack75', '646d1a1365e3e307bd4431fc73930c5efa19de16b7cc22bbb9200608c2b720f8'],
+    ['predict', '0d405fe22a0a5f568c1d23d76356893e12aae1ef1c9a7f26150e8f35520b3cad'],
+    ['attack', '646d1a1365e3e307bd4431fc73930c5efa19de16b7cc22bbb9200608c2b720f8'],
   ]) {
     assert.equal(await sha256(readFileSync(new URL(`../public/models/${id}.onnx`, import.meta.url))), hash,
       'The stronger model must remain a separate addition, preserving both earlier controllers')

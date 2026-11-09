@@ -23,7 +23,7 @@ for (const width of [390, 1280]) {
     const errors: string[] = []
     page.on('pageerror', error => errors.push(error.message))
     await page.goto('/')
-    await page.getByRole('navigation', { name: 'Main navigation' }).getByRole('button', { name: 'League', exact: true }).click()
+    await page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name: 'League', exact: true }).click()
     const reference = page.getByRole('region', { name: 'Reference league' })
     await expect(reference.locator('tbody tr')).toHaveCount(spec.entrants.length)
     await expect(reference).toContainText('512 paired serve sets per opponent')
