@@ -58,7 +58,7 @@ export function leagueMarkdown(run: CompetitionRun, plan?: EvaluationPlan) {
     // PR evaluation runs in the trusted base checkout. A proposed model's
     // metadata may only become a compiled preset after merge, so keep this
     // report independent of the base checkout's display-only roster metadata.
-    const kind = plan ? 'Submitted weights' : preset?.handcrafted ? 'Handwritten weights' : 'Trained weights'
+    const kind = plan ? 'Submitted weights' : preset?.kind ?? 'Bundled weights'
     const size = smallestDivision(entrant) === 'small' ? 'Small' : 'Large'
     const score = intervals.get(entrant.sha256)
     const interval = score?.interval

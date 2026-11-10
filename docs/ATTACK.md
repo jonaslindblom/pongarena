@@ -98,8 +98,9 @@ Expected Attack SHA-256:
 ```
 
 To replay the separate 128-set evaluation without overwriting the development
-standings, copy its historical six-model roster into a temporary directory.
-This keeps the saved comparison reproducible after new models are added:
+standings, run the commands below from a checkout of the original evaluator
+and copy its historical six-model roster into a temporary directory.
+[Original evaluator commit](https://github.com/jonaslindblom/pongarena/commit/f549eb88d47be40e0ede19607e2fe6f077255146)
 
 ```sh
 node --input-type=module <<'JS'
