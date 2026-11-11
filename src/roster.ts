@@ -27,8 +27,4 @@ export const presets = [
     id: 'follow', name: 'Follow', kind: 'Handwritten weights', handcrafted: true, submittedBy: 'jonaslindblom',
     description: 'Thirteen parameters and one hidden neuron: Follow moves toward the ball’s current position. Its handwritten weights are the first example in How it thinks. It does not predict bounces or aim returns.',
   },
-  {
-    id: 'oneshot', name: 'OneShot', kind: 'Prompted weights', submittedBy: 'jonaslindblom',
-    description: 'Astra returned these 163 weights and biases in one reply to the game rules and a tactical brief. OneShot won the most rallies against Large in the four-attempt prompt experiment.',
-  },
 ]

@@ -49,13 +49,9 @@ const pageHashes: Record<Page, string> = {
   'Device test': '#device-test',
 }
 const counterLessonHash = '#how-it-thinks/counter'
-const oneShotLessonHash = '#how-it-thinks/oneshot'
 
-function readPage(hash: string): { page: Page; explainer: ExplainerId; catalogId?: string } {
+function readPage(hash: string): { page: Page; explainer: ExplainerId } {
   if (hash === counterLessonHash) return { page: 'How it thinks', explainer: 'counter' }
-  if (hash === oneShotLessonHash) return { page: 'How it thinks', explainer: 'oneshot' }
-  const catalogId = /^#models\/([A-Za-z0-9_-]+)$/.exec(hash)?.[1]
-  if (catalogId) return { page: 'Model library', explainer: 'follow', catalogId }
   const page = (Object.keys(pageHashes) as Page[]).find(page => pageHashes[page] === hash) ?? 'Arena'
   return { page, explainer: 'follow' }
 }
@@ -68,7 +64,7 @@ const tabs: { page: Page; label: string; icon: typeof Gamepad2 }[] = [
   { page: 'Field guide', label: 'Guide', icon: BookOpen },
 ]
 const descriptions = {
-  Rankings: 'Handwritten, trained, and prompted models, tested on the same serves from both sides.',
+  Rankings: 'Handwritten and trained models, tested on the same serves from both sides.',
   'Model library': 'Play against a model, inspect its brain, or bring your own weights.',
   'Field guide': 'The game rules, observations, actions, and submission contract.',
   'Device test': 'Measure this device with a repeatable workload, then copy the report to compare.',
@@ -211,7 +207,7 @@ function Guide({ onDeviceTest }: { onDeviceTest: () => void }) {
 }
 
 export default function App() {
-  const [{ page, explainer, catalogId }, setRoute] = useState(() => readPage(window.location.hash))
+  const [{ page, explainer }, setRoute] = useState(() => readPage(window.location.hash))
   const referenceRanks = useReferenceRanks(page === 'Model library')
   const [initialMatch] = useState(() => readMatchLink(window.location.search))
   const [mode, setMode] = useState(initialMatch.mode)
@@ -230,15 +226,6 @@ export default function App() {
     fileInput = useRef<HTMLInputElement>(null)
   const eligibleModels = models.filter((model) => model.id === 'keyboard' ||
     model.inputSize === rules.inputSize && model.outputSize === rules.outputSize)
-  const linkedModel = page === 'Model library'
-    ? eligibleModels.find(model => model.id === catalogId && model.type === 'weights')
-    : undefined
-  useEffect(() => {
-    if (!linkedModel) return
-    const card = document.getElementById('catalog-model-' + linkedModel.id)
-    card?.focus({ preventScroll: true })
-    card?.scrollIntoView({ block: 'start' })
-  }, [linkedModel])
   const ready = ids.every((id) => eligibleModels.some((model) => model.id === id))
   useEffect(() => {
     if (ready) { markArenaReady(); setStartup(getStartupSnapshot()) }
@@ -340,9 +327,7 @@ export default function App() {
   }, [])
   function pageUrl(next: Page, lesson: ExplainerId = 'follow') {
     const url = new URL(window.location.href)
-    url.hash = next === 'How it thinks' && lesson !== 'follow'
-      ? pageHashes[next] + '/' + lesson
-      : pageHashes[next]
+    url.hash = next === 'How it thinks' && lesson === 'counter' ? counterLessonHash : pageHashes[next]
     if (next === 'Arena') return writeMatchLink(url, mode, ids)
     for (const param of ['model', 'mode', 'opponent', 'fullscreen']) url.searchParams.delete(param)
     return url
@@ -353,10 +338,10 @@ export default function App() {
     if (url.href !== window.location.href) window.history.pushState(null, '', url)
     setRoute({ page: next, explainer: lesson })
   }
-  function followTab(event: MouseEvent<HTMLAnchorElement>, next: Page, lesson: ExplainerId = 'follow') {
+  function followTab(event: MouseEvent<HTMLAnchorElement>, next: Page) {
     if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
     event.preventDefault()
-    navigate(next, lesson)
+    navigate(next)
   }
   function select(index: Side, id: string) {
     currentMatch.current.reset()
@@ -455,19 +440,7 @@ export default function App() {
         </div>
       </header>
       <main className={'shell' + (page === 'Arena' ? ' shell-arena' : '')}>
-        {page === 'Arena' && (
-          <header className="arena-intro">
-            <h1>How small can a neural network be and still play Pong?</h1>
-            <p>Play against the models,{' '}
-              <a href={pageUrl('How it thinks').href} onClick={event => followTab(event, 'How it thinks')}>
-                see how they choose their moves
-              </a>, or{' '}
-              <a href="https://github.com/jonaslindblom/pongarena/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">
-                submit your own model to the league
-              </a>.
-            </p>
-          </header>
-        )}
+        {page === 'Arena' && <h1 className="visually-hidden">Pong arena</h1>}
         {page !== 'Arena' && page !== 'How it thinks' && <div className="page-head">
           <div>
             <h1>{page === 'Rankings' ? 'League' : page}</h1>
@@ -522,16 +495,12 @@ export default function App() {
         )}
         {page === 'Model library' && (
           <>
-          {catalogId && loadingComplete && !linkedModel && (
-            <p className="library-rank-note" role="status">The linked model is unavailable in this browser.</p>
-          )}
           <p className="library-rank-note" role="status">{referenceRanks.error
             ? 'Reference ranks unavailable: ' + referenceRanks.error
             : referenceRanks.loading ? 'Loading reference league ranks…' : 'Ranks from the reference league, matched to the exact model weights.'}</p>
           {[
-            { title: 'Handwritten', description: 'Weights calculated from formulas we developed with Codex and tested through play.', models: eligibleModels.filter(model => model.handcrafted && !model.id.startsWith('local-')).sort((a, b) => a.params - b.params) },
-            { title: 'Trained', description: 'Neural networks learned in PyTorch, from small to large.', models: eligibleModels.filter(model => model.type === 'weights' && !model.handcrafted && model.id !== 'oneshot' && !model.id.startsWith('local-')).sort((a, b) => a.params - b.params) },
-            { title: 'Prompt experiments', description: 'Weights returned directly by Astra in one reply, without match feedback.', models: eligibleModels.filter(model => model.id === 'oneshot') },
+            { title: 'Handwritten', description: 'From following the ball to prediction, aiming and recovery.', models: eligibleModels.filter(model => model.handcrafted && !model.id.startsWith('local-')).sort((a, b) => a.params - b.params) },
+            { title: 'Trained', description: 'Neural networks learned in PyTorch, from small to large.', models: eligibleModels.filter(model => model.type === 'weights' && !model.handcrafted && !model.id.startsWith('local-')).sort((a, b) => a.params - b.params) },
             { title: 'Your models', description: 'Models imported and saved in this browser.', models: eligibleModels.filter(model => model.id.startsWith('local-')) },
           ].filter(group => group.models.length > 0).map(group => (
           <section className="library-group" key={group.title} aria-label={`${group.title} models`}>
@@ -539,7 +508,6 @@ export default function App() {
           <div className="library">
             {group.models.map((c) => (
                 <article className="panel library-card" key={c.id} aria-label={`${c.name} model`}
-                  id={'catalog-model-' + c.id} tabIndex={c.id === catalogId ? -1 : undefined}
                   data-model-id={c.id}
                   data-weight-origin={c.handcrafted ? 'handcrafted' : undefined}>
                   <div className="library-top">
@@ -548,7 +516,7 @@ export default function App() {
                     </span>
                     {c.sha256 && referenceRanks.ranks.has(c.sha256)
                       ? <RankBadge rank={referenceRanks.ranks.get(c.sha256)!} label="Reference league rank" />
-                      : <span className="mini-tag">{c.id === 'oneshot' ? 'EXPERIMENT' : c.id.startsWith('local-') ? 'IMPORTED' : 'BUILT-IN'}</span>}
+                      : <span className="mini-tag">{c.id.startsWith('local-') ? 'IMPORTED' : 'BUILT-IN'}</span>}
                   </div>
                   <small>{c.kind}</small>
                   <h2>{c.name}</h2>
@@ -570,10 +538,6 @@ export default function App() {
                   </dl>
                   </details>
                   <div className="library-actions">
-                    {c.id === 'oneshot' && <a className="secondary-btn"
-                      href={pageUrl('How it thinks', 'oneshot').href}
-                      onClick={event => followTab(event, 'How it thinks', 'oneshot')}
-                    ><Network size={14} /> See the prompt</a>}
                     {(c.id === 'follow' || c.id === 'counter') && <button className="secondary-btn" onClick={() => {
                       navigate('How it thinks', c.id as ExplainerId)
                     }}><Network size={14} /> How it thinks</button>}
@@ -599,7 +563,7 @@ export default function App() {
                         title="Download ONNX"
                         className="icon-btn"
                         href={assetPath('models/' + c.id + '.onnx')}
-                        download={c.id + '.onnx'}
+                        download
                       >
                         <ArrowDownToLine size={16} />
                       </a>
