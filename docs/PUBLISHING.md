@@ -31,6 +31,8 @@ The [model submission gate](../.github/workflows/model-evaluation.yml) uses `pul
 
 For model-file changes, the gate freezes model hashes, draws 512 shared serve sets and evaluates all proposed entrants with paired sides. It retains `evaluation-plan-<PR>-<identity>` and `model-league-<PR>-<identity>` for 90 days. Retries and display-name changes reuse the saved plan; changed model bytes get fresh serves. A missing or expired recorded plan fails instead of silently rerolling. Documentation-only PRs do not redraw serves.
 
+After a successful model evaluation, the [results workflow](../.github/workflows/model-results-comment.yml) posts the standings on the PR. It updates the same comment on reruns and checks that the evaluated commit is still the PR head. To report an earlier successful run, dispatch the workflow with its run ID.
+
 The evaluator's shared default and publication check both require 512 sets. The `pong-v3` rule change creates a new identity and plan, preserving earlier 128-set artifacts as historical results. Reports include the same paired-seed bootstrap score intervals displayed in the app.
 
 In **Settings → Rules → Rulesets** (or branch protection), protect `main` with pull requests, up-to-date branches and all four status checks: **check**, **training**, **Browser end-to-end tests** and **Validate and evaluate submitted models**. A failing workflow check blocks merging only when the repository requires it. Rebase and reevaluate if another model merge changes the roster before yours merges.

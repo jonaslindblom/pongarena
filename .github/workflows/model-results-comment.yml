@@ -1,0 +1,73 @@
+name: Comment model evaluation results
+
+on:
+  workflow_run:
+    workflows: [Model submission gate]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: Successful model evaluation run ID
+        required: true
+        type: string
+
+permissions: {}
+
+jobs:
+  select:
+    if: github.ref_name == github.event.repository.default_branch && (github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      actions: read
+      contents: read
+    outputs:
+      artifact: ${{ steps.evaluation.outputs.artifact }}
+      pr: ${{ steps.evaluation.outputs.pr }}
+      report: ${{ steps.evaluation.outputs.report }}
+      run: ${{ steps.evaluation.outputs.run }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Select the completed model evaluation
+        id: evaluation
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          EVALUATION_RUN_ID: ${{ github.event.workflow_run.id || inputs.run_id }}
+        run: node scripts/model-evaluation-comment.mjs select
+
+  comment:
+    needs: select
+    if: needs.select.outputs.artifact != ''
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      actions: read
+      contents: read
+      pull-requests: write
+    concurrency:
+      group: model-evaluation-comment-${{ needs.select.outputs.pr }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.select.outputs.artifact }}
+          run-id: ${{ needs.select.outputs.run }}
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/model-evaluation-comment
+      - name: Update the PR with its verified standings
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          EVALUATION_REPORT: ${{ needs.select.outputs.report }}
+          EVALUATION_ARTIFACT_DIR: ${{ runner.temp }}/model-evaluation-comment
+        run: node --experimental-strip-types scripts/model-evaluation-comment.mjs post
