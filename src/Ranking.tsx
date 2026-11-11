@@ -34,11 +34,9 @@ function StandingsTable({ run, entrants, handcraftedHashes, onPlay }: {
       const score = intervals.get(entrant.sha256)
       return <tr key={entrant.sha256}>
         <td><RankBadge rank={row.rank} /></td>
-        <td><strong>{loaded
-          ? <a className="ranking-model-link" href={'#models/' + loaded.id}>{entrant.name}</a>
-          : entrant.name}</strong><small>
+        <td><strong>{entrant.name}</strong><small>
           <span className="ranking-class">{smallestDivision(entrant)}</span>
-          {' · '}{numbers(entrant.params)} params{handcraftedHashes.includes(entrant.sha256) ? ' · Handwritten' : entrant.id === 'oneshot' ? ' · Prompted' : ''}
+          {' · '}{numbers(entrant.params)} params{handcraftedHashes.includes(entrant.sha256) ? ' · Handwritten' : ''}
         </small></td>
         <td>{numbers(row.leaguePoints)}<small>of {row.played}{score && <> · {percent(score.rate)}</>}</small>
           {score && <small className="ranking-interval" aria-label={entrant.name + ' score uncertainty'}>

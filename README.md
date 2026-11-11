@@ -8,7 +8,7 @@ Play against tiny neural networks, watch them compete, and see their neurons fir
 
 ![PongArena showing a match and the neural network’s live activations](docs/media/pongarena.png)
 
-## League models
+## Seven networks, one arena
 
 The handwritten models encode their strategies directly in dense weights. The trained models start from random PyTorch weights: Small learns from scripted teachers, while Large adds reinforcement learning against scripts and past learned policies. Every model receives the same six observations and chooses from the same three actions.
 
@@ -21,13 +21,10 @@ The handwritten models encode their strategies directly in dense weights. The tr
 | [Quill](docs/QUILL.md) | Handwritten prediction, recovery and aiming | `6 → 12 → 4 → 3 → 3` | 163 | 141 |
 | [Small](training/README.md) | Trained with imitation learning | `6 → 16 → 6 → 3` | 235 | 210 |
 | [Large](training/README.md) | Trained with imitation learning and PPO | `6 → 128 → 128 → 128 → 128 → 3` | 50,819 | 50,304 |
-| [OneShot](experiments/one-prompt-weights/follow-up/README.md) | Prompted with game rules and a tactical brief | `6 → 12 → 4 → 3 → 3` | 163 | 141 |
 
 All stored weights and biases count, including zeros. A MAC is a multiply-accumulate. Handwritten weights do not supply training labels, opponents or checkpoint-selection results for the learned models; they meet after the models are frozen. League results compare these particular controllers and serves; they do not establish performance against human players.
 
 The project is inspired by [Sparks of Weight-Space Programming](https://rikiyat.github.io/blog/weight-space-programming/). Start with [Follow’s 13 parameters](docs/FOLLOW.md) on the interactive **How it thinks** page. Then explore one Counter decision: the same ball position calls for a different move when its direction changes. Switch off the departure neuron in an isolated ONNX copy and compare the result. A map names the designed jobs of all 13 hidden neurons and three action scores; select any job to inspect its stored weights and real ONNX activations. These are deliberately constructed roles, not a claim that trained networks have one purpose per neuron. Follow and Counter model cards link directly to their lessons.
-
-We developed the handwritten models’ weight formulas with Codex and refined the designs through play. For **OneShot**, Astra returned the 163 numeric weights directly in a single reply. Its lesson compares a single shot with a rules-only controller and shows the exact prompts and all four attempts. [Experiment and replay instructions](experiments/one-prompt-weights/follow-up/README.md)
 
 ## Play and explore
 
@@ -83,11 +80,11 @@ Both limits apply. Small models can also enter Large. CI validates every submiss
 
 ## How the league works
 
-Published standings use **512 fresh shared serve sets**, drawn after model hashes are frozen. Every pair plays from both sides, for **28,672 games** with eight models. Retries reuse their saved serve plan. On merge, Pages publishes the verified results matching those exact models and rules.
+Published standings use **512 fresh shared serve sets**, drawn after model hashes are frozen. Every pair plays from both sides: **21,504 games** for the current seven-model roster. Retries reuse their saved serve plan. On merge, Pages publishes the verified results matching those exact models and rules.
 
 A contest combines two five-rally games with swapped sides. A win earns one league point; a draw earns half. Approximate 95% score intervals resample whole serve sets, preserving both sides and all matchups together. Compare results within the same opponent field, rules and serve set.
 
-The checked-in [development standings](public/league.md) use **16 fixed public serve sets / 896 games** for fast, reproducible checks. Run `npm run league` to regenerate them after changing the roster. They are separate from the larger published evaluation. Current rules are `pong-v3`. See [scoring and reproducibility](docs/RULES.md).
+The checked-in [development standings](public/league.md) use **16 fixed public serve sets / 672 games** for fast, reproducible checks. Run `npm run league` to regenerate them after changing the roster. They are separate from the larger published evaluation. Current rules are `pong-v3`; see [scoring and reproducibility](docs/RULES.md).
 
 ## Find your way around
 

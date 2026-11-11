@@ -92,7 +92,7 @@ async function expectOriginalDecision(page: Page, session: ort.InferenceSession,
 test('Follow stays fully inspectable and leads directly to the recovery lesson', async ({ page }) => {
   await openWeights(page)
   const picker = page.getByRole('group', { name: 'Choose a lesson' })
-  await expect(picker.getByRole('button')).toHaveCount(3)
+  await expect(picker.getByRole('button')).toHaveCount(2)
   await expect(picker.getByRole('button', { name: '1 · Follow the ball', exact: true })).toHaveAttribute('aria-pressed', 'true')
   await expect(picker.getByRole('button', { name: /Attack/ })).toHaveCount(0)
   const follow = page.getByRole('region', { name: 'Interactive Follow model' })

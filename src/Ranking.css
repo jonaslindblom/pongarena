@@ -43,7 +43,6 @@
 .ranking-table th { color: #627864; font-size: 10px; font-weight: 500; white-space: nowrap; }
 .ranking-table td { white-space: nowrap; }
 .ranking-table td:nth-child(2) { min-width: 150px; }
-.ranking-model-link { text-decoration: underline; text-underline-offset: 3px; }
 .ranking-table small { display: block; margin-top: 5px; color: #71836e; font-size: 10px; }
 .ranking-table .ranking-interval { color: #496848; }
 .ranking-uncertainty-note { margin-top: 12px; max-width: 85ch; }

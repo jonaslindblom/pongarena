@@ -1,6 +1,6 @@
 # Game and model rules
 
-PongArena accepts plain dense neural networks with handwritten, trained, or prompted weights. Eligibility depends on the validated graph and resource limits. The rules identifier is `pong-v3`, the model contract is `dense-mlp`, and league scoring uses `paired-round-robin`.
+PongArena accepts plain dense neural networks. Parameters may be handwritten or trained; eligibility depends on the validated graph and resource limits. The rules identifier is `pong-v3`, the model contract is `dense-mlp`, and league scoring uses `paired-round-robin`.
 
 ## Game
 
@@ -56,7 +56,7 @@ Each unordered model pair plays every seed twice, swapping sides. Both games rep
 
 Returns, rally duration, size and speed do not break ties. Pairwise results remain in the JSON because matchups can be non-transitive. An inference failure stops the league as failed; incomplete runs receive no ranks.
 
-The checked-in development field is **Follow, Predict, Attack, Counter, Quill, Small, Large and OneShot**. It uses 16 fixed public seeds for 448 paired contests, or **896 games**. The generator uses single-threaded ONNX Runtime Web CPU/WASM and the same game and scoring code as the browser. [Serve seeds](../src/league.ts)
+The checked-in development field is **Follow, Predict, Attack, Counter, Quill, Small and Large**, using 16 fixed public seeds in [league.ts](../src/league.ts): 336 paired contests, or **672 games**. The generator uses single-threaded ONNX Runtime Web CPU/WASM and the same game and scoring code as the browser.
 
 ```sh
 npm run league        # write public/league.json and public/league.md
@@ -65,7 +65,7 @@ npm run league:check  # replay and require exact matches
 
 Model PRs include both regenerated development files; [normal CI](../.github/workflows/check.yml) checks them. The separate [submission gate](../.github/workflows/model-evaluation.yml) freezes the full proposed roster before drawing 512 fresh shared serve sets. It saves the plan and results, reuses the plan on retries, and draws new serves for changed model bytes. Missing or expired recorded plans fail instead of rerolling. Pages publishes the verified results matching the merged models and evaluator. See [contributing](../CONTRIBUTING.md).
 
-For eight models, the published evaluation contains 28,672 games, with 1,024 games and 5,120 rallies per matchup. Each seed supplies paired games against every opponent and counts as one independent sample. Replaying a deterministic match does not add observations. The older 128-set evaluations remain historical records under their original evaluator identity. Publication requires a recorded 512-set plan for the current roster and evaluator.
+For seven models, the published evaluation contains 21,504 games: 1,024 games and 5,120 rallies per matchup. Seeds are the independent sampling units; each seed supplies paired games against every opponent. Replaying a deterministic match does not add observations. The older 128-set evaluations remain historical records under their original evaluator identity; `pong-v3` publication requires a new recorded 512-set plan.
 
 Standings and league reports show approximate 95% confidence intervals for each model's league-point rate (points divided by available points). The percentile bootstrap uses 5,000 reproducible resamples of whole shared serve sets, preserving both sides and every matchup together. Intervals describe uncertainty across serves, not variability between training runs or confidence in a rank. Fewer than two sets, or no observed variation in a model's score across sets, produces no interval instead of a misleading zero-width estimate. Small local leagues give coarse estimates; published results use all 512 sets.
 

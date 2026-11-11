@@ -2,27 +2,6 @@ import { test, expect } from '@playwright/test'
 import { readFileSync } from 'node:fs'
 import { benchmarkIdentity, type CompetitionRun } from '../src/competition'
 
-test('a League model link opens its catalog card and can be shared', async ({ page }) => {
-  await page.goto('/#league')
-  const reference = page.getByRole('region', { name: 'Reference league', exact: true })
-  const modelLink = reference.getByRole('link', { name: 'OneShot', exact: true })
-  await expect(modelLink).toHaveAttribute('href', '#models/oneshot')
-  await modelLink.click()
-
-  const card = page.getByRole('article', { name: 'OneShot model', exact: true })
-  await expect(page).toHaveURL(/#models\/oneshot$/)
-  await expect(card).toBeFocused()
-  await expect(card).toBeInViewport()
-
-  await page.reload()
-  await expect(card).toBeFocused()
-  await expect(card).toBeInViewport()
-
-  await page.goBack()
-  await expect(page).toHaveURL(/#league$/)
-  await expect(modelLink).toBeVisible()
-})
-
 for (const width of [390, 1280]) {
   test(`512-set standings show score uncertainty at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 })

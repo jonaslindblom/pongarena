@@ -105,9 +105,7 @@ Expected model SHA-256:
 5f7a480b98c982cf403f2f8849fac1e5e02503ff12e6b0b5d1e377856534e35c
 ```
 
-Replay the separate 128-set evaluation from a checkout of the original
-evaluator and roster. These commands write results to a temporary directory.
-[Original evaluator commit](https://github.com/jonaslindblom/pongarena/commit/f549eb88d47be40e0ede19607e2fe6f077255146)
+Replay the separate 128-set evaluation without overwriting development results:
 
 ```sh
 node --input-type=module <<'JS'
