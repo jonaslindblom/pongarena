@@ -1,0 +1,15 @@
+{
+  "id": "astra-163-b",
+  "model": "gpt-6-astra",
+  "effort": "high",
+  "widths": [
+    6,
+    12,
+    4,
+    3,
+    3
+  ],
+  "status": "transport_error",
+  "maxOutputTokens": 12000,
+  "error": "fetch failed before a response was received"
+}

@@ -1,0 +1,35 @@
+{
+  "id": "astra-163-high-bg",
+  "widths": [
+    6,
+    12,
+    4,
+    3,
+    3
+  ],
+  "model": "gpt-6-astra",
+  "effort": "high",
+  "maxOutputTokens": 12000,
+  "background": true,
+  "responseId": "resp_0c534925d6896d94006af2479bed3887d2bc6c22c9ebe9d01c",
+  "status": "incomplete",
+  "httpStatus": 200,
+  "incompleteDetails": {
+    "reason": "max_output_tokens"
+  },
+  "error": null,
+  "usage": {
+    "input_tokens": 702,
+    "input_tokens_details": {
+      "cache_write_tokens": 0,
+      "cached_tokens": 0
+    },
+    "output_tokens": 12000,
+    "output_tokens_details": {
+      "reasoning_tokens": 12000
+    },
+    "total_tokens": 12702
+  },
+  "elapsedSeconds": 381.895,
+  "outputText": ""
+}

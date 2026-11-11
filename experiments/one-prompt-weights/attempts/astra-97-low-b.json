@@ -1,0 +1,33 @@
+{
+  "id": "astra-97-low-b",
+  "widths": [
+    6,
+    6,
+    4,
+    3,
+    3
+  ],
+  "model": "gpt-6-astra",
+  "effort": "low",
+  "maxOutputTokens": 6000,
+  "background": true,
+  "responseId": "resp_0a36d7698753799a006af24882a50c87d2a097a6473db95dea",
+  "status": "completed",
+  "httpStatus": 200,
+  "incompleteDetails": null,
+  "error": null,
+  "usage": {
+    "input_tokens": 702,
+    "input_tokens_details": {
+      "cache_write_tokens": 0,
+      "cached_tokens": 0
+    },
+    "output_tokens": 1335,
+    "output_tokens_details": {
+      "reasoning_tokens": 1034
+    },
+    "total_tokens": 2037
+  },
+  "elapsedSeconds": 48.128,
+  "outputText": "{\"layers\":[{\"bias\":[1.134375,-1.134375,1.134375,-1.134375,1,1],\"weights\":[[1.2375,0,0,1.5,0,0],[-1.2375,0,0,1.5,0,0],[1.2375,0,0,-1.5,0,0],[-1.2375,0,0,-1.5,0,0],[0,1,0,0,0,0],[0,0,0,0,1,0]]},{\"bias\":[3,-1.95,0.05,0],\"weights\":[[0.5,-0.5,-0.5,0.5,1,0],[0.5,-0.5,-0.5,0.5,1,0],[-0.5,0.5,0.5,-0.5,-1,0],[0,0,0,0,0,1]]},{\"bias\":[-3,3,1],\"weights\":[[1,-2,2,-1],[-1,2,-2,1],[0,0,0,0]]},{\"bias\":[0,0.0125,0],\"weights\":[[-1,1,0],[0,0,0],[1,-1,0]]}]}"
+}

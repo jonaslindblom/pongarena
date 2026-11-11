@@ -1,0 +1,148 @@
+.oneshot-scene .attack-court {
+  margin-block: 22px 8px;
+}
+.oneshot-observation {
+  align-content: center;
+}
+.oneshot-choices {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+.oneshot-decision {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: #f3f5eb;
+}
+.oneshot-decision h3 {
+  font-size: 15px;
+}
+.oneshot-decision p,
+.oneshot-feedback,
+.oneshot-note,
+.oneshot-section p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.75;
+}
+.oneshot-decision p {
+  margin-top: 4px;
+  font-size: 11px;
+}
+.oneshot-move {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 13px;
+  color: #36583c;
+  font-size: 22px;
+  font-weight: 700;
+}
+.oneshot-scores {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 12px;
+  margin: 10px 0 0;
+  color: var(--muted);
+  font: 10px var(--mono);
+}
+.oneshot-scores dd {
+  margin: 4px 0 0;
+}
+.oneshot-scores .is-winning {
+  color: #36583c;
+  font-weight: 700;
+}
+.oneshot-feedback {
+  margin-top: 16px;
+  padding: 10px 13px;
+  border-left: 3px solid #62893f;
+  background: #edf2e5;
+}
+.oneshot-feedback[role='alert'] {
+  border-color: #a24537;
+  background: #fff4ef;
+}
+.oneshot-note {
+  margin-top: 8px;
+  font-size: 12px;
+}
+.oneshot-section {
+  min-width: 0;
+  margin-top: 30px;
+}
+.oneshot-section h2 {
+  margin: 5px 0 8px;
+  font-size: 22px;
+}
+.oneshot-section p {
+  max-width: 770px;
+  margin-bottom: 14px;
+}
+.oneshot-scroll-hint {
+  display: none;
+}
+.oneshot-results {
+  overflow-x: auto;
+  margin-bottom: 12px;
+}
+.oneshot-results table {
+  width: 100%;
+  min-width: 700px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.oneshot-results th,
+.oneshot-results td {
+  padding: 12px 14px;
+  text-align: right;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+.oneshot-results th:first-child {
+  text-align: left;
+}
+.oneshot-results td {
+  font-family: var(--mono);
+}
+.oneshot-results tbody tr:last-child > * {
+  border-bottom: 0;
+}
+.oneshot-results .is-oneshot {
+  background: #e8f0dc;
+}
+.oneshot-prompt {
+  margin-bottom: 10px;
+}
+.oneshot-prompt summary {
+  padding: 14px 18px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+}
+.oneshot-prompt pre {
+  margin: 0;
+  padding: 14px 18px;
+  border-top: 1px solid var(--line);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: 12px / 1.75 var(--mono);
+}
+@media (max-width: 520px) {
+  .oneshot-decision {
+    padding: 11px;
+  }
+  .oneshot-choices {
+    gap: 8px;
+  }
+  .oneshot-scores {
+    gap: 5px 8px;
+  }
+}
+@media (max-width: 760px) {
+  .oneshot-scroll-hint {
+    display: block;
+  }
+}

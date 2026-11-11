@@ -1,0 +1,15 @@
+{
+  "id": "astra-97-c",
+  "model": "gpt-6-astra",
+  "effort": "high",
+  "widths": [
+    6,
+    6,
+    4,
+    3,
+    3
+  ],
+  "status": "transport_error",
+  "maxOutputTokens": 12000,
+  "error": "fetch failed before a response was received"
+}
