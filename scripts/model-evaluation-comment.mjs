@@ -19,11 +19,10 @@ export async function selectEvaluation(request, repository, id) {
   const pr = Number(revision[1])
   if (!Number.isSafeInteger(pr)) throw new Error('Invalid evaluation PR number.')
   const associated = run.pull_requests ?? []
-  const revisionAssociation = associated.find(pullRequest => pullRequest.number === pr)
-  if (associated.length && (!revisionAssociation || revisionAssociation.head?.sha !== revision[2]))
-    throw new Error('The workflow run is associated with a different PR revision.')
-  const baseSha = revisionAssociation?.base?.sha
-  if (baseSha !== undefined && !sha.test(baseSha)) throw new Error('Invalid evaluation base SHA.')
+  if (associated.length && !associated.some(pullRequest => pullRequest.number === pr))
+    throw new Error('The workflow run is associated with a different PR.')
+  // GitHub updates this association when a PR is retargeted. The artifact
+  // records the base SHA used by the evaluator when it actually ran.
   const { artifacts, total_count: total } = await request(`/repos/${repository}/actions/runs/${runId}/artifacts?per_page=100`)
   if (!Array.isArray(artifacts) || artifacts.length !== total) throw new Error('Incomplete evaluation artifact listing.')
   const pattern = new RegExp(`^model-league-${pr}-([a-f0-9]{64})$`)
@@ -31,13 +30,13 @@ export async function selectEvaluation(request, repository, id) {
   if (!matches.length) return // A successful check without model changes has no results.
   if (matches.length !== 1 || matches[0].expired) throw new Error('Expected exactly one available evaluation result bundle.')
   const artifact = matches[0].name
-  return { artifact, pr, runId, headSha: revision[2], baseSha, identity: pattern.exec(artifact)[1] }
+  return { artifact, pr, runId, headSha: revision[2], identity: pattern.exec(artifact)[1] }
 }
 
 export function verifyProvenance(provenance, repository, report) {
   if (provenance.schema !== 'pongarena-pr-evaluation-v1' || provenance.repository !== repository ||
       provenance.pullRequest !== report.pr || provenance.headSha !== report.headSha ||
-      !sha.test(provenance.baseSha ?? '') || (report.baseSha !== undefined && provenance.baseSha !== report.baseSha) ||
+      !sha.test(provenance.baseSha ?? '') ||
       provenance.identity !== report.identity ||
       provenance.runId !== String(report.runId))
     throw new Error('The results do not match the selected model evaluation.')

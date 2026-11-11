@@ -12,7 +12,7 @@ const headSha = 'a'.repeat(40)
 const baseSha = 'b'.repeat(40)
 const identity = 'c'.repeat(64)
 const artifact = `model-league-${pr}-${identity}`
-const report = { artifact, pr, runId, headSha, baseSha, identity }
+const report = { artifact, pr, runId, headSha, identity }
 const runUrl = `https://github.com/${repository}/actions/runs/${runId}`
 const title = `Model PR #${pr} at ${headSha}`
 const modelRun = {
@@ -39,17 +39,21 @@ test('only the successful trusted model run with a matching artifact can produce
     ? { total_count: 0, artifacts: [] } : modelRun, repository, String(runId)), undefined)
   await assert.rejects(selectEvaluation(async () => ({ ...modelRun, event: 'pull_request' }), repository, String(runId)), /not a trusted/)
   await assert.rejects(selectEvaluation(async () => ({ ...modelRun, head_sha: baseSha }), repository, String(runId)), /not a trusted/)
-  await assert.rejects(selectEvaluation(async () => ({ ...modelRun, pull_requests: [{ number: pr + 1 }] }), repository, String(runId)), /different PR revision/)
+  await assert.rejects(selectEvaluation(async () => ({ ...modelRun, pull_requests: [{ number: pr + 1 }] }), repository, String(runId)), /different PR/)
   const provenance = {
     schema: 'pongarena-pr-evaluation-v1', repository, pullRequest: pr, headSha, baseSha,
     identity, runId: String(runId),
   }
   assert.doesNotThrow(() => verifyProvenance(provenance, repository, report))
   assert.throws(() => verifyProvenance({ ...provenance, headSha: baseSha }, repository, report), /do not match/)
-  assert.throws(() => verifyProvenance({ ...provenance, baseSha: headSha }, repository, report), /do not match/)
+  const retargetedReport = await selectEvaluation(async (path: string) => path.includes('/artifacts')
+    ? request(path) : { ...modelRun, pull_requests: [{ number: pr, head: { sha: headSha }, base: { sha: 'd'.repeat(40) } }] },
+  repository, String(runId))
+  assert.deepEqual(retargetedReport, report)
+  assert.doesNotThrow(() => verifyProvenance(provenance, repository, retargetedReport))
   const forkReport = await selectEvaluation(async (path: string) => path.includes('/artifacts')
     ? request(path) : { ...modelRun, pull_requests: [] }, repository, String(runId))
-  assert.deepEqual(forkReport, { ...report, baseSha: undefined })
+  assert.deepEqual(forkReport, report)
   assert.doesNotThrow(() => verifyProvenance(provenance, repository, forkReport))
   assert.throws(() => verifyProvenance({ ...provenance, baseSha: 'branch-name' }, repository, forkReport), /do not match/)
 })
