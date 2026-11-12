@@ -1,16 +1,17 @@
 # PongArena league
 
-All 7 bundled models, 16 paired serve sets per matchup, 672 games.
+All 8 bundled models, 16 paired serve sets per matchup, 896 games.
 
 | Rank | Model | Kind | Size | Points | 95% score interval | W / D / L | Parameters |
 | ---: | --- | --- | --- | ---: | --- | --- | ---: |
-| 1 | Large | Trained weights | Large | 93 / 96 | 94.3%–99.0% | 91 / 4 / 1 | 50819 |
-| 2 | Quill | Handwritten weights | Small | 81 / 96 | 82.3%–87.0% | 80 / 2 / 14 | 163 |
-| 3 | Counter | Handwritten weights | Small | 61.5 / 96 | 60.9%–66.7% | 61 / 1 / 34 | 97 |
-| 4 | Attack | Handwritten weights | Small | 47 / 96 | 47.4%–50.0% | 46 / 2 / 48 | 75 |
-| 5 | Predict | Handwritten weights | Small | 30 / 96 | 29.2%–32.8% | 28 / 4 / 64 | 75 |
-| 6 | Small | Trained weights | Small | 20 / 96 | 17.7%–24.0% | 14 / 12 / 70 | 235 |
-| 7 | Follow | Handwritten weights | Small | 3.5 / 96 | 1.0%–6.8% | 0 / 7 / 89 | 13 |
+| 1 | Large | Trained weights | Large | 109 / 112 | 95.1%–99.1% | 107 / 4 / 1 | 50819 |
+| 2 | Quill | Handwritten weights | Small | 97 / 112 | 84.8%–88.8% | 96 / 2 / 14 | 163 |
+| 3 | Counter | Handwritten weights | Small | 77 / 112 | 65.2%–71.4% | 76 / 2 / 34 | 97 |
+| 4 | OneShot | Prompted weights | Small | 48.5 / 112 | 42.9%–44.2% | 48 / 1 / 63 | 163 |
+| 5 | Attack | Handwritten weights | Small | 47 / 112 | 40.6%–42.9% | 46 / 2 / 64 | 75 |
+| 6 | Small | Trained weights | Small | 36 / 112 | 29.5%–34.8% | 30 / 12 / 70 | 235 |
+| 7 | Predict | Handwritten weights | Small | 30 / 112 | 25.0%–28.1% | 28 / 4 / 80 | 75 |
+| 8 | Follow | Handwritten weights | Small | 3.5 / 112 | 0.9%–5.8% | 0 / 7 / 105 | 13 |
 
 Each contest combines two five-rally games with swapped sides on the same seed. A contest win earns one point; a tie earns half. Equal points share rank.
 
@@ -18,7 +19,7 @@ Approximate 95% score intervals are percentages of available league points. A re
 
 Rules: `pong-v3` · Contract: `dense-mlp` · Protocol: `paired-round-robin` · Seeds: `public-league`.
 
-Benchmark: `71da50bc55dfeb1ae1ce4baa9b07846b23de53e5996a3927d391d1fdc0474328`.
+Benchmark: `f6052e6eb3308e8f8d7ea734cd1019111da7d392f03f2728c1e7c3d8b0ff1b9b`.
 
 Generated from the repository’s model bytes by `npm run league`, using ONNX Runtime Web CPU/WASM with one thread. CI reruns the league and checks both committed files. Review the passing workflow on the relevant commit before treating a proposed PR table as verified.
 
