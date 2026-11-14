@@ -258,7 +258,7 @@ test('model demos have no human steering hints or click-to-steer behavior', asyn
   await expect(page.locator('.court-mouse-hint')).toHaveCount(0)
   await page.keyboard.press('ArrowLeft')
   await clickTarget(page, 120)
-  await expect(page.locator('.score-player strong').first()).toHaveText('Quill')
+  await expect(page.locator('.score-player.right strong')).toHaveText('Quill')
   await expect(page.locator('.court-mouse-status')).toHaveCount(0)
   await page.getByRole('button', { name: 'Take over & play', exact: true }).click()
   await expect(page.locator('.court-mouse-hint')).toBeVisible()

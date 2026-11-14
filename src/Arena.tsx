@@ -56,10 +56,11 @@ function Court({ m, names, ready, humanSides, bottom, mode, demo, onModeChange }
   onModeChange?: (mode: Mode) => void
 }) {
   const f = m.frame
+  const top = topSide(bottom)
   // Screen horizontal = game Y. Screen vertical = 360 − game X when side 0
   // is at the bottom, or game X when side 1 is at the bottom.
   const screenTransform = bottom === 0 ? 'matrix(0 -1 1 0 0 360)' : 'matrix(0 1 1 0 0 0)'
-  const scoreLabel = 'Score: ' + ([0, 1] as const).map((side) =>
+  const scoreLabel = 'Score: ' + ([top, bottom] as const).map((side) =>
     `player ${playerNumber(side, bottom)}, ${side === bottom ? 'bottom' : 'top'}, ${names[side]}: ${f.points[side]}`,
   ).join('; ')
   const field = useRef<SVGSVGElement>(null)
@@ -262,22 +263,22 @@ function Court({ m, names, ready, humanSides, bottom, mode, demo, onModeChange }
       <div className="scoreboard">
         <div className="score-player">
           <small>
-            <i className="side-0-dot" />
-            P{playerNumber(0, bottom)}{bottom === 0 ? ' · BOTTOM' : ' · TOP'}
+            <i className={`side-${top}-dot`} />
+            P1 · TOP
           </small>
-          <strong>{names[0]}</strong>
+          <strong>{names[top]}</strong>
         </div>
         <div className="big-score" aria-label={scoreLabel}>
-          <b>{pad(f.points[0])}</b>
+          <b>{pad(f.points[top])}</b>
           <span>:</span>
-          <b>{pad(f.points[1])}</b>
+          <b>{pad(f.points[bottom])}</b>
         </div>
         <div className="score-player right">
           <small>
-            P{playerNumber(1, bottom)}{bottom === 1 ? ' · BOTTOM' : ' · TOP'}
-            <i className="side-1-dot" />
+            P2 · BOTTOM
+            <i className={`side-${bottom}-dot`} />
           </small>
-          <strong>{names[1]}</strong>
+          <strong>{names[bottom]}</strong>
         </div>
       </div>
       <div className={'court-field' + (m.playing && m.countdown !== null ? ' is-counting-down' : '')}>

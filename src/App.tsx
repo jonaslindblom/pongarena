@@ -36,7 +36,7 @@ import { sha256, smallestDivision, type CompetitionEntrant } from './competition
 import { DeviceTest } from './DeviceTest'
 import { finishStartup, getStartupSnapshot, markArenaReady, recordStartupFailure, recordStartupTiming } from './startup'
 import { assetPath } from './assets'
-import { DEFAULT_MODEL, readMatchLink, writeMatchLink } from './matchLink'
+import { DEFAULT_MODEL, DEFAULT_WATCH_IDS, readMatchLink, writeMatchLink } from './matchLink'
 import { bottomSide, playerNumber, topSide } from './courtPlayers'
 import { actionLabels, observationDescriptions, observationLabels } from './observationLabels'
 import quillSourceUrl from '../handwritten/quill.py?url'
@@ -417,7 +417,7 @@ export default function App() {
     m.reset()
     setMode(next)
     const opponent = ids[topSide(bottom)]
-    setIds(next === 'play' ? ['keyboard', opponent === 'keyboard' ? DEFAULT_MODEL : opponent] : ['large', DEFAULT_MODEL])
+    setIds(next === 'play' ? ['keyboard', opponent === 'keyboard' ? DEFAULT_MODEL : opponent] : DEFAULT_WATCH_IDS)
     setError('')
     m.play()
   }

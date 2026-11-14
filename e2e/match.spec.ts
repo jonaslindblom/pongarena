@@ -41,7 +41,7 @@ test('model and fullscreen links open a ready game and survive selection and rel
   await page.goto('/?model=follow&fullscreen=1')
   await expect(page.locator('.court-control.play-btn')).toBeEnabled({ timeout: 30_000 })
   await expect(page.locator('.court-fullscreen')).toBeVisible()
-  await expect(page.locator('.score-player.right strong')).toHaveText('Follow')
+  await expect(page.locator('.score-player strong').first()).toHaveText('Follow')
   await expect(page.locator('.tick-readout')).toHaveAttribute('aria-label', 'Simulation tick 0')
   await page.getByRole('button', { name: 'Exit full screen' }).click()
   await expect(page).not.toHaveURL(/fullscreen/)
