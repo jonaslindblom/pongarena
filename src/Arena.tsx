@@ -29,6 +29,7 @@ import { interpolate, progress } from './presentation'
 import { ControllerBadge, controllerOptionLabel } from './ControllerBadge'
 import { matchShortcut } from './matchShortcuts'
 import { DIVISIONS, smallestDivision } from './competition'
+import { bottomSide, playerNumber } from './courtPlayers'
 
 export const pad = (n: number) => String(n).padStart(2, '0')
 export function ModelIcon({ id, size = 20 }: { id: string; size?: number }) {
@@ -256,7 +257,7 @@ function Court({ m, names, ready, humanSides, bottom, mode, demo, onModeChange }
         <div className="score-player">
           <small>
             <i className="p1-dot" />
-            P1{bottom === 0 ? ' · BOTTOM' : ' · TOP'}
+            P{playerNumber(0, bottom)}{bottom === 0 ? ' · BOTTOM' : ' · TOP'}
           </small>
           <strong>{names[0]}</strong>
         </div>
@@ -267,7 +268,7 @@ function Court({ m, names, ready, humanSides, bottom, mode, demo, onModeChange }
         </div>
         <div className="score-player right">
           <small>
-            P2{bottom === 1 ? ' · BOTTOM' : ' · TOP'}
+            P{playerNumber(1, bottom)}{bottom === 1 ? ' · BOTTOM' : ' · TOP'}
             <i className="p2-dot" />
           </small>
           <strong>{names[1]}</strong>
@@ -373,7 +374,7 @@ function Court({ m, names, ready, humanSides, bottom, mode, demo, onModeChange }
           {endedMatch(f)
             ? f.points[0] === f.points[1]
               ? 'MATCH DRAWN'
-              : (f.points[0] > f.points[1] ? 'P1' : 'P2') + ' WINS'
+              : 'P' + playerNumber(winner, bottom) + ' WINS'
             : endedRally(f)
               ? eventText(f, names).toUpperCase()
               : pad(f.returns) + ' RETURNS'}
@@ -399,7 +400,7 @@ interface Props {
 }
 export function Arena({ m, models, ids, pick, swap, ready, mode = 'watch', demo = false, onModeChange }: Props) {
   const humanSides: Pair<boolean> = [ids[0] === 'keyboard', ids[1] === 'keyboard']
-  const bottom: Side = humanSides[1] && !humanSides[0] ? 1 : 0
+  const bottom = bottomSide(ids)
   const controllers = ids.map((id) => models.find((model) => model.id === id)) as Pair<Controller | undefined>
   const names = ids.map(
     (id, i) => controllers[i]?.name ?? id[0].toUpperCase() + id.slice(1),
@@ -422,9 +423,9 @@ export function Arena({ m, models, ids, pick, swap, ready, mode = 'watch', demo 
             </h2>
           </div>
           <div className="picker-stack">
-            {([0, 1] as const).filter((i) => mode === 'watch' || i !== bottom).map((i) => (
+            {([bottom === 0 ? 1 : 0, bottom] as const).filter((i) => mode === 'watch' || i !== bottom).map((i) => (
               <div key={i}>
-                {mode === 'watch' && i === 1 && (
+                {mode === 'watch' && i === bottom && (
                   <div className="swap-row">
                     <span />
                     <button aria-label="Swap players" title="Swap players" onClick={swap}>
@@ -436,7 +437,7 @@ export function Arena({ m, models, ids, pick, swap, ready, mode = 'watch', demo 
                 <label className={'pick side-' + i}>
                   <span className="pick-label">
                     <i />
-                    {mode === 'play' ? 'OPPONENT' : `PLAYER 0${i + 1}`}
+                    {mode === 'play' ? 'OPPONENT' : `PLAYER 0${playerNumber(i, bottom)}`}
                     <span>/</span>
                     {i === bottom ? 'BOTTOM' : 'TOP'}
                   </span>

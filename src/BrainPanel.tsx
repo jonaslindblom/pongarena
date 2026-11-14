@@ -5,6 +5,7 @@ import { activationLevels, createBrainGraph, type BrainLayer } from './brain'
 import type { Controller } from './models'
 import { choice, type Frame, type Pair, type Ruleset, type Side } from './rules'
 import type { Match } from './useMatch'
+import { playerNumber } from './courtPlayers'
 import './BrainPanel.css'
 
 interface Snapshot {
@@ -154,7 +155,7 @@ export function BrainPanel({ m, controllers, bottom }: { m: Match; controllers: 
     <section className={'panel brain-panel' + (open ? ' is-open' : '')} aria-label="Model brain">
       <div className="brain-heading">
         <button className="brain-toggle" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="brain-content" aria-label={open ? 'Collapse brain' : 'Expand brain'}><Brain size={18} />Brain<ChevronDown size={15} /></button>
-        {open ? <div className="segmented" aria-label="Brain paddle">{([0, 1] as const).map((player) => <button key={player} onClick={() => setSide(player)} aria-pressed={side === player} aria-label={'Show brain for player ' + (player + 1)}>P{player + 1} · {player === bottom ? 'Bottom' : 'Top'}</button>)}</div> : <span className="brain-hint">Live neuron activations</span>}
+        {open ? <div className="segmented" aria-label="Brain paddle">{([bottom === 0 ? 1 : 0, bottom] as const).map((player) => <button key={player} onClick={() => setSide(player)} aria-pressed={side === player} aria-label={'Show brain for player ' + playerNumber(player, bottom)}>P{playerNumber(player, bottom)} · {player === bottom ? 'Bottom' : 'Top'}</button>)}</div> : <span className="brain-hint">Live neuron activations</span>}
       </div>
       {open && <div id="brain-content">{model?.type === 'weights' ? <BrainView key={`${side}:${model.id}:${m.seed}`} model={model} side={side} frame={m.frame} previous={m.history[m.tick - 1]} start={m.history[0]} rules={m.rules} /> : <p className="brain-message">{model ? `${model.name} has no neural network. Choose a weight model for this paddle, or inspect the other player.` : 'Waiting for a model to load.'}</p>}</div>}
     </section>

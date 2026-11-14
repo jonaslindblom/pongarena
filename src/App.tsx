@@ -37,6 +37,7 @@ import { DeviceTest } from './DeviceTest'
 import { finishStartup, getStartupSnapshot, markArenaReady, recordStartupFailure, recordStartupTiming } from './startup'
 import { assetPath } from './assets'
 import { DEFAULT_MODEL, readMatchLink, writeMatchLink } from './matchLink'
+import { bottomSide, playerNumber } from './courtPlayers'
 import quillSourceUrl from '../handwritten/quill.py?url'
 import './App.css'
 type Page = 'Arena' | 'Rankings' | 'Model library' | 'How it thinks' | 'Field guide' | 'Device test'
@@ -250,6 +251,7 @@ export default function App() {
     if (loadingComplete) { finishStartup(ready); setStartup(getStartupSnapshot()) }
   }, [loadingComplete, ready])
   const players = ids.map((id) => models.find((p) => p.id === id)) as Pair<Controller | undefined>
+  const bottom = bottomSide(ids)
   const m = useMatch(players, setError, page === 'Arena', rules, undefined, true)
   useEffect(() => {
     if (!loadingComplete || !models.some((model) => model.id === DEFAULT_MODEL)) return
@@ -455,7 +457,8 @@ export default function App() {
       }
       select(importSide, id)
       navigate('Arena')
-      setNotice(entry.name + ' assigned to player 0' + (importSide + 1) + '. ' + entry.description)
+      const nextIds: Pair<string> = importSide === 0 ? [id, ids[1]] : [ids[0], id]
+      setNotice(entry.name + ' assigned to player 0' + playerNumber(importSide, bottomSide(nextIds)) + '. ' + entry.description)
       dialog.current?.close()
     } catch (e) {
       setFileError(e instanceof Error ? e.message : 'Could not read this model.')
@@ -693,9 +696,9 @@ export default function App() {
         {mode === 'watch' && <fieldset disabled={uploading}>
           <legend>Assign to paddle</legend>
           <div className="side-options">
-            {([0, 1] as const).map((i) => (
+            {([bottom === 0 ? 1 : 0, bottom] as const).map((i) => (
               <button key={i} aria-pressed={i === importSide} onClick={() => setImportSide(i)}>
-                Player {i + 1}
+                Player {playerNumber(i, bottom)} · {i === bottom ? 'Bottom' : 'Top'}
               </button>
             ))}
           </div>
