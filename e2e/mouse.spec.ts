@@ -14,12 +14,12 @@ test.afterEach(async ({ page }) => {
   await expect(page.getByRole('alert')).toHaveCount(0)
 })
 
-async function openHumanCourt(page: Page) {
+async function openHumanCourt(page: Page, humanSide: 0 | 1 = 0) {
   await page.clock.install({ time: clockStart })
-  await page.goto('/?model=counter')
+  await page.goto(humanSide === 0 ? '/?model=counter' : '/?mode=watch&model=counter&opponent=keyboard')
   await expect(page.locator('.court .status')).toHaveText('Ready', { timeout: 30_000 })
   await page.clock.pauseAt(new Date(clockStart.getTime() + 60_000))
-  await page.getByRole('button', { name: 'Play', exact: true }).click()
+  await page.getByRole('button', { name: humanSide === 0 ? 'Play' : 'Watch', exact: true }).click()
   await expect(page.locator('.serve-countdown strong')).toHaveText('3')
 }
 
@@ -40,7 +40,7 @@ async function moveToTarget(page: Page, target: number) {
 }
 
 async function paddleCenter(page: Page) {
-  return Number(await page.locator('.paddle.left').getAttribute('y')) + 12
+  return Number(await page.locator('.paddle.side-0').getAttribute('y')) + 12
 }
 
 test('one click steers toward a stationary cursor at normal speed without holding the button', async ({ page }) => {
@@ -70,6 +70,48 @@ test('one click steers toward a stationary cursor at normal speed without holdin
   expect(Math.abs(await paddleCenter(page) - 96)).toBeLessThanOrEqual(1)
   await expect(hint).toHaveCSS('opacity', '0')
 })
+
+async function screenPaddleCenter(page: Page, side: 0 | 1) {
+  const bounds = await page.locator(`.paddle.side-${side}`).boundingBox()
+  expect(bounds).not.toBeNull()
+  return { x: bounds!.x + bounds!.width / 2, y: bounds!.y + bounds!.height / 2 }
+}
+
+for (const humanSide of [0, 1] as const) {
+  test(`mouse and keyboard move the bottom paddle across the screen with human side ${humanSide}`, async ({ page }) => {
+    await openHumanCourt(page, humanSide)
+    const field = (await page.locator('.field').boundingBox())!
+    const start = await screenPaddleCenter(page, humanSide)
+    const opponent = await screenPaddleCenter(page, humanSide === 0 ? 1 : 0)
+    expect(start.y).toBeGreaterThan(field.y + field.height / 2)
+    expect(opponent.y).toBeLessThan(field.y + field.height / 2)
+    // Check rendered positions after the SVG transform, not only its local Y.
+    // Both orientations must make a pointer on the right move visibly right.
+    await clickTarget(page, 112)
+    await page.clock.runFor(3300)
+    const mouseRight = await screenPaddleCenter(page, humanSide)
+    expect(mouseRight.x).toBeGreaterThan(start.x)
+    expect(mouseRight.y).toBeCloseTo(start.y, 2)
+    await moveToTarget(page, 48)
+    await page.clock.runFor(400)
+    const mouseLeft = await screenPaddleCenter(page, humanSide)
+    expect(mouseLeft.x).toBeLessThan(mouseRight.x)
+    expect(mouseLeft.y).toBeCloseTo(start.y, 2)
+    await page.keyboard.down('ArrowRight')
+    await page.clock.runFor(150)
+    await page.keyboard.up('ArrowRight')
+    const keyRight = await screenPaddleCenter(page, humanSide)
+    expect(keyRight.x).toBeGreaterThan(mouseLeft.x)
+    expect(keyRight.y).toBeCloseTo(start.y, 2)
+    await page.keyboard.down('a')
+    await page.clock.runFor(150)
+    await page.keyboard.up('a')
+    const keyLeft = await screenPaddleCenter(page, humanSide)
+    expect(keyLeft.x).toBeLessThan(keyRight.x)
+    expect(keyLeft.y).toBeCloseTo(start.y, 2)
+    await expect(page.locator('.court-mouse-status')).toHaveCount(0)
+  })
+}
 
 test('steering stays active beyond both field edges and on re-entry without another click', async ({ page }) => {
   await openHumanCourt(page)

@@ -8,7 +8,7 @@
 .brain-source { display: flex; justify-content: space-between; gap: 12px; padding: 16px 20px 0; font-size: 12px; }
 .brain-source span:last-child { color: #9daf9e; font: 10px var(--mono); }
 .brain-graph-scroll { overflow-x: auto; }
-.brain-graph { display: block; width: 100%; min-width: 520px; }
+.brain-graph { display: block; width: 100%; min-width: 590px; }
 .brain-layer-name { fill: #b9cbbb; font: 10px var(--mono); letter-spacing: 1.3px; }
 .brain-layer-size { fill: #8fa795; font: 11px var(--mono); }
 .brain-node-label { fill: #b9cbbb; font: 10px var(--mono); }

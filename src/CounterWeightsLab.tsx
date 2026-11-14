@@ -5,10 +5,9 @@ import { assetPath } from './assets'
 import type { Controller } from './models'
 import { observation, serve, type Frame, type Scores } from './game'
 import { createCounterIntervention, getAttackExplanation, inspectAttackModel } from './attackExplanation'
+import { actionLabels as actions, observationLabels as inputs, observationValueHelp } from './observationLabels'
 import './CounterWeightsLab.css'
 
-const actions = ['Left', 'Stay', 'Right']
-const inputs = ['Ball depth', 'Ball position', 'Depth velocity', 'Sideways velocity', 'Your paddle', 'Opponent paddle']
 type LabFrame = Pick<Frame, 'x' | 'y' | 'vx' | 'vy' | 'paddles'>
 type Inspection = Awaited<ReturnType<typeof inspectAttackModel>>
 type Explanation = ReturnType<typeof getAttackExplanation>
@@ -29,8 +28,9 @@ function Decision({ sample, frame, muted = false }: { sample: ModelSample; frame
   const name = muted ? 'Muted detector' : 'Counter'
   const e = sample.explanation
   const target = Math.max(15, Math.min(145, e.target))
-  const ballDepth = 360 - frame.x
-  const tipDepth = ballDepth - frame.vx * 3
+  const screenBallX = 20 + frame.y
+  const screenBallY = 360 - frame.x
+  const screenTipY = screenBallY - frame.vx * 3
   return <article className={'attack-model' + (muted ? ' is-muted' : '')} aria-label={`${name} decision`}>
     <div className="attack-model-heading"><h3>{muted ? 'Neuron switched off' : 'Counter'}</h3><span>{muted ? 'Same scene · one change' : 'Original network'}</span></div>
     <svg className="attack-court" viewBox="0 0 200 400" role="img" aria-label={`${name}: ball on the right, moving ${frame.vx > 0 ? 'away from' : 'toward'} your paddle. Move ${actions[e.chosen].toLowerCase()}.`}>
@@ -39,9 +39,9 @@ function Decision({ sample, frame, muted = false }: { sample: ModelSample; frame
       <line className="attack-midline" x1="20" x2="180" y1="200" y2="200" />
       <line className="attack-centerline" x1="100" x2="100" y1="25" y2="370" />
       <rect className="attack-opponent" x={20 + frame.paddles[1] - 15} y="28" width="30" height="5" rx="1.5" />
-      <line className="attack-velocity" x1={20 + frame.y} y1={20 + ballDepth} x2={20 + frame.y} y2={20 + tipDepth} />
-      <path className="attack-velocity" d={`M ${15 + frame.y} ${20 + tipDepth + (frame.vx > 0 ? 7 : -7)} l 5 ${frame.vx > 0 ? -7 : 7} l 5 ${frame.vx > 0 ? 7 : -7}`} />
-      <circle className="attack-ball" cx={20 + frame.y} cy={20 + ballDepth} r="4" />
+      <line className="attack-velocity" x1={screenBallX} y1={20 + screenBallY} x2={screenBallX} y2={20 + screenTipY} />
+      <path className="attack-velocity" d={`M ${screenBallX - 5} ${20 + screenTipY + (frame.vx > 0 ? 7 : -7)} l 5 ${frame.vx > 0 ? -7 : 7} l 5 ${frame.vx > 0 ? 7 : -7}`} />
+      <circle className="attack-ball" cx={screenBallX} cy={20 + screenBallY} r="4" />
       <rect className="attack-target" x={20 + target - 15} y="361" width="30" height="16" rx="3" />
       <rect className="attack-own-paddle" x={20 + frame.paddles[0] - 15} y="367" width="30" height="5" rx="1.5" />
       <text className="attack-court-label" x="100" y="397" textAnchor="middle">YOUR PADDLE</text>
@@ -80,7 +80,7 @@ function NeuronInspector({ sample, neuron, onNeuron }: { sample: ModelSample; ne
       </select>
     </label>
     <div className="attack-neuron-description"><strong>{current.role}</strong><span>Stored weights × live input values, then add the bias.</span></div>
-    {layer === 0 && <p className="attack-caption">Position inputs are centered at 0. Velocity inputs are court units per tick divided by 6.</p>}
+    {layer === 0 && <p className="attack-caption">{observationValueHelp}</p>}
     <p className="attack-table-hint">Scroll the table sideways to read every contribution.</p>
     <div className="attack-table-scroll">
       <table aria-label="Neuron weight contributions">
@@ -226,7 +226,9 @@ export function CounterWeightsLab({ model, onPlay }: { model: Controller | undef
         <summary>Inspect weights and formulas <span>6 inputs → 13 hidden neurons → 3 action scores</span></summary>
         <div className="behavior-formulas">
           <p><strong>The departure neuron, H1.5:</strong> its only nonzero weight reads the velocity between paddles. Its bias is zero.</p>
-          <p><code>departure signal = ReLU(depth velocity ÷ 6)</code></p>
+          <p><code>toward/away input = {number(current.frame.vx, 0)} ÷ 6 = {number(current.frame.vx / 6, 6)}</code></p>
+          <p>The velocity along the court is {number(current.frame.vx, 0)} court units per tick. The input is already divided by 6 before it reaches the neuron.</p>
+          <p><code>departure signal = ReLU(toward/away input)</code></p>
           <p>ReLU keeps positive values and clips negative ones to zero. Here the signal is {number(neuronValue(current.original.explanation, 0, 4), 6)}. Later weights use it to suppress the forecast and cancel the aiming offset.</p>
           <p>This example uses speed 13, where recovery is exactly centered. At slower legal speeds the target can remain slightly off-center. It demonstrates this circuit’s contribution to one decision, not its effect on a whole match.</p>
           {muted && <p>The comparison sets all input weights and the bias of H1.5 to zero in a separate ONNX copy. The inspector below shows the original model.</p>}

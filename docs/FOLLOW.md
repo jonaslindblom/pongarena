@@ -2,7 +2,7 @@
 
 Follow is a playable **13-parameter** handwritten network: `6 → 1 → 3`, with one Tanh neuron and 9 multiply-accumulates per decision. It follows the ball's current position. No training or optimizer is involved.
 
-The six inputs are ball X, ball Y, velocity X, velocity Y, our paddle Y and the opponent's paddle Y. Positions are centered and normalized; simulator Y runs left to right on the displayed court.
+The six inputs describe the ball's position and velocity along and across the court, then our paddle and the opponent's paddle across the court. Follow uses only the ball's and our paddle's across-court positions. In the formula below, `ballY` and `paddleY` are the [centered, normalized inputs](RULES.md#observations-and-actions), not raw court units; increasing Y moves right on screen.
 
 ```text
 error = ballY − paddleY

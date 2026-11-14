@@ -16,7 +16,7 @@ Keep the two approaches independent: [Quill's constructor](handwritten/quill.py)
 
 Submit one opset 18 ONNX file, at most 256 KiB. It must map float32 `observation` `[1, 6]` directly to `action_scores` `[1, 3]` through one to five dense `Gemm` layers. Hidden layers use uniform `Relu` or `Tanh`; the output is linear. All weights and biases must be embedded and finite.
 
-Small allows at most **256 parameters and 1,024 MACs** per decision. Large allows **65,536 of each**. Both limits apply. See [rules, observations and scoring](docs/RULES.md) before exporting.
+Small allows at most **256 parameters and 1,024 MACs** per decision. Large allows **65,536 of each**. Both limits apply. See [rules, observations and scoring](docs/RULES.md) before exporting. The [coordinate glossary](docs/RULES.md#coordinates-and-player-identity) distinguishes game coordinates, normalized model inputs and displayed player labels; keep the existing observation and action order.
 
 1. Add `public/models/<id>.onnx` and its entry in `src/roster.ts`. The ID must match the filename without `.onnx`. Include `submittedBy: 'your-github-handle'` so the model card can link to its submitter; supply a GitHub username, not a URL. CI requires new or changed model bytes to credit the PR author and preserves existing credits. This credits the submission, rather than claiming authorship of every weight. Describe how the weights were constructed or trained.
 2. Include a reproducible constructor or training recipe. Keep checkpoints, datasets and raw runs out of the public tree.

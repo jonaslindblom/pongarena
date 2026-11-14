@@ -40,6 +40,13 @@ or `--seed 734` to try another initialization. Full standalone runs took about
 six observations and dense weights. This folder needs no model downloads,
 repository history or stored training data.
 
+Training uses the same [coordinate and observation contract](../docs/RULES.md#coordinates-and-player-identity)
+as the browser: X runs along the court, Y across it. Only along-court position
+and velocity are mirrored for the other side; negative observed along-court
+velocity means approach. Raw game units differ from the centered, scaled model
+inputs. Displaying the court vertically does not change the training tensors
+or action order.
+
 ## Check and compare
 
 ```sh

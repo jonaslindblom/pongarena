@@ -33,7 +33,7 @@ async function expectFieldSize(page: Page, size: { width: number; height: number
 
 async function expectFullscreenCourt(page: Page) {
   const viewport = await page.evaluate(() => ({ width: innerWidth, height: innerHeight }))
-  for (const selector of ['.court', '.field', '.paddle.left', '.paddle.right', '.court-control.play-btn', '.court-foot']) {
+  for (const selector of ['.court', '.field', '.paddle.side-0', '.paddle.side-1', '.court-control.play-btn', '.court-foot']) {
     const element = page.locator(selector)
     await expect(element, `${selector} must remain visible`).toBeVisible()
     const bounds = await element.boundingBox()

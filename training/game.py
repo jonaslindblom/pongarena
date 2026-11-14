@@ -4,6 +4,10 @@ import math
 import struct
 import numpy as np
 
+# X runs along the 360-unit court between paddle ends; Y runs across its
+# 160-unit width. Positions are court units, velocities are units per tick.
+# Side 0 contacts at X = 15; side 1 at X = 345. Paddle centers are Y positions.
+# These simulation indices are independent of displayed player numbers.
 MAX_BALL_VX = 13
 MAX_BALL_VY = 9
 RALLY_TICK_LIMIT = 1600
@@ -32,7 +36,8 @@ def serve(seed, prior=None):
     first_vx = 5 * sign()
     a, b = sign(), sign()
     directions = [a, b, -a, -b, sign()]
-    # The same five 10–15° angle bands and hundredth-unit velocities as game.ts.
+    # The same five 10–15° bands from the along-court axis and hundredth-unit
+    # velocities as game.ts.
     openings = [(minimum + math.floor(random() * 9)) / 100
                 for minimum in [89, 98, 107, 116, 125]]
     for i in range(4, 0, -1):
@@ -48,6 +53,8 @@ def serve(seed, prior=None):
 
 
 def observation(f, side):
+    # Center/normalize positions and divide velocities by 6. Mirror only X/VX:
+    # observed VX < 0 approaches our paddle; positive Y/VY stays screen-right.
     mirror = 1 if side == 0 else -1
     return list(map(f32, [mirror * (f['x'] - 180) / 180, (f['y'] - 80) / 80,
                          mirror * f['vx'] / 6, f['vy'] / 6,
@@ -170,6 +177,7 @@ class Arena:
         self.draw_reason[:] = 0
 
     def obs(self, side=0):
+        # The same normalized, own-paddle view as scalar observation() above.
         mirror = 1 if side == 0 else -1
         x, y, vx, vy = self.ball.T
         return np.stack([mirror * (x - 180) / 180, (y - 80) / 80,

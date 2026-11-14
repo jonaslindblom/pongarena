@@ -11,6 +11,8 @@ from onnx import TensorProto, helper, numpy_helper
 def weights():
     """Return three dense layers implementing a forecast, wall fold and aiming."""
     # Reuse Predict's layout, spending two forecast hinges on shot selection.
+    # Here ball_x is the raw along-court position in our paddle's view (own
+    # contact plane at 15); ball_vy is raw across-court velocity, in units/tick.
     # d = (ball_x - 15) / 180; v = ball_vy / 6. For d >= 0,
     # ReLU(d+v)-ReLU(d-v)-v = sign(v)*min(d, abs(v)).
     # Scale by .9: the forecast leads by at most 12 ticks, with a .75-tick
@@ -23,14 +25,16 @@ def weights():
     w1[2, 1], w1[2, 3], b1[2] = 1, .75 * 6 / 80 - forecast_scale, 6
     w1[3, 4], b1[3] = 1, 1
 
-    # Their difference minus one clips 80*opponent + 4*ball_y to [-1, 1].
+    # Their difference minus one clips 80*opponent_input + 4*ball_y_input
+    # to [-1, 1]. These across-court inputs are centered at 80 and divided by 80.
     # Aim away from the opponent; near center, favor the cross-court corner.
     w1[4, 5], w1[4, 1], b1[4] = 80, 4, 1
     w1[5, 5], w1[5, 1], b1[5] = 80, 4, -1
     forecast = np.array([forecast_scale, -forecast_scale, 1, 0, 0, 0], np.float32)
 
-    # Fold z at +/- .95, then shift contact to send the return toward a corner.
-    # At speed 13 the flight lasts 26 ticks: 26*9/15 = 78/5 units of landing
+    # Fold the normalized across-court forecast at +/- .95, then shift contact
+    # to send the return toward a corner. At along-court speed 13 units/tick,
+    # the flight lasts 26 ticks: 26*9/15 = 78/5 units of landing
     # shift per unit of paddle offset. Hence 1+5/78 and .95*5/78 for aiming.
     w2 = np.stack([aim_scale * forecast, forecast, -forecast])
     w2[0, 3], w2[0, 4], w2[0, 5] = -1, aim_offset, -aim_offset

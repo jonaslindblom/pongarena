@@ -11,21 +11,26 @@ from onnx import TensorProto, helper, numpy_helper
 def weights():
     """Predict, select a corner and recover through four ordinary dense layers."""
     aim_scale, aim_offset = 83 / 78, 19 / 312
+    # Here ball_x is the raw along-court position in our paddle's view (own
+    # contact plane at 15); ball_vy is raw across-court velocity, in units/tick.
     # d = (ball_x - 15)/180 and v = ball_vy/6. The two hinges give
-    # sign(v)*min(d, 1.5*abs(v)) after subtracting 1.5*v. Scaling by .9
-    # yields min(.4*distance, 18*abs(ball_vy)) in court units.
+    # sign(v)*min(d, 1.5*abs(v)) after subtracting 1.5*v. Scaling by .9 gives a
+    # normalized across-court lead. In court units its magnitude is
+    # min(.4*(ball_x - 15), 18*abs(ball_vy)).
     w1, b1 = np.zeros((6, 6), np.float32), np.zeros(6, np.float32)
     for j, sign in enumerate((1, -1)):
         w1[j, 0], w1[j, 3], b1[j] = 1, sign * 1.5, 11 / 12
     w1[2, 1], w1[2, 3], b1[2] = 1, .75 * 6 / 80 - .9 * 1.5, 4
     w1[3, 4], b1[3] = 1, 1
-    w1[4, 2] = 1  # ReLU(vx): zero on approach, positive on departure.
+    w1[4, 2] = 1  # ReLU(vx_input): normalized along-court velocity, positive on departure.
     # This ramp and a later hinge select a corner away from the opponent.
-    # Ball height breaks near-center ties toward a cross-court return.
+    # The ball's across-court position breaks near-center ties toward a
+    # cross-court return.
     w1[5, 5], w1[5, 1], b1[5] = 80, 4, 1
 
-    # Keep forecast+4 on approach; suppress it on departure. The incoming
-    # indicator removes the carry offset only while a forecast is active.
+    # Keep the normalized across-court forecast+4 on approach; suppress it on
+    # departure. The incoming indicator removes the carry offset only while
+    # a forecast is active.
     w2, b2 = np.zeros((4, 6), np.float32), np.zeros(4, np.float32)
     w2[0, :3] = [.9, -.9, 1]
     w2[0, 4] = -20
@@ -35,8 +40,8 @@ def weights():
     w2[3, 5], w2[3, 4], b2[3] = 1, 12 / 13, -2
 
     # Quill's recovery cancellation shrinks the opponent-dependent offset
-    # to exactly zero at speed 13. At slower legal speeds it stays within
-    # three court units of center. Incoming aiming retains Attack's law.
+    # to exactly zero at along-court speed 13 units/tick. At slower legal speeds
+    # it stays within three court units of center. Incoming aiming retains Attack's law.
     # The final two layers reflect the forecast at +/- .95 and compare the
     # offset target to our paddle, with the same 1.1-unit movement deadband.
     w3 = np.array([[aim_scale, -1, -4 * aim_scale, -aim_offset],

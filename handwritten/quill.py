@@ -10,9 +10,11 @@ from onnx import helper, numpy_helper, TensorProto
 
 def weights():
     """Return four dense layers implementing prediction, reflection and aiming."""
-    # d = ball_x + 11/12 is distance to our contact plane, divided by 180.
+    # d = ball_x_input + 11/12 is the along-court distance to our contact plane,
+    # divided by 180. Input suffixes denote normalized model observations;
+    # ball_vy_input is the across-court velocity in court units per tick / 6.
     # ReLU hinges approximate a square: q(d+a)-q(d-a) approximates 4*d*a.
-    # Set a = (2/3)*ball_vy and scale the result into paddle-height units.
+    # Set a = (2/3)*ball_vy_input and scale into normalized across-court units.
     product_scale = 6 * 180 / (13 * 80) / (4 * 2 / 3)
     aim_scale, aim_offset = 83 / 78, 19 / 312
     w1, b1 = np.zeros((12, 6), np.float32), np.zeros(12, np.float32)
@@ -23,7 +25,7 @@ def weights():
             b1[4 * j + i] = 11 / 12 - knot
     w1[8, 1] = 1
     w1[8, 3] = 6 * (8 / 13) / 80 - 3 * (2 / 3) * 2 * (2 / 3) * product_scale
-    b1[8] = 4  # Carry signed height through ReLU with a positive offset.
+    b1[8] = 4  # Carry signed across-court forecast terms through ReLU.
     w1[9, 4], b1[9] = 1, 1
     w1[10, 2] = 1  # Positive only when the ball travels away.
     w1[11, 5], b1[11] = 160, 2
@@ -39,11 +41,12 @@ def weights():
     w2[1, 9], w2[1, 11], b2[1] = 1, -aim_offset, 10
     w2[2, 10], b2[2] = -2, 1  # Incoming indicator at legal speeds.
     w2[3, 11], b2[3] = 1, -2
-    # The opponent-dependent recovery offset shrinks to zero at speed 13.
+    # The opponent-dependent recovery offset vanishes at along-court speed 13 units/tick.
     w2[1, 10] = -(12 / 13) * aim_offset / 2
     w2[3, 10] = 12 / 13
 
-    # Reflect one wall bounce: z - 2*ReLU(z-.95) + 2*ReLU(-z-.95).
+    # Reflect the normalized across-court forecast z at one wall bounce:
+    # z - 2*ReLU(z-.95) + 2*ReLU(-z-.95), centered at 80 and divided by 80.
     # Opponent ramps shift the paddle target to aim toward the farther end.
     w3 = np.array([[aim_scale, -1, -4 * aim_scale, -aim_offset],
                    [1, 0, -4, 0], [-1, 0, 4, 0]], dtype=np.float32)

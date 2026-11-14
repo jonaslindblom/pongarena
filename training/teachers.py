@@ -8,6 +8,7 @@ import numpy as np
 from game import reflect
 
 CENTERS = np.arange(15, 146)
+# Centers and action movements are across-court Y positions in court units.
 NEXT = np.clip(CENTERS[:, None] + [-2, 0, 2], 15, 145).astype(int)
 MAX_FLIGHT = 66
 OFFSETS = np.arange(-15, 16)
@@ -41,6 +42,7 @@ def contact_paths():
 
 @lru_cache(maxsize=1)
 def tables():
+    # Legacy name: height is the ball's across-court Y position at contact.
     height = np.arange(157)[:, None]
     centers = height - OFFSETS
     legal = (centers >= 15) & (centers <= 145) & (height >= 4)
@@ -62,6 +64,8 @@ def tables():
 
 
 def decode(obs):
+    # Decode normalized inputs into court units in our paddle's view: X runs
+    # along the court (own contact at 15), Y across it; velocities are units/tick.
     raw = obs.astype(np.float64)
     x = np.rint(raw[:, 0]*180 + 180).astype(int)
     y = np.rint(raw[:, 1]*80 + 80).astype(int)
@@ -82,6 +86,7 @@ def teacher(kind='attack'):
     tab, paths = tables(), contact_paths()
 
     def policy(obs):
+        # Legacy name: height is the predicted across-court Y landing position.
         vx, own, other, ticks, height = decode(obs)
         stage = np.minimum(13, np.abs(vx))
         target = tab['mid'][stage, height]

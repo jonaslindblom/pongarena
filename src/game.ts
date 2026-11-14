@@ -1,6 +1,12 @@
+// Court coordinates: X runs along the 360-unit court between paddle ends;
+// Y runs across its 160-unit width (left to right on the displayed court).
+// Side 0 contacts at X = 15; side 1 at X = 345. These are simulation indices,
+// independent of the displayed player numbers and top/bottom placement.
 export type Side = 0 | 1
 export type Scores = [number, number, number]
+// Every player pair is indexed by simulation Side.
 export type Pair<T> = [T, T]
+// Legacy action names: decrease Y, hold, increase Y (displayed Left/Stay/Right).
 export const ACTIONS = ['Up', 'Stay', 'Down'] as const
 export const RALLIES = 5
 export const MAX_BALL_VX = 13
@@ -16,11 +22,11 @@ export interface Frame {
   tick: number
   rally: number
   rallyTick: number
-  x: number
-  y: number
-  vx: number
-  vy: number
-  paddles: Pair<number>
+  x: number // Ball position along the court, in court units.
+  y: number // Ball position across the court, in court units.
+  vx: number // Along-court velocity, in court units per tick.
+  vy: number // Across-court velocity, in court units per tick.
+  paddles: Pair<number> // Paddle centers across the court, in court units.
   points: Pair<number>
   returns: number
   event: Event
@@ -66,11 +72,11 @@ export function serve(seed: number, prior?: Frame): Frame {
   }
   const sign = () => (random() < 0.5 ? -1 : 1)
   const firstVx = 5 * sign()
-  // Each receiver gets a rising and a falling serve in the first four rallies.
+  // Each receiver gets both across-court serve directions in the first four rallies.
   const firstSlope = sign()
   const secondSlope = sign()
   const directions = [firstSlope, secondSlope, -firstSlope, -secondSlope, sign()]
-  // Five varied angle bands, all within 10–15° of the receiving axis.
+  // Five varied angle bands, all within 10–15° of the along-court axis.
   // Hundredth-unit velocities keep the independent Python implementation exact.
   const openings = [89, 98, 107, 116, 125].map((minimum) =>
     (minimum + Math.floor(random() * 9)) / 100)
@@ -96,6 +102,9 @@ export function serve(seed: number, prior?: Frame): Frame {
 }
 
 export function observation(f: Frame, side: Side) {
+  // Center and normalize positions (X / 180, Y and paddles / 80) and velocities
+  // (/ 6). Mirror only X and VX: negative observed VX always means approaching
+  // our paddle. Across-court Y/VY keep the same left-to-right direction.
   const mirror = side === 0 ? 1 : -1
   return Float32Array.of(
     (mirror * (f.x - 180)) / 180,

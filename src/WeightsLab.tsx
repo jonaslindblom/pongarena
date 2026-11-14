@@ -5,11 +5,10 @@ import pb from 'onnx-proto'
 import { assetPath } from './assets'
 import { createBrainGraph } from './brain'
 import type { Controller } from './models'
+import { actionLabels as actionNames, observationLabels as inputNames, observationValueHelp } from './observationLabels'
 import { choice, type Scores } from './rules'
 import './WeightsLab.css'
 
-const inputNames = ['Ball depth', 'Ball position', 'Depth velocity', 'Sideways velocity', 'Paddle position', 'Opponent position']
-const actionNames = ['Left', 'Stay', 'Right']
 const number = (value: number) => value.toFixed(3).replace(/^-0\.000$/, '0.000')
 const weight = (value: number) => Number.isInteger(value) ? String(value) : value.toPrecision(7)
 const signed = (value: number) => value > 0 ? `+${weight(value)}` : weight(value)
@@ -57,7 +56,7 @@ function inspectModel(bytes: Uint8Array) {
 function Network({ parameters, snapshot }: { parameters: Parameters; snapshot: Snapshot }) {
   return (
     <div className="weights-network-scroll" tabIndex={0} aria-label="Follow’s weights and activations; scroll horizontally on narrow screens">
-      <svg className="weights-network" viewBox="0 0 760 310" role="img" aria-label={`Ball position ${number(snapshot.input[1])}, paddle position ${number(snapshot.input[4])}, error ${number(snapshot.error)}, Tanh ${number(snapshot.hidden)}. Follow chooses ${actionNames[snapshot.chosen]}.`}>
+      <svg className="weights-network" viewBox="0 0 760 310" role="img" aria-label={`${inputNames[1]} ${number(snapshot.input[1])}, ${inputNames[4].toLowerCase()} ${number(snapshot.input[4])}, error ${number(snapshot.error)}, Tanh ${number(snapshot.hidden)}. Follow chooses ${actionNames[snapshot.chosen]}.`}>
         <text x="20" y="22" className="weights-graph-heading">6 INPUTS</text>
         <text x="395" y="22" textAnchor="middle" className="weights-graph-heading">1 SHARED NEURON</text>
         <text x="640" y="22" textAnchor="middle" className="weights-graph-heading">3 ACTION SCORES</text>
@@ -211,9 +210,9 @@ export function WeightsLab({ model, onPlay, onNext }: { model: Controller | unde
               <i className="weights-demo-paddle" style={{ left: `${(positions.paddle + 1) * 50}%` }} />
               <span className="weights-court-label is-paddle">PADDLE</span>
             </div>
-            <label htmlFor="weights-ball">Ball position <output>{number(positions.ball)}</output></label>
+            <label htmlFor="weights-ball">{inputNames[1]} <output>{number(positions.ball)}</output></label>
             <input id="weights-ball" type="range" min={-0.95} max={0.95} step={0.0125} value={positions.ball} onChange={(event) => movePosition('ball', Number(event.target.value))} />
-            <label htmlFor="weights-paddle">Paddle position <output>{number(positions.paddle)}</output></label>
+            <label htmlFor="weights-paddle">{inputNames[4]} <output>{number(positions.paddle)}</output></label>
             <input id="weights-paddle" type="range" min={-0.8125} max={0.8125} step={0.0125} value={positions.paddle} onChange={(event) => movePosition('paddle', Number(event.target.value))} />
             <div className="weights-scale"><span>−1 left</span><span>0 center</span><span>+1 right</span></div>
             <button className="secondary-btn weights-animate" onClick={() => setAnimate(!animate)} aria-pressed={animate} disabled={reducedMotion || !snapshot} title={reducedMotion ? 'Animation is off because you prefer reduced motion. Use the sliders to explore.' : undefined}>{animate ? <Pause size={14} /> : <Play size={14} />}{animate ? 'Pause' : 'Animate'}</button>
@@ -223,6 +222,7 @@ export function WeightsLab({ model, onPlay, onNext }: { model: Controller | unde
             {snapshot && <p className="weights-scroll-hint">Swipe to follow the signal →</p>}
             {error ? <p className="weights-status" role="alert">{error}</p> : parameters && snapshot ? <Network parameters={parameters} snapshot={snapshot} /> : <p className="weights-status" role="status">Loading Follow’s weights…</p>}
             <p className="weights-network-caption">{snapshot && <strong>Decision: {actionNames[snapshot.chosen]}. </strong>}Live ONNX values. Lines show the stored weights; the highest action score wins. Four zero weights ignore four inputs.</p>
+            <p className="weights-network-caption">{observationValueHelp}</p>
           </div>
         </div>
         <div className="weights-steps">
@@ -234,7 +234,7 @@ export function WeightsLab({ model, onPlay, onNext }: { model: Controller | unde
           <summary>See all {allValues.length} parameters <span>{allValues.filter((value) => value !== 0).length} nonzero · zeros count too</span></summary>
           <div className="weights-tables">
             <table><caption>Inputs → hidden neuron · 7 values</caption><thead><tr><th scope="col">Input</th><th scope="col">Weight</th></tr></thead><tbody>{inputNames.map((name, i) => <tr key={name}><th scope="row">{name}</th><td>{weight(parameters.input[i])}</td></tr>)}<tr><th scope="row">Hidden bias</th><td>{weight(parameters.hiddenBias)}</td></tr></tbody></table>
-            <div><table><caption>Hidden neuron → actions · 6 values</caption><thead><tr><th scope="col">Action</th><th scope="col">Weight</th><th scope="col">Bias</th></tr></thead><tbody>{actionNames.map((name, i) => <tr key={name}><th scope="row">{name}</th><td>{weight(parameters.output[i])}</td><td>{weight(parameters.outputBias[i])}</td></tr>)}</tbody></table><p>A direct 6 → 3 layer would need 21 parameters. Sharing one hidden neuron reduces that to 13, the smallest architecture allowed by this arena’s dense model contract.</p><p>The displayed horizontal position is called Y in the simulator. Inputs here use the same centered, normalized coordinates as a match.</p></div>
+            <div><table><caption>Hidden neuron → actions · 6 values</caption><thead><tr><th scope="col">Action</th><th scope="col">Weight</th><th scope="col">Bias</th></tr></thead><tbody>{actionNames.map((name, i) => <tr key={name}><th scope="row">{name}</th><td>{weight(parameters.output[i])}</td><td>{weight(parameters.outputBias[i])}</td></tr>)}</tbody></table><p>A direct 6 → 3 layer would need 21 parameters. Sharing one hidden neuron reduces that to 13, the smallest architecture allowed by this arena’s dense model contract.</p></div>
           </div>
         </details>}
       </section>
