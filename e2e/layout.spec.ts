@@ -83,7 +83,7 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 2239, height: 141
     // the playing surface or make it jump in size when a person takes over.
     await expectFieldSize(page, humanSize)
     await page.getByRole('button', { name: 'Take over & play', exact: true }).click()
-    await expect(page.locator('.score-player strong').first()).toHaveText('Human')
+    await expect(page.locator('.score-player.right strong')).toHaveText('Human')
     await expect(page.locator('.serve-countdown strong')).toHaveText('3')
     await expectFieldSize(page, humanSize)
     await checkFullscreenRoundTrip(page)
@@ -113,7 +113,7 @@ test.describe('mobile court layout', () => {
     await expect(takeover).toBeInViewport({ ratio: 1 })
     await expect(page.locator('.field')).toBeInViewport({ ratio: 0.25 })
     await takeover.tap()
-    await expect(page.locator('.score-player strong').first()).toHaveText('Human')
+    await expect(page.locator('.score-player.right strong')).toHaveText('Human')
     await expect(page.locator('.serve-countdown strong')).toHaveText('3')
     await expect(page.locator('.court-top')).toBeInViewport({ ratio: 1 })
     await expect.poll(async () => Math.abs((await page.locator('.court').boundingBox())!.y)).toBeLessThan(2)
@@ -121,3 +121,19 @@ test.describe('mobile court layout', () => {
     await checkFullscreenRoundTrip(page)
   })
 })
+
+for (const [search, topModel, bottomModel] of [
+  ['?model=counter', 'Counter', 'Human'],
+  ['?mode=watch&model=counter&opponent=keyboard', 'Counter', 'Human'],
+]) {
+  test(`scoreboard lists P1 before P2 for ${search}`, async ({ page }) => {
+    await page.goto('/' + search)
+    await expect(page.locator('.court .status')).toHaveText('Ready', { timeout: 30_000 })
+    const players = page.locator('.score-player')
+    await expect(players.locator('small')).toHaveText(['P1 · TOP', 'P2 · BOTTOM'])
+    await expect(players.locator('strong')).toHaveText([topModel, bottomModel])
+    const left = await players.first().boundingBox()
+    const right = await players.last().boundingBox()
+    expect(left!.x + left!.width).toBeLessThan(right!.x)
+  })
+}

@@ -56,6 +56,7 @@ function Court({ m, names, ready, humanSides, bottom, mode, demo, onModeChange }
   onModeChange?: (mode: Mode) => void
 }) {
   const f = m.frame
+  const top = bottom === 0 ? 1 : 0
   const field = useRef<SVGSVGElement>(null)
   const { active, directions, mouseActive, showMouseHint, mouseInput, ...input } = useCourtPointerControls(m, humanSides, field)
   const movementHelp = useId()
@@ -256,22 +257,22 @@ function Court({ m, names, ready, humanSides, bottom, mode, demo, onModeChange }
       <div className="scoreboard">
         <div className="score-player">
           <small>
-            <i className="p1-dot" />
-            P{playerNumber(0, bottom)}{bottom === 0 ? ' · BOTTOM' : ' · TOP'}
+            <i className={top === 0 ? 'p1-dot' : 'p2-dot'} />
+            P1 · TOP
           </small>
-          <strong>{names[0]}</strong>
+          <strong>{names[top]}</strong>
         </div>
-        <div className="big-score" aria-label={'Score ' + f.points.join(' to ')}>
-          <b>{pad(f.points[0])}</b>
+        <div className="big-score" aria-label={'Score ' + f.points[top] + ' to ' + f.points[bottom]}>
+          <b>{pad(f.points[top])}</b>
           <span>:</span>
-          <b>{pad(f.points[1])}</b>
+          <b>{pad(f.points[bottom])}</b>
         </div>
         <div className="score-player right">
           <small>
-            P{playerNumber(1, bottom)}{bottom === 1 ? ' · BOTTOM' : ' · TOP'}
-            <i className="p2-dot" />
+            P2 · BOTTOM
+            <i className={bottom === 0 ? 'p1-dot' : 'p2-dot'} />
           </small>
-          <strong>{names[1]}</strong>
+          <strong>{names[bottom]}</strong>
         </div>
       </div>
       <div className={'court-field' + (m.playing && m.countdown !== null ? ' is-counting-down' : '')}>
