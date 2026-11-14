@@ -57,3 +57,17 @@ node --import tsx "$dir/probe.mjs" /tmp/tactical-163-a.onnx public/models/quill.
 Saved responses and results are in `attempts/` and `results/`. The lesson loads
 `models/rules-163-a.onnx` and the canonical `public/models/oneshot.onnx`; rebuild
 other candidates from their saved responses.
+
+To request new OneShot weights, set `OPENAI_API_KEY` and run from the repository
+root. This makes a paid API request; the response may differ from the saved model.
+
+```sh
+request_dir=$(mktemp -d)
+base=experiments/one-prompt-weights
+cp "$base/generate.mjs" "$base/prompt.txt" "$request_dir/"
+mkdir "$request_dir/follow-up"
+cp "$base/follow-up/tactical-brief.txt" "$request_dir/follow-up/"
+node "$request_dir/generate.mjs" tactical-163-a
+```
+
+The response is saved to `$request_dir/follow-up/attempts/tactical-163-a.json`.
