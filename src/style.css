@@ -639,6 +639,10 @@ h1 {
 .court-modes button { padding: 8px; border-radius: 5px; color: #abc3b4; font-size: 11px; letter-spacing: 0; white-space: nowrap; }
 .court-modes button[aria-pressed='true'] { color: #edfade; background: #35533e; }
 .court-movement-hint { margin-left: auto; color: #c6d9bd; }
+.court-watching .court-actions { min-width: 0; }
+.court-watching .court-actions .play-btn { min-width: 0; white-space: normal; }
+.court-watching .court-actions kbd { display: none; }
+.demo-rematch { margin-top: 14px; color: #d7e7ca; font-size: 12px; }
 .serve-countdown { position: absolute; z-index: 2; inset: 0; display: grid; place-items: center; pointer-events: none; background: #10271f88; color: #f1ffd9; }
 .serve-countdown span { position: absolute; bottom: calc(50% + 52px); font: 14px var(--mono); }
 .serve-countdown strong { font: 80px/1 var(--mono); text-box-trim: trim-both; text-box-edge: cap alphabetic; }

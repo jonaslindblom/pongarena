@@ -17,8 +17,8 @@ test.afterEach(async ({ page }) => {
   expect(modelErrors.get(page), 'the browser should not have uncaught runtime errors').toEqual([])
 })
 
-export async function openModels(page: Page) {
-  await page.goto('/')
+export async function openModels(page: Page, url = '/') {
+  await page.goto(url)
   await page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name: 'Models', exact: true }).click()
   await expect(page.getByRole('heading', { name: 'Model library', exact: true })).toBeVisible()
   await expect(page.locator('article.library-card')).toHaveCount(presets.length, { timeout: 30_000 })
@@ -102,7 +102,7 @@ test('model download returns the exact bundled ONNX bytes', async ({ page }) => 
 })
 
 test('invalid input shape is rejected and a local import persists without a submitter claim', async ({ page }) => {
-  await openModels(page)
+  await openModels(page, '/?model=counter')
   await page.getByRole('button', { name: 'Import model', exact: true }).click()
   const invalid = network([5, 4, 3])
   invalid.graph!.input![0].type!.tensorType!.shape!.dim![1].dimValue = 5

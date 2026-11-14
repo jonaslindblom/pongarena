@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 
 test('human serves count down before advancing and restart safely after pause', async ({ page }) => {
-  await page.goto('/')
+  await page.goto('/?model=counter')
   await expect(page.locator('.court-control.play-btn')).toBeEnabled({ timeout: 30_000 })
   await expect(page.getByRole('combobox', { name: 'Opponent', exact: true })).toHaveValue('counter')
   await page.clock.install()
@@ -51,13 +51,13 @@ test('model and fullscreen links open a ready game and survive selection and rel
   await expect(page.getByRole('combobox', { name: 'Opponent', exact: true })).toHaveValue('counter', { timeout: 30_000 })
 })
 
-test('watch links select both models without a human countdown; unknown models fall back', async ({ page }) => {
+test('watch links autoplay both models without a human countdown; unknown models fall back', async ({ page }) => {
   await page.goto('/?mode=watch&model=follow&opponent=counter')
   await expect(page.locator('.court-control.play-btn')).toBeEnabled({ timeout: 30_000 })
   await expect(page.getByRole('combobox', { name: 'Bottom controller' })).toHaveValue('follow')
   await expect(page.getByRole('combobox', { name: 'Top controller' })).toHaveValue('counter')
   await expect(page).toHaveURL(/opponent=counter(?:&|$)/)
-  await page.getByRole('button', { name: 'Watch', exact: true }).click()
+  await expect(page.locator('.court .status')).toHaveText('Live')
   await expect(page.locator('.serve-countdown')).toHaveCount(0)
   await expect(page.locator('.tick-readout')).not.toHaveAttribute('aria-label', 'Simulation tick 0')
   await page.goto('/?model=missing')

@@ -2,6 +2,7 @@ import {
   ArrowLeftRight,
   ChevronDown,
   Cpu,
+  Gamepad2,
   Keyboard,
   Maximize,
   Minimize,
@@ -48,14 +49,16 @@ function playLabel(m: Match, mode: Mode) {
   if (m.started) return 'Resume'
   return mode === 'play' ? 'Play' : 'Watch'
 }
-function Court({ m, names, ready, humanSides, bottom, mode, onModeChange }: {
+function Court({ m, names, ready, humanSides, bottom, mode, demo, onModeChange }: {
   m: Match; names: Pair<string>; ready: boolean; humanSides: Pair<boolean>; bottom: Side; mode: Mode
+  demo: boolean
   onModeChange?: (mode: Mode) => void
 }) {
   const f = m.frame
   const { active, directions, ...input } = useCourtPointerControls(m, humanSides)
   const movementHelp = useId()
   const hasHuman = humanSides[0] || humanSides[1]
+  const canTakeOver = mode === 'watch' && Boolean(onModeChange)
   const field = useRef<SVGSVGElement>(null)
   const court = useRef<HTMLElement>(null)
   const fullscreenControl = useRef<HTMLButtonElement>(null)
@@ -210,7 +213,7 @@ function Court({ m, names, ready, humanSides, bottom, mode, onModeChange }: {
   }
   return (
     <section {...input} ref={court}
-      className={'court' + (active ? ' human-controlled' : '') + (fullscreen ? ' court-fullscreen' : '')}
+      className={'court' + (mode === 'watch' ? ' court-watching' : '') + (active ? ' human-controlled' : '') + (fullscreen ? ' court-fullscreen' : '')}
       role={fullscreen ? 'dialog' : undefined} aria-modal={fullscreen || undefined} aria-label="Pong court"
       aria-describedby={hasHuman ? movementHelp : undefined}>
       {hasHuman && <p id={movementHelp} className="visually-hidden">
@@ -219,22 +222,26 @@ function Court({ m, names, ready, humanSides, bottom, mode, onModeChange }: {
       </p>}
       <div className="court-top">
         {onModeChange && <div className="court-modes" role="group" aria-label="Game mode">
-          <button aria-pressed={mode === 'play'} onClick={() => onModeChange('play')}>You play</button>
+          <button aria-pressed={mode === 'play'} disabled={!ready} onClick={() => { onModeChange('play'); showCourt() }}>You play</button>
           <button aria-pressed={mode === 'watch'} onClick={() => onModeChange('watch')}>Watch models</button>
         </div>}
         <div className="court-actions" role="group" aria-label="Match controls">
-          <button className="court-control play-btn" disabled={!ready} aria-label={playLabel(m, mode)}
+          <button className={'court-control' + (canTakeOver ? '' : ' play-btn')} disabled={!ready} aria-label={playLabel(m, mode)}
             aria-keyshortcuts="P" title={playLabel(m, mode) + ' (P)'} onClick={() => {
               m.toggle()
               if (!m.playing) showCourt()
             }}>
             {m.playing ? <Pause size={16} /> : <Play size={16} fill="currentColor" />}
-            {playLabel(m, mode)} <kbd>P</kbd>
+            {!canTakeOver && <>{playLabel(m, mode)} <kbd>P</kbd></>}
           </button>
           <button className="court-control" disabled={!ready} onClick={() => { m.restart(); showCourt() }}
             aria-label="Restart match" aria-keyshortcuts="R" title="Restart the same serves (R)">
             <RotateCcw size={16} /><span>Restart</span><kbd>R</kbd>
           </button>
+          {canTakeOver && <button className="court-control play-btn" disabled={!ready}
+            onClick={() => { onModeChange?.('play'); showCourt() }}>
+            <Gamepad2 size={16} /> Take over &amp; play
+          </button>}
           <button ref={fullscreenControl} className="court-control" onClick={fullscreen ? exitFullscreen : enterFullscreen}
             aria-label={fullscreen ? 'Exit full screen' : 'Enter full screen'} aria-pressed={fullscreen} aria-keyshortcuts="F"
             title={fullscreen ? 'Exit full screen (F / Esc)' : 'Enter full screen (F)'}>
@@ -349,7 +356,8 @@ function Court({ m, names, ready, humanSides, bottom, mode, onModeChange }: {
             <button className="play-btn" onClick={m.play} aria-keyshortcuts="P">
               <Play size={18} fill="currentColor" /> {mode === 'play' ? 'Play again' : 'Watch again'}
             </button>
-            <p className="keyboard-hint">Press <kbd>P</kbd> to {mode === 'play' ? 'play' : 'watch'} again</p>
+            {demo ? <p className="demo-rematch">Next match starts automatically…</p>
+              : <p className="keyboard-hint">Press <kbd>P</kbd> to {mode === 'play' ? 'play' : 'watch'} again</p>}
             <small className="keyboard-hint"><kbd>R</kbd> restarts the same serves</small>
           </div>
         </div>}
@@ -382,9 +390,10 @@ interface Props {
   swap: () => void
   ready: boolean
   mode?: Mode
+  demo?: boolean
   onModeChange?: (mode: Mode) => void
 }
-export function Arena({ m, models, ids, pick, swap, ready, mode = 'watch', onModeChange }: Props) {
+export function Arena({ m, models, ids, pick, swap, ready, mode = 'watch', demo = false, onModeChange }: Props) {
   const humanSides: Pair<boolean> = [ids[0] === 'keyboard', ids[1] === 'keyboard']
   const bottom: Side = humanSides[1] && !humanSides[0] ? 1 : 0
   const controllers = ids.map((id) => models.find((model) => model.id === id)) as Pair<Controller | undefined>
@@ -399,7 +408,7 @@ export function Arena({ m, models, ids, pick, swap, ready, mode = 'watch', onMod
   return (
     <div className="arena-grid">
       <div className="main-column">
-        <Court m={m} names={names} ready={ready} humanSides={humanSides} bottom={bottom} mode={mode} onModeChange={onModeChange} />
+        <Court m={m} names={names} ready={ready} humanSides={humanSides} bottom={bottom} mode={mode} demo={demo} onModeChange={onModeChange} />
       </div>
       <aside className="side-column">
         <section className="panel matchup">

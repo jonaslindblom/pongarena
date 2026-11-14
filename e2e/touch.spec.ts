@@ -7,7 +7,7 @@ async function openCourt(page: Page) {
   await page.addInitScript(() => {
     Object.defineProperty(Element.prototype, 'requestFullscreen', { configurable: true, value: undefined })
   })
-  await page.goto('/')
+  await page.goto('/?model=counter')
   await expect(page.locator('.court-control.play-btn')).toBeEnabled({ timeout: 30_000 })
 }
 

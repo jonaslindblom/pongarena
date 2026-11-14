@@ -26,7 +26,7 @@ import { useMatch } from './useMatch'
 import { Architecture, architectureLabel } from './Architecture'
 import { ModelSubmitter } from './ModelSubmitter'
 import { ControllerBadge } from './ControllerBadge'
-import { PONG } from './rules'
+import { endedMatch, PONG } from './rules'
 import { Ranking } from './Ranking'
 import { RankBadge } from './RankBadge'
 import { useReferenceRanks } from './useReferenceRanks'
@@ -215,6 +215,7 @@ export default function App() {
   const referenceRanks = useReferenceRanks(page === 'Model library')
   const [initialMatch] = useState(() => readMatchLink(window.location.search))
   const [mode, setMode] = useState(initialMatch.mode)
+  const [demo, setDemo] = useState(initialMatch.demo && page === 'Arena')
   const [startup, setStartup] = useState(getStartupSnapshot)
   const [loadingComplete, setLoadingComplete] = useState(false)
   const [models, setModels] = useState<Controller[]>([keyboard])
@@ -256,16 +257,46 @@ export default function App() {
       setNotice('A linked model is unavailable in this browser. Using a bundled model instead.')
       return
     }
-    if (page === 'Arena') {
+    if (page === 'Arena' && !demo) {
       const url = writeMatchLink(new URL(window.location.href), mode, ids)
       window.history.replaceState(null, '', url)
     }
-  }, [loadingComplete, mode, ids, models, page])
+  }, [loadingComplete, mode, ids, models, page, demo])
   const currentMatch = useRef(m)
   currentMatch.current = m
   useEffect(() => {
+    if (!demo) return
+    const stopDemo = () => setDemo(false)
+    const events = ['pointerdown', 'click', 'keydown', 'wheel'] as const
+    for (const event of events) window.addEventListener(event, stopDemo, { capture: true, passive: true })
+    return () => {
+      for (const event of events) window.removeEventListener(event, stopDemo, true)
+    }
+  }, [demo])
+  const finished = endedMatch(m.frame)
+  useEffect(() => {
+    if (!demo || !ready || page !== 'Arena' || error) return
+    let timer: ReturnType<typeof setTimeout>
+    function continueDemo() {
+      clearTimeout(timer)
+      if (document.hidden || currentMatch.current.playing) return
+      if (endedMatch(currentMatch.current.frame)) {
+        timer = setTimeout(() => {
+          if (!document.hidden) currentMatch.current.play()
+        }, 3500)
+      } else currentMatch.current.play()
+    }
+    continueDemo()
+    document.addEventListener('visibilitychange', continueDemo)
+    return () => {
+      clearTimeout(timer)
+      document.removeEventListener('visibilitychange', continueDemo)
+    }
+  }, [demo, ready, page, error, m.playing, finished])
+  useEffect(() => {
     function restoreRoute() {
       const route = readPage(window.location.hash)
+      setDemo(false)
       currentMatch.current.pause()
       if (route.page === 'Arena') {
         const match = readMatchLink(window.location.search)
@@ -348,6 +379,7 @@ export default function App() {
     return url
   }
   function navigate(next: Page, lesson: ExplainerId = 'follow') {
+    setDemo(false)
     if (next !== page) m.pause()
     const url = pageUrl(next, lesson)
     if (url.href !== window.location.href) window.history.pushState(null, '', url)
@@ -359,11 +391,13 @@ export default function App() {
     navigate(next, lesson)
   }
   function select(index: Side, id: string) {
+    setDemo(false)
     currentMatch.current.reset()
     setIds((prev) => (index === 0 ? [id, prev[1]] : [prev[0], id]))
     setError('')
   }
   function openImport() {
+    setDemo(false)
     m.pause()
     setFileError('')
     setImportSide(mode === 'play' ? 1 : 0)
@@ -378,11 +412,13 @@ export default function App() {
     m.play()
   }
   function changeMode(next: 'play' | 'watch') {
+    setDemo(false)
     if (next === mode) return
     m.reset()
     setMode(next)
     setIds(next === 'play' ? ['keyboard', ids[1]] : ['large', DEFAULT_MODEL])
     setError('')
+    if (next === 'play') m.play()
   }
   async function importFile(file: File | undefined) {
     if (!file || uploading) return
@@ -499,11 +535,13 @@ export default function App() {
         {page === 'Arena' && (
           <Arena
             mode={mode}
+            demo={demo}
             onModeChange={changeMode}
             models={eligibleModels}
             ids={ids}
             pick={select}
             swap={() => {
+              setDemo(false)
               m.reset()
               setIds([ids[1], ids[0]])
             }}

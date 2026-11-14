@@ -2,12 +2,15 @@ import type { Pair } from './rules'
 
 export const DEFAULT_MODEL = 'counter'
 
-export function readMatchLink(search: string): { mode: 'play' | 'watch'; ids: Pair<string> } {
+export function readMatchLink(search: string): { mode: 'play' | 'watch'; ids: Pair<string>; demo: boolean } {
   const params = new URLSearchParams(search)
+  if (!['model', 'mode', 'opponent'].some((key) => params.has(key)))
+    return { mode: 'watch', ids: ['quill', DEFAULT_MODEL], demo: true }
   const model = params.get('model') || DEFAULT_MODEL
+  const opponent = params.get('opponent') || 'quill'
   return params.get('mode') === 'watch'
-    ? { mode: 'watch', ids: [model, params.get('opponent') || 'quill'] }
-    : { mode: 'play', ids: ['keyboard', model] }
+    ? { mode: 'watch', ids: [model, opponent], demo: model !== 'keyboard' && opponent !== 'keyboard' }
+    : { mode: 'play', ids: ['keyboard', model], demo: false }
 }
 
 export function writeMatchLink(url: URL, mode: 'play' | 'watch', ids: Pair<string>) {
