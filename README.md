@@ -57,7 +57,9 @@ Human games show a three-second countdown before every serve.
 
 ## Run locally
 
-Use **Node.js 22** and npm. Python is needed only for training or reconstructing weights.
+Use **Node.js 26 LTS** and npm. The tested version is in [`.nvmrc`](.nvmrc);
+with nvm, run `nvm install` and `nvm use` from the repository root.
+Python is needed only for training or reconstructing weights.
 
 ```sh
 git clone https://github.com/jonaslindblom/pongarena.git

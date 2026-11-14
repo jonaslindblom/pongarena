@@ -33,7 +33,7 @@ For model-file changes, the gate freezes model hashes, draws 512 shared serve se
 
 After a successful model evaluation, the [results workflow](../.github/workflows/model-results-comment.yml) posts the standings on the PR. It updates the same comment on reruns and checks that the evaluated commit is still the PR head. To report an earlier successful run, dispatch the workflow with its run ID.
 
-The evaluator's shared default and publication check both require 512 sets. The `pong-v3` rule change creates a new identity and plan, preserving earlier 128-set artifacts as historical results. Reports include the same paired-seed bootstrap score intervals displayed in the app.
+The evaluator's shared default and publication check both require 512 sets. Reports include the same paired-seed bootstrap score intervals displayed in the app.
 
 ### Required checks
 

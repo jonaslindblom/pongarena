@@ -127,7 +127,7 @@ test('renames out of the model directory still count as model changes', () => {
 
 test('model weights cannot change alongside the evaluator or workflow', async () => {
   for (const filename of ['src/game.ts', 'src/validate.ts', 'scripts/evaluation-plan.ts',
-    'scripts/ci-artifacts.ts', 'package-lock.json', '.github/workflows/check.yml'])
+    'scripts/ci-artifacts.ts', '.nvmrc', 'package-lock.json', '.github/workflows/check.yml'])
     await assert.rejects(checkScope(fixture({ files: [
       { filename: 'public/models/new.onnx' }, { filename },
     ] }), { repository, prNumber }), /Submit model weights separately/)

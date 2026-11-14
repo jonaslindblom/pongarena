@@ -5,18 +5,10 @@ const directory = new URL('./attempts/', import.meta.url)
 const template = await readFile(new URL('./prompt.txt', import.meta.url), 'utf8')
 const model = 'gpt-6-astra'
 const attempts = [
-  ['astra-97-a', [6, 6, 4, 3, 3]],
-  ['astra-97-b', [6, 6, 4, 3, 3]],
-  ['astra-97-c', [6, 6, 4, 3, 3]],
-  ['astra-163-a', [6, 12, 4, 3, 3]],
-  ['astra-163-b', [6, 12, 4, 3, 3]],
   ['astra-97-low', [6, 6, 4, 3, 3], 'low'],
   ['astra-163-low', [6, 12, 4, 3, 3], 'low'],
   ['astra-97-low-b', [6, 6, 4, 3, 3], 'low'],
   ['astra-163-low-b', [6, 12, 4, 3, 3], 'low'],
-  ['astra-97-high-bg', [6, 6, 4, 3, 3]],
-  ['astra-163-high-bg', [6, 12, 4, 3, 3]],
-  ['astra-97-medium-bg', [6, 6, 4, 3, 3], 'medium'],
   ['rules-163-a', [6, 12, 4, 3, 3], 'low', 'rules'],
   ['rules-163-b', [6, 12, 4, 3, 3], 'low', 'rules'],
   ['tactical-163-a', [6, 12, 4, 3, 3], 'low', 'tactical'],
@@ -49,8 +41,8 @@ for (const id of ids) {
   if (!attempts.some(([attempt]) => attempt === id)) throw new Error('Unknown attempt ' + id)
 }
 const selected = attempts.filter(([id]) => ids.includes(id))
-const results = await Promise.allSettled(selected.map(async ([id, widths, effort = 'high', condition]) => {
-  const maxOutputTokens = effort === 'high' ? 12_000 : 6_000
+const results = await Promise.allSettled(selected.map(async ([id, widths, effort, condition]) => {
+  const maxOutputTokens = 6_000
   const outputDirectory = condition ? new URL('./follow-up/attempts/', import.meta.url) : directory
   await mkdir(outputDirectory, { recursive: true })
   const rules = template.replace('{{WIDTHS}}', widths.join(' → '))

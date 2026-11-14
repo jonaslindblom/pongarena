@@ -59,34 +59,11 @@ as along-court speed rises. Its magnitude is at most
 units per tick: below three units at speed 5,
 and zero at speed 13.
 
-## Fresh evaluation
+## Evaluation
 
-After freezing the model, 128 new shared serve sets were drawn and all seven
-models played both sides: **5,376 games** under `pong-v3`, using ONNX Runtime Web
-CPU/WASM with one thread. No weights changed after seeing these results. The
-[saved summary](counter-evaluation.json) includes the complete plan, seeds,
-model hashes, evaluator identity and counts.
-
-Against Attack, Counter won **127 paired contests, drew one and lost none**.
-It won **1,130 of 1,280 rallies**, with 150 losses and no draws: **88.3%**.
-
-Comparison against all five opponents shared by both models:
-
-| Opponent | Attack rally score | Counter rally score |
-| --- | ---: | ---: |
-| Follow | 77.5% | 85.4% |
-| Quill | 9.1% | 15.2% |
-| Small | 69.5% | 56.8% |
-| Large | 3.5% | 15.7% |
-| Predict | 92.0% | 91.0% |
-| Mean | **50.3%** | **52.8%** |
-
-Rally score counts draws as half a win. The mean gain is **2.5 percentage
-points**, with an approximate 95% paired bootstrap interval of **1.5–3.4
-points**, resampling whole shared serve sets with all five opponents and both
-sides together. These results support a strong direct advantage over Attack
-and a modest improvement across this field, with a substantial regression
-against Small. Quill and Large still beat Counter overall.
+See the [published league](https://jonaslindblom.github.io/pongarena/#league)
+for current standings across all models. The checked-in
+[development standings](../public/league.md) use fixed seeds for repeatable CI checks.
 
 Counter uses along-court velocity for recovery, but still approximates flight
 time instead of dividing distance by actual incoming speed. Difficult fast
@@ -104,20 +81,12 @@ Expected model SHA-256:
 5f7a480b98c982cf403f2f8849fac1e5e02503ff12e6b0b5d1e377856534e35c
 ```
 
-Replay the separate 128-set evaluation from a checkout of the original
-evaluator and roster. These commands write results to a temporary directory.
-[Original evaluator commit](https://github.com/jonaslindblom/pongarena/commit/f549eb88d47be40e0ede19607e2fe6f077255146)
+Replay the current development standings from the repository root:
 
 ```sh
-node --input-type=module <<'JS'
-import { readFileSync, writeFileSync } from 'node:fs'
-const { plan } = JSON.parse(readFileSync('docs/counter-evaluation.json', 'utf8'))
-writeFileSync('/tmp/counter-plan.json', JSON.stringify(plan))
-JS
-npm run league -- --plan /tmp/counter-plan.json --output /tmp/counter-replay
+npm ci
+npm run league:check
 ```
 
-The saved plan requires the exact seven-model roster and evaluator. If future
-models are added, isolate the saved roster as shown in
-[Attack's historical replay](ATTACK.md#reproduce). Future weight changes
-require a new evaluation seed set.
+See the [league rules](RULES.md#league-schedule-and-scoring) for the scoring
+and the separate published evaluation.

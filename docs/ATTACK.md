@@ -48,40 +48,13 @@ the selected corner. The output keeps Predict's 1.1-unit movement deadband.
 
 ## Evaluation
 
-After freezing the model, 128 fresh shared serve sets were drawn and all six
-models played both sides: **3,840 games** under `pong-v3`, using ONNX Runtime
-Web CPU/WASM with one thread. The saved [evaluation summary](attack-evaluation.json)
-includes the exact plan, seeds, evaluator identity, model hashes and shot counts.
-These seeds were not used for subsequent weight changes.
+See the [published league](https://jonaslindblom.github.io/pongarena/#league)
+for current standings across all models. The checked-in
+[development standings](../public/league.md) use fixed seeds for repeatable CI checks.
 
-Attack won **128 of 128 paired contests against Predict**. Across their
-1,280 rallies it won 1,123, lost 71 and drew 86: a **91.1% rally score**,
-counting a draw as half a win.
-
-Against the same four other opponents:
-
-| Opponent | Predict rally score | Attack rally score |
-| --- | ---: | ---: |
-| Follow | 60.3% | 78.7% |
-| Quill | 3.6% | 9.5% |
-| Small | 66.6% | 70.0% |
-| Large | 0.0% | 3.8% |
-| Mean | **32.6%** | **40.5%** |
-
-The mean improvement is **7.9 percentage points**, with an approximate 95%
-paired bootstrap interval of **6.8–8.9 points**, resampling whole serve sets
-with all opponents and both sides together.
-
-A second WASM replay measured returns against those same four opponents.
-Straight shots (`vy = 0`) fell from **62.3% to 20.0%**. Projected corner
-landings (`y < 28` or `y > 132`, after wall reflection) rose from **18.3% to
-34.9%**. These are pooled fractions of each model's own returns; match lengths
-and shot opportunities differ. They describe placement, not guaranteed winners.
-
-Attack still loses to Quill and Large overall. Its bounded forecast is an
-approximation, it folds only one predicted wall bounce, and it retains
-Predict's lack of along-court speed awareness and center recovery while the
-ball travels away. The results measure these bots and serves, not human strength.
+Attack's bounded forecast is an approximation: it folds only one predicted
+wall bounce and lacks along-court speed awareness and center recovery while
+the ball travels away. Bot results do not establish strength against human players.
 
 ## Reproduce
 
@@ -94,31 +67,12 @@ Expected Attack SHA-256:
 646d1a1365e3e307bd4431fc73930c5efa19de16b7cc22bbb9200608c2b720f8
 ```
 
-To replay the separate 128-set evaluation without overwriting the development
-standings, run the commands below from a checkout of the original evaluator
-and copy its historical six-model roster into a temporary directory.
-[Original evaluator commit](https://github.com/jonaslindblom/pongarena/commit/f549eb88d47be40e0ede19607e2fe6f077255146)
+Replay the current development standings from the repository root:
 
 ```sh
-node --input-type=module <<'JS'
-import { copyFileSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs'
-import { execFileSync } from 'node:child_process'
-import { tmpdir } from 'node:os'
-import { join } from 'node:path'
-const { plan } = JSON.parse(readFileSync('docs/attack-evaluation.json', 'utf8'))
-const directory = mkdtempSync(join(tmpdir(), 'attack-replay-'))
-mkdirSync(join(directory, 'models'))
-for (const { id } of plan.entrants)
-  copyFileSync(`public/models/${id}.onnx`, join(directory, 'models', `${id}.onnx`))
-const roster = plan.entrants.map(({ id, name }) => ({ id, name, submittedBy: 'jonaslindblom' }))
-writeFileSync(join(directory, 'roster.ts'), `export const presets = ${JSON.stringify(roster)}`)
-writeFileSync(join(directory, 'plan.json'), JSON.stringify(plan))
-execFileSync(process.execPath, ['--import', 'tsx', 'scripts/generate-league.ts',
-  '--plan', join(directory, 'plan.json'), '--models-dir', join(directory, 'models'),
-  '--roster', join(directory, 'roster.ts'), '--output', join(directory, 'results')], { stdio: 'inherit' })
-console.log(directory)
-JS
+npm ci
+npm run league:check
 ```
 
-The evaluator rejects changed models or rules. Future tuning must use new
-evaluation serves rather than treating this published seed set as a holdout.
+See the [league rules](RULES.md#league-schedule-and-scoring) for the scoring
+and the separate published evaluation.

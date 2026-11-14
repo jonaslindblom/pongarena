@@ -55,7 +55,7 @@ node --import tsx "$dir/evaluate.mjs" evaluate \
   "$dir/seeds.json" /tmp/astra-97-low.onnx large quill counter follow small predict attack
 ```
 
-Saved responses are in `attempts/`; raw game records are in `results/` and the
-baseline files. The commands above rebuild candidate ONNX files from those responses.
+Saved responses are in `attempts/`; raw game records are in `results/`.
+The commands above rebuild candidate ONNX files from those responses.
 
-To collect a new output, copy the prompt and generator to a fresh directory, set `OPENAI_API_KEY`, and run `node generate.mjs astra-97-low` there. The generator lists the available layouts and efforts.
+To collect a new output, copy the prompt and generator to a fresh directory, set `OPENAI_API_KEY`, and run `node generate.mjs astra-97-low` there. The generator lists the available layouts.

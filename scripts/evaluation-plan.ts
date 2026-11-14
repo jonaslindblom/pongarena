@@ -11,7 +11,7 @@ export const MAX_EVALUATION_SEEDS = 512
 // Runtime and contract changes invalidate previously sampled evaluation plans.
 // Display names and documentation do not change the seed-set identity.
 export const EVALUATOR_FILES = [
-  'package-lock.json', 'scripts/evaluation-plan.ts', 'scripts/generate-league.ts',
+  '.nvmrc', 'package-lock.json', 'scripts/evaluation-plan.ts', 'scripts/generate-league.ts',
   'scripts/validate-models.ts', 'src/competition.ts', 'src/competitionMatch.ts',
   'scripts/submission-roster.ts', 'src/submitter.ts', 'src/game.ts', 'src/rules.ts', 'src/validate.ts',
   'src/leagueUncertainty.ts',
