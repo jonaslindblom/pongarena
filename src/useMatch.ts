@@ -10,7 +10,7 @@ import {
 } from './rules'
 import { infer, type Controller } from './models'
 import { boundedDeadline, frameDuration, TICK_MS, type Presentation } from './presentation'
-import { humanKeyAction } from './humanInput'
+import { humanKeyAction, humanTargetAction } from './humanInput'
 import { matchShortcut } from './matchShortcuts'
 import { newMatchSeed } from './matchSeed'
 
@@ -43,6 +43,7 @@ export function useMatch(
   const currentPlayers = useRef(players)
   currentPlayers.current = players
   const humanActions = useRef<Pair<number | null>>([null, null])
+  const humanTargets = useRef<Pair<number | null>>([null, null])
   const [position, setPosition] = useState({ tick: 0 }),
     [playing, setPlaying] = useState(false),
     [runVersion, setRunVersion] = useState(0)
@@ -58,6 +59,7 @@ export function useMatch(
   function clearHumanInput() {
     keys.current.clear()
     humanActions.current = [null, null]
+    humanTargets.current = [null, null]
   }
   function present(animate = false) {
     const at = cursor.current
@@ -108,9 +110,13 @@ export function useMatch(
   function setHumanAction(side: Side, action: 0 | 1 | 2 | null) {
     humanActions.current[side] = running.current ? action : null
   }
-  function human(side: Side): Scores {
+  function setHumanTarget(side: Side, target: number | null) {
+    humanTargets.current[side] = running.current ? target : null
+  }
+  function human(side: Side, frame: Frame): Scores {
     const both = players[0]?.id === 'keyboard' && players[1]?.id === 'keyboard'
-    const action = humanKeyAction(keys.current, side, both) ?? humanActions.current[side] ?? 1
+    const action = humanKeyAction(keys.current, side, both) ?? humanActions.current[side] ??
+      humanTargetAction(frame.paddles[side], humanTargets.current[side]) ?? 1
     return Array.from({ length: rules.outputSize }, (_, index) => index === action ? 1 : 0) as Scores
   }
   function advanceOne(scheduledAt: number): Promise<boolean> {
@@ -126,7 +132,7 @@ export function useMatch(
           // Human input is sampled with the same pre-tick state as both models,
           // before either asynchronous inference has a chance to finish.
           const scores = players.map((player, side) => player!.id === 'keyboard'
-            ? human(side as Side) : null) as Pair<Scores | null>
+            ? human(side as Side, previous) : null) as Pair<Scores | null>
           for (const side of [0, 1] as const) {
             if (!scores[side]) scores[side] = await infer(players[side]!, rules.observation(previous, side))
             if (revision.current !== version) return false
@@ -274,6 +280,7 @@ export function useMatch(
     started,
     countdown,
     setHumanAction,
+    setHumanTarget,
     rules,
     toggle,
     pause,

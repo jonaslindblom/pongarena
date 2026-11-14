@@ -24,7 +24,7 @@ import {
 import { type Controller } from './models'
 import type { Match } from './useMatch'
 import { BrainPanel } from './BrainPanel'
-import { CourtTouchHints, useCourtPointerControls } from './HumanControls'
+import { CourtMouseHint, CourtTouchHints, useCourtPointerControls } from './HumanControls'
 import { interpolate, progress } from './presentation'
 import { ControllerBadge, controllerOptionLabel } from './ControllerBadge'
 import { matchShortcut } from './matchShortcuts'
@@ -55,11 +55,11 @@ function Court({ m, names, ready, humanSides, bottom, mode, demo, onModeChange }
   onModeChange?: (mode: Mode) => void
 }) {
   const f = m.frame
-  const { active, directions, ...input } = useCourtPointerControls(m, humanSides)
+  const field = useRef<SVGSVGElement>(null)
+  const { active, directions, mouseActive, showMouseHint, mouseInput, ...input } = useCourtPointerControls(m, humanSides, field)
   const movementHelp = useId()
   const hasHuman = humanSides[0] || humanSides[1]
   const canTakeOver = mode === 'watch' && Boolean(onModeChange)
-  const field = useRef<SVGSVGElement>(null)
   const court = useRef<HTMLElement>(null)
   const fullscreenControl = useRef<HTMLButtonElement>(null)
   const fullscreenWanted = useRef(false)
@@ -213,12 +213,13 @@ function Court({ m, names, ready, humanSides, bottom, mode, demo, onModeChange }
   }
   return (
     <section {...input} ref={court}
-      className={'court' + (mode === 'watch' ? ' court-watching' : '') + (active ? ' human-controlled' : '') + (fullscreen ? ' court-fullscreen' : '')}
+      className={'court' + (mode === 'watch' ? ' court-watching' : '') + (active ? ' human-controlled' : '') + (mouseActive ? ' mouse-steering' : '') + (fullscreen ? ' court-fullscreen' : '')}
       role={fullscreen ? 'dialog' : undefined} aria-modal={fullscreen || undefined} aria-label="Pong court"
       aria-describedby={hasHuman ? movementHelp : undefined}>
       {hasHuman && <p id={movementHelp} className="visually-hidden">
-        Hold the left or right half of the court to move. Slide across to change direction; release to stop.
-        You can also use A/D or the arrow keys.
+        Click the playing field, then move your mouse or trackpad left and right to steer, even outside the field. Click outside the field or press Esc to release mouse control.
+        On touch screens, hold the left or right half of the court to move. Slide across to change direction; release to stop.
+        You can also use A/D or the arrow keys to take control.
       </p>}
       <div className="court-top">
         {onModeChange && <div className="court-modes" role="group" aria-label="Game mode">
@@ -274,7 +275,8 @@ function Court({ m, names, ready, humanSides, bottom, mode, demo, onModeChange }
       </div>
       <div className={'court-field' + (m.playing && m.countdown !== null ? ' is-counting-down' : '')}>
         {!finished && <CourtTouchHints humanSides={humanSides} directions={directions} playing={m.playing} />}
-        <div className="court-surface">
+        {active && showMouseHint && <CourtMouseHint active={mouseActive} />}
+        <div className="court-surface" tabIndex={-1} {...mouseInput}>
           <svg
             className="field"
             ref={field}
@@ -376,7 +378,9 @@ function Court({ m, names, ready, humanSides, bottom, mode, demo, onModeChange }
               ? eventText(f, names).toUpperCase()
               : pad(f.returns) + ' RETURNS'}
         </span>
-        {(humanSides[0] || humanSides[1]) && <span className="keyboard-hint court-movement-hint">A/D or ←/→ to move</span>}
+        {hasHuman && <span className={'keyboard-hint court-movement-hint' + (mouseActive ? ' court-mouse-status' : '')}>
+          {mouseActive ? 'Mouse control on' : 'A/D or ←/→ to move'}
+        </span>}
         <span className="tick-readout" aria-label={'Simulation tick ' + f.tick}>TICK {String(f.tick).padStart(4, '0')}</span>
       </div>
     </section>

@@ -396,6 +396,34 @@ h1 {
   touch-action: none;
   cursor: pointer;
 }
+.court-mouse-hint {
+  display: none;
+  position: absolute;
+  z-index: 3;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: calc(100% - 24px);
+  align-items: center;
+  gap: 7px;
+  padding: 9px 12px;
+  border: 1px solid #6b8d62;
+  border-radius: 8px;
+  background: #203f34ed;
+  color: #e4f8ce;
+  font-size: 12px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.court-mouse-hint svg { flex: none; }
+.court-mouse-hint.is-steering { animation: mouse-hint-fade .3s 2.5s forwards; }
+@keyframes mouse-hint-fade { to { opacity: 0; } }
+@media (pointer: fine) {
+  .court-mouse-hint { display: flex; }
+  .court.human-controlled { cursor: auto; }
+  .court.human-controlled .court-surface { cursor: pointer; }
+  .court.mouse-steering .court-surface { cursor: ew-resize; }
+}
 /* Touch zones are a background layer, so they never reduce the court's size. */
 .court-touch-hints {
   display: none;
@@ -1079,8 +1107,8 @@ legend {
   }
   .main-column,
   .side-column { display: contents; width: auto; }
-  .matchup { grid-row: 1; }
-  .court { grid-row: 2; }
+  .court { grid-row: 1; }
+  .matchup { grid-row: 2; }
   .court-surface { height: min(60dvh, max(180px, calc(100dvh - 310px))); }
   .brain-panel { grid-row: 3; }
   .court-actions { flex-basis: 100%; order: 3; }

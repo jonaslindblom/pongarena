@@ -111,9 +111,11 @@ function Guide({ onDeviceTest }: { onDeviceTest: () => void }) {
           positions across the court. Each paddle receives serves moving both left and right. Restart repeats the set.
         </p>
         <p>
-          Every match uses a vertical court. You play from the bottom. Hold the left
-          half to move left or the right half to move right, and lift to stop. You can also use A/D,
-          ←/→, or the touch controls. Press P to play, pause or resume; after game over, P plays again. Press R to restart immediately. Press F for full screen and F or Esc to exit; full screen hides the workspace and locks page scrolling.
+          Every match uses a vertical court. You play from the bottom. Click the playing field,
+          then move your mouse or trackpad left and right to steer; no need to hold the button.
+          Steering keeps working outside the field. Click outside the field or press Esc to release mouse control, or use A/D or ←/→ to take control.
+          On a phone, hold the left half to move left or the right half to move right, and lift to stop.
+          Press P to play, pause or resume; after game over, P plays again. Press R to restart immediately. Press F for full screen and F or Esc to exit; full screen hides the workspace and locks page scrolling.
           Touch and pointer controls steer through the same movement limit. Animation fills the space between
           decisions; pausing preserves the exact game state.
         </p>
@@ -391,10 +393,12 @@ export default function App() {
     navigate(next, lesson)
   }
   function select(index: Side, id: string) {
+    const keepPlaying = mode === 'watch' && (currentMatch.current.playing || endedMatch(currentMatch.current.frame))
     setDemo(false)
     currentMatch.current.reset()
     setIds((prev) => (index === 0 ? [id, prev[1]] : [prev[0], id]))
     setError('')
+    if (keepPlaying) currentMatch.current.play()
   }
   function openImport() {
     setDemo(false)
@@ -413,12 +417,15 @@ export default function App() {
   }
   function changeMode(next: 'play' | 'watch') {
     setDemo(false)
-    if (next === mode) return
+    if (next === mode) {
+      if (next === 'watch') m.play()
+      return
+    }
     m.reset()
     setMode(next)
     setIds(next === 'play' ? ['keyboard', ids[1]] : ['large', DEFAULT_MODEL])
     setError('')
-    if (next === 'play') m.play()
+    m.play()
   }
   async function importFile(file: File | undefined) {
     if (!file || uploading) return

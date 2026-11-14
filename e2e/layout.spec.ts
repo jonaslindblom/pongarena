@@ -93,7 +93,7 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 2239, height: 141
 test.describe('mobile court layout', () => {
   test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true })
 
-  test('mobile keeps player selection first and brings the court into view on takeover', async ({ page }) => {
+  test('mobile shows the court before player selection and brings it into view on takeover', async ({ page }) => {
     // Exercise the viewport fullscreen used on phones without the native API.
     await page.addInitScript(() => {
       Object.defineProperty(Element.prototype, 'requestFullscreen', { configurable: true, value: undefined })
@@ -106,11 +106,12 @@ test.describe('mobile court layout', () => {
     const court = await page.locator('.court').boundingBox()
     expect(matchup).not.toBeNull()
     expect(court).not.toBeNull()
-    expect(matchup!.y + matchup!.height).toBeLessThanOrEqual(court!.y)
+    expect(court!.y + court!.height).toBeLessThanOrEqual(matchup!.y)
     const originalSize = await fieldSize(page)
     const takeover = page.getByRole('button', { name: 'Take over & play', exact: true })
-    await takeover.scrollIntoViewIfNeeded()
+    // Visitors should see the game and invitation without scrolling past selectors.
     await expect(takeover).toBeInViewport({ ratio: 1 })
+    await expect(page.locator('.field')).toBeInViewport({ ratio: 0.25 })
     await takeover.tap()
     await expect(page.locator('.score-player strong').first()).toHaveText('Human')
     await expect(page.locator('.serve-countdown strong')).toHaveText('3')

@@ -99,7 +99,7 @@ test('an untouched finished demo starts a new match with fresh serves', async ({
   expect((await seeds()).length).toBeGreaterThan(originalSeeds.length)
 })
 
-test('interacting with the result cancels its pending automatic rematch', async ({ page }) => {
+test('interacting with the result cancels its pending rematch until Watch models replays', async ({ page }) => {
   test.slow()
   await openDemo(page)
   await finishDemo(page)
@@ -109,6 +109,29 @@ test('interacting with the result cancels its pending automatic rematch', async 
   await page.clock.runFor(6000)
   await expect(page.locator('.court .status')).toHaveText('Game over')
   await expect(page.locator('.big-score')).toHaveAttribute('aria-label', score!)
+  await expect(page.locator('.tick-readout')).toHaveAttribute('aria-label', tick!)
+  await page.getByRole('button', { name: 'Watch models', exact: true }).click()
+  await expect(page.locator('.court .status')).toHaveText('Live')
+  await expect(page.locator('.big-score')).toHaveAttribute('aria-label', 'Score 0 to 0')
+  await expect(page.locator('.tick-readout')).toHaveAttribute('aria-label', 'Simulation tick 0')
+  await page.clock.runFor(300)
+  await expect(page.locator('.tick-readout')).not.toHaveAttribute('aria-label', 'Simulation tick 0')
+})
+
+test('changing a model during the demo result starts immediately and cancels the old rematch', async ({ page }) => {
+  test.slow()
+  await openDemo(page)
+  await finishDemo(page)
+  await page.getByRole('combobox', { name: 'Bottom controller' }).selectOption('follow')
+  await expect(page.locator('.court .status')).toHaveText('Live')
+  await expect(page.getByRole('combobox', { name: 'Bottom controller' })).toHaveValue('follow')
+  await expect(page.locator('.big-score')).toHaveAttribute('aria-label', 'Score 0 to 0')
+  await page.clock.runFor(300)
+  await expect(page.locator('.tick-readout')).not.toHaveAttribute('aria-label', 'Simulation tick 0')
+  await page.getByRole('button', { name: 'Pause', exact: true }).click()
+  const tick = await page.locator('.tick-readout').getAttribute('aria-label')
+  await page.clock.runFor(4000)
+  await expect(page.locator('.court .status')).toHaveText('Paused')
   await expect(page.locator('.tick-readout')).toHaveAttribute('aria-label', tick!)
 })
 
@@ -158,13 +181,50 @@ test('a hidden untouched demo resumes, while a deliberate pause stays paused', a
   await expect(page.locator('.tick-readout')).toHaveAttribute('aria-label', pausedTick!)
 })
 
-test('choosing players leaves the viewer in control of when their match starts', async ({ page }) => {
+test('changing either model during playback immediately plays the new matchup', async ({ page }) => {
   await openDemo(page)
+  // The interaction that opens a picker cancels demo rematches before selection.
+  // The new matchup must still play without a second click on Watch.
+  await page.locator('.score-player strong').first().click()
+  for (const [name, model] of [['Bottom controller', 'follow'], ['Top controller', 'quill']]) {
+    await page.getByRole('combobox', { name }).selectOption(model)
+    await expect(page.locator('.court .status')).toHaveText('Live')
+    await expect(page.getByRole('combobox', { name })).toHaveValue(model)
+    await expect(page.locator('.big-score')).toHaveAttribute('aria-label', 'Score 0 to 0')
+    await expect(page.locator('.tick-readout')).toHaveAttribute('aria-label', 'Simulation tick 0')
+    await page.clock.runFor(300)
+    await expect(page.locator('.tick-readout')).not.toHaveAttribute('aria-label', 'Simulation tick 0')
+  }
+})
+
+test('Watch models starts playback when switching modes or returning to a paused match', async ({ page }) => {
+  await openDemo(page)
+  await page.getByRole('button', { name: 'Take over & play', exact: true }).click()
+  await page.getByRole('button', { name: 'Watch models', exact: true }).click()
+  await expect(page.locator('.court .status')).toHaveText('Live')
+  await expect(page.locator('.serve-countdown')).toHaveCount(0)
+  await page.clock.runFor(300)
+  await expect(page.locator('.tick-readout')).not.toHaveAttribute('aria-label', 'Simulation tick 0')
+  await page.getByRole('button', { name: 'Pause', exact: true }).click()
+  await expect(page.locator('.court .status')).toHaveText('Paused')
+  const tick = await page.locator('.tick-readout').getAttribute('aria-label')
+  await page.getByRole('button', { name: 'Watch models', exact: true }).click()
+  await expect(page.locator('.court .status')).toHaveText('Live')
+  await page.clock.runFor(300)
+  await expect(page.locator('.tick-readout')).not.toHaveAttribute('aria-label', tick!)
+})
+
+test('changing a model after deliberately pausing waits for Watch models', async ({ page }) => {
+  await openDemo(page)
+  await page.getByRole('button', { name: 'Pause', exact: true }).click()
   await page.getByRole('combobox', { name: 'Bottom controller' }).selectOption('follow')
-  await page.clock.runFor(6000)
+  await page.clock.runFor(1000)
   await expect(page.locator('.court .status')).toHaveText('Ready')
   await expect(page.locator('.tick-readout')).toHaveAttribute('aria-label', 'Simulation tick 0')
-  await expect(page.getByRole('combobox', { name: 'Bottom controller' })).toHaveValue('follow')
+  await page.getByRole('button', { name: 'Watch models', exact: true }).click()
+  await expect(page.locator('.court .status')).toHaveText('Live')
+  await page.clock.runFor(300)
+  await expect(page.locator('.tick-readout')).not.toHaveAttribute('aria-label', 'Simulation tick 0')
 })
 
 test.describe('mobile invitation', () => {

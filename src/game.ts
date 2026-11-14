@@ -7,6 +7,9 @@ export const MAX_BALL_VX = 13
 export const MAX_BALL_VY = 9
 export const TICKS_PER_SECOND = 30
 export const RALLY_TICK_LIMIT = 1600
+export const PADDLE_SPEED = 2
+export const PADDLE_MIN_Y = 15
+export const PADDLE_MAX_Y = 145
 export type Event = 'serve' | 'return' | 'point' | 'draw' | null
 
 export interface Frame {
@@ -112,7 +115,7 @@ export function choice(scores: Scores) {
 
 export function advance(prior: Frame, scores: Pair<Scores>, loops?: LoopDetector): Frame {
   const paddles = prior.paddles.map((p, i) =>
-    clamp(p + 2 * (choice(scores[i]) - 1), 15, 145),
+    clamp(p + PADDLE_SPEED * (choice(scores[i]) - 1), PADDLE_MIN_Y, PADDLE_MAX_Y),
   ) as Pair<number>
   const f: Frame = {
     ...prior,

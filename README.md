@@ -32,7 +32,7 @@ We developed the handwritten models’ weight formulas with Codex and refined th
 ## Play and explore
 
 - **Jump in:** the arena opens with Quill playing Counter and keeps rematching while untouched. Choose **Take over & play** to start a fresh game from the bottom paddle, with a three-second countdown. Interacting stops automatic rematches. Watch links autoplay their selected models; human match links wait for you to start.
-- **Play:** choose an opponent and move with **A/D** or **←/→**. On a phone, hold either half of the court, slide across to change direction, and release to stop.
+- **Play:** choose an opponent, click the playing field, then move your mouse or trackpad left/right to steer without holding the button, even outside the field. Click outside the field or press **Esc** to release mouse control, or use **A/D** or **←/→** to take control. On a phone, hold either half of the court, slide across to change direction, and release to stop.
 - **Watch models:** put two networks head to head. Open **Brain** to inspect their live activations.
 - **Models:** inspect layer layouts, see linked submitters, download the exact ONNX files, or import your own locally.
 - **League:** compare published standings or run a local tournament with imported models.
