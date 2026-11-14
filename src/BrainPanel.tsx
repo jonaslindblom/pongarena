@@ -17,18 +17,17 @@ interface Snapshot {
 }
 const number = (value: number) => value !== 0 && Math.abs(value) < 0.001 ? value.toExponential(1) : value.toFixed(3)
 
-function Network({ snapshot }: { snapshot: Snapshot }) {
-  const { layers, values } = snapshot
+function Network({ layers, snapshot }: { layers: BrainLayer[]; snapshot: Snapshot | null }) {
   const x = (index: number) => 180 + index * 560 / (layers.length - 1)
   return (
     <div className="brain-graph-scroll" tabIndex={0} aria-label="Neural activation graph; scroll horizontally on narrow screens">
-      <svg className="brain-graph" viewBox="0 0 836 280" role="img" aria-label={`Real neuron activations at tick ${snapshot.tick}; selected move ${actionLabels[snapshot.chosen]}`}>
+      <svg className="brain-graph" viewBox="0 0 836 280" role="img" aria-label={snapshot ? `Real neuron activations at tick ${snapshot.tick}; selected move ${actionLabels[snapshot.chosen]}` : 'Neural network layout; awaiting decision'}>
         {layers.slice(1).map((_, i) => (
           <path key={i} d={`M ${x(i) + 42} 134 C ${x(i) + 62} 134, ${x(i + 1) - 62} 134, ${x(i + 1) - 42} 134`}
             className="brain-flow" />
         ))}
         {layers.map((layer, index) => {
-          const data = values[index]
+          const data = snapshot?.values[index] ?? Array<number>(layer.width).fill(0)
           const { peak, intensities } = activationLevels(data)
           const visible = Math.min(256, layer.width)
           const columns = layer.kind === 'hidden' ? Math.ceil(Math.sqrt(visible / 2)) : 1
@@ -42,7 +41,7 @@ function Network({ snapshot }: { snapshot: Snapshot }) {
               {data.slice(0, visible).map((value, neuron) => {
                 const cx = x(index) + (neuron % columns - (columns - 1) / 2) * spacing
                 const cy = 134 + (Math.floor(neuron / columns) - (rows - 1) / 2) * (layer.kind === 'hidden' ? Math.min(small ? 17 : 9, 156 / Math.max(1, rows - 1)) : layer.kind === 'output' ? 43 : 25)
-                const selected = layer.kind === 'output' && neuron === snapshot.chosen
+                const selected = layer.kind === 'output' && neuron === snapshot?.chosen
                 const label = layer.kind === 'input' ? observationLabels[neuron] : layer.kind === 'output' ? actionLabels[neuron] : `Neuron ${neuron + 1}`
                 return (
                   <g key={neuron}>
@@ -50,15 +49,15 @@ function Network({ snapshot }: { snapshot: Snapshot }) {
                     <circle cx={cx} cy={cy} r={layer.kind === 'hidden' ? small ? 5.3 : 3.1 : 5.5}
                       fill={value === 0 ? '#91a594' : value < 0 ? '#eead78' : '#bce78b'} fillOpacity={value === 0 ? 0.08 : 0.25 + 0.75 * intensities[neuron]}
                       stroke={value === 0 ? '#65816e' : 'none'} strokeWidth={0.6}>
-                      <title>{label}: {value.toPrecision(7)}{layer.kind === 'input' ? `. ${observationDescriptions[neuron]}` : ''}</title>
+                      <title>{label}: {snapshot ? value.toPrecision(7) : 'Awaiting decision'}{layer.kind === 'input' ? `. ${observationDescriptions[neuron]}` : ''}</title>
                     </circle>
                     {layer.kind === 'input' && <text x={cx - 12} y={cy + 3} textAnchor="end" className="brain-node-label">{label}</text>}
-                    {layer.kind === 'output' && <text x={cx + 18} y={cy + 4} className={'brain-node-label' + (selected ? ' chosen' : '')}>{label} {number(value)}</text>}
+                    {layer.kind === 'output' && <text x={cx + 18} y={cy + 4} className={'brain-node-label' + (selected ? ' chosen' : '')}>{label} {snapshot ? number(value) : '—'}</text>}
                   </g>
                 )
               })}
-              {layer.kind === 'hidden' && <text x={x(index)} y="235" textAnchor="middle" className="brain-active">{data.filter((value) => value !== 0).length} / {layer.width} active</text>}
-              <text x={x(index)} y="255" textAnchor="middle" className="brain-range">max |value| {number(peak)}</text>
+              {layer.kind === 'hidden' && <text x={x(index)} y="235" textAnchor="middle" className="brain-active">{snapshot ? `${data.filter((value) => value !== 0).length} / ${layer.width} active` : 'Awaiting decision'}</text>}
+              <text x={x(index)} y="255" textAnchor="middle" className="brain-range">max |value| {snapshot ? number(peak) : '—'}</text>
             </g>
           )
         })}
@@ -72,6 +71,7 @@ function BrainView({ model, side, frame, previous, start, rules }: {
 }) {
   const latest = useRef({ frame, previous, start })
   latest.current = { frame, previous, start }
+  const [layers, setLayers] = useState<BrainLayer[]>([])
   const [snapshot, setSnapshot] = useState<Snapshot | null>(null)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(true)
@@ -85,6 +85,7 @@ function BrainView({ model, side, frame, previous, start, rules }: {
       try {
         if (!model.modelBytes) throw new Error('Original model bytes are unavailable for inspection.')
         const graph = createBrainGraph(model.modelBytes)
+        setLayers(graph.layers)
         session = await ort.InferenceSession.create(graph.bytes, { executionProviders: ['wasm'] })
         if (disposed) { await session.release(); return }
         setLoading(false)
@@ -135,21 +136,20 @@ function BrainView({ model, side, frame, previous, start, rules }: {
   return (
     <div className="brain-view">
       <div className="brain-source"><span>{model.name}</span><span>{snapshot ? `DECISION TICK ${snapshot.tick}` : loading ? 'OPENING MODEL' : 'AWAITING DECISION'}</span></div>
-      {error ? <p className="brain-message" role="status">{error}</p> : snapshot ? <Network snapshot={snapshot} /> : <p className="brain-message">{loading ? 'Reading the network…' : 'Start the match to see real neuron activations.'}</p>}
+      {error ? <p className="brain-message" role="status">{error}</p> : layers.length > 0 ? <Network layers={layers} snapshot={snapshot} /> : <p className="brain-message">Reading the network…</p>}
       <div className="brain-legend"><span><i /> Positive</span><span><i /> Negative</span><span>Dark = zero</span></div>
       <p className="brain-caption">{observationValueHelp}</p>
-      <p className="brain-caption">Real model values · sampled up to 4 times/s. Brightness is scaled within each layer and emphasizes small values; hover a node for its value. Active counts show nonzero values; zero is normal for ReLU. Lines show layer flow, not connection strengths.{snapshot?.layers.some((layer) => layer.width > 256) ? ' First 256 neurons per layer shown.' : ''}</p>
+      <p className="brain-caption">Real model values · sampled up to 4 times/s. Brightness is scaled within each layer and emphasizes small values; hover a node for its value. Active counts show nonzero values; zero is normal for ReLU. Lines show layer flow, not connection strengths.{layers.some((layer) => layer.width > 256) ? ' First 256 neurons per layer shown.' : ''}</p>
     </div>
   )
 }
 
 export function BrainPanel({ m, controllers, bottom }: { m: Match; controllers: Pair<Controller | undefined>; bottom: Side }) {
   const [open, setOpen] = useState(true)
-  const [side, setSide] = useState<Side>(controllers[0]?.type === 'human' ? 1 : 0)
+  const [side, setSide] = useState<Side>(topSide(bottom))
   useEffect(() => {
-    if (controllers[0]?.type === 'human') setSide(1)
-    else if (controllers[1]?.type === 'human') setSide(0)
-  }, [controllers[0]?.type, controllers[1]?.type])
+    setSide(topSide(bottom))
+  }, [bottom])
   const model = controllers[side]
   return (
     <section className={'panel brain-panel' + (open ? ' is-open' : '')} aria-label="Model brain">

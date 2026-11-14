@@ -48,7 +48,6 @@ for (const match of [
     const topBrain = brain.getByRole('button', { name: 'Show brain for player 1', exact: true })
     const bottomBrain = brain.getByRole('button', { name: 'Show brain for player 2', exact: true })
     await expect(brain.locator('.segmented button')).toHaveText(['P1 · Top', 'P2 · Bottom'])
-    await topBrain.click()
     await expect(topBrain).toHaveAttribute('aria-pressed', 'true')
     await expect(brain.locator('.brain-source span').first()).toHaveText(match.top)
     await bottomBrain.click()
@@ -75,3 +74,16 @@ for (const match of [
     await dialog.getByRole('button', { name: 'Close import', exact: true }).click()
   })
 }
+
+test('the brain keeps its layout while waiting for the first decision', async ({ page }) => {
+  await page.goto('/?mode=watch&model=counter&opponent=keyboard')
+  const brain = page.getByRole('region', { name: 'Model brain', exact: true })
+  const graph = brain.getByRole('img', { name: 'Neural network layout; awaiting decision', exact: true })
+  await expect(graph).toBeVisible({ timeout: 30_000 })
+  await expect(brain.getByRole('button', { name: 'Show brain for player 1', exact: true }))
+    .toHaveAttribute('aria-pressed', 'true')
+  expect(await graph.locator('circle').count()).toBeGreaterThan(0)
+  await expect(graph.locator('circle:not([fill-opacity="0.08"])')).toHaveCount(0)
+  await expect(graph.locator('.brain-selected')).toHaveCount(0)
+  await expect(brain.getByText('Start the match to see real neuron activations.')).toHaveCount(0)
+})
