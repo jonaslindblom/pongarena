@@ -150,8 +150,8 @@ export function OneShotExplainer({ model, onPlay }: { model?: Controller; onPlay
           </tr>)}</tbody>
         </table>
       </div>
-      <p>OneShot lost all 64 sets against Large, so it earned 0 set points. It still won <strong>{oneShotRalliesAgainstLarge} of 640 individual rallies</strong>, the most of the four attempts. That’s why we picked it for the catalog.</p>
-      <p>OneShot won one set and drew one against Quill. Both replies to the rules plus brief scored higher against Attack and lower against Small than either rules-only reply.</p>
+      <p>OneShot lost all 64 sets against Large, so it earned 0 set points. It still won <strong>{oneShotRalliesAgainstLarge} of 640 individual rallies</strong>.</p>
+      <p>OneShot won one set and drew one against Quill. Both replies to the rules plus brief scored higher against Attack than either rules-only reply. Two replies per prompt do not establish how reliably the brief improves a new controller.</p>
     </section>
     <section className="oneshot-section" aria-labelledby="oneshot-prompts-title">
       <span className="section-code">THE INPUTS</span>

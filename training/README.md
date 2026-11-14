@@ -16,24 +16,18 @@ Large emphasizes positions near paddle contact. [PPO](https://arxiv.org/abs/1707
 then rewards rally wins against scripts and frozen snapshots of the learned
 policy. Only the actor network is exported.
 
-`train.py` selects the checkpoint with the best mean point margin against three
-scripts on 32 development seeds. Training, selection and final evaluation use
-disjoint seed ranges. The [model contract](../docs/RULES.md#observations-and-actions)
-defines the six inputs and three actions.
+Training and evaluation use the current `pong-v3` rules. `train.py` selects the
+checkpoint with the best mean point margin against three scripts on 32 development
+seeds. Training, selection and final evaluation use disjoint seed ranges.
+The [model contract](../docs/RULES.md#observations-and-actions) defines the six inputs
+and three actions.
 
-## Reproduce the shipped models
-
-The shipped weights use the original `pong` rules; the current checkout trains
-with `pong-v3`. Use this [pinned training revision](https://github.com/jonaslindblom/pongarena/commit/e006aa9ac64afe8e866c61a433077fb0561010d2)
-to reproduce the shipped weights and their recorded results. It contains the
-matching simulator, recipes, dependencies and reference model files.
+## Reproduce the shipped weights
 
 From the repository root:
 
 ```sh
-git fetch origin e006aa9ac64afe8e866c61a433077fb0561010d2
-git worktree add --detach ../pongarena-training-baseline e006aa9ac64afe8e866c61a433077fb0561010d2
-cd ../pongarena-training-baseline/training
+cd training
 python3.12 -m venv .venv
 .venv/bin/pip install -r requirements.txt
 .venv/bin/python check.py --models ../public/models
@@ -41,16 +35,19 @@ python3.12 -m venv .venv
 .venv/bin/python train.py --size large --out runs/large
 cmp runs/small/model.onnx ../public/models/small.onnx
 cmp runs/large/model.onnx ../public/models/large.onnx
+.venv/bin/python check.py --run runs/small
+.venv/bin/python check.py --run runs/large
 ```
 
 Use fresh output directories. Each run saves its selected ONNX model, checkpoint,
-configuration and metrics. `cmp` verifies byte-for-byte reconstruction. The
-reference platform and hashes are in [results.json](results.json); floating-point
-differences may affect training on other platforms.
+configuration and metrics. `cmp` verifies byte-for-byte reconstruction;
+`check.py --run` verifies PyTorch/ONNX agreement. The reference platform and hashes are in
+[results.json](results.json); floating-point differences may affect training on
+other platforms. Python 3.12 and a CPU are enough.
 
 ## Reproduce the recorded scores
 
-In the same pinned checkout, evaluate the shipped files on the saved final seeds:
+From `training/`, evaluate the shipped files on the saved final seeds:
 
 ```sh
 .venv/bin/python evaluate.py ../public/models/small.onnx --opponent ../public/models/quill.onnx --output runs/small-v-quill.json
@@ -60,33 +57,28 @@ In the same pinned checkout, evaluate the shipped files on the saved final seeds
 
 | Model | Parameters | Rally score vs Quill (95% interval) |
 | --- | ---: | ---: |
-| Small | 235 | 24.4% (22.4–26.4%) |
-| Large | 50,819 | 60.5% (58.2–62.9%) |
+| Small | 235 | 23.9% (21.7–26.1%) |
+| Large | 50,819 | 74.8% (72.3–77.2%) |
 
-Large scores **88.1% against Small** (86.3–89.8%). Each comparison uses 128 seeds,
-both sides and five rallies per side: 1,280 rallies per opponent. Draws count as
-half a point. Intervals resample whole paired serve sets and describe seed-set
-uncertainty, not variation between training runs.
+Large scores **83.0% (80.7–85.3%) against Small**. Each comparison uses 128
+seeds, both sides and five rallies per side: 1,280 rallies per opponent. The final
+seeds were drawn after the model weights were frozen and are saved in
+[results.json](results.json). Draws count as half a point. Intervals resample whole
+paired serve sets and describe seed-set uncertainty, not variation between
+training runs.
 
-These scores use `pong`. For the current `pong-v3` comparison, see the
-[reference league](../public/league.md); scores across rule versions are not
-directly comparable.
+The [published league](https://jonaslindblom.github.io/pongarena/#league) compares
+all models on its own shared serves. Compare scores within the same opponent field
+and seed set.
 
-## Train with current rules
+## Train a new model
 
-From `training/` in the current checkout:
+Use `--seed` to change the training initialization, or edit a recipe. Add `--smoke`
+for a quick pipeline check. After freezing new weights, evaluate them on fresh
+serves by choosing a new RNG seed:
 
 ```sh
-python3.12 -m venv .venv
-.venv/bin/pip install -r requirements.txt
-.venv/bin/python check.py
-.venv/bin/python train.py --size small --out runs/small
-.venv/bin/python train.py --size large --out runs/large
-.venv/bin/python check.py --run runs/large
 .venv/bin/python evaluate.py runs/large/model.onnx --seed 42 --output runs/large/fresh.json
 ```
 
-Python 3.12 and a CPU are enough. Add `--smoke` to a training command for a quick
-pipeline check, or `--seed` to use a different training initialization. Evaluate
-new models on fresh seeds after freezing their weights. `check.py --run` verifies
-PyTorch/ONNX agreement; it does not compare new training against the shipped model.
+Keep the seed and output record with the model so others can replay the comparison.

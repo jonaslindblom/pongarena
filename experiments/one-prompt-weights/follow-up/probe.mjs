@@ -1,4 +1,6 @@
 import { readFile } from 'node:fs/promises'
+import { createHash } from 'node:crypto'
+import { basename } from 'node:path'
 import * as ort from 'onnxruntime-web/wasm'
 import { choice, observation, serve } from '../../../src/game.ts'
 
@@ -21,7 +23,8 @@ for (const x of [30, 90, 165, 240, 315]) {
 
 const results = []
 for (const file of files) {
-  const session = await ort.InferenceSession.create(await readFile(file), { executionProviders: ['wasm'] })
+  const bytes = await readFile(file)
+  const session = await ort.InferenceSession.create(bytes, { executionProviders: ['wasm'] })
   let velocityFlips = 0
   let opponentFlips = 0
   try {
@@ -38,6 +41,7 @@ for (const file of files) {
   } finally {
     await session.release()
   }
-  results.push({ file, pairsPerInput: frames.length, velocityFlips, opponentFlips })
+  results.push({ id: basename(file, '.onnx'), sha256: createHash('sha256').update(bytes).digest('hex'),
+    pairsPerInput: frames.length, velocityFlips, opponentFlips })
 }
 console.log(JSON.stringify(results, null, 2))

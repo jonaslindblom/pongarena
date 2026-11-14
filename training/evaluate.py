@@ -14,7 +14,7 @@ DEVELOPMENT_SEEDS = [1100000149, 1200000311, 1300000487, 1400000621,
 DEVELOPMENT_SEEDS += [1_000_000_000 + int(x) for x in
                       np.random.default_rng(901837).choice(1_000_000_000, 24, replace=False)]
 FINAL_SEEDS = [2_510_000_000 + int(x) for x in
-               np.random.default_rng(612907).choice(90_000_000, 128, replace=False)]
+               np.random.default_rng(140129358).choice(90_000_000, 128, replace=False)]
 INTERVAL_METHOD = ('95% percentile bootstrap of mean rally score; 4096 resamples of serve seeds, '
                    'keeping both sides and all five rallies together. Measures serve-set uncertainty, '
                    'not variation between training runs.')
