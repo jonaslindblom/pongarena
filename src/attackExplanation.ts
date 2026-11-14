@@ -2,6 +2,7 @@ import pb from 'onnx-proto'
 import { createBrainGraph, type BrainLayer } from './brain'
 import { sha256 } from './competition'
 import { choice, type Frame, type Scores } from './game'
+import { actionLabels, observationLabels as inputRoles } from './observationLabels'
 import { validateArenaModel } from './validate'
 
 export type AttackModelId = 'attack' | 'counter'
@@ -20,15 +21,14 @@ export const ATTACK_SCENARIOS: {
     frame: { x: 16, y: 80, vx: -13, vy: 0, paddles: [80, 80] } },
 ]
 
-const inputRoles = ['Ball depth', 'Ball position', 'Depth velocity', 'Sideways velocity', 'Paddle position', 'Opponent position']
-const outputRoles = ['Left score', 'Stay score', 'Right score']
+const outputRoles = actionLabels.map(action => `${action} score`)
 const wallRoles = ['Target error carrier', 'Right wall hinge', 'Left wall hinge']
 const models = {
   attack: {
     hash: '646d1a1365e3e307bd4431fc73930c5efa19de16b7cc22bbb9200608c2b720f8',
     widths: [6, 6, 3, 3],
     roles: [
-      ['Positive forecast hinge', 'Negative forecast hinge', 'Signed height carrier', 'Paddle carrier', 'Opponent ramp', 'Opponent cap hinge'],
+      ['Positive forecast hinge', 'Negative forecast hinge', 'Across-court forecast carrier', 'Paddle carrier', 'Opponent ramp', 'Opponent cap hinge'],
       wallRoles, outputRoles,
     ],
   },
@@ -36,7 +36,7 @@ const models = {
     hash: '5f7a480b98c982cf403f2f8849fac1e5e02503ff12e6b0b5d1e377856534e35c',
     widths: [6, 6, 4, 3, 3],
     roles: [
-      ['Positive forecast hinge', 'Negative forecast hinge', 'Signed height carrier', 'Paddle carrier', 'Outgoing detector', 'Opponent ramp'],
+      ['Positive forecast hinge', 'Negative forecast hinge', 'Across-court forecast carrier', 'Paddle carrier', 'Outgoing detector', 'Opponent ramp'],
       ['Gated forecast carrier', 'Paddle and aiming carrier', 'Incoming gate', 'Opponent cap and recovery'],
       wallRoles, outputRoles,
     ],

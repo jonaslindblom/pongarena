@@ -45,7 +45,7 @@ def physics():
             np.testing.assert_array_equal(observation(frame, side), case['observations'][side])
             np.testing.assert_array_equal(arena.obs(side)[0], case['observations'][side])
     # Independent scalar/vector one-step comparisons include both walls and
-    # contact edges at every allowed horizontal speed and vertical velocity.
+    # contact edges at every allowed along-court speed and across-court velocity.
     rng = np.random.default_rng(8019)
     frames = []
     for _ in range(2048):

@@ -12,29 +12,35 @@ used. Every decision runs through the ordinary dense ONNX layers.
 
 ## How it plays
 
+The formulas below use [own-paddle-relative game coordinates](RULES.md#coordinates-and-player-identity):
+X runs along the court, Y across it, and raw velocity is in court units per tick.
 The first two neurons compute `ReLU(d + v)` and `ReLU(d − v)`, where
-`d = (ball_x − 15) / 180` is distance to our paddle's contact plane and
+`d = (ball_x − 15) / 180` is the scaled distance to our paddle's contact plane and
 `v = ball_vy / 6`. Their difference minus `v` equals
 `sign(v) · min(d, |v|)` for legal distances. This produces the unfolded
-forecast, expressed here in court units:
+forecast, expressed here in raw court units with `distance = ball_x − 15`:
 
 ```text
-ball_y + sign(ball_vy) · min(0.4 · distance, 12 · |ball_vy|) + 0.75 · ball_vy
+forecastY = ball_y + sign(ball_vy) · min(0.4 · distance, 12 · |ball_vy|) + 0.75 · ball_vy
 ```
 
-Two more neurons carry ball height and our paddle position. The final pair
+Two more neurons carry the ball's across-court position and our paddle position. The final pair
 forms `s = clip(80 · opponent_input + 4 · ball_y_input, −1, 1)`. It selects
 the corner away from the opponent. When the opponent is almost centered,
 the ball-position term favors a cross-court return instead of a flat shot.
+Both `_input` values are centered, normalized across-court positions.
 
-The second layer reflects the forecast at the walls, at normalized heights
-`±0.95`, and compares our paddle with this offset target:
+The network uses the centered, normalized forecast
+`forecastYNorm = (forecastY − 80) / 80`. The second layer folds it at the walls,
+at `±0.95`, to obtain `reflectedYNorm`, then compares our normalized paddle
+position with this offset target:
 
 ```text
-target = (83 / 78) · reflected_forecast + (19 / 312) · s
+targetYNorm = (83 / 78) · reflectedYNorm + (19 / 312) · s
 ```
 
-The aiming coefficients come from the game's return law: at horizontal speed
+In raw court units, the target is `80 + 80 · targetYNorm`.
+The aiming coefficients come from the game's return law: at along-court speed
 13, a return reaches the other paddle after 26 ticks, and each unit of
 contact offset shifts its unfolded landing by `26 · 9 / 15 = 78 / 5` units.
 Moving slightly off the predicted landing therefore sends the ball toward
@@ -74,7 +80,7 @@ and shot opportunities differ. They describe placement, not guaranteed winners.
 
 Attack still loses to Quill and Large overall. Its bounded forecast is an
 approximation, it folds only one predicted wall bounce, and it retains
-Predict's lack of horizontal-speed awareness and center recovery while the
+Predict's lack of along-court speed awareness and center recovery while the
 ball travels away. The results measure these bots and serves, not human strength.
 
 ## Reproduce

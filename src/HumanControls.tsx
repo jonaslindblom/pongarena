@@ -19,7 +19,7 @@ export function useCourtPointerControls(m: Match, humanSides: Pair<boolean>, fie
   const [keyboardUsed, setKeyboardUsed] = useState(false)
   const [directions, setDirections] = useState<Pair<HumanAction | null>>([null, null])
   const enabled = m.playing && !endedMatch(m.frame)
-  const left = humanSides[0], right = humanSides[1]
+  const human0 = humanSides[0], human1 = humanSides[1]
 
   function releaseMouse() {
     if (mouseSide.current === null) return
@@ -44,10 +44,10 @@ export function useCourtPointerControls(m: Match, humanSides: Pair<boolean>, fie
       if (!enabled ||
         (event.target as Element).closest('input, select, textarea, dialog, [contenteditable="true"]')) return
       const held = new Set([event.code])
-      if ((left && humanKeyAction(held, 0, left && right) !== null) ||
-        (right && humanKeyAction(held, 1, left && right) !== null)) setKeyboardUsed(true)
+      if ((human0 && humanKeyAction(held, 0, human0 && human1) !== null) ||
+        (human1 && humanKeyAction(held, 1, human0 && human1) !== null)) setKeyboardUsed(true)
       if (mouseSide.current !== null &&
-        (event.key === 'Escape' || humanKeyAction(held, mouseSide.current, left && right) !== null))
+        (event.key === 'Escape' || humanKeyAction(held, mouseSide.current, human0 && human1) !== null))
         releaseMouse()
     }
     function moveMouse(event: PointerEvent) {
@@ -74,7 +74,7 @@ export function useCourtPointerControls(m: Match, humanSides: Pair<boolean>, fie
       window.removeEventListener('pointercancel', cancelMouse)
       document.removeEventListener('visibilitychange', hidden)
     }
-  }, [enabled, left, right, m.seed, m.history])
+  }, [enabled, human0, human1, m.seed, m.history])
 
   function publish(side: Side) {
     const action = heldHumanAction(pointers.current.values(), side)
@@ -99,7 +99,7 @@ export function useCourtPointerControls(m: Match, humanSides: Pair<boolean>, fie
     latest.current.setHumanTarget(mouseSide.current, (clientX - bounds.left) / bounds.width * 160)
   }
   return {
-    active: enabled && (left || right),
+    active: enabled && (human0 || human1),
     directions,
     mouseActive,
     showMouseHint: !keyboardUsed,

@@ -10,8 +10,8 @@ from onnx import helper, numpy_helper, TensorProto
 
 def weights():
     """Track the ball's current position, with a 1.5-unit movement deadband."""
-    # Observation positions are centered and divided by 80. Simulator Y is
-    # horizontal on the displayed court, so positive error means move right.
+    # These ball and paddle inputs are across-court positions, centered at 80
+    # and divided by 80. Positive ball-minus-paddle error means move right.
     w0 = np.array([[0, 1, 0, 0, -1, 0]], dtype=np.float32)
     b0 = np.zeros(1, np.float32)
     w1 = np.array([[-1], [0], [1]], dtype=np.float32)

@@ -4,7 +4,7 @@ This follow-up tests whether a tactical plan helps GPT-6 Astra write stronger Po
 
 The [64 paired serve seeds](seeds.json) were fixed before the calls and have no overlap with the first experiment, the reference league, or the saved Attack and Counter evaluations. Each seed is played twice with sides swapped. The paired score is (wins + half of draws) / 64. Each candidate faces all seven bundled opponents. The prior two 163-parameter Astra controllers and Quill were replayed on the fresh seeds for context.
 
-The [input probes](probe.mjs) hold other inputs fixed in 225 synthetic observations. They measure how often the chosen move changes when x-velocity flips from −8 to +8 or when opponent paddle position moves from 25 to 135 on an incoming ball.
+The [input probes](probe.mjs) hold other inputs fixed in 225 synthetic observations. They measure how often the chosen move changes when the ball's along-court velocity flips from −8 to +8 court units per tick or when opponent paddle position moves from 25 to 135 court units on an incoming ball. These raw values are converted to the [normalized model inputs](../../../docs/RULES.md#observations-and-actions) before inference; the saved prompts and results retain their original notation.
 
 ## Results
 

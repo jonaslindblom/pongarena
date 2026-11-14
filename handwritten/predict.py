@@ -10,7 +10,9 @@ from onnx import TensorProto, helper, numpy_helper
 
 def weights():
     """Return three dense layers implementing a compact forecast and wall fold."""
-    # d is the horizontal distance to our contact plane, divided by 180.
+    # d = ball_x_input + 11/12 is the along-court distance to our contact plane,
+    # divided by 180. Input suffixes denote normalized model observations;
+    # ball_vy_input is the across-court velocity in court units per tick / 6.
     # q(t) = |t| + 3*ReLU(t-1) approximates a square. The difference
     # q(d+a)-q(d-a) approximates 4*d*a, with a=(2/3)*ball_vy_input.
     product_scale = (6 * 180 / (13 * 80)) / (4 * (2 / 3))
@@ -22,15 +24,16 @@ def weights():
             b1[row] = 11 / 12 - knot
     w1[4, 1] = 1
     w1[4, 3] = 6 * (8 / 13) / 80 - 2 * (2 / 3) * product_scale
-    b1[4] = 6  # Carry signed height through ReLU with a positive offset.
+    b1[4] = 6  # Carry signed across-court forecast terms through ReLU.
     w1[5, 4], b1[5] = 1, 1
     forecast = np.zeros(6, np.float32)
     forecast[:2] = np.asarray([2, 3]) * product_scale
     forecast[2:4] = -forecast[:2]
     forecast[4] = 1
 
-    # z = forecast dot hidden_0 - 6 is the unfolded height prediction.
-    # Carry z-own+6 and the two hinges for reflection at y_input=+/-0.95.
+    # z = forecast dot hidden_0 - 6 is the unfolded across-court prediction,
+    # centered at 80 and divided by 80. Carry z-own_input+6 and the two hinges
+    # for reflection at normalized across-court positions +/-0.95.
     w2 = np.stack([forecast, forecast, -forecast])
     w2[0, 5] = -1
     b2 = np.array([1, -6 - .95, 6 - .95], np.float32)

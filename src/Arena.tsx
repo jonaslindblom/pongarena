@@ -29,7 +29,7 @@ import { interpolate, progress } from './presentation'
 import { ControllerBadge, controllerOptionLabel } from './ControllerBadge'
 import { matchShortcut } from './matchShortcuts'
 import { DIVISIONS, smallestDivision } from './competition'
-import { bottomSide, playerNumber } from './courtPlayers'
+import { bottomSide, playerNumber, topSide } from './courtPlayers'
 
 export const pad = (n: number) => String(n).padStart(2, '0')
 export function ModelIcon({ id, size = 20 }: { id: string; size?: number }) {
@@ -56,6 +56,12 @@ function Court({ m, names, ready, humanSides, bottom, mode, demo, onModeChange }
   onModeChange?: (mode: Mode) => void
 }) {
   const f = m.frame
+  // Screen horizontal = game Y. Screen vertical = 360 − game X when side 0
+  // is at the bottom, or game X when side 1 is at the bottom.
+  const screenTransform = bottom === 0 ? 'matrix(0 -1 1 0 0 360)' : 'matrix(0 1 1 0 0 0)'
+  const scoreLabel = 'Score: ' + ([0, 1] as const).map((side) =>
+    `player ${playerNumber(side, bottom)}, ${side === bottom ? 'bottom' : 'top'}, ${names[side]}: ${f.points[side]}`,
+  ).join('; ')
   const field = useRef<SVGSVGElement>(null)
   const { active, directions, mouseActive, showMouseHint, mouseInput, ...input } = useCourtPointerControls(m, humanSides, field)
   const movementHelp = useId()
@@ -70,7 +76,7 @@ function Court({ m, names, ready, humanSides, bottom, mode, demo, onModeChange }
     function resize() {
       const { width, height } = svg.getBoundingClientRect()
       // The court stretches independently on each axis. Compensate in the
-      // rotated ball's local Y axis so its screen-space diameter stays equal.
+      // ball's game Y axis so its screen-space diameter stays equal.
       if (width && height) svg.style.setProperty('--ball-y-scale', String((height / 360) / (width / 160)))
     }
     const observer = new ResizeObserver(resize)
@@ -256,12 +262,12 @@ function Court({ m, names, ready, humanSides, bottom, mode, demo, onModeChange }
       <div className="scoreboard">
         <div className="score-player">
           <small>
-            <i className="p1-dot" />
+            <i className="side-0-dot" />
             P{playerNumber(0, bottom)}{bottom === 0 ? ' · BOTTOM' : ' · TOP'}
           </small>
           <strong>{names[0]}</strong>
         </div>
-        <div className="big-score" aria-label={'Score ' + f.points.join(' to ')}>
+        <div className="big-score" aria-label={scoreLabel}>
           <b>{pad(f.points[0])}</b>
           <span>:</span>
           <b>{pad(f.points[1])}</b>
@@ -269,7 +275,7 @@ function Court({ m, names, ready, humanSides, bottom, mode, demo, onModeChange }
         <div className="score-player right">
           <small>
             P{playerNumber(1, bottom)}{bottom === 1 ? ' · BOTTOM' : ' · TOP'}
-            <i className="p2-dot" />
+            <i className="side-1-dot" />
           </small>
           <strong>{names[1]}</strong>
         </div>
@@ -295,7 +301,7 @@ function Court({ m, names, ready, humanSides, bottom, mode, demo, onModeChange }
                 <feGaussianBlur stdDeviation="2" />
               </filter>
             </defs>
-            <g transform={bottom === 0 ? 'matrix(0 -1 1 0 0 360)' : 'matrix(0 1 1 0 0 0)'}>
+            <g transform={screenTransform}>
               <rect width="360" height="160" fill="url(#grid)" />
               <rect
                 x=".4"
@@ -321,14 +327,14 @@ function Court({ m, names, ready, humanSides, bottom, mode, demo, onModeChange }
                 stroke="#b4c7b7"
                 strokeWidth="1"
               />
-              <rect x="6" y="68" width="5" height="24" rx="1.2" className="paddle left" />
+              <rect x="6" y="68" width="5" height="24" rx="1.2" className="paddle side-0" />
               <rect
                 x="349"
                 y="68"
                 width="5"
                 height="24"
                 rx="1.2"
-                className="paddle right"
+                className="paddle side-1"
               />
               {Array.from({ length: 7 }, (_, i) => (
                 <circle
@@ -355,7 +361,7 @@ function Court({ m, names, ready, humanSides, bottom, mode, demo, onModeChange }
           <div className="match-over-card">
             <p className="match-over-label">GAME OVER</p>
             <h2>{result}</h2>
-            <p className="match-over-score">{f.points[0]} – {f.points[1]}</p>
+            <p className="match-over-score" aria-label={scoreLabel}>{f.points[0]} – {f.points[1]}</p>
             <button className="play-btn" onClick={m.play} aria-keyshortcuts="P">
               <Play size={18} fill="currentColor" /> {mode === 'play' ? 'Play again' : 'Watch again'}
             </button>
@@ -423,7 +429,7 @@ export function Arena({ m, models, ids, pick, swap, ready, mode = 'watch', demo 
             </h2>
           </div>
           <div className="picker-stack">
-            {([bottom === 0 ? 1 : 0, bottom] as const).filter((i) => mode === 'watch' || i !== bottom).map((i) => (
+            {([topSide(bottom), bottom] as const).filter((i) => mode === 'watch' || i !== bottom).map((i) => (
               <div key={i}>
                 {mode === 'watch' && i === bottom && (
                   <div className="swap-row">
@@ -456,6 +462,7 @@ export function Arena({ m, models, ids, pick, swap, ready, mode = 'watch', demo 
                     value={ids[i]}
                     onChange={(e) => pick(i, e.target.value)}
                   >
+                    {ids[i] === 'keyboard' && <option value="keyboard" disabled>Human</option>}
                     {groups.map((group) => (
                       <optgroup key={group.name} label={group.name}>
                         {group.models.map((c) => (

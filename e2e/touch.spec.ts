@@ -63,7 +63,7 @@ test('holding and dragging steers without selecting text or blocking native cont
   await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [point] })
   await expect(page.locator('.touch-zone.left')).toHaveAttribute('data-held', 'true')
   await expect(page.locator('html')).toHaveAttribute('data-last-touch-prevented', 'true')
-  await expect.poll(async () => Number(await page.locator('.paddle.left').getAttribute('y'))).toBeLessThan(55)
+  await expect.poll(async () => Number(await page.locator('.paddle.side-0').getAttribute('y'))).toBeLessThan(55)
   await page.waitForTimeout(700)
   expect(await page.evaluate(() => getSelection()?.toString())).toBe('')
   await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ ...point, x: court!.x + court!.width - 20 }] })

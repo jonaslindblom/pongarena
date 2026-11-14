@@ -2,22 +2,22 @@ import { ArrowLeft, ArrowRight, Download, Play } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { choice, observation, serve, type Scores } from './game'
 import { infer, loadModel, type Controller } from './models'
+import { actionLabels as moves } from './observationLabels'
 import { oneShotPrompt, oneShotRalliesAgainstLarge, oneShotResults, oneShotUrl, rulesOnlyPrompt, rulesOnlyUrl } from './oneShotExperiment'
 import './OneShotExplainer.css'
 
-const moves = ['Left', 'Stay', 'Right'] as const
-const sides = ['left', 'right'] as const
+const opponentPlacements = ['left', 'right'] as const
 const opponents = [38, 122] as const
 const shot = { x: 80, y: 99, vx: -5, vy: 0.95, paddle: 118 }
 const field = ['Follow', 'Small', 'Predict', 'Attack', 'Counter', 'Quill', 'Large']
 
 type ShotSample = { oneShot: Scores; rulesOnly: Scores }
 
-function Court({ side }: { side: 0 | 1 }) {
-  const ballX = 20 + shot.y
-  const ballY = 380 - shot.x
+function Court({ opponentPlacement }: { opponentPlacement: 0 | 1 }) {
+  const screenBallX = 20 + shot.y
+  const screenBallY = 380 - shot.x
   return <svg className="attack-court" viewBox="0 0 200 400" role="img"
-    aria-label={`Frozen incoming shot with the opponent on the ${sides[side]}.`}>
+    aria-label={`Frozen incoming shot with the opponent on the ${opponentPlacements[opponentPlacement]}.`}>
     <defs>
       <marker id="oneshot-ball-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto">
         <path d="M 0 0 L 8 4 L 0 8" fill="none" className="attack-velocity" />
@@ -27,10 +27,10 @@ function Court({ side }: { side: 0 | 1 }) {
     <rect className="attack-boundary" x="20" y="20" width="160" height="360" rx="4" />
     <line className="attack-midline" x1="20" x2="180" y1="200" y2="200" />
     <line className="attack-centerline" x1="100" x2="100" y1="25" y2="370" />
-    <rect className="attack-opponent" x={20 + opponents[side] - 15} y="33" width="30" height="5" rx="1.5" />
-    <line className="attack-velocity" x1={ballX} y1={ballY} x2={ballX + shot.vy * 5} y2={ballY - shot.vx * 5}
+    <rect className="attack-opponent" x={20 + opponents[opponentPlacement] - 15} y="33" width="30" height="5" rx="1.5" />
+    <line className="attack-velocity" x1={screenBallX} y1={screenBallY} x2={screenBallX + shot.vy * 5} y2={screenBallY - shot.vx * 5}
       markerEnd="url(#oneshot-ball-arrow)" />
-    <circle className="attack-ball" cx={ballX} cy={ballY} r="4" />
+    <circle className="attack-ball" cx={screenBallX} cy={screenBallY} r="4" />
     <rect className="attack-own-paddle" x={20 + shot.paddle - 15} y="363" width="30" height="5" rx="1.5" />
     <text className="attack-court-label" x="100" y="397" textAnchor="middle">YOUR PADDLE</text>
   </svg>
@@ -54,7 +54,7 @@ function Decision({ name, prompt, scores }: { name: string; prompt: string; scor
 }
 
 export function OneShotExplainer({ model, onPlay }: { model?: Controller; onPlay: () => void }) {
-  const [side, setSide] = useState<0 | 1>(0)
+  const [opponentPlacement, setOpponentPlacement] = useState<0 | 1>(0)
   const [samples, setSamples] = useState<ShotSample[]>([])
   const [error, setError] = useState('')
 
@@ -90,7 +90,7 @@ export function OneShotExplainer({ model, onPlay }: { model?: Controller; onPlay
     return () => request.abort()
   }, [model])
 
-  const sample = samples[side]
+  const sample = samples[opponentPlacement]
   return <div className="weights-lab">
     <header className="weights-heading">
       <div>
@@ -107,13 +107,13 @@ export function OneShotExplainer({ model, onPlay }: { model?: Controller; onPlay
       </div>
       <div className="behavior-controls">
         <div className="behavior-direction" role="group" aria-label="Opponent position">
-          <button aria-pressed={side === 0} onClick={() => setSide(0)}>Opponent left</button>
-          <button aria-pressed={side === 1} onClick={() => setSide(1)}>Opponent right</button>
+          <button aria-pressed={opponentPlacement === 0} onClick={() => setOpponentPlacement(0)}>Opponent left</button>
+          <button aria-pressed={opponentPlacement === 1} onClick={() => setOpponentPlacement(1)}>Opponent right</button>
         </div>
       </div>
       <div className="behavior-workspace">
         <div className="behavior-decisions oneshot-scene">
-          <Court side={side} />
+          <Court opponentPlacement={opponentPlacement} />
           <p className="behavior-court-note">The ball and your paddle stay fixed. The arrow shows the ball’s direction.</p>
         </div>
         <div className="behavior-observation oneshot-observation">
@@ -158,6 +158,7 @@ export function OneShotExplainer({ model, onPlay }: { model?: Controller; onPlay
       <h2 id="oneshot-prompts-title">Read the exact prompts</h2>
       <p>The arena’s handwritten models also involved AI. We used Codex to develop formulas that calculate their weights and refined the designs through play. For this experiment, each Astra reply supplied the numeric weights directly, with no tools, match feedback or repairs. Neither approach uses training.</p>
       <p>Both prompts used GPT-6 Astra at low reasoning effort, a 6,000-token output limit, and the same numeric JSON response schema.</p>
+      <p>These are the original prompts, preserved verbatim with the technical notation used in the experiment.</p>
       <details className="panel oneshot-prompt"><summary>Rules-only prompt</summary><pre>{rulesOnlyPrompt}</pre></details>
       <details className="panel oneshot-prompt"><summary>OneShot prompt · rules + tactical brief</summary><pre>{oneShotPrompt}</pre></details>
       <div className="weights-downloads">

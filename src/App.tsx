@@ -37,7 +37,8 @@ import { DeviceTest } from './DeviceTest'
 import { finishStartup, getStartupSnapshot, markArenaReady, recordStartupFailure, recordStartupTiming } from './startup'
 import { assetPath } from './assets'
 import { DEFAULT_MODEL, readMatchLink, writeMatchLink } from './matchLink'
-import { bottomSide, playerNumber } from './courtPlayers'
+import { bottomSide, playerNumber, topSide } from './courtPlayers'
+import { actionLabels, observationDescriptions, observationLabels } from './observationLabels'
 import quillSourceUrl from '../handwritten/quill.py?url'
 import './App.css'
 type Page = 'Arena' | 'Rankings' | 'Model library' | 'How it thinks' | 'Field guide' | 'Device test'
@@ -75,14 +76,6 @@ const descriptions = {
   'Device test': 'Measure this device with a repeatable workload, then copy the report to compare.',
 }
 const rules = PONG
-const inputs = [
-  ['Ball X', 'Centered at 0. Negative toward your end, positive toward your opponent.'],
-  ['Ball Y', 'Simulation Y, centered at 0. On screen, negative is left and positive is right.'],
-  ['Ball velocity X', 'An approaching serve moves 5 units toward your paddle per tick, so the model receives −5/6 (about −0.83). Moving away is positive.'],
-  ['Ball velocity Y', 'Moving 3 units right per tick on screen gives the model +0.5. Moving left is negative.'],
-  ['Your paddle Y', 'Position of your paddle across the screen, using the same scale as ball Y.'],
-  ['Opponent paddle Y', 'Position of the opposing paddle across the screen, using the same scale as ball Y.'],
-]
 function Guide({ onDeviceTest }: { onDeviceTest: () => void }) {
   return (
     <div className="guide-grid">
@@ -107,9 +100,9 @@ function Guide({ onDeviceTest }: { onDeviceTest: () => void }) {
         <p>
           Aim with the contact point on your paddle: edge hits send steeper returns. Every successful
           return increases speed toward the opposing paddle by one, from a gentle serve at 5 up to a cap of 13.
-          Center hits keep that speed. Paddles move 2 units per tick. Both players see the
-          same instant before either moves. Opening the arena picks five serves from different
-          positions across the court. Each paddle receives serves moving both left and right. Restart repeats the set.
+          Center hits go straight, with the same speed increase. Paddles move 2 units per tick. Both players see the
+          same instant before either moves. Each match picks five serve angles from different bands;
+          every serve starts at the center. Each paddle receives serves moving both left and right. Restart repeats the set.
         </p>
         <p>
           Every match uses a vertical court. You play from the bottom. Click the playing field,
@@ -130,10 +123,9 @@ function Guide({ onDeviceTest }: { onDeviceTest: () => void }) {
         <h2>What your model sees</h2>
         <p>
           One float32 tensor named <code>observation</code> with shape <code>[1, {rules.inputSize}]</code>.
-          Models use simulation coordinates: your paddle is on the left from the
-          model’s perspective, and the court is 360 by 160 units, with positions scaled to −1 and +1
-          at the edges. On screen, this court is rotated: simulation X runs between the paddles,
-          and simulation Y runs left to right.
+          The court is 360 units along and 160 units across. Each model sees positions relative
+          to its own end: −1 at its end, 0 at center and +1 at the opponent’s end.
+          Across the court, −1 is the left edge and +1 is the right edge for both models.
         </p>
         <p>
           For each velocity input, the arena divides the ball’s movement in one tick by 6. This
@@ -141,11 +133,11 @@ function Guide({ onDeviceTest }: { onDeviceTest: () => void }) {
           magnitude. Multiply the input by 6 to recover court units per tick.
         </p>
         <div className="input-table">
-          {inputs.map(([n, d], i) => (
-            <div key={n}>
+          {observationLabels.map((label, i) => (
+            <div key={label}>
               <small>0{i}</small>
-              <b>{n}</b>
-              <span>{d}</span>
+              <b>{label}</b>
+              <span>{observationDescriptions[i]}</span>
             </div>
           ))}
         </div>
@@ -153,8 +145,7 @@ function Guide({ onDeviceTest }: { onDeviceTest: () => void }) {
         <h2>Choose a move</h2>
         <p>
           Return finite float32 scores in <code>action_scores</code> with shape <code>[1, {rules.outputSize}]</code>,
-          ordered <strong>{rules.actions.join(', ').toLowerCase()}</strong> in simulation coordinates.
-          On screen these mean <strong>left, stay, right</strong>. The highest score wins.
+          ordered <strong>{actionLabels.join(', ').toLowerCase()}</strong>. The highest score wins.
           Ties go to the earliest action. Ordinary moves cover two court units.
         </p>
         <p>
@@ -425,7 +416,8 @@ export default function App() {
     }
     m.reset()
     setMode(next)
-    setIds(next === 'play' ? ['keyboard', ids[1]] : ['large', DEFAULT_MODEL])
+    const opponent = ids[topSide(bottom)]
+    setIds(next === 'play' ? ['keyboard', opponent === 'keyboard' ? DEFAULT_MODEL : opponent] : ['large', DEFAULT_MODEL])
     setError('')
     m.play()
   }
@@ -692,11 +684,11 @@ export default function App() {
         </div>
         <div className="section-code">{rules.name.toUpperCase()} / LOCAL IMPORT</div>
         <h2>Import a model</h2>
-        <p>Choose a self-contained ONNX file with six observations and three action scores: up, stay, down in simulation coordinates (left, stay, right on screen). Your weights stay in this browser.</p>
+        <p>Choose a self-contained ONNX file with six observations and three action scores: left, stay, right. Your weights stay in this browser.</p>
         {mode === 'watch' && <fieldset disabled={uploading}>
           <legend>Assign to paddle</legend>
           <div className="side-options">
-            {([bottom === 0 ? 1 : 0, bottom] as const).map((i) => (
+            {([topSide(bottom), bottom] as const).map((i) => (
               <button key={i} aria-pressed={i === importSide} onClick={() => setImportSide(i)}>
                 Player {playerNumber(i, bottom)} · {i === bottom ? 'Bottom' : 'Top'}
               </button>

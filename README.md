@@ -107,8 +107,8 @@ Arena links accept `?model=counter` to choose a human opponent, or
 `?mode=watch&model=counter&opponent=quill` to watch two models.
 Link directly to a tab with `#play`, `#league`, `#models`, `#how-it-thinks`,
 or `#guide`. Use `#how-it-thinks/counter` to open the Counter lesson.
-Add `&fullscreen=1` to open the court in a viewport-filling layout. Games open
-ready to start with Play (or P). Model and fullscreen changes update the URL
-for copying. Imported models are available only in browsers where they were saved;
+Add `&fullscreen=1` to open the court in a viewport-filling layout. Watch links
+start automatically; human match links wait for Play (or P). Model and fullscreen
+changes update the URL for copying. Imported models are available only in browsers where they were saved;
 unavailable linked models fall back to bundled models with a notice.
 Human games show a three-second countdown before every serve.

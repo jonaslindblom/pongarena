@@ -12,6 +12,8 @@ After the first low-effort runs, we repeated each size once with the same prompt
 
 The [prompt template](prompt.txt) supplies game rules, observation and action conventions, the architecture, and the format for literal numbers. Each request starts fresh and receives no model examples, opponent information, tools, or evaluation feedback. The compiler checks the returned dimensions and serializes the literal coefficients as float32 ONNX weights.
 
+The saved prompts retain their original coordinate wording as experiment records. X runs along the court and Y across it; the current [coordinate glossary](../../docs/RULES.md#coordinates-and-player-identity) explains the unchanged model contract and its mapping to the vertical display.
+
 The evaluator runs the arena's Pong v3 simulation and single-threaded ONNX Runtime Web WASM inference from commit `f549eb88d47be40e0ede19607e2fe6f077255146`. The [64 shared serve seeds](seeds.json) were fixed before any candidate output was available and have no overlap with the development league or the saved Attack and Counter evaluations. For each opponent and seed, it plays two five-rally games with sides swapped. A paired win earns one league point, and a paired draw earns half a point. The tables report league points divided by 64. Intervals in the raw results resample whole paired seed sets.
 
 ## Results
@@ -25,7 +27,7 @@ The evaluator runs the arena's Pong v3 simulation and single-threaded ONNX Runti
 
 All four low-effort outputs compiled and beat Follow, Small, and Predict overall. The best 163-parameter attempt went 50 wins, 10 draws, and 4 losses in paired sets against Attack. Its approximate paired bootstrap interval was 78.1% to 92.2%. The other 163-parameter attempt lost all 64 sets to Attack, showing substantial variation at the same size and prompt.
 
-Both handwritten controls scored above zero against Large on the same seeds: Counter earned 0.5 of 64 points, and Quill earned 12. The strongest low-effort candidate won 44 of its 640 individual rallies against Large and earned zero paired points. Every low-effort candidate has all-zero first-layer columns for ball x-velocity and opponent paddle position. For a fixed observation otherwise, none can change its decision in response to those inputs.
+Both handwritten controls scored above zero against Large on the same seeds: Counter earned 0.5 of 64 points, and Quill earned 12. The strongest low-effort candidate won 44 of its 640 individual rallies against Large and earned zero paired points. Every low-effort candidate has all-zero first-layer columns for the ball's along-court velocity and opponent paddle position. For a fixed observation otherwise, none can change its decision in response to those inputs.
 
 The attempt records include API status, returned weights, elapsed time, and token usage where available. The result files include every paired game, and the ONNX files can be imported into the arena. This is a small pilot with two completed low-effort samples per architecture.
 

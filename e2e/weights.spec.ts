@@ -98,9 +98,9 @@ test('Follow stays fully inspectable and leads directly to the recovery lesson',
   const follow = page.getByRole('region', { name: 'Interactive Follow model' })
   await expect(follow.getByRole('img', { name: /error 0\.800, Tanh 0\.664\. Follow chooses Right/ }))
     .toBeVisible({ timeout: 30_000 })
-  await setRange(page.getByRole('slider', { name: /^Paddle position/ }), .8125)
+  await setRange(page.getByRole('slider', { name: /^Own paddle position/ }), .8125)
   await expect(follow.getByRole('img', { name: /error -0\.313, Tanh -0\.303\. Follow chooses Left/ })).toBeVisible()
-  await setRange(page.getByRole('slider', { name: /^Ball position/ }), .8125)
+  await setRange(page.getByRole('slider', { name: /^Ball across court/ }), .8125)
   await expect(follow.getByRole('img', { name: /error 0\.000, Tanh 0\.000\. Follow chooses Stay/ })).toBeVisible()
   await follow.getByText('See all 13 parameters', { exact: false }).click()
   await expect(follow.getByText('5 nonzero · zeros count too', { exact: true })).toBeVisible()
@@ -198,6 +198,8 @@ test('advanced neuron contributions expose the real direction weight and ReLU cu
   for (const vx of [13, -13]) {
     if (vx < 0) await page.getByRole('button', { name: 'Toward you', exact: true }).click()
     const input = observation({ ...serve(1), ...recoveryFrame, vx }, 0)
+    await expect(page.getByText(`toward/away input = ${vx} ÷ 6 = ${(vx / 6).toFixed(6)}`, { exact: true })).toBeVisible()
+    await expect(page.getByText('departure signal = ReLU(toward/away input)', { exact: true })).toBeVisible()
     const rows = inspector.getByRole('table', { name: 'Neuron weight contributions' }).locator('tbody tr')
     await expect(rows).toHaveCount(6)
     for (let index = 0; index < input.length; index++) {

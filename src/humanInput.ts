@@ -35,13 +35,13 @@ export function humanKeyAction(held: Set<string>, side: Side, both: boolean): Hu
 }
 
 export function heldHumanAction(held: Iterable<HeldDirection>, side: Side): HumanAction | null {
-  let up = false, down = false
+  let left = false, right = false
   for (const entry of held) {
     if (entry.side === side) {
-      up ||= entry.action === 0
-      down ||= entry.action === 2
+      left ||= entry.action === 0
+      right ||= entry.action === 2
     }
   }
-  if (!up && !down) return null
-  return up === down ? 1 : up ? 0 : 2
+  if (!left && !right) return null
+  return left === right ? 1 : left ? 0 : 2
 }

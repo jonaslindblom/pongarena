@@ -8,12 +8,15 @@ the weights that are zero. It belongs to the Small class.
 ## What the neurons do
 
 The first hidden layer uses four ReLU hinges to approximate the product of
-horizontal distance and vertical velocity. Two more neurons carry ball height
-and paddle position. The forecast assumes a horizontal speed of 13 and includes
+distance along the court to our paddle and across-court velocity. Two more neurons
+carry the ball's across-court position and our paddle position. The forecast assumes
+an along-court speed of 13 units per tick and includes
 a small correction for discrete contact timing.
 
 The second hidden layer carries the forecast minus paddle position and two
-hinges for a predicted wall bounce. The output combines them as
+hinges for a predicted wall bounce. Positions use the
+[centered, normalized coordinates](RULES.md#observations-and-actions), with side
+walls at ±0.95. The output folds the normalized forecast `z` as
 `z − 2·ReLU(z − .95) + 2·ReLU(−z − .95)`, compares the reflected target with
 the paddle position, and applies a 1.1-unit movement deadband.
 
@@ -24,7 +27,7 @@ reflection or other position helper runs outside the network during play.
 
 Predict uses 54% fewer parameters than Quill. It anticipates incoming balls
 and reflects one predicted wall bounce, but its coarse flight approximation
-loses accuracy. It ignores the opponent position and horizontal velocity input,
+loses accuracy. It ignores the opponent position and along-court velocity input,
 so it has no opponent-dependent aiming or direction-dependent center recovery.
 It can keep following a forecast while the ball travels away.
 

@@ -143,8 +143,8 @@ nav a[aria-current='page'] {
   background: #e8eedf;
   color: #244633;
 }
-.p1-dot,
-.p2-dot,
+.side-0-dot,
+.side-1-dot,
 .pick-label i,
 .status i,
 .court-foot i {
@@ -363,11 +363,11 @@ h1 {
 .right small {
   justify-content: flex-end;
 }
-.p1-dot,
+.side-0-dot,
 .side-0 .pick-label i {
   background: #7be7b7;
 }
-.p2-dot,
+.side-1-dot,
 .side-1 .pick-label i {
   background: #ffad75;
 }
@@ -479,11 +479,11 @@ h1 {
 @media (any-pointer: coarse) {
   .court-touch-hints { display: grid; }
 }
-.paddle.left {
+.paddle.side-0 {
   fill: #89f4b9;
   filter: drop-shadow(0 0 2px #65c69499);
 }
-.paddle.right {
+.paddle.side-1 {
   fill: #ffaa75;
   filter: drop-shadow(0 0 2px #ca805d99);
 }
