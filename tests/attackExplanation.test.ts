@@ -3,12 +3,21 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import pb from 'onnx-proto'
 import * as ort from 'onnxruntime-web/wasm'
-import { ATTACK_SCENARIOS, createCounterIntervention, getAttackExplanation, inspectAttackModel, type AttackModelId } from '../src/attackExplanation'
-import { observation, serve } from '../src/game'
+import { createCounterIntervention, getAttackExplanation, inspectAttackModel, type AttackModelId } from '../src/attackExplanation'
+import { observation, serve, type Frame } from '../src/game'
+
+const scenarios: { id: string; frame: Pick<Frame, 'x' | 'y' | 'vx' | 'vy' | 'paddles'> }[] = [
+  { id: 'outgoing', frame: { x: 184, y: 120, vx: 13, vy: 0, paddles: [100, 80] } },
+  { id: 'long', frame: { x: 240, y: 80, vx: -13, vy: 3, paddles: [130, 80] } },
+  { id: 'bounce', frame: { x: 240, y: 130, vx: -13, vy: 3, paddles: [140, 80] } },
+  { id: 'corner', frame: { x: 16, y: 80, vx: -13, vy: 0, paddles: [80, 80] } },
+]
 
 const ids = ['attack', 'counter'] as const
-const bytes = Object.fromEntries(ids.map(id => [id,
-  readFileSync(new URL(`../public/models/${id}.onnx`, import.meta.url))])) as Record<AttackModelId, Uint8Array>
+const bytes: Record<AttackModelId, Uint8Array> = {
+  attack: readFileSync(new URL('../public/models/attack.onnx', import.meta.url)),
+  counter: readFileSync(new URL('../public/models/counter.onnx', import.meta.url)),
+}
 const close = (actual: number, expected: number, message: string, tolerance = .0002) =>
   assert(Math.abs(actual - expected) < tolerance, `${message}: expected ${expected}, received ${actual}`)
 
@@ -56,7 +65,7 @@ test('the same legal scenarios expose opposite decisions without changing scores
     const original = await ort.InferenceSession.create(bytes[id], { executionProviders: ['wasm'] })
     const instrumented = await ort.InferenceSession.create(inspection.bytes, { executionProviders: ['wasm'] })
     try {
-      for (const scenario of ATTACK_SCENARIOS) {
+      for (const scenario of scenarios) {
         const input = observation({ ...serve(1), ...scenario.frame }, 0)
         const feed = { observation: new ort.Tensor('float32', input, [1, 6]) }
         const result = await instrumented.run(feed)

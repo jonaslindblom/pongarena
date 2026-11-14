@@ -36,7 +36,7 @@ test('Predict anticipates and reflects through its actual WASM network', async (
     assert.deepEqual(await scores({ ...contact, paddles: [80, 60] }),
       await scores({ ...contact, paddles: [80, 100] }),
       'This compact candidate deliberately has no opponent-dependent shot placement')
-    const outgoing = { x: 180, y: 140, vx: 13, vy: 0, paddles: [80, 100] }
+    const outgoing: Partial<Frame> = { x: 180, y: 140, vx: 13, vy: 0, paddles: [80, 100] }
     assert.equal(await action(outgoing), 2,
       'Known limitation: follow the target while departing rather than recover to center')
     assert.deepEqual(await scores(outgoing), await scores({ ...outgoing, vx: -13 }),

@@ -15,11 +15,9 @@ test.afterEach(async ({ page }) => {
 })
 
 for (const match of [
-  { opponent: 'follow', top: 'Follow', bottom: 'Counter', slotLabels: ['P2 · BOTTOM', 'P1 · TOP'],
-    slotNames: ['Counter', 'Follow'], scorePlayers: ['player 2, bottom, Counter', 'player 1, top, Follow'],
+  { opponent: 'follow', top: 'Follow', bottom: 'Counter',
     defaultImport: 'Player 2 · Bottom' },
-  { opponent: 'keyboard', top: 'Counter', bottom: 'Human', slotLabels: ['P1 · TOP', 'P2 · BOTTOM'],
-    slotNames: ['Counter', 'Human'], scorePlayers: ['player 1, top, Counter', 'player 2, bottom, Human'],
+  { opponent: 'keyboard', top: 'Counter', bottom: 'Human',
     defaultImport: 'Player 1 · Top' },
 ]) {
   test(`P1 stays top and P2 bottom with ${match.top} above ${match.bottom}`, async ({ page }) => {
@@ -39,11 +37,11 @@ for (const match of [
       .toHaveValue(match.opponent === 'keyboard' ? 'counter' : 'follow')
     await expect(page.getByRole('combobox', { name: 'Bottom controller', exact: true }))
       .toHaveValue(match.opponent === 'keyboard' ? 'keyboard' : 'counter')
-    await expect(page.locator('.score-player small')).toHaveText(match.slotLabels)
-    await expect(page.locator('.score-player strong')).toHaveText(match.slotNames)
+    await expect(page.locator('.score-player small')).toHaveText(['P1 · TOP', 'P2 · BOTTOM'])
+    await expect(page.locator('.score-player strong')).toHaveText([match.top, match.bottom])
     const points = (await page.locator('.big-score b').allTextContents()).map(Number)
     await expect(page.locator('.big-score')).toHaveAccessibleName(
-      `Score: ${match.scorePlayers[0]}: ${points[0]}; ${match.scorePlayers[1]}: ${points[1]}`,
+      `Score: player 1, top, ${match.top}: ${points[0]}; player 2, bottom, ${match.bottom}: ${points[1]}`,
     )
 
     const brain = page.getByRole('region', { name: 'Model brain', exact: true })

@@ -38,12 +38,8 @@ current `pong-v3` centered-serve rules.
 
 ## Reproduce
 
-Install the Python dependencies from `training/requirements.txt`, then run:
-
-```sh
-python handwritten/predict.py --out public/models/predict.onnx
-npm run models:check
-```
+Use the [shared NumPy/ONNX setup and byte-for-byte rebuild check](../handwritten/README.md)
+for [Predict's constructor](../handwritten/predict.py). No training dependencies are needed.
 
 The constructor preserves the original exploration graph name
 `Predictive_ungated2` and metadata so its exact model identity stays unchanged:

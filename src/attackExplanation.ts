@@ -1,25 +1,11 @@
 import pb from 'onnx-proto'
 import { createBrainGraph, type BrainLayer } from './brain'
 import { sha256 } from './competition'
-import { choice, type Frame, type Scores } from './game'
+import { choice, type Scores } from './game'
 import { actionLabels, observationLabels as inputRoles } from './observationLabels'
 import { validateArenaModel } from './validate'
 
 export type AttackModelId = 'attack' | 'counter'
-
-export const ATTACK_SCENARIOS: {
-  id: string; title: string; description: string
-  frame: Pick<Frame, 'x' | 'y' | 'vx' | 'vy' | 'paddles'>
-}[] = [
-  { id: 'outgoing', title: 'Recover after a return', description: 'The ball is leaving. Follow its forecast or return to center?',
-    frame: { x: 184, y: 120, vx: 13, vy: 0, paddles: [100, 80] } },
-  { id: 'long', title: 'Anticipate a long flight', description: 'The longer forecast changes which way the paddle moves.',
-    frame: { x: 240, y: 80, vx: -13, vy: 3, paddles: [130, 80] } },
-  { id: 'bounce', title: 'See beyond a wall bounce', description: 'Both models reflect the forecast, but predict different landing positions.',
-    frame: { x: 240, y: 130, vx: -13, vy: 3, paddles: [140, 80] } },
-  { id: 'corner', title: 'Choose the open corner', description: 'Move the opponent across center to reverse the intended shot.',
-    frame: { x: 16, y: 80, vx: -13, vy: 0, paddles: [80, 80] } },
-]
 
 const outputRoles = actionLabels.map(action => `${action} score`)
 const wallRoles = ['Target error carrier', 'Right wall hinge', 'Left wall hinge']

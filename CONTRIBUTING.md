@@ -8,7 +8,7 @@ dependencies and assets retain their own licenses and notices.
 
 Use Node.js 22 and `npm ci`. Import an ONNX file under **Models** to validate it and try it in the arena. Handwritten and trained weights follow the same [model contract](docs/RULES.md).
 
-For a small handwritten example, [Follow](docs/FOLLOW.md) explains all 13 parameters and can be rebuilt with [its constructor](handwritten/follow.py).
+For a small handwritten example, [Follow](docs/FOLLOW.md) explains all 13 parameters and can be rebuilt with the [shared constructor setup](handwritten/README.md).
 
 Keep the two approaches independent: [Quill's constructor](handwritten/quill.py) writes fixed weights, while [training](training/README.md) starts from random weights, learns from scripts and improves Large through game outcomes. Training and checkpoint selection must not use handwritten models' weights, outputs or matches; compare frozen models with Quill afterward.
 
@@ -46,6 +46,6 @@ The [model submission gate](.github/workflows/model-evaluation.yml) runs the tru
 
 CI retains `evaluation-plan-<PR>-<identity>` and `model-league-<PR>-<identity>` artifacts for 90 days. A missing or expired previously recorded plan fails instead of drawing replacement serves. On merge, Pages verifies the matching trusted results and uses them for the published standings. Compare scores only within the same opponent field and serve set.
 
-Repository branch protection must require **Validate and evaluate submitted models**, **Browser end-to-end tests** and up-to-date branches to prevent merging failed or stale checks. See [publishing](docs/PUBLISHING.md).
+Repository branch protection must require all checks and up-to-date branches to prevent merging failed or stale checks. The authoritative [required-check list](docs/PUBLISHING.md#required-checks) is in the publishing guide.
 
 Keep model contributions separate from changes to game physics, the model contract or scoring. Propose changes to those rules explicitly so their effect on the comparison can be reviewed.

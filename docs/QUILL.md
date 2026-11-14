@@ -23,16 +23,8 @@ All 163 stored values count toward its Small class budget, including zeros and b
 
 ## Rebuild it
 
-From the repository root, use Python 3.12 and install only NumPy and ONNX:
-
-```sh
-python3.12 -m venv .venv
-.venv/bin/pip install numpy==2.5.4 onnx==1.23.2
-.venv/bin/python handwritten/quill.py --out public/models/quill.onnx
-npm run league
-npm test
-```
-
-The constructor includes its ONNX exporter and requires no training files or PyTorch. Rebuilding is deterministic and replaces the chosen output file.
+Use the [shared NumPy/ONNX setup and byte-for-byte rebuild check](../handwritten/README.md).
+The constructor includes its ONNX exporter and requires no training files or PyTorch.
+Rebuilding is deterministic and replaces the chosen output file.
 
 Quill approximates travel time using the maximum along-court speed and models one wall reflection. Its small network cannot represent exact planning for every position or speed. Compare it with the trained models in the [reference league](../public/league.md); those results measure this opponent field and serve set rather than universal strength.

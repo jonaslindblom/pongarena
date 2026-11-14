@@ -35,6 +35,8 @@ After a successful model evaluation, the [results workflow](../.github/workflows
 
 The evaluator's shared default and publication check both require 512 sets. The `pong-v3` rule change creates a new identity and plan, preserving earlier 128-set artifacts as historical results. Reports include the same paired-seed bootstrap score intervals displayed in the app.
 
+### Required checks
+
 In **Settings → Rules → Rulesets** (or branch protection), protect `main` with pull requests, up-to-date branches and all four status checks: **check**, **training**, **Browser end-to-end tests** and **Validate and evaluate submitted models**. A failing workflow check blocks merging only when the repository requires it. Rebase and reevaluate if another model merge changes the roster before yours merges.
 
 Standard GitHub-hosted runners are free for public repositories; this workflow uses a standard Ubuntu CPU runner. Larger runners are billed even for public repositories, and artifact storage has a separate allowance. See [GitHub Actions billing](https://docs.github.com/en/billing/concepts/product-billing/github-actions) for current terms.

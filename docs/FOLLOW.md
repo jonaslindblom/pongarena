@@ -28,16 +28,8 @@ Zero weights ignore distance to the paddle, velocity and the opponent. Follow ca
 
 ## Rebuild it
 
-From the repository root, using Python 3.12:
-
-```sh
-python3.12 -m venv .venv
-.venv/bin/pip install numpy==2.5.4 onnx==1.23.2
-.venv/bin/python handwritten/follow.py --out public/models/follow.onnx
-npm run league
-npm test
-```
-
-The [constructor](../handwritten/follow.py) is standalone and deterministic. It needs no training code, checkpoints or PyTorch. During play, the ONNX weights perform the entire policy.
+Use the [shared NumPy/ONNX setup and byte-for-byte rebuild check](../handwritten/README.md)
+for the standalone [constructor](../handwritten/follow.py). It needs no training
+code, checkpoints or PyTorch. During play, the ONNX weights perform the entire policy.
 
 [Sparks of Weight-Space Programming](https://rikiyat.github.io/blog/weight-space-programming/) explores constructing neural weights directly. Follow demonstrates the basic idea with a policy small enough to explain completely; it does not reproduce the article's LLM experiments.

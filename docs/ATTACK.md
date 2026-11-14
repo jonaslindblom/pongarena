@@ -85,17 +85,8 @@ ball travels away. The results measure these bots and serves, not human strength
 
 ## Reproduce
 
-Only NumPy and ONNX are needed to rebuild the weights; PyTorch is not required:
-
-```sh
-python handwritten/attack.py --out public/models/attack.onnx
-npm run models:check
-npm run league
-npm test
-npm run league:check
-npm run build
-npx playwright test
-```
+Use the [shared NumPy/ONNX setup and byte-for-byte rebuild check](../handwritten/README.md)
+for the standalone [Attack constructor](../handwritten/attack.py).
 
 Expected Attack SHA-256:
 

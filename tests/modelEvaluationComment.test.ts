@@ -50,10 +50,12 @@ test('only the successful trusted model run with a matching artifact can produce
     ? request(path) : { ...modelRun, pull_requests: [{ number: pr, head: { sha: headSha }, base: { sha: 'd'.repeat(40) } }] },
   repository, String(runId))
   assert.deepEqual(retargetedReport, report)
+  assert(retargetedReport)
   assert.doesNotThrow(() => verifyProvenance(provenance, repository, retargetedReport))
   const forkReport = await selectEvaluation(async (path: string) => path.includes('/artifacts')
     ? request(path) : { ...modelRun, pull_requests: [] }, repository, String(runId))
   assert.deepEqual(forkReport, report)
+  assert(forkReport)
   assert.doesNotThrow(() => verifyProvenance(provenance, repository, forkReport))
   assert.throws(() => verifyProvenance({ ...provenance, baseSha: 'branch-name' }, repository, forkReport), /do not match/)
 })

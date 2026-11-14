@@ -95,17 +95,8 @@ establish strength against human players.
 
 ## Reproduce
 
-The standalone constructor needs NumPy and ONNX, not PyTorch:
-
-```sh
-python handwritten/counter.py --out public/models/counter.onnx
-npm run models:check
-npm run league
-npm test
-npm run league:check
-npm run build
-npx playwright test
-```
+Use the [shared NumPy/ONNX setup and byte-for-byte rebuild check](../handwritten/README.md)
+for the standalone [Counter constructor](../handwritten/counter.py).
 
 Expected model SHA-256:
 

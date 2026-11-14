@@ -1,16 +1,14 @@
 # Rules alone versus a tactical brief
 
-This follow-up tests whether a tactical plan helps GPT-6 Astra write stronger Pong weights in one response. Two independent calls used the [original rules prompt](../prompt.txt), and two appended the [tactical brief](tactical-brief.txt). All four used the same 163-parameter ReLU layout (6 → 12 → 4 → 3 → 3), low reasoning effort, a 6,000 output token cap, and the same literal-weight JSON schema. Each call ran without tools, opponent weights, match feedback, or repairs.
+**OneShot's prompt** combines the [game rules](../prompt.txt), with `{{WIDTHS}}` replaced by `6 → 12 → 4 → 3 → 3`, and the [tactical brief](tactical-brief.txt) appended. It asks GPT-6 Astra for literal weights using that 163-parameter ReLU layout, without tools, opponent weights or match feedback.
 
-The [64 paired serve seeds](seeds.json) were fixed before the calls and have no overlap with the first experiment, the reference league, or the saved Attack and Counter evaluations. Each seed is played twice with sides swapped. The paired score is (wins + half of draws) / 64. Each candidate faces all seven bundled opponents. The prior two 163-parameter Astra controllers and Quill were replayed on the fresh seeds for context.
+The four saved models compare two responses to the rules alone with two responses to the combined prompt. All use low reasoning effort and compile directly from the returned numbers, without repairs.
 
-The [input probes](probe.mjs) hold other inputs fixed in 225 synthetic observations. They measure how often the chosen move changes when the ball's along-court velocity flips from −8 to +8 court units per tick or when opponent paddle position moves from 25 to 135 court units on an incoming ball. These raw values are converted to the [normalized model inputs](../../../docs/RULES.md#observations-and-actions) before inference; the saved prompts and results retain their original notation.
+Each model faced seven opponents on [64 fresh serve seeds](seeds.json), fixed before the requests. Every seed is played from both sides; a paired win earns one point and a draw earns half.
 
 ## Results
 
-All four responses compiled into playable ONNX models. Each cell below is paired league points out of 64.
-
-The catalog calls Tactical A **OneShot**. Its ONNX file is the original response compiled to float32.
+The catalog calls Tactical A **OneShot**. Its [canonical ONNX file](../../../public/models/oneshot.onnx) is the saved response compiled to float32. Each cell below is paired league points out of 64.
 
 | Prompt | Follow | Small | Predict | Attack | Counter | Quill | Large |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -19,9 +17,11 @@ The catalog calls Tactical A **OneShot**. Its ONNX file is the original response
 | Tactical A | 64 | 2 | 63 | 60 | 3.5 | 1.5 | 0 |
 | Tactical B | 63.5 | 15.5 | 64 | 64 | 0 | 0 | 0 |
 
-Tactical A won one paired set and drew one against Quill. It also won 109 of 640 individual rallies against Large, compared with 16 and 7 for the two rules-only attempts. All four lost every paired set to Large. On the same serves, Quill won 224 rallies and earned 8 of 64 paired points against Large.
+OneShot won 109 of 640 individual rallies against Large, compared with 16 and 7 for the two rules-only attempts. All four lost every paired set to Large.
 
-The tactical prompt produced two controllers that were stronger against Attack and weaker against Small than either rules-only controller. Results describe these four outputs. Two attempts per prompt provide limited evidence about how consistently it improves the next sample.
+The two tactical models were stronger against Attack and weaker against Small than either rules-only model. With two saved models per prompt, these results do not establish how consistently the brief improves a new response.
+
+The [input probes](probe.mjs) test 225 positions, changing only the ball's travel direction or the opponent's position to see whether either affects the chosen move:
 
 | Model | Action changes when direction flips | Action changes when opponent moves |
 | --- | ---: | ---: |
@@ -33,11 +33,16 @@ The tactical prompt produced two controllers that were stronger against Attack a
 
 The [raw probes](probes.json) show that both tactical controllers used the two inputs in ways that changed actual decisions on this grid. The probe does not establish whether those changes caused their match results.
 
-The four calls used 3,064 input and 8,482 output tokens, about $0.45 at [standard Astra rates](https://developers.openai.com/api/docs/models/gpt-6-astra). The experiment logged 3,584 candidate games and 1,408 control games.
-
 ## Replay
 
-Run from the repository root after installing dependencies.
+The saved response rebuilds identical OneShot weights; the pinned evaluator and
+saved seeds reproduce its results. A new AI response to the same prompt may differ.
+
+First create the [pinned experiment checkout](../README.md#reproduce) at
+`47800e7e921ffd4392bcadfd4ace30422e8da9f4`, which contains these scripts and the
+evaluator used for the recorded results. Run from that checkout's root after
+installing dependencies. Choose an unused output filename; the compiler does
+not overwrite files.
 
 ```sh
 base=experiments/one-prompt-weights
@@ -49,4 +54,6 @@ node --import tsx "$base/evaluate.mjs" evaluate "$dir/seeds.json" \
 node --import tsx "$dir/probe.mjs" /tmp/tactical-163-a.onnx public/models/quill.onnx
 ```
 
-The attempt records, ONNX files, and raw paired game results are stored in this directory.
+Saved responses and results are in `attempts/` and `results/`. The lesson loads
+`models/rules-163-a.onnx` and the canonical `public/models/oneshot.onnx`; rebuild
+other candidates from their saved responses.

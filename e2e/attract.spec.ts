@@ -89,6 +89,11 @@ test('an untouched finished demo starts a new match with fresh serves', async ({
   const originalSeeds = await seeds()
   await finishDemo(page)
   await expect(page.locator('.court .status')).toHaveText('Game over')
+  // The result must preserve the scoreboard's P1/top, P2/bottom order.
+  const points = (await page.locator('.big-score b').allTextContents()).map(Number)
+  await expect(page.locator('.match-over-score')).toHaveText(`${points[0]} – ${points[1]}`)
+  await expect(page.locator('.match-over-score')).toHaveAttribute('aria-label',
+    `Score: player 1, top, Counter: ${points[0]}; player 2, bottom, Quill: ${points[1]}`)
   await page.clock.runFor(1500)
   await expect(page.locator('.match-over')).toBeVisible()
   await page.clock.runFor(2200)

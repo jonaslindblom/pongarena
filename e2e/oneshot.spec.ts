@@ -1,5 +1,8 @@
 import { test, expect } from '@playwright/test'
-import { readFileSync } from 'node:fs'
+import { mkdtempSync, readFileSync, rmSync } from 'node:fs'
+import { execFileSync } from 'node:child_process'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 
 const experiment = 'experiments/one-prompt-weights'
 const followUp = experiment + '/follow-up'
@@ -19,7 +22,17 @@ test('OneShot plays the frozen experiment weights and shows the recorded prompt 
   expect(download.suggestedFilename()).toBe('oneshot.onnx')
   const chunks: Buffer[] = []
   for await (const chunk of await download.createReadStream()) chunks.push(Buffer.from(chunk))
-  expect(Buffer.concat(chunks)).toEqual(readFileSync(followUp + '/models/tactical-163-a.onnx'))
+  // Prove the downloaded policy is still the frozen numeric reply, without
+  // keeping a second compiled copy of the catalog model in the experiment.
+  const directory = mkdtempSync(join(tmpdir(), 'oneshot-replay-'))
+  try {
+    const compiled = join(directory, 'tactical-163-a.onnx')
+    execFileSync(process.execPath, ['--import', 'tsx', experiment + '/evaluate.mjs',
+      'compile', '6,12,4,3,3', 'Relu', followUp + '/attempts/tactical-163-a.json', compiled])
+    expect(Buffer.concat(chunks)).toEqual(readFileSync(compiled))
+  } finally {
+    rmSync(directory, { recursive: true, force: true })
+  }
 
   await card.getByRole('link', { name: 'See the prompt' }).click()
   await expect(page).toHaveURL(/#how-it-thinks\/oneshot$/)

@@ -38,6 +38,7 @@ test('matrix orientation does not change eligibility when every layer is dense',
   const model = network()
   for (const node of model.graph!.node.filter((node) => node.opType === 'Gemm')) {
     const weight = model.graph!.initializer.find((tensor) => tensor.name === node.input![1])!
+    assert(weight.dims)
     weight.dims.reverse()
     node.attribute = []
   }

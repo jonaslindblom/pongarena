@@ -1,20 +1,14 @@
 # One prompt to Pong weights
 
-Can GPT-6 Astra design a playable neural controller from the Pong rules and a fixed layer layout in one response?
+The [prompt](prompt.txt) gives GPT-6 Astra the Pong rules and asks for literal neural-network weights. It specifies the inputs, layer layout and JSON output format. The [tactical-brief comparison](follow-up/README.md) uses an extended prompt and includes **OneShot**, the model in the catalog.
 
-## Protocol
+## Method
 
-The requests used [GPT-6 Astra](https://developers.openai.com/api/docs/models/gpt-6-astra) with two ReLU layouts: Counter's 97-parameter layout (6 → 6 → 4 → 3 → 3) and Quill's 163-parameter layout (6 → 12 → 4 → 3 → 3). High effort used a 12,000 output token cap. Low and medium effort used 6,000.
+The four saved models use two ReLU layouts: Counter's 97-parameter layout (6 → 6 → 4 → 3 → 3) and Quill's 163-parameter layout (6 → 12 → 4 → 3 → 3), with two models per layout. All use [GPT-6 Astra](https://developers.openai.com/api/docs/models/gpt-6-astra) at low reasoning effort.
 
-Five synchronous high-effort calls (three at 97 parameters and two at 163) dropped their connection before delivering a response. Two separately labeled low-effort calls returned weights. Three additional calls used [Responses API background mode](https://developers.openai.com/api/docs/guides/background): one high-effort call at each layout and one medium-effort call at 97 parameters. The transport failures are recorded in `attempts/` and do not count as played candidates.
+The prompt supplies no model examples, opponent information or match feedback, and the model has no tools. Saved responses compile directly into float32 ONNX weights, without repairs.
 
-After the first low-effort runs, we repeated each size once with the same prompt and expanded the opponent panel to Small, Predict, and Attack. These follow-up comparisons use the same fixed seeds.
-
-The [prompt template](prompt.txt) supplies game rules, observation and action conventions, the architecture, and the format for literal numbers. Each request starts fresh and receives no model examples, opponent information, tools, or evaluation feedback. The compiler checks the returned dimensions and serializes the literal coefficients as float32 ONNX weights.
-
-The saved prompts retain their original coordinate wording as experiment records. X runs along the court and Y across it; the current [coordinate glossary](../../docs/RULES.md#coordinates-and-player-identity) explains the unchanged model contract and its mapping to the vertical display.
-
-The evaluator runs the arena's Pong v3 simulation and single-threaded ONNX Runtime Web WASM inference from commit `f549eb88d47be40e0ede19607e2fe6f077255146`. The [64 shared serve seeds](seeds.json) were fixed before any candidate output was available and have no overlap with the development league or the saved Attack and Counter evaluations. For each opponent and seed, it plays two five-rally games with sides swapped. A paired win earns one league point, and a paired draw earns half a point. The tables report league points divided by 64. Intervals in the raw results resample whole paired seed sets.
+All four models faced the same opponents under Pong v3 on [64 fresh serve seeds](seeds.json), fixed before any output was available. Each seed gives two five-rally games with sides swapped. A paired win earns one point and a draw earns half; the table shows points as a percentage of 64.
 
 ## Results
 
@@ -25,26 +19,43 @@ The evaluator runs the arena's Pong v3 simulation and single-threaded ONNX Runti
 | Low A | 163 | 100% | 95.3% | 100% | 85.9% | 7.8% | 0% | 0% |
 | Low B | 163 | 82.0% | 95.3% | 72.7% | 0% | 1.6% | 0% | 0% |
 
-All four low-effort outputs compiled and beat Follow, Small, and Predict overall. The best 163-parameter attempt went 50 wins, 10 draws, and 4 losses in paired sets against Attack. Its approximate paired bootstrap interval was 78.1% to 92.2%. The other 163-parameter attempt lost all 64 sets to Attack, showing substantial variation at the same size and prompt.
+All four beat Follow, Small and Predict overall. The two 163-parameter outputs scored 85.9% and 0% against Attack, showing substantial variation at the same size and prompt. None earned a paired point against Quill or Large.
 
-Both handwritten controls scored above zero against Large on the same seeds: Counter earned 0.5 of 64 points, and Quill earned 12. The strongest low-effort candidate won 44 of its 640 individual rallies against Large and earned zero paired points. Every low-effort candidate has all-zero first-layer columns for the ball's along-court velocity and opponent paddle position. For a fixed observation otherwise, none can change its decision in response to those inputs.
+All four ignore the ball's along-court velocity and the opponent's paddle position: the corresponding first-layer weights are zero.
 
-The attempt records include API status, returned weights, elapsed time, and token usage where available. The result files include every paired game, and the ONNX files can be imported into the arena. This is a small pilot with two completed low-effort samples per architecture.
-
-All three background medium and high attempts exhausted their output token budgets on reasoning and returned no weights. Together with the five connection failures, that leaves four playable controllers from twelve requests. The seven requests with usage records totaled 4,906 input and 37,932 output tokens, about $1.95 at [standard Astra rates](https://developers.openai.com/api/docs/models/gpt-6-astra). Billing for the five dropped connections is unknown.
-
-The experiment logged 3,584 games for the generated controllers and 768 baseline games.
+These results describe the four saved models; two models per size do not establish how reliably a prompt will produce a strong controller.
 
 ## Reproduce
 
-Run these commands from the repository root after installing the project dependencies. The saved attempt records are sufficient to replay the results without an API call.
+Compiling a saved response reproduces its ONNX bytes. Replaying those weights
+with the pinned code and saved seeds reproduces the recorded results. Asking
+the AI to answer the prompt again can produce different weights.
+
+Use the [experiment revision](https://github.com/jonaslindblom/pongarena/commit/47800e7e921ffd4392bcadfd4ace30422e8da9f4).
+It contains the saved responses, scripts and evaluator used for these results.
+A separate checkout keeps future game changes out of the replay.
+From the repository root:
+
+```sh
+git fetch origin 47800e7e921ffd4392bcadfd4ace30422e8da9f4
+git worktree add --detach ../pongarena-prompt-replay 47800e7e921ffd4392bcadfd4ace30422e8da9f4
+cd ../pongarena-prompt-replay
+npm ci
+```
+
+Then compile a saved response and replay its recorded opponents. No API call is
+needed. Choose an unused output filename; compilation will not
+overwrite an existing file.
 
 ```sh
 dir=experiments/one-prompt-weights
 node --import tsx "$dir/evaluate.mjs" compile 6,6,4,3,3 Relu \
   "$dir/attempts/astra-97-low.json" /tmp/astra-97-low.onnx
 node --import tsx "$dir/evaluate.mjs" evaluate \
-  "$dir/seeds.json" /tmp/astra-97-low.onnx large quill counter follow
+  "$dir/seeds.json" /tmp/astra-97-low.onnx large quill counter follow small predict attack
 ```
 
-To collect a new output, copy the prompt and generator to a fresh directory, set `OPENAI_API_KEY`, and run `node generate.mjs astra-97-low` there. Use the IDs in the generator to select other layouts and efforts. The generator reserves each attempt file before making its request and polls its response without further model input.
+Saved responses are in `attempts/`; raw game records are in `results/` and the
+baseline files. The commands above rebuild candidate ONNX files from those responses.
+
+To collect a new output, copy the prompt and generator to a fresh directory, set `OPENAI_API_KEY`, and run `node generate.mjs astra-97-low` there. The generator lists the available layouts and efforts.

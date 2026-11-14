@@ -24,7 +24,7 @@ export function network(widths = [6, 4, 4, 3], activation = 'Tanh') {
       graph.node.push({ opType: activation, input: [output], output: [previous] })
     }
   }
-  return pb.onnx.ModelProto.create({ irVersion: 10, opsetImport: [{ domain: '', version: 18 }], graph })
+  return Object.assign(pb.onnx.ModelProto.create({ irVersion: 10, opsetImport: [{ domain: '', version: 18 }], graph }), { graph })
 }
 
 export const encode = (model: ReturnType<typeof network>) => pb.onnx.ModelProto.encode(model).finish()
