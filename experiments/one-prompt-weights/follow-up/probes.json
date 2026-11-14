@@ -1,36 +1,42 @@
 [
   {
-    "file": "experiments/one-prompt-weights/follow-up/models/rules-163-a.onnx",
+    "id": "rules-163-a",
+    "sha256": "1e84b0325407fb23849dcacf7861e91d1f25825ba0161b636fdad3a6ff835c5b",
     "pairsPerInput": 225,
     "velocityFlips": 0,
     "opponentFlips": 0
   },
   {
-    "file": "experiments/one-prompt-weights/follow-up/models/rules-163-b.onnx",
+    "id": "rules-163-b",
+    "sha256": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
     "pairsPerInput": 225,
     "velocityFlips": 0,
     "opponentFlips": 0
   },
   {
-    "file": "experiments/one-prompt-weights/follow-up/models/tactical-163-a.onnx",
+    "id": "tactical-163-a",
+    "sha256": "12a63f5ef4bc2127a9f8a3babdf3155c0c5381bcb6cca0cc3f70aa4d48b5765d",
     "pairsPerInput": 225,
     "velocityFlips": 101,
     "opponentFlips": 39
   },
   {
-    "file": "experiments/one-prompt-weights/follow-up/models/tactical-163-b.onnx",
+    "id": "tactical-163-b",
+    "sha256": "875187b9a8725a8edffa4e239d4776c83c979e78012094d3b009e02829764eef",
     "pairsPerInput": 225,
     "velocityFlips": 150,
     "opponentFlips": 53
   },
   {
-    "file": "public/models/quill.onnx",
+    "id": "quill",
+    "sha256": "bb1b4680654fdd31bcd596c38ce0b4a1cb38a126aafa71c15f55029ba49daa04",
     "pairsPerInput": 225,
     "velocityFlips": 101,
     "opponentFlips": 53
   },
   {
-    "file": "public/models/counter.onnx",
+    "id": "counter",
+    "sha256": "5f7a480b98c982cf403f2f8849fac1e5e02503ff12e6b0b5d1e377856534e35c",
     "pairsPerInput": 225,
     "velocityFlips": 122,
     "opponentFlips": 55

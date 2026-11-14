@@ -8,9 +8,9 @@ Each match contains five seeded rallies. Both players act from the same state at
 
 The simulation court is 360 units along the court × 160 units across it. The ball starts with an along-court speed of 5 units per tick, gains one per return up to 13, and reflects at the side walls. Its contact offset sets its outgoing across-court velocity, rounded to an integer with magnitude at most 9. Exact update and serve-generation rules are in [game.ts](../src/game.ts).
 
-Every serve begins at the center, (180, 80), with both paddles centered at 80. Its angle is 10–15° from the along-court axis: across-court speed is 0.89–1.33 units per tick. Five shuffled angle bands vary the openings; receivers alternate, and each receiver faces both across-court directions in the first four rallies. No opening hits a wall before the paddle, and a paddle moving toward the landing position after a 600 ms reaction delay can catch every serve. Return physics and speed progression are unchanged.
+Every serve begins at the center, (180, 80), with both paddles centered at 80. Its angle is 10–15° from the along-court axis: across-court speed is 0.89–1.33 units per tick. Five shuffled angle bands vary the openings; receivers alternate, and each receiver faces both across-court directions in the first four rallies. No opening hits a wall before the paddle, and a paddle moving toward the landing position after a 600 ms reaction delay can catch every serve.
 
-Interactive new matches, including **Play again**, draw a fresh seed. **Restart** and **R** replay the same seed. League evaluations keep paired, replayable seed sets. `pong-v3` changes the opening distribution from the original `pong` rules, so its benchmark identity and standings are new. Model observations, actions, eligibility and shipped weights are unchanged; retraining is not required.
+Interactive new matches, including **Play again**, draw a fresh seed. **Restart** and **R** replay the same seed. League evaluations keep paired, replayable seed sets.
 
 A rally draws after 1,600 ticks. For deterministic automated players, an exactly repeated post-return physical state also ends the rally: the same decisions would repeat indefinitely. Human matches use the full time limit.
 

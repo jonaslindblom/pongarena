@@ -29,6 +29,6 @@ export const presets = [
   },
   {
     id: 'oneshot', name: 'OneShot', kind: 'Prompted weights', submittedBy: 'jonaslindblom',
-    description: 'Astra returned these 163 weights and biases in one reply to the game rules and a tactical brief. OneShot won the most rallies against Large in the four-attempt prompt experiment.',
+    description: 'Astra returned these 163 weights and biases in one reply to the game rules and a tactical brief.',
   },
 ]
