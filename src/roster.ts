@@ -1,7 +1,7 @@
 export const presets = [
   {
     id: 'quill', name: 'Quill', kind: 'Programmed weights', handcrafted: true, submittedBy: 'jonaslindblom',
-    description: 'A 163-parameter neural network with weights calculated from deliberately designed formulas. Its dense ReLU layers predict the ball’s landing point and choose a paddle position. No optimizer or training data is used to construct its weights.',
+    description: 'A 163-parameter network whose dense ReLU layers predict the ball’s landing point and choose a paddle position. Codex developed its weight-generating formulas and iteratively revised them using simulated match feedback.',
   },
   {
     id: 'small', name: 'Small', kind: 'Trained weights', submittedBy: 'jonaslindblom',
@@ -17,11 +17,11 @@ export const presets = [
   },
   {
     id: 'attack', name: 'Attack', kind: 'Programmed weights', handcrafted: true, submittedBy: 'jonaslindblom',
-    description: 'An aggressive 75-parameter fork of Predict. Its programmed ReLU weights predict a bounded landing point, reflect a wall bounce and offset contact to aim toward a corner away from the opponent. No training or automated fitting.',
+    description: 'An aggressive 75-parameter fork of Predict that forecasts a bounded landing point, reflects a wall bounce and aims away from the opponent. Its weight-generating formulas were developed with Codex and refined using simulated match feedback.',
   },
   {
     id: 'counter', name: 'Counter', kind: 'Programmed weights', handcrafted: true, submittedBy: 'jonaslindblom',
-    description: 'A 97-parameter programmed network with a longer landing forecast, opponent-aware corner aiming and center recovery while the ball travels away. Its four dense layers use no training or automated fitting.',
+    description: 'A 97-parameter programmed network with a longer landing forecast, opponent-aware aiming and center recovery. Its weight-generating formulas were developed with Codex and refined using simulated match feedback.',
   },
   {
     id: 'follow', name: 'Follow', kind: 'Programmed weights', handcrafted: true, submittedBy: 'jonaslindblom',
