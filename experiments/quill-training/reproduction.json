@@ -1,0 +1,18 @@
+{
+  "large-943": {
+    "sha256": "416198974ea8936b19b8cfef66b31dc5fed139dbffaf6fcd106d2630f1143fc7",
+    "selected": 40,
+    "full_run_completed": true
+  },
+  "ppo-large-943": {
+    "sha256": "f0c66d25c69e04d5b9f5d506778a5cd041fbaf2a7de8d748b5bac8e6d7ef81bb",
+    "selected": 96,
+    "full_run_completed": true
+  },
+  "local-ppo-large-943": {
+    "sha256": "5e72e00a62404e78974a33351667d5899efd8b93ae2ff09970ff8aa23e5eb82f",
+    "selected": 16,
+    "full_run_completed": false
+  },
+  "note": "Imitation and PPO repeated completely. Search repeated through the selected generation-16 checkpoint and stopped after byte-for-byte equality was confirmed; the second full 96-generation search was not completed."
+}

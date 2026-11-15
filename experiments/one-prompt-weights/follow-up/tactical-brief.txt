@@ -1,0 +1,4 @@
+Design brief:
+Allocate the neurons around a paddle target. When the ball approaches, estimate where it will reach your contact plane using its position and velocity, accounting for a wall bounce. When it departs, use a separate recovery target. On an incoming ball, use the opponent's position to choose a contact offset that makes the return harder to reach. Convert target error into the three action scores with a small stay zone.
+
+Before emitting the weights, check the signs and scales on a straight incoming ball, a wall bounce, a departing ball, and the same incoming shot with the opponent on opposite sides. Return only the numeric matrices and biases.

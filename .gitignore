@@ -1,0 +1,23 @@
+node_modules/
+dist/
+.DS_Store
+
+.playwright-mcp/
+/playwright-report/
+/test-results/
+/.npm-cache/
+.venv/
+__pycache__/
+*.pyc
+training/runs/
+
+/training/results/
+/training/checkpoints/
+/training/archive/
+
+# Catalog and standings are generated from ONNX files during development and CI.
+/public/models.json
+/public/league.json
+/public/league.md
+/public/evaluation-plan.json
+/public/provenance.json

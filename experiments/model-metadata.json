@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "revised_at": "2026-11-14T17:21:52.708489+00:00",
+  "source_commit": "1d3fb0aacbb29a4c42304c30ee9c7cd0caced124",
+  "change": "Rename the ONNX method metadata to Programmed. No graph, tensor, operator, resource count or other model field changed.",
+  "verification": "Each reconstructed ModelProto differs only in the method metadata value. Removing metadata_props yields byte-identical serialized payloads before and after.",
+  "models": [
+    {
+      "id": "follow",
+      "before_sha256": "4cb35fc761e381d3951f8bca2dcdf317626b3cfd62de5d3d1f04e41bcfa7235c",
+      "after_sha256": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+      "payload_sha256": "0beffb6f53425f0f89be37f13094ec0c31564a50df365012c0b782bfef790000",
+      "changed_metadata_key": "method"
+    },
+    {
+      "id": "predict",
+      "before_sha256": "0d405fe22a0a5f568c1d23d76356893e12aae1ef1c9a7f26150e8f35520b3cad",
+      "after_sha256": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+      "payload_sha256": "8e69180beab612ed7be739b1e83598be1c7963a96aaaa058f89e74497bcda140",
+      "changed_metadata_key": "method"
+    },
+    {
+      "id": "attack",
+      "before_sha256": "646d1a1365e3e307bd4431fc73930c5efa19de16b7cc22bbb9200608c2b720f8",
+      "after_sha256": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+      "payload_sha256": "f8e702177c9db47cfd1cfc2e1803bd0763f546fc9640e79f3cbeed59de33ee3f",
+      "changed_metadata_key": "method"
+    },
+    {
+      "id": "counter",
+      "before_sha256": "5f7a480b98c982cf403f2f8849fac1e5e02503ff12e6b0b5d1e377856534e35c",
+      "after_sha256": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+      "payload_sha256": "e4f7ebe07e340f46bf65a4a69b70dabac953fc8fc89256710dd7611bd8a2952f",
+      "changed_metadata_key": "method"
+    },
+    {
+      "id": "quill",
+      "before_sha256": "bb1b4680654fdd31bcd596c38ce0b4a1cb38a126aafa71c15f55029ba49daa04",
+      "after_sha256": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+      "payload_sha256": "da53bd6c5d857089224aca870ce2bb4a7609252ef615b7665a0d16938da3e8d3",
+      "changed_metadata_key": "method"
+    }
+  ],
+  "records": [
+    {
+      "path": "experiments/quill-training/current-comparison-plan.json",
+      "before_sha256": "a2783f3df9284001e2dbfc14f2b5fd88688d5fc22ab0c14b85c39a6b3f79b12f",
+      "after_sha256": "81dbd6f1fd46566d206cb8fbda0d2e1d97376371034eadd540e7753244c69602"
+    },
+    {
+      "path": "experiments/quill-training/current-comparison.json",
+      "before_sha256": "9875a13a06ee86b62e9ab96cadcd12f06b2b1649082f4880d8211ba3b00b6f03",
+      "after_sha256": "fdf88d35ebfb35dc18bb53a4ad2c013a87c8596969802ebee9e244206846214c"
+    },
+    {
+      "path": "experiments/quill-training/results.json",
+      "before_sha256": "cb6fc610623ec22a285434f928965ab0c24260df38b77de093839055e1c1afd2",
+      "after_sha256": "d35017b182f5dbdda89a20399780f3f6f0842011e936196091eceb87f1600959"
+    }
+  ]
+}

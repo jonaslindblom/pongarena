@@ -1,0 +1,44 @@
+[
+  {
+    "id": "rules-163-a",
+    "sha256": "1e84b0325407fb23849dcacf7861e91d1f25825ba0161b636fdad3a6ff835c5b",
+    "pairsPerInput": 225,
+    "velocityFlips": 0,
+    "opponentFlips": 0
+  },
+  {
+    "id": "rules-163-b",
+    "sha256": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
+    "pairsPerInput": 225,
+    "velocityFlips": 0,
+    "opponentFlips": 0
+  },
+  {
+    "id": "tactical-163-a",
+    "sha256": "12a63f5ef4bc2127a9f8a3babdf3155c0c5381bcb6cca0cc3f70aa4d48b5765d",
+    "pairsPerInput": 225,
+    "velocityFlips": 101,
+    "opponentFlips": 39
+  },
+  {
+    "id": "tactical-163-b",
+    "sha256": "875187b9a8725a8edffa4e239d4776c83c979e78012094d3b009e02829764eef",
+    "pairsPerInput": 225,
+    "velocityFlips": 150,
+    "opponentFlips": 53
+  },
+  {
+    "id": "quill",
+    "sha256": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+    "pairsPerInput": 225,
+    "velocityFlips": 101,
+    "opponentFlips": 53
+  },
+  {
+    "id": "counter",
+    "sha256": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+    "pairsPerInput": 225,
+    "velocityFlips": 122,
+    "opponentFlips": 55
+  }
+]

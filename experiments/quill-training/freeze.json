@@ -1,0 +1,38 @@
+{
+  "utc": "2026-11-14T12:58:28.499135+00:00",
+  "primary": "local-ppo-large-943",
+  "selection_rule": "Maximum development paired-contest score; rally score breaks ties; earliest run breaks exact ties.",
+  "sha256": {
+    "large-941": "412056f30d4e7a83986d932c7a2c7c098527d3b24040db9767f0b565f5064704",
+    "large-942": "88255bac767fc0559284e0e6d11d807f332e83a185a4462efd198122006e9ea4",
+    "large-943": "416198974ea8936b19b8cfef66b31dc5fed139dbffaf6fcd106d2630f1143fc7",
+    "large-944": "e167dfa45b24d293bc1fff076f8b4848eecbe37d5fed80e2552cfba55ccd4c77",
+    "script-941": "cbf90bfadcf392bfbe51f293cd148ce9d8cf75029bcb81f4291cee1e8a2adab1",
+    "script-942": "39c462619c40321a8a9df40449b5568cda084049f3402e327ca915f523b28fd8",
+    "ppo-large-942": "88255bac767fc0559284e0e6d11d807f332e83a185a4462efd198122006e9ea4",
+    "ppo-large-943": "f0c66d25c69e04d5b9f5d506778a5cd041fbaf2a7de8d748b5bac8e6d7ef81bb",
+    "ppo-script-942": "4a16cb0d6661dc7103abc82f4a519147673eb9225caaa7921e49919a2635e973",
+    "search-ppo-large-943": "f8369c9b95a4da194f63f8ea690a2d32daceed87dadf85d7d021b5dd6a1d0ccf",
+    "search-ppo-script-942": "bc2da0b109fc0f0dfcec218102d9abfe997fc84667502be7922446e4bb0ce639",
+    "local-ppo-large-943": "5e72e00a62404e78974a33351667d5899efd8b93ae2ff09970ff8aa23e5eb82f",
+    "local-ppo-script-942": "0f331dd171ed363cc2ac6bcb3fe3cf87f54e7e96a92c25f1150927008de0afdb"
+  },
+  "sources": {
+    "training/check.py": "927a1cd8d69bc8fa494d89a5cd6c984739808ff0c55d084f21d9e7d2ec3c9ca2",
+    "training/distill.py": "068917f4c8863cf78c3de15f4e50101fbc2eb65885e963d64a9480b9d256eb75",
+    "training/evaluate.py": "2592a477ff1cbb0503ccd208446a2a13f4e27444b65bc8cd77bef62af392664c",
+    "training/export.py": "9b1038d844874655336d42641a6100a695a9583be48fdc572a411422fc659ed8",
+    "training/game.py": "12bed303e515b30e1c9167dd4c5599675a127feb3f3a7770e721c6ea076081b1",
+    "training/models.py": "550db3d9b23cea8b97bb65c15dfdf25f04d3b21be74a9340a95312c2dd9892bc",
+    "training/ppo.py": "e73a8fc5463749508d49f7f1573085c95152e1c0ceaf42fb69eaabe6a0ba5d9c",
+    "training/search.py": "68ea79d752178e39106541d2071e7949c7588c45a3a863a0d50c3a0bbe2bd7a3",
+    "training/teachers.py": "0e00cad3752c931b1c39f5b705de98b83583575036ab871bdcd9f1e7f864a928",
+    "training/test_distill.py": "09d0620ef17b5154ca002828044d26cda30ead47a19da27e27ab53e61baf9733",
+    "training/test_evaluate.py": "98391bb54c6aaffbc2d9df69c683cbf2b91c54e26f296acc93c6827b4d1f417f",
+    "training/test_game.py": "641c83c891e0190d61373ce67e3fae812359a8d389d17cf9ddae6ad723cc8e0e",
+    "training/test_ppo.py": "9ae1c9caad14d7a2ad1c1162ae7731ab48fc219d8a295972b6da3be13b21a2d3",
+    "training/train.py": "774f955ec23d86b6953ed68a9ed6cd47b6a78afe039f02ac7a127eb8bacf26aa",
+    "training/configs/quill-distill.json": "2cd1125de8803ed223edc92439bc97b85f2140c9fe2d8f3697d88c7e4848c0a5",
+    "training/configs/quill-ppo.json": "4abaaf139b4d2c399f642e9bf55e29647e4c49c492c700b46efe143d06e99f01"
+  }
+}
