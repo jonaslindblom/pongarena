@@ -1,4 +1,4 @@
-"""Build Predict's 75 programmed parameters. No training or checkpoints required."""
+"""Rebuild Predict's 75 programmed parameters from fixed forecasting formulas."""
 import argparse
 import hashlib
 from pathlib import Path
@@ -44,7 +44,7 @@ def weights():
 
 
 def export(path):
-    """Reproduce the frozen exploration artifact, including its original identity."""
+    """Reproduce the fixed exploration network with its documented method metadata."""
     nodes, tensors, previous = [], [], 'observation'
     layers = weights()
     for i, (weight, bias) in enumerate(layers):
@@ -58,14 +58,14 @@ def export(path):
         if not final:
             previous = f'hidden_{i}'
             nodes.append(helper.make_node('Relu', [output], [previous]))
-    # Preserve the original graph name and metadata from the frozen experiment.
+    # Preserve the original graph name and variant from the frozen experiment.
     # The arena's display name and submitter live in the model roster.
     graph = helper.make_graph(nodes, 'Predictive_ungated2',
         [helper.make_tensor_value_info('observation', TensorProto.FLOAT, [1, 6])],
         [helper.make_tensor_value_info('action_scores', TensorProto.FLOAT, [1, 3])], tensors)
     model = helper.make_model(graph, opset_imports=[helper.make_opsetid('', 18)],
                               ir_version=10, producer_name='PongArena exploration')
-    helper.set_model_props(model, {'method': 'Programmed analytical weights; no fitting',
+    helper.set_model_props(model, {'method': 'Programmed analytical formulas for landing prediction and wall reflection',
                                    'variant': 'ungated2'})
     onnx.checker.check_model(model)
     path = Path(path)

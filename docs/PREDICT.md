@@ -39,16 +39,16 @@ current `pong-v3` centered-serve rules.
 ## Reproduce
 
 Use the [shared NumPy/ONNX setup and byte-for-byte rebuild check](../programmed/README.md)
-for [Predict's constructor](../programmed/predict.py). No training dependencies are needed.
+for [Predict's constructor](../programmed/predict.py). It needs only NumPy and ONNX.
 
 The constructor preserves the original exploration graph name
-`Predictive_ungated2` and all weights. The descriptive method label was updated
-in the [metadata revision](../experiments/model-metadata.json), which records
-the old and new file hashes and verifies an identical model payload.
+`Predictive_ungated2` and all weights. The
+[development-description metadata revision](../experiments/programmed-method-metadata.json)
+records the previous and current file hashes and verifies an identical model payload.
 The current model SHA-256 is:
 
 ```text
-2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6
+a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f
 ```
 
 The displayed name is Predict. Its submitter is recorded in the model roster.

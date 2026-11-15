@@ -10,7 +10,7 @@ Use Node.js 26 LTS (the tested version is in [`.nvmrc`](.nvmrc)) and `npm ci`. I
 
 For a small example of programmed weights, [Follow](docs/FOLLOW.md) explains all 13 parameters and can be rebuilt with the [shared constructor setup](programmed/README.md).
 
-Keep the methods independent: [Quill's constructor](programmed/quill.py) writes fixed weights, while [training](training/README.md) starts from random weights and uses scripts, learned teachers and game outcomes. [Small](experiments/quill-training/README.md) shares Quill's architecture and learns through Large distillation, PPO and CMA-ES. Training and checkpoint selection must not use programmed models' weights, outputs or matches; compare frozen models with Quill afterward.
+Keep the methods independent: [Quill's constructor](programmed/quill.py) rebuilds weights from formulas that Codex developed and revised using simulated match feedback. The [training recipes](training/README.md) start from random weights and use scripts, learned teachers and game outcomes. [Small](experiments/quill-training/README.md) shares Quill's architecture and learns through Large distillation, PPO and CMA-ES. Training and checkpoint selection must not use programmed models' weights, outputs or matches; compare frozen models with Quill afterward.
 
 ## Submit a model
 

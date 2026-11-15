@@ -38,7 +38,7 @@ function TrainingFinding({ models, onPlay, onWatch }: {
     </div>
     <div className="finding-models">
       {[
-        ['Quill', 'Programmed', 'Geometry and tactics expressed directly as weights. Developed with Codex and refined through play.'],
+        ['Quill', 'Programmed', 'Explicit geometric formulas, developed with Codex and iteratively refined using simulated match feedback.'],
         ['Small', 'Trained', 'Learned from Large, then refined through play and a search over weight values.'],
         ['OneShot', 'Prompted', 'Numeric weights from one Astra reply to the rules and a tactical brief. No match feedback.'],
       ].map(([name, method, description]) => <div key={name}>
@@ -106,7 +106,7 @@ function TrainingFinding({ models, onPlay, onWatch }: {
       <span className="section-code">WHAT THIS TELLS US</span>
       <h2 id="training-meaning-title">The surprising part is finding the policy.</h2>
       <p>Quill is constructive evidence that this architecture can play well. Our training methods did not find equally effective weights within this experiment’s budget. Large does much better, so learning the game itself is possible.</p>
-      <p>That supports a narrow, interesting finding: <strong>training this tiny network to beat the programmed players proved difficult despite several serious attempts.</strong> It does not establish that programmed weights are generally better, or that a better training scheme could not win. The programmed policies also benefited from human and AI iteration.</p>
+      <p>That supports a narrow, interesting finding: <strong>training this tiny network to beat the programmed players proved difficult despite several serious attempts.</strong> It does not establish that programmed weights are generally better, or that a better training scheme could not win. The programmed policies also benefited from Codex-assisted design and simulated match feedback. This comparison does not equalize development effort or prior knowledge.</p>
       <div className="finding-actions">
         <a className="secondary-btn" href={assetPath('models/small.onnx')} download="small.onnx"><Download size={15} /> Download Small</a>
         <a className="secondary-btn" href={repository + '/tree/main/training'}>Try another training scheme <ArrowRight size={15} /></a>

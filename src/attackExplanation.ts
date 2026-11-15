@@ -11,7 +11,7 @@ const outputRoles = actionLabels.map(action => `${action} score`)
 const wallRoles = ['Target error carrier', 'Right wall hinge', 'Left wall hinge']
 const models = {
   attack: {
-    hash: '32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1',
+    hash: '798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59',
     widths: [6, 6, 3, 3],
     roles: [
       ['Positive forecast hinge', 'Negative forecast hinge', 'Across-court forecast carrier', 'Paddle carrier', 'Opponent ramp', 'Opponent cap hinge'],
@@ -19,7 +19,7 @@ const models = {
     ],
   },
   counter: {
-    hash: 'db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed',
+    hash: 'f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d',
     widths: [6, 6, 4, 3, 3],
     roles: [
       ['Positive forecast hinge', 'Negative forecast hinge', 'Across-court forecast carrier', 'Paddle carrier', 'Outgoing detector', 'Opponent ramp'],

@@ -115,7 +115,7 @@
       "opponent": {
         "id": "follow",
         "name": "follow",
-        "sha256": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+        "sha256": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
         "params": 13,
         "macs": 9
       },
@@ -147,7 +147,7 @@
       },
       "run": {
         "protocol": "paired-round-robin",
-        "benchmark": "6b5df24a00b6a587d7681aa47efc930b344d6ccbbddfe7eb4b96fedd7528d9e3",
+        "benchmark": "2be89c25c815e5dcfbaebb50d2402e719a7ca4c8b3a3eb9961b6354bd85947db",
         "spec": {
           "rulesId": "pong-v3",
           "contractId": "dense-mlp",
@@ -222,7 +222,7 @@
             {
               "id": "follow",
               "name": "follow",
-              "sha256": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+              "sha256": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
               "params": 13,
               "macs": 9
             },
@@ -238,7 +238,7 @@
         "status": "complete",
         "contests": [
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 45334102,
             "matches": [
@@ -259,7 +259,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 74524236,
             "matches": [
@@ -280,7 +280,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 145568960,
             "matches": [
@@ -301,7 +301,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 258581280,
             "matches": [
@@ -322,7 +322,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 315728459,
             "matches": [
@@ -343,7 +343,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 318182939,
             "matches": [
@@ -364,7 +364,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 396811031,
             "matches": [
@@ -385,7 +385,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 400842139,
             "matches": [
@@ -406,7 +406,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 426967844,
             "matches": [
@@ -427,7 +427,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 436453270,
             "matches": [
@@ -448,7 +448,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 558605160,
             "matches": [
@@ -469,7 +469,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 570840113,
             "matches": [
@@ -490,7 +490,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 706331179,
             "matches": [
@@ -511,7 +511,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 840951058,
             "matches": [
@@ -532,7 +532,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 845068317,
             "matches": [
@@ -553,7 +553,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 985525573,
             "matches": [
@@ -574,7 +574,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 999212899,
             "matches": [
@@ -595,7 +595,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1001603810,
             "matches": [
@@ -616,7 +616,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1057544385,
             "matches": [
@@ -637,7 +637,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1284476600,
             "matches": [
@@ -658,7 +658,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1456515701,
             "matches": [
@@ -679,7 +679,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1508294864,
             "matches": [
@@ -700,7 +700,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1541554309,
             "matches": [
@@ -721,7 +721,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1548029974,
             "matches": [
@@ -742,7 +742,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1560848358,
             "matches": [
@@ -763,7 +763,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1569709130,
             "matches": [
@@ -784,7 +784,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1576140565,
             "matches": [
@@ -805,7 +805,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1688130461,
             "matches": [
@@ -826,7 +826,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1735962641,
             "matches": [
@@ -847,7 +847,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1764690588,
             "matches": [
@@ -868,7 +868,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1830888781,
             "matches": [
@@ -889,7 +889,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1946286899,
             "matches": [
@@ -910,7 +910,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1952354387,
             "matches": [
@@ -931,7 +931,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1968891117,
             "matches": [
@@ -952,7 +952,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2014417583,
             "matches": [
@@ -973,7 +973,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2031075997,
             "matches": [
@@ -994,7 +994,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2047327331,
             "matches": [
@@ -1015,7 +1015,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2362985896,
             "matches": [
@@ -1036,7 +1036,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2376573859,
             "matches": [
@@ -1057,7 +1057,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2412776672,
             "matches": [
@@ -1078,7 +1078,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2532537609,
             "matches": [
@@ -1099,7 +1099,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2619247647,
             "matches": [
@@ -1120,7 +1120,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2655716965,
             "matches": [
@@ -1141,7 +1141,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2681510669,
             "matches": [
@@ -1162,7 +1162,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2774948420,
             "matches": [
@@ -1183,7 +1183,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3110096978,
             "matches": [
@@ -1204,7 +1204,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3136157166,
             "matches": [
@@ -1225,7 +1225,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3152406953,
             "matches": [
@@ -1246,7 +1246,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3155377821,
             "matches": [
@@ -1267,7 +1267,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3189921985,
             "matches": [
@@ -1288,7 +1288,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3385569092,
             "matches": [
@@ -1309,7 +1309,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3479879180,
             "matches": [
@@ -1330,7 +1330,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3491776585,
             "matches": [
@@ -1351,7 +1351,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3500924064,
             "matches": [
@@ -1372,7 +1372,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3548054841,
             "matches": [
@@ -1393,7 +1393,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3634445457,
             "matches": [
@@ -1414,7 +1414,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3648974267,
             "matches": [
@@ -1435,7 +1435,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3657554106,
             "matches": [
@@ -1456,7 +1456,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3666589120,
             "matches": [
@@ -1477,7 +1477,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3712898760,
             "matches": [
@@ -1498,7 +1498,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3992189618,
             "matches": [
@@ -1519,7 +1519,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 4148347552,
             "matches": [
@@ -1540,7 +1540,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 4151644463,
             "matches": [
@@ -1561,7 +1561,7 @@
             ]
           },
           {
-            "a": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+            "a": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 4189990014,
             "matches": [
@@ -3065,7 +3065,7 @@
       "opponent": {
         "id": "predict",
         "name": "predict",
-        "sha256": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+        "sha256": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
         "params": 75,
         "macs": 63
       },
@@ -3097,7 +3097,7 @@
       },
       "run": {
         "protocol": "paired-round-robin",
-        "benchmark": "5ff4e902219bc247a147446c723252c0e8b9470a79e53febcae22e8f63b4b35e",
+        "benchmark": "f1728c9e8be0b8e201ff1181004f031b759f37dd4d49fb2bb2ee5159c79434e1",
         "spec": {
           "rulesId": "pong-v3",
           "contractId": "dense-mlp",
@@ -3172,7 +3172,7 @@
             {
               "id": "predict",
               "name": "predict",
-              "sha256": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+              "sha256": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
               "params": 75,
               "macs": 63
             },
@@ -3188,7 +3188,7 @@
         "status": "complete",
         "contests": [
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 45334102,
             "matches": [
@@ -3209,7 +3209,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 74524236,
             "matches": [
@@ -3230,7 +3230,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 145568960,
             "matches": [
@@ -3251,7 +3251,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 258581280,
             "matches": [
@@ -3272,7 +3272,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 315728459,
             "matches": [
@@ -3293,7 +3293,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 318182939,
             "matches": [
@@ -3314,7 +3314,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 396811031,
             "matches": [
@@ -3335,7 +3335,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 400842139,
             "matches": [
@@ -3356,7 +3356,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 426967844,
             "matches": [
@@ -3377,7 +3377,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 436453270,
             "matches": [
@@ -3398,7 +3398,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 558605160,
             "matches": [
@@ -3419,7 +3419,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 570840113,
             "matches": [
@@ -3440,7 +3440,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 706331179,
             "matches": [
@@ -3461,7 +3461,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 840951058,
             "matches": [
@@ -3482,7 +3482,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 845068317,
             "matches": [
@@ -3503,7 +3503,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 985525573,
             "matches": [
@@ -3524,7 +3524,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 999212899,
             "matches": [
@@ -3545,7 +3545,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1001603810,
             "matches": [
@@ -3566,7 +3566,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1057544385,
             "matches": [
@@ -3587,7 +3587,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1284476600,
             "matches": [
@@ -3608,7 +3608,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1456515701,
             "matches": [
@@ -3629,7 +3629,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1508294864,
             "matches": [
@@ -3650,7 +3650,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1541554309,
             "matches": [
@@ -3671,7 +3671,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1548029974,
             "matches": [
@@ -3692,7 +3692,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1560848358,
             "matches": [
@@ -3713,7 +3713,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1569709130,
             "matches": [
@@ -3734,7 +3734,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1576140565,
             "matches": [
@@ -3755,7 +3755,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1688130461,
             "matches": [
@@ -3776,7 +3776,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1735962641,
             "matches": [
@@ -3797,7 +3797,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1764690588,
             "matches": [
@@ -3818,7 +3818,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1830888781,
             "matches": [
@@ -3839,7 +3839,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1946286899,
             "matches": [
@@ -3860,7 +3860,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1952354387,
             "matches": [
@@ -3881,7 +3881,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1968891117,
             "matches": [
@@ -3902,7 +3902,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2014417583,
             "matches": [
@@ -3923,7 +3923,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2031075997,
             "matches": [
@@ -3944,7 +3944,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2047327331,
             "matches": [
@@ -3965,7 +3965,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2362985896,
             "matches": [
@@ -3986,7 +3986,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2376573859,
             "matches": [
@@ -4007,7 +4007,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2412776672,
             "matches": [
@@ -4028,7 +4028,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2532537609,
             "matches": [
@@ -4049,7 +4049,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2619247647,
             "matches": [
@@ -4070,7 +4070,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2655716965,
             "matches": [
@@ -4091,7 +4091,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2681510669,
             "matches": [
@@ -4112,7 +4112,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2774948420,
             "matches": [
@@ -4133,7 +4133,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3110096978,
             "matches": [
@@ -4154,7 +4154,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3136157166,
             "matches": [
@@ -4175,7 +4175,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3152406953,
             "matches": [
@@ -4196,7 +4196,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3155377821,
             "matches": [
@@ -4217,7 +4217,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3189921985,
             "matches": [
@@ -4238,7 +4238,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3385569092,
             "matches": [
@@ -4259,7 +4259,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3479879180,
             "matches": [
@@ -4280,7 +4280,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3491776585,
             "matches": [
@@ -4301,7 +4301,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3500924064,
             "matches": [
@@ -4322,7 +4322,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3548054841,
             "matches": [
@@ -4343,7 +4343,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3634445457,
             "matches": [
@@ -4364,7 +4364,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3648974267,
             "matches": [
@@ -4385,7 +4385,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3657554106,
             "matches": [
@@ -4406,7 +4406,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3666589120,
             "matches": [
@@ -4427,7 +4427,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3712898760,
             "matches": [
@@ -4448,7 +4448,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3992189618,
             "matches": [
@@ -4469,7 +4469,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 4148347552,
             "matches": [
@@ -4490,7 +4490,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 4151644463,
             "matches": [
@@ -4511,7 +4511,7 @@
             ]
           },
           {
-            "a": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+            "a": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 4189990014,
             "matches": [
@@ -4540,7 +4540,7 @@
       "opponent": {
         "id": "attack",
         "name": "attack",
-        "sha256": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+        "sha256": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
         "params": 75,
         "macs": 63
       },
@@ -4570,7 +4570,7 @@
       },
       "run": {
         "protocol": "paired-round-robin",
-        "benchmark": "ab3d3cf6c7f3a511e14607946fd2689ca465e343b85f461635b58107a5e81c69",
+        "benchmark": "f8963c609dd80cf5c867e7ad3ee05cc22b4b56c0fb4afd61c6107c063a28516c",
         "spec": {
           "rulesId": "pong-v3",
           "contractId": "dense-mlp",
@@ -4645,7 +4645,7 @@
             {
               "id": "attack",
               "name": "attack",
-              "sha256": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+              "sha256": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
               "params": 75,
               "macs": 63
             },
@@ -4661,7 +4661,7 @@
         "status": "complete",
         "contests": [
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 45334102,
             "matches": [
@@ -4682,7 +4682,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 74524236,
             "matches": [
@@ -4703,7 +4703,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 145568960,
             "matches": [
@@ -4724,7 +4724,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 258581280,
             "matches": [
@@ -4745,7 +4745,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 315728459,
             "matches": [
@@ -4766,7 +4766,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 318182939,
             "matches": [
@@ -4787,7 +4787,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 396811031,
             "matches": [
@@ -4808,7 +4808,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 400842139,
             "matches": [
@@ -4829,7 +4829,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 426967844,
             "matches": [
@@ -4850,7 +4850,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 436453270,
             "matches": [
@@ -4871,7 +4871,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 558605160,
             "matches": [
@@ -4892,7 +4892,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 570840113,
             "matches": [
@@ -4913,7 +4913,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 706331179,
             "matches": [
@@ -4934,7 +4934,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 840951058,
             "matches": [
@@ -4955,7 +4955,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 845068317,
             "matches": [
@@ -4976,7 +4976,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 985525573,
             "matches": [
@@ -4997,7 +4997,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 999212899,
             "matches": [
@@ -5018,7 +5018,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1001603810,
             "matches": [
@@ -5039,7 +5039,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1057544385,
             "matches": [
@@ -5060,7 +5060,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1284476600,
             "matches": [
@@ -5081,7 +5081,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1456515701,
             "matches": [
@@ -5102,7 +5102,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1508294864,
             "matches": [
@@ -5123,7 +5123,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1541554309,
             "matches": [
@@ -5144,7 +5144,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1548029974,
             "matches": [
@@ -5165,7 +5165,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1560848358,
             "matches": [
@@ -5186,7 +5186,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1569709130,
             "matches": [
@@ -5207,7 +5207,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1576140565,
             "matches": [
@@ -5228,7 +5228,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1688130461,
             "matches": [
@@ -5249,7 +5249,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1735962641,
             "matches": [
@@ -5270,7 +5270,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1764690588,
             "matches": [
@@ -5291,7 +5291,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1830888781,
             "matches": [
@@ -5312,7 +5312,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1946286899,
             "matches": [
@@ -5333,7 +5333,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1952354387,
             "matches": [
@@ -5354,7 +5354,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1968891117,
             "matches": [
@@ -5375,7 +5375,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2014417583,
             "matches": [
@@ -5396,7 +5396,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2031075997,
             "matches": [
@@ -5417,7 +5417,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2047327331,
             "matches": [
@@ -5438,7 +5438,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2362985896,
             "matches": [
@@ -5459,7 +5459,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2376573859,
             "matches": [
@@ -5480,7 +5480,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2412776672,
             "matches": [
@@ -5501,7 +5501,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2532537609,
             "matches": [
@@ -5522,7 +5522,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2619247647,
             "matches": [
@@ -5543,7 +5543,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2655716965,
             "matches": [
@@ -5564,7 +5564,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2681510669,
             "matches": [
@@ -5585,7 +5585,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2774948420,
             "matches": [
@@ -5606,7 +5606,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3110096978,
             "matches": [
@@ -5627,7 +5627,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3136157166,
             "matches": [
@@ -5648,7 +5648,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3152406953,
             "matches": [
@@ -5669,7 +5669,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3155377821,
             "matches": [
@@ -5690,7 +5690,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3189921985,
             "matches": [
@@ -5711,7 +5711,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3385569092,
             "matches": [
@@ -5732,7 +5732,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3479879180,
             "matches": [
@@ -5753,7 +5753,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3491776585,
             "matches": [
@@ -5774,7 +5774,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3500924064,
             "matches": [
@@ -5795,7 +5795,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3548054841,
             "matches": [
@@ -5816,7 +5816,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3634445457,
             "matches": [
@@ -5837,7 +5837,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3648974267,
             "matches": [
@@ -5858,7 +5858,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3657554106,
             "matches": [
@@ -5879,7 +5879,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3666589120,
             "matches": [
@@ -5900,7 +5900,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3712898760,
             "matches": [
@@ -5921,7 +5921,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3992189618,
             "matches": [
@@ -5942,7 +5942,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 4148347552,
             "matches": [
@@ -5963,7 +5963,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 4151644463,
             "matches": [
@@ -5984,7 +5984,7 @@
             ]
           },
           {
-            "a": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+            "a": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 4189990014,
             "matches": [
@@ -6013,7 +6013,7 @@
       "opponent": {
         "id": "counter",
         "name": "counter",
-        "sha256": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+        "sha256": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
         "params": 97,
         "macs": 81
       },
@@ -6043,7 +6043,7 @@
       },
       "run": {
         "protocol": "paired-round-robin",
-        "benchmark": "6a42d56052dc2d7559448dab20d088061778a4a7d6cc08beb484d2e77799d275",
+        "benchmark": "c7995a0bb96ac7db897d7715eda9732daa14f74df85dae7f32ef893d6396bafe",
         "spec": {
           "rulesId": "pong-v3",
           "contractId": "dense-mlp",
@@ -6125,7 +6125,7 @@
             {
               "id": "counter",
               "name": "counter",
-              "sha256": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+              "sha256": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
               "params": 97,
               "macs": 81
             }
@@ -6135,7 +6135,7 @@
         "contests": [
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 45334102,
             "matches": [
               {
@@ -6156,7 +6156,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 74524236,
             "matches": [
               {
@@ -6177,7 +6177,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 145568960,
             "matches": [
               {
@@ -6198,7 +6198,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 258581280,
             "matches": [
               {
@@ -6219,7 +6219,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 315728459,
             "matches": [
               {
@@ -6240,7 +6240,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 318182939,
             "matches": [
               {
@@ -6261,7 +6261,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 396811031,
             "matches": [
               {
@@ -6282,7 +6282,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 400842139,
             "matches": [
               {
@@ -6303,7 +6303,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 426967844,
             "matches": [
               {
@@ -6324,7 +6324,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 436453270,
             "matches": [
               {
@@ -6345,7 +6345,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 558605160,
             "matches": [
               {
@@ -6366,7 +6366,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 570840113,
             "matches": [
               {
@@ -6387,7 +6387,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 706331179,
             "matches": [
               {
@@ -6408,7 +6408,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 840951058,
             "matches": [
               {
@@ -6429,7 +6429,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 845068317,
             "matches": [
               {
@@ -6450,7 +6450,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 985525573,
             "matches": [
               {
@@ -6471,7 +6471,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 999212899,
             "matches": [
               {
@@ -6492,7 +6492,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 1001603810,
             "matches": [
               {
@@ -6513,7 +6513,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 1057544385,
             "matches": [
               {
@@ -6534,7 +6534,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 1284476600,
             "matches": [
               {
@@ -6555,7 +6555,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 1456515701,
             "matches": [
               {
@@ -6576,7 +6576,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 1508294864,
             "matches": [
               {
@@ -6597,7 +6597,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 1541554309,
             "matches": [
               {
@@ -6618,7 +6618,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 1548029974,
             "matches": [
               {
@@ -6639,7 +6639,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 1560848358,
             "matches": [
               {
@@ -6660,7 +6660,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 1569709130,
             "matches": [
               {
@@ -6681,7 +6681,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 1576140565,
             "matches": [
               {
@@ -6702,7 +6702,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 1688130461,
             "matches": [
               {
@@ -6723,7 +6723,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 1735962641,
             "matches": [
               {
@@ -6744,7 +6744,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 1764690588,
             "matches": [
               {
@@ -6765,7 +6765,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 1830888781,
             "matches": [
               {
@@ -6786,7 +6786,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 1946286899,
             "matches": [
               {
@@ -6807,7 +6807,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 1952354387,
             "matches": [
               {
@@ -6828,7 +6828,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 1968891117,
             "matches": [
               {
@@ -6849,7 +6849,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 2014417583,
             "matches": [
               {
@@ -6870,7 +6870,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 2031075997,
             "matches": [
               {
@@ -6891,7 +6891,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 2047327331,
             "matches": [
               {
@@ -6912,7 +6912,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 2362985896,
             "matches": [
               {
@@ -6933,7 +6933,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 2376573859,
             "matches": [
               {
@@ -6954,7 +6954,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 2412776672,
             "matches": [
               {
@@ -6975,7 +6975,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 2532537609,
             "matches": [
               {
@@ -6996,7 +6996,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 2619247647,
             "matches": [
               {
@@ -7017,7 +7017,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 2655716965,
             "matches": [
               {
@@ -7038,7 +7038,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 2681510669,
             "matches": [
               {
@@ -7059,7 +7059,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 2774948420,
             "matches": [
               {
@@ -7080,7 +7080,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 3110096978,
             "matches": [
               {
@@ -7101,7 +7101,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 3136157166,
             "matches": [
               {
@@ -7122,7 +7122,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 3152406953,
             "matches": [
               {
@@ -7143,7 +7143,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 3155377821,
             "matches": [
               {
@@ -7164,7 +7164,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 3189921985,
             "matches": [
               {
@@ -7185,7 +7185,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 3385569092,
             "matches": [
               {
@@ -7206,7 +7206,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 3479879180,
             "matches": [
               {
@@ -7227,7 +7227,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 3491776585,
             "matches": [
               {
@@ -7248,7 +7248,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 3500924064,
             "matches": [
               {
@@ -7269,7 +7269,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 3548054841,
             "matches": [
               {
@@ -7290,7 +7290,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 3634445457,
             "matches": [
               {
@@ -7311,7 +7311,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 3648974267,
             "matches": [
               {
@@ -7332,7 +7332,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 3657554106,
             "matches": [
               {
@@ -7353,7 +7353,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 3666589120,
             "matches": [
               {
@@ -7374,7 +7374,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 3712898760,
             "matches": [
               {
@@ -7395,7 +7395,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 3992189618,
             "matches": [
               {
@@ -7416,7 +7416,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 4148347552,
             "matches": [
               {
@@ -7437,7 +7437,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 4151644463,
             "matches": [
               {
@@ -7458,7 +7458,7 @@
           },
           {
             "a": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
-            "b": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+            "b": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
             "seed": 4189990014,
             "matches": [
               {
@@ -7486,7 +7486,7 @@
       "opponent": {
         "id": "quill",
         "name": "quill",
-        "sha256": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+        "sha256": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
         "params": 163,
         "macs": 141
       },
@@ -7516,7 +7516,7 @@
       },
       "run": {
         "protocol": "paired-round-robin",
-        "benchmark": "dcf876dc82c93032138c3f1883e4b8afc8676f7bf25838c9017af9c6eb225613",
+        "benchmark": "a5845993fbf7b0679890176bebe18c870403c7338ff8a30934acc341cfa770b0",
         "spec": {
           "rulesId": "pong-v3",
           "contractId": "dense-mlp",
@@ -7591,7 +7591,7 @@
             {
               "id": "quill",
               "name": "quill",
-              "sha256": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+              "sha256": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
               "params": 163,
               "macs": 141
             },
@@ -7607,7 +7607,7 @@
         "status": "complete",
         "contests": [
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 45334102,
             "matches": [
@@ -7628,7 +7628,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 74524236,
             "matches": [
@@ -7649,7 +7649,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 145568960,
             "matches": [
@@ -7670,7 +7670,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 258581280,
             "matches": [
@@ -7691,7 +7691,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 315728459,
             "matches": [
@@ -7712,7 +7712,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 318182939,
             "matches": [
@@ -7733,7 +7733,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 396811031,
             "matches": [
@@ -7754,7 +7754,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 400842139,
             "matches": [
@@ -7775,7 +7775,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 426967844,
             "matches": [
@@ -7796,7 +7796,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 436453270,
             "matches": [
@@ -7817,7 +7817,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 558605160,
             "matches": [
@@ -7838,7 +7838,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 570840113,
             "matches": [
@@ -7859,7 +7859,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 706331179,
             "matches": [
@@ -7880,7 +7880,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 840951058,
             "matches": [
@@ -7901,7 +7901,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 845068317,
             "matches": [
@@ -7922,7 +7922,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 985525573,
             "matches": [
@@ -7943,7 +7943,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 999212899,
             "matches": [
@@ -7964,7 +7964,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1001603810,
             "matches": [
@@ -7985,7 +7985,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1057544385,
             "matches": [
@@ -8006,7 +8006,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1284476600,
             "matches": [
@@ -8027,7 +8027,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1456515701,
             "matches": [
@@ -8048,7 +8048,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1508294864,
             "matches": [
@@ -8069,7 +8069,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1541554309,
             "matches": [
@@ -8090,7 +8090,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1548029974,
             "matches": [
@@ -8111,7 +8111,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1560848358,
             "matches": [
@@ -8132,7 +8132,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1569709130,
             "matches": [
@@ -8153,7 +8153,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1576140565,
             "matches": [
@@ -8174,7 +8174,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1688130461,
             "matches": [
@@ -8195,7 +8195,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1735962641,
             "matches": [
@@ -8216,7 +8216,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1764690588,
             "matches": [
@@ -8237,7 +8237,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1830888781,
             "matches": [
@@ -8258,7 +8258,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1946286899,
             "matches": [
@@ -8279,7 +8279,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1952354387,
             "matches": [
@@ -8300,7 +8300,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 1968891117,
             "matches": [
@@ -8321,7 +8321,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2014417583,
             "matches": [
@@ -8342,7 +8342,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2031075997,
             "matches": [
@@ -8363,7 +8363,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2047327331,
             "matches": [
@@ -8384,7 +8384,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2362985896,
             "matches": [
@@ -8405,7 +8405,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2376573859,
             "matches": [
@@ -8426,7 +8426,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2412776672,
             "matches": [
@@ -8447,7 +8447,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2532537609,
             "matches": [
@@ -8468,7 +8468,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2619247647,
             "matches": [
@@ -8489,7 +8489,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2655716965,
             "matches": [
@@ -8510,7 +8510,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2681510669,
             "matches": [
@@ -8531,7 +8531,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 2774948420,
             "matches": [
@@ -8552,7 +8552,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3110096978,
             "matches": [
@@ -8573,7 +8573,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3136157166,
             "matches": [
@@ -8594,7 +8594,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3152406953,
             "matches": [
@@ -8615,7 +8615,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3155377821,
             "matches": [
@@ -8636,7 +8636,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3189921985,
             "matches": [
@@ -8657,7 +8657,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3385569092,
             "matches": [
@@ -8678,7 +8678,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3479879180,
             "matches": [
@@ -8699,7 +8699,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3491776585,
             "matches": [
@@ -8720,7 +8720,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3500924064,
             "matches": [
@@ -8741,7 +8741,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3548054841,
             "matches": [
@@ -8762,7 +8762,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3634445457,
             "matches": [
@@ -8783,7 +8783,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3648974267,
             "matches": [
@@ -8804,7 +8804,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3657554106,
             "matches": [
@@ -8825,7 +8825,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3666589120,
             "matches": [
@@ -8846,7 +8846,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3712898760,
             "matches": [
@@ -8867,7 +8867,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 3992189618,
             "matches": [
@@ -8888,7 +8888,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 4148347552,
             "matches": [
@@ -8909,7 +8909,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 4151644463,
             "matches": [
@@ -8930,7 +8930,7 @@
             ]
           },
           {
-            "a": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+            "a": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
             "b": "c8cfa5df6ce30d345547ac327aee0471e4815e18b108882a539c2a761a6f0409",
             "seed": 4189990014,
             "matches": [
