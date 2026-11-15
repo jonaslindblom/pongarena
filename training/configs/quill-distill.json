@@ -1,0 +1,15 @@
+{
+  "seed": 941,
+  "rounds": 96,
+  "envs": 128,
+  "horizon": 128,
+  "epochs": 4,
+  "synthetic": 8192,
+  "replay_rounds": 4,
+  "batch_size": 2048,
+  "learning_rate": 0.003,
+  "evaluate_every": 8,
+  "teacher_rounds": 32,
+  "temperature": 2.0,
+  "contact_weight": 4
+}

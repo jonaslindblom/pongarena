@@ -1,0 +1,11 @@
+.controller-identity { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 5px 7px; max-width: 100%; font: 9px var(--mono); line-height: 1.5; }
+.controller-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 6px; border: 1px solid #cbd9cb; border-radius: 4px; background: #eef3e8; color: #3c6048; white-space: nowrap; }
+.controller-badge svg { flex: none; }
+[data-controller-type='human'] > .controller-badge { color: #56636a; background: #eef0ef; border-color: #d3dbd8; }
+[data-weight-origin='handcrafted'] > .controller-badge { color: #315f9a; background: #edf3ff; border-color: #bacde9; }
+.controller-size { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 3px 6px; }
+.controller-class { font-weight: 700; color: #596b58; }
+.controller-class[data-division='small'] { color: #1e7474; }
+.controller-class[data-division='large'] { color: #73539b; }
+.controller-params { color: #6c796b; white-space: nowrap; }
+.pick-details { margin: 7px 2px 0; }

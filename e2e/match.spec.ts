@@ -1,0 +1,118 @@
+import { test, expect } from '@playwright/test'
+
+test('human serves count down before advancing and restart safely after pause', async ({ page }) => {
+  await page.goto('/?model=counter')
+  await expect(page.locator('.court-control.play-btn')).toBeEnabled({ timeout: 30_000 })
+  await expect(page.getByRole('combobox', { name: 'Opponent', exact: true })).toHaveValue('counter')
+  await page.clock.install()
+  await page.locator('.court-control.play-btn').click()
+  await expect(page.locator('.serve-countdown strong')).toHaveText('3')
+  await expect(page.locator('.moving-ball').last()).toBeHidden()
+  await page.clock.runFor(1100)
+  await expect(page.locator('.serve-countdown strong')).toHaveText('2')
+  await expect(page.locator('.tick-readout')).toHaveAttribute('aria-label', 'Simulation tick 0')
+  await page.getByRole('button', { name: 'Pause', exact: true }).click()
+  await expect(page.locator('.serve-countdown')).toHaveCount(0)
+  await page.clock.runFor(4000)
+  await expect(page.locator('.tick-readout')).toHaveAttribute('aria-label', 'Simulation tick 0')
+  await page.locator('.court-control.play-btn').click()
+  await expect(page.locator('.serve-countdown strong')).toHaveText('3')
+  await page.clock.runFor(3100)
+  await expect(page.locator('.serve-countdown')).toHaveCount(0)
+  await expect(page.locator('.tick-readout')).not.toHaveAttribute('aria-label', 'Simulation tick 0')
+  await expect(page.locator('.moving-ball').last()).toBeVisible()
+  await page.getByRole('button', { name: 'Restart match' }).click()
+  await expect(page.locator('.serve-countdown strong')).toHaveText('3')
+  await expect(page.locator('.tick-readout')).toHaveAttribute('aria-label', 'Simulation tick 0')
+  // With no human movement a rally eventually ends; every following serve must wait too.
+  for (let elapsed = 0; elapsed < 20000; elapsed += 100) {
+    await page.clock.runFor(100)
+    if (!(await page.locator('.court-foot').textContent())?.includes('RALLY 01')) break
+  }
+  await expect(page.locator('.court-foot')).toContainText('RALLY 02')
+  await expect(page.locator('.serve-countdown strong')).toHaveText('3')
+  const tick = await page.locator('.tick-readout').getAttribute('aria-label')
+  await page.clock.runFor(1100)
+  await expect(page.locator('.serve-countdown strong')).toHaveText('2')
+  await expect(page.locator('.tick-readout')).toHaveAttribute('aria-label', tick!)
+})
+
+test('model and fullscreen links open a ready game and survive selection and reload', async ({ page }) => {
+  await page.goto('/?model=follow&fullscreen=1')
+  await expect(page.locator('.court-control.play-btn')).toBeEnabled({ timeout: 30_000 })
+  await expect(page.locator('.court-fullscreen')).toBeVisible()
+  await expect(page.locator('.score-player strong').first()).toHaveText('Follow')
+  await expect(page.locator('.tick-readout')).toHaveAttribute('aria-label', 'Simulation tick 0')
+  await page.getByRole('button', { name: 'Exit full screen' }).click()
+  await expect(page).not.toHaveURL(/fullscreen/)
+  await page.getByRole('combobox', { name: 'Opponent', exact: true }).selectOption('counter')
+  await expect(page).toHaveURL(/model=counter(?:&|$)/)
+  await page.reload()
+  await expect(page.getByRole('combobox', { name: 'Opponent', exact: true })).toHaveValue('counter', { timeout: 30_000 })
+})
+
+test('watch links autoplay both models without a human countdown; unknown models fall back', async ({ page }) => {
+  await page.goto('/?mode=watch&model=follow&opponent=counter')
+  await expect(page.locator('.court-control.play-btn')).toBeEnabled({ timeout: 30_000 })
+  await expect(page.getByRole('combobox', { name: 'Bottom controller' })).toHaveValue('follow')
+  await expect(page.getByRole('combobox', { name: 'Top controller' })).toHaveValue('counter')
+  await expect(page).toHaveURL(/opponent=counter(?:&|$)/)
+  await expect(page.locator('.court .status')).toHaveText('Live')
+  await expect(page.locator('.serve-countdown')).toHaveCount(0)
+  await expect(page.locator('.tick-readout')).not.toHaveAttribute('aria-label', 'Simulation tick 0')
+  await page.goto('/?model=missing')
+  await expect(page.getByRole('combobox', { name: 'Opponent', exact: true })).toHaveValue('counter', { timeout: 30_000 })
+  await expect(page.getByRole('status').filter({ hasText: 'linked model is unavailable' })).toBeVisible()
+})
+
+test('human play ends on the third point and offers a fresh match', async ({ page }) => {
+  test.setTimeout(60_000)
+  await page.goto('/?model=counter')
+  await expect(page.locator('.court-control.play-btn')).toBeEnabled({ timeout: 30_000 })
+  await page.clock.install()
+  await page.locator('.court-control.play-btn').click()
+  await expect(page.locator('.court-foot')).toContainText('FIRST TO 3')
+  for (let elapsed = 0; elapsed < 180_000; elapsed += 1000) {
+    await page.clock.runFor(1000)
+    if (await page.locator('.match-over').isVisible()) break
+  }
+  await expect(page.locator('.match-over')).toBeVisible()
+  const score = await page.locator('.match-over-score').innerText()
+  expect(Math.max(...score.split('–').map(Number))).toBe(3)
+  const tick = await page.locator('.tick-readout').getAttribute('aria-label')
+  await page.clock.runFor(5000)
+  await expect(page.locator('.tick-readout')).toHaveAttribute('aria-label', tick!)
+  await page.locator('.match-over').getByRole('button', { name: 'Play again', exact: true }).click()
+  await expect(page.locator('.match-over')).toHaveCount(0)
+  await expect(page.locator('.serve-countdown strong')).toHaveText('3')
+})
+
+test('model loop draws explain the result before the next serve', async ({ page }) => {
+  test.setTimeout(60_000)
+  await page.addInitScript(() => {
+    const original = crypto.getRandomValues.bind(crypto)
+    crypto.getRandomValues = array => {
+      const result = original(array)
+      // Seed 0 makes Follow's first rally repeat; this checks the draw UI, not random outcomes.
+      if (array instanceof Uint32Array && array.length === 1) array[0] = 0
+      return result
+    }
+  })
+  await page.goto('/?mode=watch&model=follow&opponent=follow')
+  await expect(page.locator('.court .status')).toHaveText('Live', { timeout: 30_000 })
+  await page.clock.install()
+  for (let elapsed = 0; elapsed < 100_000; elapsed += 100) {
+    await page.clock.runFor(100)
+    if (await page.locator('.rally-draw').isVisible()) break
+  }
+  await expect(page.locator('.rally-draw')).toContainText('Repeating rally')
+  await expect(page.locator('.rally-draw')).toContainText('No point awarded')
+  const rally = Number((await page.locator('.court-foot').innerText()).match(/RALLY (\d+)/)![1])
+  const tick = await page.locator('.tick-readout').getAttribute('aria-label')
+  await page.clock.runFor(2000)
+  await expect(page.locator('.rally-draw')).toBeVisible()
+  await expect(page.locator('.tick-readout')).toHaveAttribute('aria-label', tick!)
+  await page.clock.runFor(1100)
+  await expect(page.locator('.rally-draw')).toHaveCount(0)
+  await expect(page.locator('.court-foot')).toContainText(`RALLY ${String(rally + 1).padStart(2, '0')}`)
+})
