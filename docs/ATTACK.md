@@ -5,10 +5,11 @@ Both retain the **6 → 6 → 3 → 3** ReLU layout, **75 parameters** and **63 
 per decision**. Predict's policy is preserved as a separate model.
 
 Attack trades two of Predict's forecast hinges for opponent-dependent
-shot placement. The [constructor](../programmed/attack.py) writes fixed
-formulas. Designs were adjusted manually and compared through play; no
-optimizer, training data, learned checkpoint or automated weight search was
-used. Every decision runs through the ordinary dense ONNX layers.
+shot placement. The [constructor](../programmed/attack.py) calculates weights
+from explicit formulas, developed with Codex and revised using simulated match
+feedback. These formula revisions optimize the design; the constructor
+deterministically rebuilds the selected network. Every decision runs through
+the ordinary dense ONNX layers.
 
 ## How it plays
 
@@ -61,10 +62,10 @@ the ball travels away. Bot results do not establish strength against human playe
 Use the [shared NumPy/ONNX setup and byte-for-byte rebuild check](../programmed/README.md)
 for the standalone [Attack constructor](../programmed/attack.py).
 
-Expected Attack SHA-256 after the [method-label metadata revision](../experiments/model-metadata.json):
+Expected Attack SHA-256 after the [development-description metadata revision](../experiments/programmed-method-metadata.json):
 
 ```text
-32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1
+798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59
 ```
 
 Replay the current development standings from the repository root:

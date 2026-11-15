@@ -6,13 +6,15 @@ and three linear action scores. Predict and Attack remain unchanged.
 
 The [constructor](../programmed/counter.py) combines Attack's bounded
 forecast and corner selection with Quill's direction gate and center recovery.
-Manual designs at 75 parameters or fewer sacrificed too much interception
+The tested designs at 75 parameters or fewer sacrificed too much interception
 quality. The extra layer allows these behaviors to coexist while staying below
 100 stored parameters, including every zero and bias. This does not establish
 that 75 parameters is an absolute limit.
 
-All weights come from fixed formulas and manual play evaluation. There is no
-training, optimizer, automated fitting, learned checkpoint or runtime helper.
+All weights come from explicit formulas, developed with Codex and revised using
+simulated match feedback. This is iterative design optimization; the constructor
+deterministically rebuilds the selected network. The dense layers perform the
+entire policy during play.
 
 ## What the layers do
 
@@ -75,10 +77,10 @@ establish strength against human players.
 Use the [shared NumPy/ONNX setup and byte-for-byte rebuild check](../programmed/README.md)
 for the standalone [Counter constructor](../programmed/counter.py).
 
-Expected model SHA-256 after the [method-label metadata revision](../experiments/model-metadata.json):
+Expected model SHA-256 after the [development-description metadata revision](../experiments/programmed-method-metadata.json):
 
 ```text
-db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed
+f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d
 ```
 
 Replay the current development standings from the repository root:

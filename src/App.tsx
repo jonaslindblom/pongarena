@@ -433,8 +433,8 @@ export default function App({ location = new URL(window.location.href), base = n
             ? 'Reference ranks unavailable: ' + referenceRanks.error
             : referenceRanks.loading ? 'Loading reference league ranks…' : 'Ranks from the reference league, matched to the exact model weights.'}</p>
           {[
-            { title: 'Programmed', description: 'Weights calculated from deliberately designed formulas.', models: eligibleModels.filter(model => model.method === 'programmed' && model.origin !== 'local').sort((a, b) => a.params - b.params) },
-            { title: 'Trained', description: 'Weights learned through training or automated optimization.', models: eligibleModels.filter(model => model.method === 'trained' && model.origin !== 'local').sort((a, b) => a.params - b.params) },
+            { title: 'Programmed', description: 'Weights constructed from explicit formulas. Development can include match feedback.', models: eligibleModels.filter(model => model.method === 'programmed' && model.origin !== 'local').sort((a, b) => a.params - b.params) },
+            { title: 'Trained', description: 'Weights fitted numerically, for example through distillation, reinforcement learning or evolutionary search.', models: eligibleModels.filter(model => model.method === 'trained' && model.origin !== 'local').sort((a, b) => a.params - b.params) },
             { title: 'Prompted', description: 'Weights generated directly in response to a prompt.', models: eligibleModels.filter(model => model.method === 'prompted' && model.origin !== 'local').sort((a, b) => a.params - b.params) },
             { title: 'Mixed methods', description: 'Weights created by combining methods.', models: eligibleModels.filter(model => model.method === 'mixed' && model.origin !== 'local').sort((a, b) => a.params - b.params) },
             { title: 'Your models', description: 'Models imported into this browser.', models: eligibleModels.filter(model => model.origin === 'local') },

@@ -17,8 +17,8 @@
   "parameters": 163,
   "macs": 141,
   "opponent_sha256": {
-    "quill": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
-    "counter": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed"
+    "quill": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
+    "counter": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d"
   },
   "rng_seed": 16993327511697667018,
   "seeds": [
@@ -31221,8 +31221,9 @@
     }
   },
   "metadata_revision": {
-    "audit": "../model-metadata.json",
-    "revised_at": "2026-11-14T17:21:52.708489+00:00",
-    "note": "Opponent file identities were updated after a method-label-only metadata revision. The frozen student, selection, seeds and outcomes are unchanged."
+    "audit": "../programmed-method-metadata.json",
+    "previous_audit": "../model-metadata.json",
+    "revised_at": "2026-11-15T17:10:14.070278+00:00",
+    "note": "File checksums updated for a descriptive method-metadata revision. Frozen networks, selection, seeds and match outcomes are unchanged."
   }
 }

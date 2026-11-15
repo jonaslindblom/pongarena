@@ -1,0 +1,135 @@
+{
+  "schema": 1,
+  "revised_at": "2026-11-15T17:10:14.070278+00:00",
+  "source_commit": "304519a59001c5a53002fa4c986278230f9174f6",
+  "previous_audit": "model-metadata.json",
+  "change": "Clarify programmed model development in the descriptive ONNX method metadata. No graph, tensor, operator, resource count or other model field changed.",
+  "verification": "Restoring only the previous method metadata value reproduces the previous ModelProto byte-for-byte. Removing metadata_props preserves each recorded payload SHA-256.",
+  "models": [
+    {
+      "id": "follow",
+      "before_sha256": "5493ed05b0303a4663d12e242bba4bf56009782b4d75d3709b34a1e757d564dd",
+      "payload_sha256": "0beffb6f53425f0f89be37f13094ec0c31564a50df365012c0b782bfef790000",
+      "after_sha256": "1e1d187ba4f7796d043cf3e5ea7409eed63dd768e38b4f657a4cff5253434fe9",
+      "changed_metadata_key": "method",
+      "after_method": "Programmed position tracking expressed directly as fixed weights and biases"
+    },
+    {
+      "id": "predict",
+      "before_sha256": "2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6",
+      "payload_sha256": "8e69180beab612ed7be739b1e83598be1c7963a96aaaa058f89e74497bcda140",
+      "after_sha256": "a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f",
+      "changed_metadata_key": "method",
+      "after_method": "Programmed analytical formulas for landing prediction and wall reflection"
+    },
+    {
+      "id": "attack",
+      "before_sha256": "32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1",
+      "payload_sha256": "f8e702177c9db47cfd1cfc2e1803bd0763f546fc9640e79f3cbeed59de33ee3f",
+      "after_sha256": "798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59",
+      "changed_metadata_key": "method",
+      "after_method": "Programmed formulas developed with Codex and iteratively refined using simulated match feedback"
+    },
+    {
+      "id": "counter",
+      "before_sha256": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+      "payload_sha256": "e4f7ebe07e340f46bf65a4a69b70dabac953fc8fc89256710dd7611bd8a2952f",
+      "after_sha256": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
+      "changed_metadata_key": "method",
+      "after_method": "Programmed formulas developed with Codex and iteratively refined using simulated match feedback"
+    },
+    {
+      "id": "quill",
+      "before_sha256": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+      "payload_sha256": "da53bd6c5d857089224aca870ce2bb4a7609252ef615b7665a0d16938da3e8d3",
+      "after_sha256": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
+      "changed_metadata_key": "method",
+      "after_method": "Programmed formulas developed with Codex and iteratively refined using simulated match feedback"
+    }
+  ],
+  "records": [
+    {
+      "path": "experiments/quill-training/current-comparison-plan.json",
+      "before_sha256": "81dbd6f1fd46566d206cb8fbda0d2e1d97376371034eadd540e7753244c69602",
+      "after_sha256": "a10ab6cbcdd59537f65e5ed40fd4ddf6686777f02cf05f07b902ed93986cf5f0"
+    },
+    {
+      "path": "experiments/quill-training/current-comparison.json",
+      "before_sha256": "fdf88d35ebfb35dc18bb53a4ad2c013a87c8596969802ebee9e244206846214c",
+      "after_sha256": "8ef10ffbbe90e61f9c8fa7fe8ab2e5d287c0ca78ea4daf85c24ec734076b536a"
+    },
+    {
+      "path": "experiments/quill-training/results.json",
+      "before_sha256": "d35017b182f5dbdda89a20399780f3f6f0842011e936196091eceb87f1600959",
+      "after_sha256": "9d9ca6e0b2c74c5b78d5ea6601841f10670d95a9c9eaa59d8e9e70c0069b280b"
+    },
+    {
+      "path": "experiments/one-prompt-weights/results/astra-163-low-b.json",
+      "games": 896,
+      "bootstrap_intervals_refreshed": 2,
+      "before_sha256": "4e193e91497b2e88b5da4ce200f7e049d4347fbab37572cbeb112173b6c605a2",
+      "after_sha256": "097d32023e6fcb4f77b3b0f787551503332f20671be30db9ef0eeb8cce993667"
+    },
+    {
+      "path": "experiments/one-prompt-weights/results/astra-163-low.json",
+      "games": 896,
+      "bootstrap_intervals_refreshed": 2,
+      "before_sha256": "8fe267982dd7802a0523c856b617db302ecb554025e4f6afed381f535b2b621c",
+      "after_sha256": "01f434ca8e2b88d97e4653a0bfb13c1d6c5cf0f4d705f5ce514602f07502a937"
+    },
+    {
+      "path": "experiments/one-prompt-weights/results/astra-97-low-b.json",
+      "games": 896,
+      "bootstrap_intervals_refreshed": 1,
+      "before_sha256": "4e8913a50900cd8b857ba6bc9b63e5a04ac16cf19aaff2d008392209c949e39b",
+      "after_sha256": "b9e6335e1ef5304b3d6b5295889448a828e85e442407a6c0442e8a35e78668d1"
+    },
+    {
+      "path": "experiments/one-prompt-weights/results/astra-97-low.json",
+      "games": 896,
+      "bootstrap_intervals_refreshed": 1,
+      "before_sha256": "54c7a6cdda34a2e83a04eaf17ad1f7f798dc8d50199aad1dd6c91a568424bdbd",
+      "after_sha256": "9cda817821cfb05d3fc8159195998ee6694fd77c28105cc5f07fefa820d5e8e4"
+    },
+    {
+      "path": "experiments/one-prompt-weights/follow-up/results/rules-163-a.json",
+      "games": 896,
+      "bootstrap_intervals_refreshed": 1,
+      "before_sha256": "8625173df05afedd359dee36f28bafdf4a3faf0e1389670f69ac4e5cdd7e3734",
+      "after_sha256": "a92ebfa813427426cd1712030b6190dbba3c0f8263d43d21e56648956b2401dd"
+    },
+    {
+      "path": "experiments/one-prompt-weights/follow-up/results/rules-163-b.json",
+      "games": 896,
+      "bootstrap_intervals_refreshed": 0,
+      "before_sha256": "2f6519ee45998f1a83b7e4e89e7e22487219105caba99d073f295976403429c4",
+      "after_sha256": "31dc5de694b8592c0910ee847f63fdfb656d5c0dace8a94612bc66da50ad3b65"
+    },
+    {
+      "path": "experiments/one-prompt-weights/follow-up/results/tactical-163-a.json",
+      "games": 896,
+      "bootstrap_intervals_refreshed": 1,
+      "before_sha256": "bc2a8b04130e109b54f06be7c934052f19d2cfcaa9fff107e33497cac9e18330",
+      "after_sha256": "bc20283b83face59ba8b9fa8324c7f5bb7fb2cc40585cf3a5bae8befb7845751"
+    },
+    {
+      "path": "experiments/one-prompt-weights/follow-up/results/tactical-163-b.json",
+      "games": 896,
+      "bootstrap_intervals_refreshed": 0,
+      "before_sha256": "6552990565130a0829dcd2da2d0d9b4520b18196330d6f0c8b28d25d851717ed",
+      "after_sha256": "8c8b1c1201e6322b785dc8a9b1cc9d8d6ef5f2a849d315474afb4d92079f68a2"
+    },
+    {
+      "path": "experiments/one-prompt-weights/follow-up/probes.json",
+      "before_sha256": "4f4538ac01653865fd12c1eebd315a8497c275b977f9eeddd8c16c5d0aa769bc",
+      "after_sha256": "8526702e84584eef9880c55b283f57f7ecf423132eb4ef921371818f0dbb3af5"
+    }
+  ],
+  "prompt_replay": {
+    "saved_responses": 8,
+    "games": 7168,
+    "bootstrap_intervals_refreshed": 8,
+    "verification": "Recompiled all saved replies and replayed all original serves. After accounting for file-checksum-based entrant ordering, every individual game, paired/rally total, and input-probe count matched. Original replies, seeds, model tensors and evaluator code are unchanged.",
+    "interval_note": "Some bootstrap endpoints changed because the existing report format seeds resampling from benchmark identities containing model file checksums."
+  }
+}

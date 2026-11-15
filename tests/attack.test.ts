@@ -13,9 +13,9 @@ test('Attack remains a separate Small model with Predict’s 75-parameter layout
   assert.deepEqual([stats.params, stats.macs, stats.nodes], [75, 63, 5])
   assert.deepEqual(stats.architecture.widths, [6, 6, 3, 3])
   assert.equal(smallestDivision(stats), 'small')
-  assert.equal(await sha256(bytes), '32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1')
+  assert.equal(await sha256(bytes), '798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59')
   assert.equal(await sha256(readFileSync(new URL('../public/models/predict.onnx', import.meta.url))),
-    '2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6',
+    'a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f',
     'Adding an aggressive fork must preserve the original controller')
 })
 

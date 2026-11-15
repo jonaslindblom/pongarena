@@ -5,13 +5,13 @@ export const findingsData = {
   "contractId": "dense-mlp",
   "pairedServeSets": 512,
   "ralliesPerMatchup": 5120,
-  "planSha256": "81dbd6f1fd46566d206cb8fbda0d2e1d97376371034eadd540e7753244c69602",
-  "sourceSha256": "fdf88d35ebfb35dc18bb53a4ad2c013a87c8596969802ebee9e244206846214c",
+  "planSha256": "a10ab6cbcdd59537f65e5ed40fd4ddf6686777f02cf05f07b902ed93986cf5f0",
+  "sourceSha256": "8ef10ffbbe90e61f9c8fa7fe8ab2e5d287c0ca78ea4daf85c24ec734076b536a",
   "models": [
     {
       "id": "quill",
       "name": "Quill",
-      "sha256": "c64332359c1669e951e270100784773d5bb15e1f8359d987cfa43a4d35411762",
+      "sha256": "b4242415673b5be0fab66ef98826770d9b5298a4aaef14cfae17a0e202db04fd",
       "params": 163
     },
     {
@@ -35,7 +35,7 @@ export const findingsData = {
     {
       "id": "counter",
       "name": "Counter",
-      "sha256": "db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed",
+      "sha256": "f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d",
       "params": 97
     }
   ],

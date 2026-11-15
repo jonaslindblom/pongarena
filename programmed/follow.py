@@ -1,4 +1,4 @@
-"""Build Follow's 13 programmed parameters. No training or checkpoints required."""
+"""Rebuild Follow's 13 programmed parameters from fixed position-tracking formulas."""
 import argparse
 import hashlib
 from pathlib import Path
@@ -35,7 +35,7 @@ def export(path):
         [helper.make_tensor_value_info('action_scores', TensorProto.FLOAT, [1, 3])], tensors)
     model = helper.make_model(graph, opset_imports=[helper.make_opsetid('', 18)], ir_version=10,
                               producer_name='PongArena')
-    helper.set_model_props(model, {'method': 'Programmed position tracking; no training or automated fitting'})
+    helper.set_model_props(model, {'method': 'Programmed position tracking expressed directly as fixed weights and biases'})
     onnx.checker.check_model(model)
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)

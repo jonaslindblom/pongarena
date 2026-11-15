@@ -42,7 +42,9 @@ The result supports the project-specific observation that finding strong weights
 for extremely small networks has been difficult with the methods tested. Quill's
 weights demonstrate that its architecture can express Quill-level play; these
 experiments do not establish a capacity bound. The programmed models benefit from
-geometric insight and iterative play evaluation, and Large already beats Quill.
+geometric insight and Codex-assisted formula revisions guided by simulated match
+feedback. The comparison holds architecture fixed, not development effort, prior
+knowledge or optimization budget. Large already beats Quill.
 
 ## Training effort
 
@@ -150,11 +152,12 @@ current model hashes and replayable outcomes. The study results above retain
 their original held-out seeds; this separate comparison puts the shipped models
 on one common field without changing the study's selected candidate.
 
-The [method-label metadata revision](../model-metadata.json) updated file hashes
-for the programmed opponents in the saved records. It changed no graph, tensor
-or other model field. The original freeze timestamps, selected student, serve
-seeds and match outcomes are preserved. The audit records the earlier file
-identities and verifies that the model payloads are identical.
+The [method-label revision](../model-metadata.json) and
+[development-description revision](../programmed-method-metadata.json) updated
+file hashes for the programmed opponents in the saved records. They changed no
+graph, tensor or other model field. The original freeze timestamps, selected
+student, serve seeds and match outcomes are preserved. The audits record the
+earlier file identities and verify that the model payloads are identical.
 
 From the repository root:
 

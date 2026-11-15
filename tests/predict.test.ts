@@ -13,7 +13,7 @@ test('Predict preserves the frozen Small model with 75 parameters and 63 MACs', 
   assert.deepEqual([stats.params, stats.macs, stats.nodes], [75, 63, 5])
   assert.deepEqual(stats.architecture.widths, [6, 6, 3, 3])
   assert.equal(smallestDivision(stats), 'small')
-  assert.equal(await sha256(bytes), '2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6')
+  assert.equal(await sha256(bytes), 'a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f')
 })
 
 test('Predict anticipates and reflects through its actual WASM network', async () => {
