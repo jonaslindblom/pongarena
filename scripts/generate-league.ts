@@ -15,7 +15,8 @@ import { leagueScoreIntervals, LEAGUE_INTERVAL_RESAMPLES } from '../src/leagueUn
 const root = new URL('../', import.meta.url)
 type Decision = (input: Float32Array) => Promise<Scores>
 
-export async function generateLeague(seeds: readonly number[] = LEAGUE_SEEDS, frozen?: LeagueInputs): Promise<CompetitionRun> {
+export async function generateLeague(seeds: readonly number[] = LEAGUE_SEEDS, frozen?: LeagueInputs,
+  onProgress?: (run: CompetitionRun) => void): Promise<CompetitionRun> {
   ort.env.wasm.numThreads = 1
   const inputs = frozen ?? await readLeagueInputs()
   const entrants = inputs.entrants
@@ -34,7 +35,7 @@ export async function generateLeague(seeds: readonly number[] = LEAGUE_SEEDS, fr
       })
     }
     const run = await runCompetition({
-      rulesId: PONG.id, contractId: PONG.contractId, division: 'all', seeds: [...seeds], entrants,
+      rulesId: PONG.id, contractId: PONG.contractId, division: 'all', seeds: [...seeds], entrants, onProgress,
       playMatch: ({ left, right, seed, signal }) => competitionMatch(
         [decisions.get(left.sha256)!, decisions.get(right.sha256)!] as Pair<Decision>, PONG, seed, signal),
     })
@@ -47,6 +48,19 @@ export async function generateLeague(seeds: readonly number[] = LEAGUE_SEEDS, fr
     return run
   } finally {
     await Promise.all(sessions.map((session) => session.release()))
+  }
+}
+
+export function leagueProgressLogger(log: (message: string) => void = console.log, now = () => performance.now()) {
+  const started = now()
+  let lastLogged: number | undefined
+  return (run: CompetitionRun) => {
+    const current = now()
+    if (lastLogged !== undefined && current - lastLogged < 30_000 && run.status === 'running') return
+    lastLogged = current
+    const elapsed = ((current - started) / 1000).toFixed(1)
+    const percent = (100 * run.completedMatches / run.totalMatches).toFixed(1)
+    log(`League ${run.status}: ${run.completedMatches}/${run.totalMatches} games (${percent}%), ${elapsed}s elapsed`)
   }
 }
 
@@ -112,7 +126,7 @@ async function main() {
   const started = performance.now()
   const inputs = await readLeagueInputs(inputOptions)
   const plan = values.plan ? validateEvaluationPlan(JSON.parse(await readFile(resolve(values.plan), 'utf8')), inputs) : undefined
-  const run = await generateLeague(plan?.seeds ?? LEAGUE_SEEDS, inputs)
+  const run = await generateLeague(plan?.seeds ?? LEAGUE_SEEDS, inputs, leagueProgressLogger())
   const artifacts = new Map([[LEAGUE_JSON, JSON.stringify(run, null, 2) + '\n'], [LEAGUE_MARKDOWN, leagueMarkdown(run, plan)]])
   if (plan) artifacts.set('evaluation-plan.json', JSON.stringify(plan, null, 2) + '\n')
   if (!values.check || values.output) {

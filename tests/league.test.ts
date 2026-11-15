@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
-import { generateLeague, leagueMarkdown } from '../scripts/generate-league'
+import { generateLeague, leagueMarkdown, leagueProgressLogger } from '../scripts/generate-league'
 import { restoreCompetition } from '../src/competition'
 import { competitionMatch } from '../src/competitionMatch'
 import { LEAGUE_SEEDS } from '../src/league'
@@ -36,4 +36,23 @@ test('a cancelled inference cannot advance the shared simulation or call the oth
     async () => { secondCalls++; return [0, 1, 0] },
   ], PONG, 24, abort.signal), { name: 'AbortError' })
   assert.equal(secondCalls, 0)
+})
+
+
+test('progress reports real game counts periodically and always reports terminal status', () => {
+  let clock = 0
+  const messages: string[] = []
+  const report = leagueProgressLogger(message => messages.push(message), () => clock)
+  report({ ...saved, status: 'running', completedMatches: 0 })
+  clock = 29_999
+  report({ ...saved, status: 'running', completedMatches: 10 })
+  assert.equal(messages.length, 1, 'per-game callbacks must not flood CI logs')
+  clock = 30_000
+  report({ ...saved, status: 'running', completedMatches: 20 })
+  assert.match(messages[1], /20\/.*30\.0s elapsed/)
+  clock = 30_001
+  report(saved)
+  assert.match(messages[2], /League complete:.*100\.0%/)
+  report({ ...saved, status: 'failed', completedMatches: 20 })
+  assert.match(messages[3], /League failed: 20\//)
 })
