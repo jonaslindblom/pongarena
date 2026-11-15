@@ -39,9 +39,10 @@ The saved responses rebuild identical weights. This checkout's evaluator,
 bundled opponents and saved seeds reproduce the results. A new AI response to
 the same prompt may differ.
 
-The [model metadata audit](../../model-metadata.json) records the terminology
-update to the five programmed opponents. Their graphs and numeric weights did
-not change. All eight saved prompt replies were replayed on their original
+The [method-label audit](../../model-metadata.json) and
+[development-description audit](../../programmed-method-metadata.json) record
+metadata updates to the five programmed opponents. Their graphs and numeric
+weights did not change. All eight saved prompt replies were replayed on their original
 serves: all 7,168 game outcomes and paired/rally totals matched, as did every
 input-probe count. Reports now use the updated opponent file hashes. Some
 bootstrap interval endpoints changed because resampling is seeded from the

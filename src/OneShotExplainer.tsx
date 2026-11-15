@@ -223,7 +223,7 @@ export function OneShotExplainer({ model, onPlay, onWatch, onLesson }: {
     <section className="oneshot-section" aria-labelledby="oneshot-prompts-title">
       <span className="section-code">THE INPUTS</span>
       <h2 id="oneshot-prompts-title">Read the exact prompts</h2>
-      <p>The arena’s programmed models also involved AI. We used Codex to develop formulas that calculate their weights and refined the designs through play. For this experiment, each Astra reply supplied the numeric weights directly, with no tools, match feedback or repairs. No training algorithm fitted these programmed or prompted Pong weights.</p>
+      <p>Quill’s programmed weights came from explicit formulas that Codex iteratively revised using simulated match feedback. For this experiment, each Astra reply supplied the numeric weights directly, with no tools, match feedback or repairs.</p>
       <p>Both prompts used GPT-6 Astra at low reasoning effort, a 6,000-token output limit, and the same numeric JSON response schema.</p>
       <p>These are the original prompts, preserved verbatim with the technical notation used in the experiment.</p>
       <details className="panel oneshot-prompt"><summary>Rules-only prompt</summary><pre>{rulesOnlyPrompt}</pre></details>

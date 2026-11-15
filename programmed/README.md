@@ -1,7 +1,15 @@
 # Rebuild the programmed models
 
 Follow, Predict, Attack, Counter and Quill each have a standalone Python constructor.
-They write fixed dense ONNX weights without training code, checkpoints or PyTorch.
+They deterministically calculate fixed dense ONNX weights from explicit formulas
+using only NumPy and ONNX. Running a constructor rebuilds the selected design;
+it does not repeat the development process.
+
+Quill's formulas were developed and revised with Codex using simulated match
+feedback. This was iterative design optimization, without gradient training or a
+conventional numerical parameter-fitting algorithm. **Programmed** describes the
+formula-based construction, not an absence of feedback or optimization. See
+[Quill's design](../docs/QUILL.md) for the development process and computations.
 
 From the repository root, create a Python 3.12 environment with only NumPy and ONNX:
 
@@ -25,11 +33,12 @@ Each constructor prints the output path and SHA-256. No output from `cmp` means
 the files match. These checks leave the shipped models and league results unchanged.
 To rebuild just one model, run its constructor with the same `--out` option.
 
-The [metadata revision](../experiments/model-metadata.json) records the change
-to the descriptive method label in these five ONNX files. Their graphs, tensors
-and all other model fields remain identical; only the file hashes changed.
-The audit retains both identities and a matching hash of each model payload
-with metadata removed.
+The [method-label revision](../experiments/model-metadata.json) and
+[development-description revision](../experiments/programmed-method-metadata.json)
+record metadata-only updates to these five ONNX files. Their graphs, tensors and
+other model fields remain identical; only the file hashes changed. The audits
+retain the earlier identities and matching hashes of each model payload with
+metadata removed.
 
 | Model | Constructor | Design |
 | --- | --- | --- |

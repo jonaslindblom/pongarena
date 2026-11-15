@@ -13,10 +13,10 @@ test('Counter adds recovery within 100 parameters while preserving the existing 
   assert.deepEqual([stats.params, stats.macs, stats.nodes], [97, 81, 7])
   assert.deepEqual(stats.architecture.widths, [6, 6, 4, 3, 3])
   assert.equal(smallestDivision(stats), 'small')
-  assert.equal(await sha256(bytes), 'db7809ba7dc5f8f5eb035c2863b8c1353c11780d2cf0004e6166ee916a5213ed')
+  assert.equal(await sha256(bytes), 'f522f0bab90f9b269cfa93aaadf79f59c47bcca922fcbb89961cd441400e975d')
   for (const [id, hash] of [
-    ['predict', '2253a9dc4b461771f94e6592109c3a2113aa773059e3f46ab8bb1230f5db2bf6'],
-    ['attack', '32eaa54eec39f754b6bbd16395d1895c236b5be8692d620e71b82c12c74e55f1'],
+    ['predict', 'a9411c30b370b90f0e419d62b592e5365c94126835b7706907f30faacbd9103f'],
+    ['attack', '798c396e31ddc54e269f1f9e614317b829f0944ae3692976a561a705b07a0a59'],
   ]) {
     assert.equal(await sha256(readFileSync(new URL(`../public/models/${id}.onnx`, import.meta.url))), hash,
       'The stronger model must remain a separate addition, preserving both earlier controllers')

@@ -22,7 +22,7 @@ export function ControllerBadge({ model, compact = false }: { model?: Controller
   return (
     <span className={'controller-identity' + (compact ? ' compact' : '')} data-controller-type={model.type}
       data-weight-origin={handcrafted ? 'handcrafted' : undefined}>
-      <span className="controller-badge" title={handcrafted ? 'Weights calculated from deliberately designed formulas. No training.' : undefined}>
+      <span className="controller-badge" title={handcrafted ? 'Weights constructed from explicit formulas; development can include match feedback.' : undefined}>
         <Icon size={11} aria-hidden="true" />{label}
       </span>
       {weights && (

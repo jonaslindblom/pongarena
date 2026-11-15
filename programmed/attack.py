@@ -1,4 +1,4 @@
-"""Build Attack's 75 programmed parameters. No training or fitting required."""
+"""Rebuild Attack's 75 programmed parameters from the final fixed formulas."""
 import argparse
 import hashlib
 from pathlib import Path
@@ -66,7 +66,7 @@ def export(path):
     model = helper.make_model(graph, opset_imports=[helper.make_opsetid('', 18)],
                               ir_version=10, producer_name='PongArena')
     helper.set_model_props(model, {
-        'method': 'Programmed formulas with manual play evaluation; no training or automated fitting'})
+        'method': 'Programmed formulas developed with Codex and iteratively refined using simulated match feedback'})
     onnx.checker.check_model(model)
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
