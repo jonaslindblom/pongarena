@@ -21,12 +21,12 @@ const startup: StartupSnapshot = {
   instrumentationStartedMs: performance.now(),
   arenaReadyMs: null,
   libraryReadyMs: null,
-  hiddenDuringStartup: document.hidden,
+  hiddenDuringStartup: typeof document !== 'undefined' && document.hidden,
   failures: [],
   timings: [],
 }
 const visibility = () => { if (document.hidden) startup.hiddenDuringStartup = true }
-document.addEventListener('visibilitychange', visibility)
+if (typeof document !== 'undefined') document.addEventListener('visibilitychange', visibility)
 
 export function getStartupSnapshot(): StartupSnapshot {
   return { ...startup, build: { ...startup.build }, failures: [...startup.failures],

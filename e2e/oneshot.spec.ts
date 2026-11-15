@@ -35,7 +35,7 @@ test('OneShot plays the frozen experiment weights and shows the recorded prompt 
   }
 
   await card.getByRole('link', { name: 'See the prompt' }).click()
-  await expect(page).toHaveURL(/#findings\/oneshot$/)
+  await expect(page).toHaveURL(/\/findings\/oneshot\/$/)
   const oneShot = page.getByLabel('OneShot chosen move', { exact: true })
   const rulesOnly = page.getByLabel('Rules only chosen move', { exact: true })
   await expect(oneShot).toHaveText('Left')

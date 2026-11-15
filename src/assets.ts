@@ -1,2 +1,2 @@
-// Relative to Vite's base so the same build works at a domain root or /repo/.
-export const assetPath = (path: string) => import.meta.env.BASE_URL + path.replace(/^\//, '')
+// Each document's <base> points to the site root, including nested reading pages.
+export const assetPath = (path: string) => './' + path.replace(/^\//, '')

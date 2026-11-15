@@ -10,6 +10,7 @@
     "dev": "vite --host 127.0.0.1",
     "typecheck": "tsc --noEmit",
     "build": "npm run typecheck && vite build",
+    "postbuild": "node --import tsx scripts/prerender.ts",
     "preview": "vite preview --host 127.0.0.1",
     "docs:screenshot": "npm run build && node --import tsx scripts/capture-readme.ts",
     "docs:social-card": "node --import tsx scripts/capture-social-card.ts",

@@ -3,6 +3,7 @@ import { useEffect, useState, type MouseEvent } from 'react'
 import { choice, observation, serve, type Scores } from './game'
 import { infer, loadModel, type Controller } from './models'
 import { findingsData } from './findingsData'
+import { assetPath } from './assets'
 import { actionLabels as moves } from './observationLabels'
 import { oneShotProbes, oneShotPrompt, oneShotRalliesAgainstLarge, oneShotResults, oneShotUrl, rulesOnlyPrompt, rulesOnlyUrl } from './oneShotExperiment'
 import './OneShotExplainer.css'
@@ -178,7 +179,7 @@ export function OneShotExplainer({ model, onPlay, onWatch, onLesson }: {
       <h2 id="oneshot-design-title">Can a design idea become weights?</h2>
       <div className="oneshot-design-evidence">
         <div>
-          <p>In <a href="#how-it-thinks/counter" onClick={onLesson}>Counter’s recovery lesson</a>, switching off a deliberately designed neuron changes what the paddle does when the ball leaves. That gives us a concrete behavior to specify in a prompt.</p>
+          <p>In <a href={assetPath('how-it-thinks/counter/')} onClick={onLesson}>Counter’s recovery lesson</a>, switching off a deliberately designed neuron changes what the paddle does when the ball leaves. That gives us a concrete behavior to specify in a prompt.</p>
           <p>The tactical brief asks for the same distinction:</p>
           <blockquote>“When it departs, use a separate recovery target.”</blockquote>
           <p>It also asks the model to allocate neurons around prediction and opponent-aware aiming, then check signs and scales. We can test whether the returned weights actually respond to the relevant inputs.</p>

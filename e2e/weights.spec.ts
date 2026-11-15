@@ -37,7 +37,7 @@ async function openCounter(page: Page) {
 }
 
 test('a shared lesson URL survives reload and tab navigation history', async ({ page }) => {
-  await page.goto('/#how-it-thinks/counter')
+  await page.goto('/how-it-thinks/counter/')
   const counter = page.getByRole('heading', { name: 'Know when to stop chasing.' })
   await expect(counter).toBeVisible()
   await page.reload()

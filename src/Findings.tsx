@@ -128,9 +128,9 @@ export function Findings({ models, selected, onSelect, onLesson, onPlay, onWatch
       <p className="section-code">FINDINGS · TWO EXPERIMENTS</p>
       <div className="reading-options">
         {([
-          ['training', 'Training tiny networks', 'Can learning match a programmed design?', '#findings'],
-          ['oneshot', 'Prompting the weights', 'Put a design into words, then test the weights.', '#findings/oneshot'],
-        ] as const).map(([id, title, description, href], index) => <a key={id} href={href}
+          ['training', 'Training tiny networks', 'Can learning match a programmed design?', 'findings/'],
+          ['oneshot', 'Prompting the weights', 'Put a design into words, then test the weights.', 'findings/oneshot/'],
+        ] as const).map(([id, title, description, href], index) => <a key={id} href={assetPath(href)}
           aria-label={`${index + 1} · ${title}`} aria-describedby={`finding-${id}-description`}
           aria-current={selected === id ? 'page' : undefined} onClick={event => onSelect(event, id)}>
           <span className="reading-position">EXPERIMENT {index + 1} OF 2 {selected === id && <span>READING</span>}</span>
@@ -143,11 +143,11 @@ export function Findings({ models, selected, onSelect, onLesson, onPlay, onWatch
       : <OneShotExplainer model={models.find(model => model.id === 'oneshot')} onPlay={() => onPlay('oneshot')}
         onWatch={models.some(model => model.id === 'small') ? () => onWatch('oneshot', 'small') : undefined} onLesson={onLesson} />}
     {selected === 'training'
-      ? <a className="lesson-next" href="#findings/oneshot" onClick={event => onSelect(event, 'oneshot')}>
+      ? <a className="lesson-next" href={assetPath('findings/oneshot/')} onClick={event => onSelect(event, 'oneshot')}>
         <span><span className="section-code">NEXT FINDING · 2 OF 2</span><strong>Prompting the weights</strong><span>One reply produced a capable policy in the same architecture. See how it compares with Small.</span></span>
         <span>Continue <ArrowRight size={18} aria-hidden="true" /></span>
       </a>
-      : <a className="lesson-next" href="#findings" onClick={event => onSelect(event, 'training')}>
+      : <a className="lesson-next" href={assetPath('findings/')} onClick={event => onSelect(event, 'training')}>
         <span><span className="section-code">ALSO IN FINDINGS · 1 OF 2</span><strong>Can training find the weights?</strong><span>See how a learned policy fares in exactly the same architecture as the programmed design.</span></span>
         <span>Explore training <ArrowRight size={18} aria-hidden="true" /></span>
       </a>}

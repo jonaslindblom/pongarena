@@ -51,6 +51,19 @@ The [Publish Pages workflow](../.github/workflows/pages.yml) runs on pushes to `
 2. Merge a pull request into `main`, push to `main`, or run **Actions → Publish Pages → Run workflow** on `main`.
 3. Open the deployment URL and check play, model loading and the league. The build uses relative asset paths to support a repository Pages URL.
 
+`npm run build` also renders the two explainers and two findings pages into
+their own `dist/<path>/index.html` files and writes `dist/sitemap.xml`. Their
+initial HTML includes the reading content, title, description and canonical URL.
+The browser then mounts the same components to enable the interactive controls.
+Each document sets its base to the site root so navigation, downloads and ONNX
+assets work from nested pages. Old reading hash links resolve to the new paths.
+
+Check direct loads and refreshes at `how-it-thinks/`,
+`how-it-thinks/counter/`, `findings/` and `findings/oneshot/` under the deployment
+URL. Static hosts serve these directories directly. The other app tabs continue
+to use hash links at the site root. Forks using a different public URL should
+update `siteUrl` in `src/routes.ts` and the homepage metadata in `index.html`.
+
 ## Generated catalog and submitter credit
 
 `npm run models:catalog` discovers all ONNX files and writes `public/models.json`. Core examples are maintained in `src/roster.ts` and their network identities are pinned in `src/coreModelHashes.ts`; a submitted file cannot claim Core status. The default local command preserves available credits from an earlier catalog and can leave new community models without a submitter link.

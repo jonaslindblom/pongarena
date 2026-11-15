@@ -6,7 +6,7 @@ Play against tiny neural networks, watch them compete, and see their neurons fir
 
 PongArena is open source. Submit your weights to enter the league.
 
-[**Play in your browser**](https://jonaslindblom.github.io/pongarena/) · [Explore the findings](https://jonaslindblom.github.io/pongarena/#findings) · [Build a model](CONTRIBUTING.md)
+[**Play in your browser**](https://jonaslindblom.github.io/pongarena/) · [Explore the findings](https://jonaslindblom.github.io/pongarena/findings/) · [Build a model](CONTRIBUTING.md)
 
 ![PongArena showing a match and the neural network’s live activations](docs/media/pongarena.png)
 
@@ -14,9 +14,9 @@ PongArena is open source. Submit your weights to enter the league.
 
 **Quill, Small and OneShot share the same 163-parameter ReLU network: `6 → 12 → 4 → 3 → 3`.** Quill's programmed weights are calculated from deliberately designed formulas, developed with Codex and refined through play. Small learns through distillation from Large, reinforcement learning and direct weight search. OneShot's weights came from a single model reply given the game rules and a tactical brief. Programmed, trained and prompted describe how the weights are produced. All three run as neural networks, receiving the same six observations, choosing from the same three actions and using the same dense ONNX operations.
 
-[**Findings**](https://jonaslindblom.github.io/pongarena/#findings) connects those methods to frozen models and reproducible match results. Across six initial training runs and subsequent refinements, none of the training experiment's saved candidates beat Quill or Counter on the held-out comparisons. That makes learning a strong controller at this size an interesting challenge. It does not establish an architecture limit: Quill's own weights demonstrate what the network can express, and the much larger trained model is competitive with the programmed opponents. See the [training experiment](experiments/quill-training/README.md) for methods, selection rules and results.
+[**Findings**](https://jonaslindblom.github.io/pongarena/findings/) connects those methods to frozen models and reproducible match results. Across six initial training runs and subsequent refinements, none of the training experiment's saved candidates beat Quill or Counter on the held-out comparisons. That makes learning a strong controller at this size an interesting challenge. It does not establish an architecture limit: Quill's own weights demonstrate what the network can express, and the much larger trained model is competitive with the programmed opponents. See the [training experiment](experiments/quill-training/README.md) for methods, selection rules and results.
 
-The [prompting experiment](https://jonaslindblom.github.io/pongarena/#findings/oneshot) asks a different question: can a model write working weights directly, without match feedback? Explore OneShot's prompt and decisions, or [rebuild the exact weights and replay the results](experiments/one-prompt-weights/follow-up/README.md). These are a few controlled attempts, not a general reliability estimate for prompting.
+The [prompting experiment](https://jonaslindblom.github.io/pongarena/findings/oneshot/) asks a different question: can a model write working weights directly, without match feedback? Explore OneShot's prompt and decisions, or [rebuild the exact weights and replay the results](experiments/one-prompt-weights/follow-up/README.md). These are a few controlled attempts, not a general reliability estimate for prompting.
 
 ## League models
 
@@ -35,7 +35,7 @@ The roster spans a 13-parameter ball follower through a 50,819-parameter learned
 
 All stored weights and biases count, including zeros. A MAC is a multiply-accumulate. Programmed weights do not supply training labels, opponents or checkpoint-selection results for the learned models; they meet after the models are frozen. League results compare these particular controllers and serves; they do not establish performance against human players.
 
-The project is inspired by [Sparks of Weight-Space Programming](https://rikiyat.github.io/blog/weight-space-programming/). Explore [Follow’s 13 parameters](https://jonaslindblom.github.io/pongarena/#how-it-thinks), or [switch off a Counter neuron](https://jonaslindblom.github.io/pongarena/#how-it-thinks/counter) to see how its decision changes. Both lessons run the actual ONNX weights and show their inputs, activations and moves.
+The project is inspired by [Sparks of Weight-Space Programming](https://rikiyat.github.io/blog/weight-space-programming/). Explore [Follow’s 13 parameters](https://jonaslindblom.github.io/pongarena/how-it-thinks/), or [switch off a Counter neuron](https://jonaslindblom.github.io/pongarena/how-it-thinks/counter/) to see how its decision changes. Both lessons run the actual ONNX weights and show their inputs, activations and moves.
 
 ## Play and explore
 
@@ -55,9 +55,12 @@ Human games are first to three points; draws lead to another serve. Spectator ma
 
 Arena links accept `?model=counter` to choose a human opponent, or
 `?mode=watch&model=counter&opponent=quill` to watch two models.
-Link directly to a tab with `#play`, `#findings`, `#how-it-thinks`, `#league`
-or `#models`. Use `#how-it-thinks/counter` for the Counter lesson,
-`#findings/oneshot` for the prompting experiment, or `#rules` for the compact game rules.
+The explainers and findings have direct page URLs: [Follow](https://jonaslindblom.github.io/pongarena/how-it-thinks/),
+[Counter](https://jonaslindblom.github.io/pongarena/how-it-thinks/counter/),
+[training findings](https://jonaslindblom.github.io/pongarena/findings/) and
+[prompting findings](https://jonaslindblom.github.io/pongarena/findings/oneshot/).
+Older hash links to these pages still work. Use `#play`, `#league`, `#models`
+or `#rules` at the site root for the other tabs.
 Add `&fullscreen=1` to open the court in a viewport-filling layout. Watch links
 start automatically; human match links wait for Play (or P). Model and fullscreen
 changes update the URL for copying. Imported models are available only in browsers where they were saved;

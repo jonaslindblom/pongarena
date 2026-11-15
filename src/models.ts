@@ -11,7 +11,7 @@ import { isGitHubUsername } from './submitter'
 import type { CatalogEntry } from './modelCatalog'
 
 ort.env.wasm.numThreads = 1
-ort.env.wasm.wasmPaths = {
+if (typeof document !== 'undefined') ort.env.wasm.wasmPaths = {
   wasm: new URL(wasmUrl, document.baseURI).href,
   mjs: new URL(moduleUrl, document.baseURI).href,
 }
