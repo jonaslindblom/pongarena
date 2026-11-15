@@ -7,7 +7,7 @@
 .brain-view { background: radial-gradient(ellipse at 50% 55%, #223c33, #172c25); color: #d6e5d4; }
 .brain-source { display: flex; justify-content: space-between; gap: 12px; padding: 16px 20px 0; font-size: 12px; }
 .brain-source span:last-child { color: #9daf9e; font: 10px var(--mono); }
-.brain-graph-scroll { overflow-x: auto; }
+.brain-graph-scroll { overflow-x: auto; scrollbar-width: thin; scrollbar-color: #65816e #172c25; margin-bottom: 10px; }
 .brain-graph { display: block; width: 100%; min-width: 590px; }
 .brain-layer-name { fill: #b9cbbb; font: 10px var(--mono); letter-spacing: 1.3px; }
 .brain-layer-size { fill: #8fa795; font: 11px var(--mono); }
