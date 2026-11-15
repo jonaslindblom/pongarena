@@ -687,6 +687,7 @@ h1 {
 .match-over .keyboard-hint { margin-top: 14px; font-size: 15px; color: #edf8df; }
 .match-over small.keyboard-hint { display: block; margin-top: 9px; font-size: 11px; color: #b4c8ad; }
 .match-over .keyboard-hint kbd { font-size: inherit; opacity: 1; }
+.match-star-link { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; margin-top: 6px; color: #c5d8b9; font-size: 12px; text-decoration: underline; text-underline-offset: 3px; }
 .shell-arena { padding-top: 18px; }
 .icon-btn {
   display: inline-flex;
@@ -1203,6 +1204,8 @@ legend {
   .brain-panel { grid-column: 1 / -1; grid-row: 4; }
   .match-over-card { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 18px; width: min(410px, 100%); }
   .match-over .play-btn { grid-column: 2; grid-row: 1 / span 3; }
+  .match-over-card:has(.match-star-link) .play-btn { grid-row: 1 / span 2; }
+  .match-star-link { grid-column: 2; grid-row: 3; margin: 0; }
   .match-over .match-over-score { margin: 3px 0 0; }
 }
 

@@ -51,17 +51,18 @@ The [Publish Pages workflow](../.github/workflows/pages.yml) runs on pushes to `
 2. Merge a pull request into `main`, push to `main`, or run **Actions → Publish Pages → Run workflow** on `main`.
 3. Open the deployment URL and check play, model loading and the league. The build uses relative asset paths to support a repository Pages URL.
 
-`npm run build` also renders the two explainers and two findings pages into
-their own `dist/<path>/index.html` files and writes `dist/sitemap.xml`. Their
-initial HTML includes the reading content, title, description and canonical URL.
+`npm run build` renders every page into its own `dist/<path>/index.html` file
+and writes `dist/sitemap.xml`. Initial HTML includes the page content, title,
+description and canonical URL. Models and league standings load in the browser.
 The browser then mounts the same components to enable the interactive controls.
 Each document sets its base to the site root so navigation, downloads and ONNX
-assets work from nested pages. Old reading hash links resolve to the new paths.
+assets work from nested pages.
 
-Check direct loads and refreshes at `how-it-thinks/`,
-`how-it-thinks/counter/`, `findings/` and `findings/oneshot/` under the deployment
-URL. Static hosts serve these directories directly. The other app tabs continue
-to use hash links at the site root. Forks using a different public URL should
+Check direct loads and refreshes at `models/`, `league/`, `rules/`, `device-test/`,
+`how-it-thinks/`, `how-it-thinks/counter/`, `findings/` and `findings/oneshot/`
+under the deployment URL. Static hosts serve these directories directly.
+Play lives at the site root. Fragments identify elements within pages, such as
+`models/#catalog-model-oneshot`. Forks using a different public URL should
 update `siteUrl` in `src/routes.ts` and the homepage metadata in `index.html`.
 
 ## Generated catalog and submitter credit

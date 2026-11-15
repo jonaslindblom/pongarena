@@ -10,7 +10,7 @@ const opponents = ['follow', 'small', 'predict', 'attack', 'counter', 'quill', '
 
 test('OneShot plays the frozen experiment weights and shows the recorded prompt comparison', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 844 })
-  await page.goto('/#models')
+  await page.goto('/models/')
   const catalog = page.getByRole('region', { name: 'Prompted models' })
   const card = catalog.getByRole('article', { name: 'OneShot model', exact: true })
   await expect(card.getByText('163 params', { exact: true })).toBeVisible({ timeout: 30_000 })

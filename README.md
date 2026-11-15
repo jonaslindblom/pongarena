@@ -2,13 +2,13 @@
 
 **How small can a neural network be and still play Pong?**
 
-Play against tiny neural networks, watch them compete, and see their neurons fire as they make each move. Everything runs on your device in the browser with ONNX Runtime Web.
+Play against tiny neural networks, watch their neurons fire, or switch one off to see what changes. This open-source experiment compares programmed, prompted and trained weights—even in the same 163-parameter architecture. Everything runs in your browser.
 
-PongArena is open source. Submit your weights to enter the league.
+[**Play in your browser**](https://jonaslindblom.github.io/pongarena/?model=quill) · [Switch off a neuron](https://jonaslindblom.github.io/pongarena/how-it-thinks/counter/) · [Submit your weights](CONTRIBUTING.md)
 
-[**Play in your browser**](https://jonaslindblom.github.io/pongarena/) · [Explore the findings](https://jonaslindblom.github.io/pongarena/findings/) · [Build a model](CONTRIBUTING.md)
+[![OneShot and Quill playing Pong, with OneShot’s live neural activations beside the court](docs/media/pongarena.gif)](https://jonaslindblom.github.io/pongarena/?model=quill)
 
-![PongArena showing a match and the neural network’s live activations](docs/media/pongarena.png)
+OneShot (prompted) vs. Quill (programmed). Both have 163 parameters. [Explore the findings](https://jonaslindblom.github.io/pongarena/findings/) or bring your own model to the league.
 
 ## What happens when the architecture stays the same?
 
@@ -59,8 +59,9 @@ The explainers and findings have direct page URLs: [Follow](https://jonaslindblo
 [Counter](https://jonaslindblom.github.io/pongarena/how-it-thinks/counter/),
 [training findings](https://jonaslindblom.github.io/pongarena/findings/) and
 [prompting findings](https://jonaslindblom.github.io/pongarena/findings/oneshot/).
-Older hash links to these pages still work. Use `#play`, `#league`, `#models`
-or `#rules` at the site root for the other tabs.
+Play is at the site root. The other pages use `league/`, `models/`, `rules/`
+and `device-test/`. Model-card links use anchors within the library, such as
+`models/#catalog-model-oneshot`.
 Add `&fullscreen=1` to open the court in a viewport-filling layout. Watch links
 start automatically; human match links wait for Play (or P). Model and fullscreen
 changes update the URL for copying. Imported models are available only in browsers where they were saved;

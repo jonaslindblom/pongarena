@@ -39,7 +39,7 @@ function StandingsTable({ run, entrants, modelDetails, onPlay }: {
       return <tr key={entrant.sha256}>
         <td><RankBadge rank={row.rank} /></td>
         <td><strong>{loaded
-          ? <a className="ranking-model-link" href={'#models/' + loaded.id}>{loaded.name}</a>
+          ? <a className="ranking-model-link" href={assetPath('models/#catalog-model-' + loaded.id)}>{loaded.name}</a>
           : entrant.name}</strong>{detail?.origin === 'community' && <ModelOrigin origin="community" />}<small>
           <span className="ranking-class">{smallestDivision(entrant)}</span>
           {' · '}{numbers(entrant.params)} params{detail?.method && <> · {detail.method[0].toUpperCase() + detail.method.slice(1)}</>}

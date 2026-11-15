@@ -190,7 +190,7 @@ for (const width of [390, 1280]) {
       playMatch: async () => ({ points: [2, 2], rallies: 5 }),
     })
     await page.route('**/league.json', route => route.fulfill({ json: run }))
-    await page.goto('/#models')
+    await page.goto('/models/')
     await expect(page.locator('.library-card')).toHaveCount(proposed.length, { timeout: 30_000 })
     const card = page.getByRole('region', { name: 'Prompted models', exact: true })
       .getByRole('article', { name: 'Community Falcon model', exact: true })
@@ -249,6 +249,6 @@ test('published downloads must match the catalog file checksum even when only me
   model.docString = 'Different metadata with the same network.'
   const bytes = pb.onnx.ModelProto.encode(model).finish()
   await page.route('**/models/quill.onnx', route => route.fulfill({ body: Buffer.from(bytes) }))
-  await page.goto('/#models')
+  await page.goto('/models/')
   await expect(page.getByRole('alert')).toContainText('Quill does not match the published model catalog.')
 })

@@ -3,14 +3,14 @@ import { readFileSync } from 'node:fs'
 import { benchmarkIdentity, type CompetitionRun } from '../src/competition'
 
 test('a League model link opens its catalog card and can be shared', async ({ page }) => {
-  await page.goto('/#league')
+  await page.goto('/league/')
   const reference = page.getByRole('region', { name: 'Reference league', exact: true })
   const modelLink = reference.getByRole('link', { name: 'OneShot', exact: true })
-  await expect(modelLink).toHaveAttribute('href', '#models/oneshot')
+  await expect(modelLink).toHaveAttribute('href', './models/#catalog-model-oneshot')
   await modelLink.click()
 
   const card = page.getByRole('article', { name: 'OneShot model', exact: true })
-  await expect(page).toHaveURL(/#models\/oneshot$/)
+  await expect(page).toHaveURL(/\/models\/#catalog-model-oneshot$/)
   await expect(card).toBeFocused()
   await expect(card).toBeInViewport()
 
@@ -19,7 +19,7 @@ test('a League model link opens its catalog card and can be shared', async ({ pa
   await expect(card).toBeInViewport()
 
   await page.goBack()
-  await expect(page).toHaveURL(/#league$/)
+  await expect(page).toHaveURL(/\/league\/$/)
   await expect(modelLink).toBeVisible()
 })
 

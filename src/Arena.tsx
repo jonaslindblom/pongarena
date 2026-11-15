@@ -70,7 +70,7 @@ function Court({ m, names, ready, humanSides, bottom, mode, demo, onModeChange }
   const court = useRef<HTMLElement>(null)
   const fullscreenControl = useRef<HTMLButtonElement>(null)
   const fullscreenWanted = useRef(false)
-  const [fullscreen, setFullscreen] = useState(() => new URLSearchParams(window.location.search).get('fullscreen') === '1')
+  const [fullscreen, setFullscreen] = useState(() => typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('fullscreen') === '1')
   useLayoutEffect(() => {
     const svg = field.current!
     function resize() {
@@ -376,6 +376,7 @@ function Court({ m, names, ready, humanSides, bottom, mode, demo, onModeChange }
             {demo ? <p className="demo-rematch">Next match starts automatically…</p>
               : <p className="keyboard-hint">Press <kbd>P</kbd> to {mode === 'play' ? 'play' : 'watch'} again</p>}
             <small className="keyboard-hint"><kbd>R</kbd> restarts the same serves</small>
+            {!demo && <a className="match-star-link" href="https://github.com/jonaslindblom/pongarena" target="_blank" rel="noopener noreferrer">Star on GitHub</a>}
           </div>
         </div>}
       </div>

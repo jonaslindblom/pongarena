@@ -15,7 +15,31 @@ export const homeMetadata = {
   description: 'Play Pong against programmed, prompted and trained neural networks. Explore how they work and submit your own weights to the open-source league.',
 }
 
-export const readingPages: Record<string, { route: Route; title: string; description: string }> = {
+export const pages: Record<string, { route: Route; title: string; description: string }> = {
+  '': {
+    route: { page: 'Arena', explainer: 'follow' },
+    ...homeMetadata,
+  },
+  'models/': {
+    route: { page: 'Model library', explainer: 'follow' },
+    title: 'Pong Neural Network Models and Weights — PongArena',
+    description: 'Explore programmed, trained and prompted Pong controllers. Inspect their architectures, download ONNX weights, or import your own neural network to play.',
+  },
+  'league/': {
+    route: { page: 'Rankings', explainer: 'follow' },
+    title: 'Neural Network Pong League — PongArena',
+    description: 'Compare Pong neural networks on the same serves from both sides. Explore league standings, play against a model, or run a tournament in your browser.',
+  },
+  'rules/': {
+    route: { page: 'Rules', explainer: 'follow' },
+    title: 'Pong Rules and Controls — PongArena',
+    description: 'Learn the controls for playing Pong against neural networks, watching model matches and bringing your own weights to PongArena.',
+  },
+  'device-test/': {
+    route: { page: 'Device test', explainer: 'follow' },
+    title: 'Browser Inference and Animation Test — PongArena',
+    description: 'Measure neural network inference and Pong animation performance on your device with a repeatable browser workload.',
+  },
   'how-it-thinks/': {
     route: { page: 'How it thinks', explainer: 'follow' },
     title: 'How a 13-Parameter Pong Network Works — PongArena',
@@ -38,48 +62,21 @@ export const readingPages: Record<string, { route: Route; title: string; descrip
   },
 }
 
-const pageHashes: Record<Page, string> = {
-  Arena: '#play',
-  Rankings: '#league',
-  'Model library': '#models',
-  'How it thinks': '#how-it-thinks',
-  Rules: '#rules',
-  Findings: '#findings',
-  'Device test': '#device-test',
-}
-
 export function pagePath(page: Page, lesson: ExplainerId | FindingId = 'follow') {
-  if (page === 'How it thinks') return lesson === 'counter' ? 'how-it-thinks/counter/' : 'how-it-thinks/'
-  if (page === 'Findings') return lesson === 'oneshot' ? 'findings/oneshot/' : 'findings/'
-  return pageHashes[page]
-}
-
-// Old shared reading links retain their query parameters while gaining a path.
-export function normalizeReadingUrl(url: URL, base: URL) {
-  const next = new URL(url)
-  const legacy = url.hash === '#how-it-thinks/oneshot' ? 'findings/oneshot/' : url.hash.slice(1).replace(/\/$/, '') + '/'
-  if (Object.hasOwn(readingPages, legacy)) {
-    next.pathname = base.pathname + legacy
-    next.hash = ''
-  }
-  const path = next.pathname.slice(base.pathname.length)
-  if (Object.hasOwn(readingPages, path + '/')) next.pathname += '/'
-  return next
+  const candidates = Object.entries(pages).filter(([, entry]) => entry.route.page === page)
+  const selected = candidates.find(([, entry]) => (entry.route.finding ?? entry.route.explainer) === lesson)
+  return (selected ?? candidates[0])[0]
 }
 
 export function readPage(url: URL, base: URL): Route {
-  const normalized = normalizeReadingUrl(url, base)
-  const path = normalized.pathname.slice(base.pathname.length)
-  if (Object.hasOwn(readingPages, path)) return readingPages[path].route
-  if (url.hash === '#guide') return { page: 'Rules', explainer: 'follow' }
-  const catalogId = /^#models\/([A-Za-z0-9_-]+)$/.exec(url.hash)?.[1]
-  if (catalogId) return { page: 'Model library', explainer: 'follow', catalogId }
-  const page = (Object.keys(pageHashes) as Page[]).find(page => pageHashes[page] === url.hash) ?? 'Arena'
-  return { page, explainer: 'follow' }
+  const path = url.pathname.slice(base.pathname.length).replace(/\/?$/, '/')
+  const route = pages[path]?.route ?? pages[''].route
+  const catalogId = route.page === 'Model library'
+    ? /^#catalog-model-([A-Za-z0-9_-]+)$/.exec(url.hash)?.[1] : undefined
+  return { ...route, ...(catalogId ? { catalogId } : {}) }
 }
 
 export function pageMetadata(route: Route) {
   const path = pagePath(route.page, route.finding ?? route.explainer)
-  const reading = readingPages[path]
-  return { ...(reading ?? homeMetadata), url: new URL(reading ? path : '', siteUrl).href }
+  return { ...pages[path], url: new URL(path, siteUrl).href }
 }

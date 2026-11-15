@@ -44,7 +44,7 @@ test('a shared lesson URL survives reload and tab navigation history', async ({ 
   await expect(counter).toBeVisible()
 
   const models = page.getByRole('navigation').getByRole('link', { name: 'Models', exact: true })
-  await expect(models).toHaveAttribute('href', /\/#models$/)
+  await expect(models).toHaveAttribute('href', /\/models\/$/)
   await models.click()
   await expect(page.getByRole('heading', { name: 'Model library', exact: true })).toBeVisible()
   await page.goBack()

@@ -1,13 +1,18 @@
 import { test, expect } from '@playwright/test'
 
 const pages = [
+  { path: '', title: 'PongArena — Play Pong Against Tiny Neural Networks', heading: 'How small can a neural network be and still play Pong?' },
+  { path: 'models/', title: 'Pong Neural Network Models and Weights — PongArena', heading: 'Model library' },
+  { path: 'league/', title: 'Neural Network Pong League — PongArena', heading: 'League' },
+  { path: 'rules/', title: 'Pong Rules and Controls — PongArena', heading: 'Rules' },
+  { path: 'device-test/', title: 'Browser Inference and Animation Test — PongArena', heading: 'Device test' },
   { path: 'how-it-thinks/', title: 'How a 13-Parameter Pong Network Works — PongArena', heading: 'One neuron. Follow the ball.', text: 'Subtract two positions' },
   { path: 'how-it-thinks/counter/', title: 'Switch Off a Pong Neuron: Inside Counter — PongArena', heading: 'Know when to stop chasing.', text: 'A signal becomes a strategy.' },
   { path: 'findings/', title: 'Training vs. Programming Tiny Pong Networks — PongArena', heading: 'The architecture can do it.Can training find the weights?', text: 'More than one training run.' },
   { path: 'findings/oneshot/', title: 'One Prompt, 163 Parameters: OneShot Pong — PongArena', heading: 'One prompt. One Pong player.', text: 'Can a design idea become weights?' },
 ]
 
-test.describe('indexable reading pages', () => {
+test.describe('indexable pages', () => {
   test.use({ javaScriptEnabled: false })
 
   for (const reading of pages) test(`${reading.path} serves its content and metadata without JavaScript`, async ({ page, request }) => {
@@ -15,7 +20,7 @@ test.describe('indexable reading pages', () => {
     expect(response?.status()).toBe(200)
     await expect(page).toHaveTitle(reading.title)
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(reading.heading)
-    await expect(page.getByRole('heading', { name: reading.text, exact: true })).toBeVisible()
+    if (reading.text) await expect(page.getByRole('heading', { name: reading.text, exact: true })).toBeVisible()
     const canonical = 'https://jonaslindblom.github.io/pongarena/' + reading.path
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', canonical)
     await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', canonical)
@@ -64,8 +69,30 @@ test.describe('indexable reading pages', () => {
   })
 })
 
-test('old shared links migrate without losing queries and metadata follows navigation history', async ({ page }) => {
-  await page.goto('/?source=linkedin#how-it-thinks/counter')
+test('page navigation uses paths and survives refresh and history', async ({ page }) => {
+  await page.goto('/')
+  const navigation = page.getByRole('navigation', { name: 'Main navigation' })
+  for (const [label, path, heading] of [
+    ['Models', '/models/', 'Model library'],
+    ['League', '/league/', 'League'],
+    ['How it thinks', '/how-it-thinks/', 'One neuron. Follow the ball.'],
+    ['Findings', '/findings/', 'The architecture can do it.Can training find the weights?'],
+  ]) {
+    await navigation.getByRole('link', { name: label, exact: true }).click()
+    expect(new URL(page.url()).pathname).toBe(path)
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(heading)
+    await page.reload()
+    await expect(navigation.getByRole('link', { name: label, exact: true })).toHaveAttribute('aria-current', 'page')
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(heading)
+  }
+  await page.goBack()
+  await expect(page).toHaveURL(/\/how-it-thinks\/$/)
+  await page.goForward()
+  await expect(page).toHaveURL(/\/findings\/$/)
+})
+
+test('direct links retain queries and metadata follows navigation history', async ({ page }) => {
+  await page.goto('/how-it-thinks/counter/?source=linkedin')
   await expect(page).toHaveURL(/\/how-it-thinks\/counter\/\?source=linkedin$/)
   await expect(page.getByLabel('Counter chosen move', { exact: true })).toBeVisible()
   await expect(page).toHaveTitle('Switch Off a Pong Neuron: Inside Counter — PongArena')

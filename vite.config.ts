@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 import { createHash } from 'node:crypto'
 import { readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
-import { readingPages } from './src/routes'
+import { pages } from './src/routes'
 
 function sourceFiles(directory: string): string[] {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -18,12 +18,12 @@ for (const path of [...sourceFiles('src'), 'index.html', 'package-lock.json', 'v
 export default defineConfig({
   base: './',
   plugins: [react(), {
-    name: 'reading-page-base',
+    name: 'page-base',
     transformIndexHtml: {
       order: 'pre',
       handler(html, context) {
         const pathname = (context.originalUrl ?? context.path).split('?')[0]
-        const path = Object.keys(readingPages).find(path =>
+        const path = Object.keys(pages).filter(Boolean).find(path =>
           pathname.endsWith('/' + path) || pathname.endsWith('/' + path.slice(0, -1)))
         if (!path) return html
         const depth = path.split('/').length - (pathname.endsWith('/') ? 1 : 2)

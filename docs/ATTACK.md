@@ -48,7 +48,7 @@ the selected corner. The output keeps Predict's 1.1-unit movement deadband.
 
 ## Evaluation
 
-See the [published league](https://jonaslindblom.github.io/pongarena/#league)
+See the [published league](https://jonaslindblom.github.io/pongarena/league/)
 for current standings across all models. The checked-in
 [published standings](https://jonaslindblom.github.io/pongarena/league.md) use recorded shared serves; local development standings use fixed seeds for repeatable checks.
 

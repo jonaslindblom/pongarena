@@ -33,21 +33,21 @@ test('findings connect frozen evidence to the current Small model and playable m
   await expect(page.locator('.court-top')).toBeInViewport()
 })
 
-test('old lesson and guide links still reach useful content in the new structure', async ({ page }) => {
+test('finding and rules pages support direct links and navigation history', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
-  await page.goto('/#how-it-thinks/oneshot')
+  await page.goto('/findings/oneshot/')
   await expect(page.getByRole('heading', { name: 'One prompt. One Pong player.', exact: true })).toBeVisible()
   await expect(page.getByRole('navigation').getByRole('link', { name: 'Findings', exact: true })).toHaveAttribute('aria-current', 'page')
   await page.getByRole('link', { name: '1 · Training tiny networks', exact: true }).click()
   await expect(page).toHaveURL(/\/findings\/$/)
   await page.goBack()
   await expect(page.getByRole('heading', { name: 'One prompt. One Pong player.', exact: true })).toBeVisible()
-  await page.goto('/#guide')
+  await page.goto('/rules/')
   await expect(page.getByRole('heading', { name: 'You play from the bottom.', exact: true })).toBeVisible()
   await page.getByRole('navigation').getByRole('link', { name: 'How it thinks', exact: true }).click()
   await expect(page.getByRole('group', { name: 'Choose a lesson' }).getByRole('link')).toHaveCount(2)
   await page.getByRole('link', { name: 'Rules & controls', exact: true }).click()
-  await expect(page).toHaveURL(/#rules$/)
+  await expect(page).toHaveURL(/\/rules\/$/)
   await expect(page.getByRole('heading', { name: 'Rules', exact: true })).toBeInViewport()
 })
 

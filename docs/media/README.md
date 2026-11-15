@@ -21,6 +21,20 @@ It closes its browser and server afterward without changing an open app session.
 Review [pongarena.png](pongarena.png) after UI changes, especially navigation,
 player labels, controls and input labels.
 
+## README gameplay loop
+
+With FFmpeg installed, run:
+
+```sh
+npm run docs:screenshot -- --gif
+```
+
+The same capture script records an eight-second OneShot–Quill clip at 12 frames
+per second. It crops the actual arena, including the live neural activations,
+and scales the whole image proportionally to 960 pixels wide. The match seed is
+fixed for repeatable capture, not selected to demonstrate a winner. Temporary
+frames are removed after writing [pongarena.gif](pongarena.gif).
+
 ## Social card
 
 Edit [scripts/social-card.html](../../scripts/social-card.html), then render
@@ -33,7 +47,8 @@ npm run docs:social-card
 The command opens the HTML in its own Chromium browser, waits for the bundled
 Manrope font, and captures a 1200 × 630 image at device scale 1.
 
-Keep the tagline **Small brains. Big rallies.** and the subtitle **Play Pong.
+Keep the headline **How small can a neural network be and still play Pong?**
+consistent with the site and README, and use the subtitle **Play Pong.
 Explore neural networks.** Use the app's cream background, forest-green text,
 [logo](../../public/mark.svg), vertical court, mint paddle and muted orange
 opponent. The network shows Counter's actual `6 → 6 → 4 → 3 → 3` architecture

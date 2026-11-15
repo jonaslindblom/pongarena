@@ -38,7 +38,7 @@ import { DEFAULT_MODEL, DEFAULT_WATCH_IDS, readMatchLink, writeMatchLink } from 
 import { bottomSide, playerNumber, topSide } from './courtPlayers'
 import { Findings, type FindingId } from './Findings'
 import { QuickRules } from './QuickRules'
-import { normalizeReadingUrl, pageMetadata, pagePath, readPage, type Page } from './routes'
+import { pageMetadata, pagePath, readPage, type Page } from './routes'
 import './App.css'
 
 const tabs: { page: Page; label: string; icon: typeof Gamepad2 }[] = [
@@ -153,9 +153,7 @@ export default function App({ location = new URL(window.location.href), base = n
   }, [demo, ready, page, error, m.playing, finished])
   useEffect(() => {
     function restoreRoute() {
-      const url = normalizeReadingUrl(new URL(window.location.href), new URL(document.baseURI))
-      if (url.href !== window.location.href) window.history.replaceState(null, '', url)
-      const route = readPage(url, new URL(document.baseURI))
+      const route = readPage(new URL(window.location.href), new URL(document.baseURI))
       setDemo(false)
       currentMatch.current.pause()
       if (route.page === 'Arena') {
@@ -520,6 +518,7 @@ export default function App({ location = new URL(window.location.href), base = n
             <FlaskConical size={13} /> PongArena <b>/</b> Neural network playground
           </span>
           <div className="footer-links">
+            <a href="https://github.com/jonaslindblom/pongarena" target="_blank" rel="noopener noreferrer">Star on GitHub</a>
             <a href={pageUrl('Rules')} onClick={event => followTab(event, 'Rules')}>Rules & controls</a>
             <a href="https://github.com/jonaslindblom/pongarena/blob/main/CONTRIBUTING.md">Contribute a model</a>
             <a href={pageUrl('Device test')} onClick={event => followTab(event, 'Device test')}>Device test</a>

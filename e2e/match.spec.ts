@@ -89,6 +89,15 @@ test('human play ends on the third point and offers a fresh match', async ({ pag
 
 test('model loop draws explain the result before the next serve', async ({ page }) => {
   test.setTimeout(60_000)
+  await page.addInitScript(() => {
+    const original = crypto.getRandomValues.bind(crypto)
+    crypto.getRandomValues = array => {
+      const result = original(array)
+      // Seed 0 makes Follow's first rally repeat; this checks the draw UI, not random outcomes.
+      if (array instanceof Uint32Array && array.length === 1) array[0] = 0
+      return result
+    }
+  })
   await page.goto('/?mode=watch&model=follow&opponent=follow')
   await expect(page.locator('.court .status')).toHaveText('Live', { timeout: 30_000 })
   await page.clock.install()
@@ -98,7 +107,6 @@ test('model loop draws explain the result before the next serve', async ({ page 
   }
   await expect(page.locator('.rally-draw')).toContainText('Repeating rally')
   await expect(page.locator('.rally-draw')).toContainText('No point awarded')
-  // Random serves may score before the first draw; advance from the drawn rally.
   const rally = Number((await page.locator('.court-foot').innerText()).match(/RALLY (\d+)/)![1])
   const tick = await page.locator('.tick-readout').getAttribute('aria-label')
   await page.clock.runFor(2000)
