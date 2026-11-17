@@ -1,0 +1,96 @@
+{"phase": "distillation", "round": 1, "loss": 2.532998248934746, "agreement": 0.4562784830729167}
+{"phase": "distillation", "round": 2, "loss": 2.0709439081450305, "agreement": 0.562591552734375}
+{"phase": "distillation", "round": 3, "loss": 1.6607186223069828, "agreement": 0.6769646538628472}
+{"phase": "distillation", "round": 4, "loss": 1.5278087705373764, "agreement": 0.6918131510416666}
+{"phase": "distillation", "round": 5, "loss": 1.423205889761448, "agreement": 0.692474365234375}
+{"phase": "distillation", "round": 6, "loss": 1.415174915144841, "agreement": 0.7041651407877604}
+{"phase": "distillation", "round": 7, "loss": 1.3802344786624114, "agreement": 0.7051976521809896}
+{"phase": "distillation", "round": 8, "loss": 1.3497379353890817, "agreement": 0.7093785603841146, "development_score": [0.171875, 0.182421875], "opponents": {"attack": {"wins": 28, "draws": 0, "losses": 292, "rally_score": 0.0875, "rally_score_ci95": [0.06562499999999999, 0.11249999999999999], "point_margin": -0.825, "league_score": 0.0}, "defend": {"wins": 14, "draws": 2, "losses": 304, "rally_score": 0.04687499999999999, "rally_score_ci95": [0.026562499999999996, 0.06875], "point_margin": -0.90625, "league_score": 0.0}, "interceptor": {"wins": 141, "draws": 83, "losses": 96, "rally_score": 0.5703125, "rally_score_ci95": [0.5234375, 0.6171875], "point_margin": 0.140625, "league_score": 0.6875}, "large": {"wins": 8, "draws": 0, "losses": 312, "rally_score": 0.024999999999999994, "rally_score_ci95": [0.009374999999999998, 0.040624999999999994], "point_margin": -0.95, "league_score": 0.0}}}
+{"phase": "distillation", "round": 9, "loss": 1.3166863384346168, "agreement": 0.7236709594726562}
+{"phase": "distillation", "round": 10, "loss": 1.2614456564188004, "agreement": 0.7253672281901041}
+{"phase": "distillation", "round": 11, "loss": 1.2365826461464167, "agreement": 0.7314300537109375}
+{"phase": "distillation", "round": 12, "loss": 1.2158283311873674, "agreement": 0.7386474609375}
+{"phase": "distillation", "round": 13, "loss": 1.1910273277511199, "agreement": 0.73956298828125}
+{"phase": "distillation", "round": 14, "loss": 1.1819638330489397, "agreement": 0.7421900431315104}
+{"phase": "distillation", "round": 15, "loss": 1.162720900028944, "agreement": 0.7457326253255209}
+{"phase": "distillation", "round": 16, "loss": 1.1488329948236544, "agreement": 0.7454121907552084, "development_score": [0.125, 0.166796875], "opponents": {"attack": {"wins": 24, "draws": 0, "losses": 296, "rally_score": 0.07499999999999998, "rally_score_ci95": [0.05312499999999999, 0.09687499999999999], "point_margin": -0.85, "league_score": 0.0}, "defend": {"wins": 21, "draws": 0, "losses": 299, "rally_score": 0.06562499999999999, "rally_score_ci95": [0.040624999999999994, 0.09375], "point_margin": -0.86875, "league_score": 0.0}, "interceptor": {"wins": 123, "draws": 71, "losses": 126, "rally_score": 0.49531250000000004, "rally_score_ci95": [0.45, 0.5421874999999999], "point_margin": -0.009375, "league_score": 0.5}, "large": {"wins": 10, "draws": 0, "losses": 310, "rally_score": 0.031249999999999993, "rally_score_ci95": [0.015624999999999997, 0.046874999999999986], "point_margin": -0.9375, "league_score": 0.0}}}
+{"phase": "distillation", "round": 17, "loss": 1.1336768598606188, "agreement": 0.7520268758138021}
+{"phase": "distillation", "round": 18, "loss": 1.123853514591853, "agreement": 0.7508646647135416}
+{"phase": "distillation", "round": 19, "loss": 1.1059021757294734, "agreement": 0.7513224283854166}
+{"phase": "distillation", "round": 20, "loss": 1.0902037123839061, "agreement": 0.7534739176432291}
+{"phase": "distillation", "round": 21, "loss": 1.0706476826841633, "agreement": 0.7568028767903646}
+{"phase": "distillation", "round": 22, "loss": 1.0515256943181157, "agreement": 0.7601114908854166}
+{"phase": "distillation", "round": 23, "loss": 1.0418880932653944, "agreement": 0.7623138427734375}
+{"phase": "distillation", "round": 24, "loss": 1.026017526164651, "agreement": 0.7646128336588541, "development_score": [0.12109375, 0.19609375], "opponents": {"attack": {"wins": 13, "draws": 0, "losses": 307, "rally_score": 0.040624999999999994, "rally_score_ci95": [0.024999999999999994, 0.05937499999999998], "point_margin": -0.91875, "league_score": 0.0}, "defend": {"wins": 28, "draws": 23, "losses": 269, "rally_score": 0.1234375, "rally_score_ci95": [0.09375, 0.15156250000000002], "point_margin": -0.753125, "league_score": 0.0}, "interceptor": {"wins": 112, "draws": 108, "losses": 100, "rally_score": 0.51875, "rally_score_ci95": [0.47187500000000004, 0.565625], "point_margin": 0.0375, "league_score": 0.484375}, "large": {"wins": 32, "draws": 1, "losses": 287, "rally_score": 0.1015625, "rally_score_ci95": [0.06874999999999999, 0.1353515625], "point_margin": -0.796875, "league_score": 0.0}}}
+{"phase": "distillation", "round": 25, "loss": 1.0141350713868935, "agreement": 0.7640558878580729}
+{"phase": "distillation", "round": 26, "loss": 0.9918741211295128, "agreement": 0.7650095621744791}
+{"phase": "distillation", "round": 27, "loss": 0.973611280011634, "agreement": 0.7663345336914062}
+{"phase": "distillation", "round": 28, "loss": 0.9449263640368978, "agreement": 0.7732416788736979}
+{"phase": "distillation", "round": 29, "loss": 0.9230147525668144, "agreement": 0.774871826171875}
+{"phase": "distillation", "round": 30, "loss": 0.9064486383770903, "agreement": 0.7756627400716146}
+{"phase": "distillation", "round": 31, "loss": 0.8963956280301014, "agreement": 0.7757593790690104}
+{"phase": "distillation", "round": 32, "loss": 0.9014726150780916, "agreement": 0.7732111612955729, "development_score": [0.1875, 0.23359375000000002], "opponents": {"attack": {"wins": 20, "draws": 12, "losses": 288, "rally_score": 0.08125, "rally_score_ci95": [0.05312499999999999, 0.11249999999999999], "point_margin": -0.8375, "league_score": 0.0}, "defend": {"wins": 36, "draws": 49, "losses": 235, "rally_score": 0.18906250000000002, "rally_score_ci95": [0.15781250000000002, 0.21875], "point_margin": -0.621875, "league_score": 0.0}, "interceptor": {"wins": 149, "draws": 76, "losses": 95, "rally_score": 0.5843750000000001, "rally_score_ci95": [0.5359375, 0.6281249999999999], "point_margin": 0.16875, "league_score": 0.75}, "large": {"wins": 23, "draws": 5, "losses": 292, "rally_score": 0.0796875, "rally_score_ci95": [0.05312499999999999, 0.109375], "point_margin": -0.840625, "league_score": 0.0}}}
+{"phase": "distillation", "round": 33, "loss": 0.902858500679334, "agreement": 0.7744216918945312}
+{"phase": "distillation", "round": 34, "loss": 0.8982905615121126, "agreement": 0.7764409383138021}
+{"phase": "distillation", "round": 35, "loss": 0.8783060939361652, "agreement": 0.7803700764973959}
+{"phase": "distillation", "round": 36, "loss": 0.8642820517222086, "agreement": 0.7839991251627604}
+{"phase": "distillation", "round": 37, "loss": 0.8621160803983609, "agreement": 0.7796986897786459}
+{"phase": "distillation", "round": 38, "loss": 0.8615590749929348, "agreement": 0.7808278401692709}
+{"phase": "distillation", "round": 39, "loss": 0.8685364838068684, "agreement": 0.7794774373372396}
+{"phase": "distillation", "round": 40, "loss": 0.8696724474430084, "agreement": 0.7749506632486979, "development_score": [0.21875, 0.28046875000000004], "opponents": {"attack": {"wins": 25, "draws": 5, "losses": 290, "rally_score": 0.08593749999999999, "rally_score_ci95": [0.06093749999999999, 0.11249999999999999], "point_margin": -0.828125, "league_score": 0.0}, "defend": {"wins": 49, "draws": 42, "losses": 229, "rally_score": 0.21875, "rally_score_ci95": [0.1755859375, 0.26249999999999996], "point_margin": -0.5625, "league_score": 0.015625}, "interceptor": {"wins": 179, "draws": 49, "losses": 92, "rally_score": 0.6359375, "rally_score_ci95": [0.5953124999999999, 0.6765625], "point_margin": 0.271875, "league_score": 0.84375}, "large": {"wins": 58, "draws": 0, "losses": 262, "rally_score": 0.18125000000000002, "rally_score_ci95": [0.140625, 0.22187500000000002], "point_margin": -0.6375, "league_score": 0.015625}}}
+{"phase": "distillation", "round": 41, "loss": 0.8640139643102884, "agreement": 0.7773005167643229}
+{"phase": "distillation", "round": 42, "loss": 0.8642721722523371, "agreement": 0.7762578328450521}
+{"phase": "distillation", "round": 43, "loss": 0.8622356948132316, "agreement": 0.7779362996419271}
+{"phase": "distillation", "round": 44, "loss": 0.8563363216817379, "agreement": 0.782928466796875}
+{"phase": "distillation", "round": 45, "loss": 0.8529381696134806, "agreement": 0.7795079549153646}
+{"phase": "distillation", "round": 46, "loss": 0.8406650088727474, "agreement": 0.7829717000325521}
+{"phase": "distillation", "round": 47, "loss": 0.832589630347987, "agreement": 0.7890548706054688}
+{"phase": "distillation", "round": 48, "loss": 0.8359645288437605, "agreement": 0.7877400716145834, "development_score": [0.1328125, 0.235546875], "opponents": {"attack": {"wins": 26, "draws": 18, "losses": 276, "rally_score": 0.109375, "rally_score_ci95": [0.08124999999999999, 0.13749999999999998], "point_margin": -0.78125, "league_score": 0.0}, "defend": {"wins": 47, "draws": 27, "losses": 246, "rally_score": 0.1890625, "rally_score_ci95": [0.159375, 0.2203125], "point_margin": -0.621875, "league_score": 0.0}, "interceptor": {"wins": 113, "draws": 93, "losses": 114, "rally_score": 0.4984375, "rally_score_ci95": [0.4625, 0.5337890624999999], "point_margin": -0.003125, "league_score": 0.53125}, "large": {"wins": 44, "draws": 5, "losses": 271, "rally_score": 0.1453125, "rally_score_ci95": [0.115625, 0.175], "point_margin": -0.709375, "league_score": 0.0}}}
+{"phase": "distillation", "round": 49, "loss": 0.8368465773140391, "agreement": 0.7872085571289062}
+{"phase": "distillation", "round": 50, "loss": 0.8449179067586859, "agreement": 0.7830454508463541}
+{"phase": "distillation", "round": 51, "loss": 0.8528139721602201, "agreement": 0.777435302734375}
+{"phase": "distillation", "round": 52, "loss": 0.8461886150762439, "agreement": 0.7762247721354166}
+{"phase": "distillation", "round": 53, "loss": 0.8409040359159311, "agreement": 0.7781346638997396}
+{"phase": "distillation", "round": 54, "loss": 0.8414451302960515, "agreement": 0.7790476481119791}
+{"phase": "distillation", "round": 55, "loss": 0.8505365625023842, "agreement": 0.7774683634440104}
+{"phase": "distillation", "round": 56, "loss": 0.8504751302922765, "agreement": 0.7772115071614584, "development_score": [0.171875, 0.271875], "opponents": {"attack": {"wins": 25, "draws": 18, "losses": 277, "rally_score": 0.10625, "rally_score_ci95": [0.078125, 0.134375], "point_margin": -0.7875, "league_score": 0.0}, "defend": {"wins": 65, "draws": 32, "losses": 223, "rally_score": 0.253125, "rally_score_ci95": [0.20625000000000002, 0.30000000000000004], "point_margin": -0.49375, "league_score": 0.0625}, "interceptor": {"wins": 123, "draws": 108, "losses": 89, "rally_score": 0.553125, "rally_score_ci95": [0.515625, 0.5906250000000001], "point_margin": 0.10625, "league_score": 0.625}, "large": {"wins": 50, "draws": 12, "losses": 258, "rally_score": 0.175, "rally_score_ci95": [0.14531249999999998, 0.20625], "point_margin": -0.65, "league_score": 0.0}}}
+{"phase": "distillation", "round": 57, "loss": 0.8508950540175041, "agreement": 0.7800318400065104}
+{"phase": "distillation", "round": 58, "loss": 0.8437825841829181, "agreement": 0.7780532836914062}
+{"phase": "distillation", "round": 59, "loss": 0.8289376981556416, "agreement": 0.7795079549153646}
+{"phase": "distillation", "round": 60, "loss": 0.8208531765267253, "agreement": 0.7815195719401041}
+{"phase": "distillation", "round": 61, "loss": 0.8135551934440931, "agreement": 0.7789332071940104}
+{"phase": "distillation", "round": 62, "loss": 0.8128444465498129, "agreement": 0.781097412109375}
+{"phase": "distillation", "round": 63, "loss": 0.8043324807658792, "agreement": 0.7826766967773438}
+{"phase": "distillation", "round": 64, "loss": 0.8082496433829268, "agreement": 0.7811965942382812, "development_score": [0.22265625, 0.290234375], "opponents": {"attack": {"wins": 52, "draws": 14, "losses": 254, "rally_score": 0.184375, "rally_score_ci95": [0.1421875, 0.22812500000000002], "point_margin": -0.63125, "league_score": 0.015625}, "defend": {"wins": 41, "draws": 26, "losses": 253, "rally_score": 0.16874999999999998, "rally_score_ci95": [0.13125, 0.20625], "point_margin": -0.6625, "league_score": 0.015625}, "interceptor": {"wins": 139, "draws": 92, "losses": 89, "rally_score": 0.578125, "rally_score_ci95": [0.5453125, 0.609375], "point_margin": 0.15625, "league_score": 0.84375}, "large": {"wins": 72, "draws": 3, "losses": 245, "rally_score": 0.22968750000000002, "rally_score_ci95": [0.184375, 0.271875], "point_margin": -0.540625, "league_score": 0.015625}}}
+{"phase": "distillation", "round": 65, "loss": 0.8093026836092273, "agreement": 0.7819900512695312}
+{"phase": "distillation", "round": 66, "loss": 0.8169411405300101, "agreement": 0.7835566202799479}
+{"phase": "distillation", "round": 67, "loss": 0.8209397569298744, "agreement": 0.7820256551106771}
+{"phase": "distillation", "round": 68, "loss": 0.8208767818287015, "agreement": 0.7839533487955729}
+{"phase": "distillation", "round": 69, "loss": 0.8208483193690578, "agreement": 0.7841542561848959}
+{"phase": "distillation", "round": 70, "loss": 0.8107401443024477, "agreement": 0.7791264851888021}
+{"phase": "distillation", "round": 71, "loss": 0.8027025222157439, "agreement": 0.7795130411783854}
+{"phase": "distillation", "round": 72, "loss": 0.8000584697971741, "agreement": 0.7742436726888021, "development_score": [0.23828125, 0.3], "opponents": {"attack": {"wins": 37, "draws": 27, "losses": 256, "rally_score": 0.15781250000000002, "rally_score_ci95": [0.12187500000000001, 0.196875], "point_margin": -0.684375, "league_score": 0.0}, "defend": {"wins": 48, "draws": 44, "losses": 228, "rally_score": 0.21875, "rally_score_ci95": [0.18281250000000002, 0.25312500000000004], "point_margin": -0.5625, "league_score": 0.0}, "interceptor": {"wins": 136, "draws": 147, "losses": 37, "rally_score": 0.6546875, "rally_score_ci95": [0.6203125, 0.6875], "point_margin": 0.309375, "league_score": 0.953125}, "large": {"wins": 50, "draws": 8, "losses": 262, "rally_score": 0.16875, "rally_score_ci95": [0.1359375, 0.2015625], "point_margin": -0.6625, "league_score": 0.0}}}
+{"phase": "distillation", "round": 73, "loss": 0.7887700569505492, "agreement": 0.7776107788085938}
+{"phase": "distillation", "round": 74, "loss": 0.7836008463054895, "agreement": 0.7785695393880209}
+{"phase": "distillation", "round": 75, "loss": 0.7846917302037278, "agreement": 0.7765553792317709}
+{"phase": "distillation", "round": 76, "loss": 0.7764980851983031, "agreement": 0.77386474609375}
+{"phase": "distillation", "round": 77, "loss": 0.7693985002115369, "agreement": 0.7732467651367188}
+{"phase": "distillation", "round": 78, "loss": 0.7644293320675691, "agreement": 0.7750015258789062}
+{"phase": "distillation", "round": 79, "loss": 0.7668926864862442, "agreement": 0.7739995320638021}
+{"phase": "distillation", "round": 80, "loss": 0.7679472835734487, "agreement": 0.7795664469401041, "development_score": [0.2265625, 0.31328125], "opponents": {"attack": {"wins": 50, "draws": 10, "losses": 260, "rally_score": 0.171875, "rally_score_ci95": [0.134375, 0.2109375], "point_margin": -0.65625, "league_score": 0.0}, "defend": {"wins": 46, "draws": 47, "losses": 227, "rally_score": 0.21718750000000003, "rally_score_ci95": [0.18125000000000002, 0.253125], "point_margin": -0.565625, "league_score": 0.0}, "interceptor": {"wins": 134, "draws": 141, "losses": 45, "rally_score": 0.6390625, "rally_score_ci95": [0.603125, 0.675], "point_margin": 0.278125, "league_score": 0.90625}, "large": {"wins": 67, "draws": 10, "losses": 243, "rally_score": 0.225, "rally_score_ci95": [0.1921875, 0.259375], "point_margin": -0.55, "league_score": 0.0}}}
+{"phase": "distillation", "round": 81, "loss": 0.7701049332196513, "agreement": 0.7747624715169271}
+{"phase": "distillation", "round": 82, "loss": 0.7705717915669084, "agreement": 0.7770004272460938}
+{"phase": "distillation", "round": 83, "loss": 0.7673798678442836, "agreement": 0.7762807210286459}
+{"phase": "distillation", "round": 84, "loss": 0.7625917078306278, "agreement": 0.7762018839518229}
+{"phase": "distillation", "round": 85, "loss": 0.7599777393043041, "agreement": 0.7802937825520834}
+{"phase": "distillation", "round": 86, "loss": 0.7680443096905947, "agreement": 0.7780532836914062}
+{"phase": "distillation", "round": 87, "loss": 0.7631650092080235, "agreement": 0.7820002237955729}
+{"phase": "distillation", "round": 88, "loss": 0.7591538106401762, "agreement": 0.7860056559244791, "development_score": [0.19140625, 0.267578125], "opponents": {"attack": {"wins": 41, "draws": 9, "losses": 270, "rally_score": 0.1421875, "rally_score_ci95": [0.11406249999999998, 0.1703125], "point_margin": -0.715625, "league_score": 0.0}, "defend": {"wins": 43, "draws": 24, "losses": 253, "rally_score": 0.171875, "rally_score_ci95": [0.140625, 0.2046875], "point_margin": -0.65625, "league_score": 0.0}, "interceptor": {"wins": 114, "draws": 131, "losses": 75, "rally_score": 0.5609375000000001, "rally_score_ci95": [0.5203125, 0.6000000000000001], "point_margin": 0.121875, "league_score": 0.765625}, "large": {"wins": 62, "draws": 1, "losses": 257, "rally_score": 0.1953125, "rally_score_ci95": [0.159375, 0.23125], "point_margin": -0.609375, "league_score": 0.0}}}
+{"phase": "distillation", "round": 89, "loss": 0.7612146893516183, "agreement": 0.7855809529622396}
+{"phase": "distillation", "round": 90, "loss": 0.7437056709701816, "agreement": 0.7886886596679688}
+{"phase": "distillation", "round": 91, "loss": 0.7415976341192921, "agreement": 0.7877858479817709}
+{"phase": "distillation", "round": 92, "loss": 0.7557472862924138, "agreement": 0.7818349202473959}
+{"phase": "distillation", "round": 93, "loss": 0.759554003054897, "agreement": 0.7856852213541666}
+{"phase": "distillation", "round": 94, "loss": 0.7693907578165332, "agreement": 0.785980224609375}
+{"phase": "distillation", "round": 95, "loss": 0.7767804507166147, "agreement": 0.7843780517578125}
+{"phase": "distillation", "round": 96, "loss": 0.7630708667760094, "agreement": 0.7913792928059896, "development_score": [0.19921875, 0.2640625], "opponents": {"attack": {"wins": 39, "draws": 3, "losses": 278, "rally_score": 0.12656249999999997, "rally_score_ci95": [0.09375, 0.1625], "point_margin": -0.746875, "league_score": 0.0}, "defend": {"wins": 48, "draws": 38, "losses": 234, "rally_score": 0.20937500000000003, "rally_score_ci95": [0.171875, 0.25], "point_margin": -0.58125, "league_score": 0.015625}, "interceptor": {"wins": 121, "draws": 136, "losses": 63, "rally_score": 0.590625, "rally_score_ci95": [0.5578125, 0.6234375000000001], "point_margin": 0.18125, "league_score": 0.78125}, "large": {"wins": 40, "draws": 3, "losses": 277, "rally_score": 0.1296875, "rally_score_ci95": [0.09375, 0.16562500000000002], "point_margin": -0.740625, "league_score": 0.0}}}
