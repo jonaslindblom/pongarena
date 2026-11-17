@@ -1,12 +1,13 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { createEvaluationPlan, evaluationInputIdentity, readLeagueInputs,
+import { createEvaluationPlan, evaluationInputIdentity, evaluatorIdentity, EVALUATOR_FILES, readLeagueInputs,
   validateEvaluationPlan, type LeagueInputs } from '../scripts/evaluation-plan'
 import { generateLeague, leagueMarkdown } from '../scripts/generate-league'
 import { benchmarkIdentity } from '../src/competition'
-import { cp, mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { cp, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
-import { join } from 'node:path'
+import { dirname, join } from 'node:path'
+import { pathToFileURL } from 'node:url'
 import { encode, network } from './modelFactory'
 import { presets } from '../src/roster'
 
@@ -133,4 +134,37 @@ test('a recorded PR plan replays the same full roster and paired results in WASM
   assert.match(leagueMarkdown(first, plan), /pr-evaluation/)
   assert.equal(leagueMarkdown(first, plan).split('Submitted weights').length - 1, inputs.entrants.length)
   assert.doesNotMatch(leagueMarkdown(first, plan), /Programmed weights|Trained weights/)
+})
+
+
+test('roster wording preserves the evaluator fingerprint but simulation and core pins invalidate it', async () => {
+  const directory = await mkdtemp(join(tmpdir(), 'pongarena-fingerprint-'))
+  try {
+    for (const path of [...EVALUATOR_FILES, 'src/roster.ts']) {
+      await mkdir(dirname(join(directory, path)), { recursive: true })
+      await cp(new URL('../' + path, import.meta.url), join(directory, path))
+    }
+    const root = pathToFileURL(directory + '/')
+    const original = await evaluatorIdentity(root)
+    await writeFile(join(directory, 'src/roster.ts'), 'Changed model names, descriptions and attribution')
+    assert.equal(await evaluatorIdentity(root), original,
+      'editorial changes must not grant a fresh draw of evaluation serves')
+    for (const path of ['src/game.ts', 'src/coreModelHashes.ts']) {
+      await writeFile(join(directory, path), 'Changed evaluation input')
+      assert.notEqual(await evaluatorIdentity(root), original,
+        'physics and pinned core membership must invalidate accepted results')
+      await cp(new URL('../' + path, import.meta.url), join(directory, path))
+    }
+  } finally { await rm(directory, { recursive: true, force: true }) }
+})
+
+test('display metadata cannot remove required core models or change their origin', async () => {
+  const removed = presets.splice(0, 1)[0]
+  try {
+    const inputs = await readLeagueInputs()
+    assert.equal(inputs.models.find(model => model.entrant.id === removed.id)?.origin, 'core')
+    const { requireCoreModels } = await import('../scripts/validate-models')
+    assert.throws(() => requireCoreModels(inputs.models.filter(model => model.entrant.id !== removed.id)),
+      /Keep the core teaching model/)
+  } finally { presets.unshift(removed) }
 })

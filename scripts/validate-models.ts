@@ -35,8 +35,8 @@ export async function validateModelCollection(
   const files = entries.filter((entry) => entry.name.toLowerCase().endsWith('.onnx')).map((entry) => entry.name)
   // Keep teaching examples in their established order; discover contributions deterministically.
   const order = (file: string) => {
-    const index = presets.findIndex(preset => file === preset.id + '.onnx')
-    return index < 0 ? presets.length : index
+    const index = Object.keys(coreModelHashes).findIndex(id => file === id + '.onnx')
+    return index < 0 ? Object.keys(coreModelHashes).length : index
   }
   files.sort((a, b) => order(a) - order(b) || a.localeCompare(b))
   const hashes = new Set<string>(), ids = new Set<string>(), models: ValidatedModel[] = []
@@ -57,16 +57,17 @@ export async function validateModelCollection(
       const hash = await modelIdentity(bytes)
       if (hashes.has(hash)) throw new Error('Identical networks cannot enter the league twice, even with different metadata.')
       hashes.add(hash)
-      const core = presets.find(preset => preset.id === id && coreModelHashes[preset.id] === hash)
-      if (!core && presets.some(preset => preset.id.toLowerCase() === id.toLowerCase()))
+      const isCore = coreModelHashes[id] === hash
+      const core = isCore ? presets.find(preset => preset.id === id) : undefined
+      if (!isCore && Object.keys(coreModelHashes).some(coreId => coreId.toLowerCase() === id.toLowerCase()))
         throw new Error('Core model IDs are reserved for the pinned teaching examples. Submit new weights with a new filename.')
-      const embedded = readModelMetadata(bytes, id, !core)
+      const embedded = readModelMetadata(bytes, id, !isCore)
       const metadata: ModelMetadata = core ? {
         name: core.name, description: core.description,
         method: core.handcrafted ? 'programmed' : core.id === 'oneshot' ? 'prompted' : 'trained',
       } : embedded
       models.push({ bytes, stats, metadata, fileSha256: await sha256(bytes),
-        origin: core ? 'core' : 'community', submittedBy: core?.submittedBy,
+        origin: isCore ? 'core' : 'community', submittedBy: core?.submittedBy,
         entrant: { id, name: metadata.name, sha256: hash, params: stats.params, macs: stats.macs },
       })
     } catch (error) {
@@ -77,9 +78,9 @@ export async function validateModelCollection(
 }
 
 export function requireCoreModels(models: readonly ValidatedModel[]) {
-  for (const preset of presets)
-    if (!models.some(model => model.entrant.id === preset.id && model.origin === 'core'))
-      throw new Error(`Keep the core teaching model ${preset.id}.onnx in the shipped collection.`)
+  for (const id of Object.keys(coreModelHashes))
+    if (!models.some(model => model.entrant.id === id && model.origin === 'core'))
+      throw new Error(`Keep the core teaching model ${id}.onnx in the shipped collection.`)
 }
 
 /** Runtime validity checks supplement structural validation; league inference also checks every decision. */

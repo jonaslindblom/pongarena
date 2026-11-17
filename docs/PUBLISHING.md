@@ -70,6 +70,18 @@ Google Search Console uses the URL-prefix property
 [verification file](../public/google801454ef9780dd1b.html) in published builds
 to retain ownership verification. Submit `sitemap.xml` in that property's Sitemaps report.
 
+The evaluator fingerprint excludes display metadata in `src/roster.ts`. Core
+membership, reserved IDs and required models come from `src/coreModelHashes.ts`,
+which remains fingerprinted alongside validation, physics and scoring code.
+Changing display names, descriptions or attribution therefore preserves evaluation
+identity; changing pinned networks or evaluation code invalidates it. Introducing
+this separation changes the fingerprint once and requires a new trusted evaluation.
+
+League CLI runs report completed games, percentage and elapsed time at startup,
+then at the next completed game after each 30-second interval, and at completion
+or failure. These are progress reports, not timer heartbeats: a stalled game will
+not advance the count. Retries continue to use the saved serve plan.
+
 ## Generated catalog and submitter credit
 
 `npm run models:catalog` discovers all ONNX files and writes `public/models.json`. Core examples are maintained in `src/roster.ts` and their network identities are pinned in `src/coreModelHashes.ts`; a submitted file cannot claim Core status. The default local command preserves available credits from an earlier catalog and can leave new community models without a submitter link.

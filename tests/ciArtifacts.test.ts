@@ -271,6 +271,7 @@ test('deleted main plans cannot be rerolled by manual dispatch or documentation-
       { path: 'public/models/model.onnx', type: 'blob', sha: 'same-weights' },
       { path: 'src/game.ts', type: 'blob', sha: 'same-evaluator' },
       { path: 'README.md', type: 'blob', sha: path.includes(oldSha) ? 'old-docs' : 'new-docs' },
+      { path: 'src/roster.ts', type: 'blob', sha: path.includes(oldSha) ? 'old-metadata' : 'new-metadata' },
     ] }
     throw new Error(`Unexpected main history request ${path}`)
   }

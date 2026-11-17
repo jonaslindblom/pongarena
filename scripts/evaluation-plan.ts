@@ -13,7 +13,7 @@ export const MAX_EVALUATION_SEEDS = 512
 export const EVALUATOR_FILES = [
   '.nvmrc', 'package-lock.json', 'scripts/evaluation-plan.ts', 'scripts/generate-league.ts',
   'scripts/validate-models.ts', 'src/competition.ts', 'src/competitionMatch.ts',
-  'src/modelIdentity.ts', 'src/modelMetadata.ts', 'src/roster.ts', 'src/coreModelHashes.ts', 'src/submitter.ts',
+  'src/modelIdentity.ts', 'src/modelMetadata.ts', 'src/coreModelHashes.ts', 'src/submitter.ts',
   'src/game.ts', 'src/rules.ts', 'src/validate.ts', 'src/leagueUncertainty.ts',
 ] as const
 const root = new URL('../', import.meta.url)
@@ -55,14 +55,18 @@ export function evaluationInputIdentity(entrants: readonly CompetitionEntrant[],
     entrants: entrantResources(entrants) }))
 }
 
+export async function evaluatorIdentity(directory = root) {
+  const sources = await Promise.all(EVALUATOR_FILES.map(async path =>
+    [path, digest(await readFile(new URL(path, directory)))]))
+  return digest(JSON.stringify(sources))
+}
+
 export async function readLeagueInputs(options: LeagueInputOptions = {}): Promise<LeagueInputs> {
   // Validate and snapshot every submitted model before any evaluation seed is drawn.
   const models = await validateModelCollection(options.modelsDirectory)
   requireCoreModels(models)
   if (models.length < 2) throw new Error('A league requires at least two distinct submitted models.')
-  const sources = await Promise.all(EVALUATOR_FILES.map(async path =>
-    [path, digest(await readFile(new URL(path, root)))]))
-  const evaluatorSha256 = digest(JSON.stringify(sources))
+  const evaluatorSha256 = await evaluatorIdentity()
   const entrants = models.map(model => ({ ...model.entrant }))
   return { models, entrants, evaluatorSha256, identity: evaluationInputIdentity(entrants, evaluatorSha256),
     options: { ...options } }
