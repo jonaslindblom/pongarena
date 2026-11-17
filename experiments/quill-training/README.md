@@ -75,6 +75,58 @@ defend, interceptor and Large**, on the existing 32 development seeds. Mean rall
 score breaks ties. CMA-ES's training fitness is contest score plus 0.25 × rally
 score; its saved checkpoints use the same development selection as the others.
 
+## Training curves
+
+![Development scores along the selected training path to Small. Imitation and PPO fluctuate and finish below their retained checkpoints; search records the best score so far.](curves/selected-path.png)
+
+The original logs show **fluctuation and backsliding, not just a clean early
+plateau**. Along the selected path, imitation reached a 25.4% development contest
+score at round 40 and finished at 13.3% at round 96. PPO retained 27.3% at round
+96, then finished at 23.4% at round 256. The best checkpoints were retained, so
+these later declines did not replace the selected model. Local CMA-ES then
+improved the retained score to 32.8% at generation 16.
+
+These are scores against the fixed **development opponents**, not trajectories
+against Quill. They show uneven progress under the tested recipes; they do not
+identify its cause or show that training cannot match Quill.
+
+[View all runs](curves/all-runs.png): six imitation starts, three PPO refinements
+and four CMA-ES searches.
+
+- Imitation and PPO log the **current checkpoint's** development score every
+  eight and sixteen rounds, respectively. PPO includes its starting checkpoint
+  at round zero. Lines connect measured evaluations without smoothing.
+- CMA-ES logs the **best score retained so far**, checked every eight generations
+  and at the end. Its flat segments do not show that all candidates plateaued.
+  The separate `training_score` uses fresh serves and is not plotted here.
+- All panels use mean paired-contest score against attack, defend, interceptor
+  and Large on 32 fixed paired serve sets per opponent. Rally score breaks
+  selection ties. A round has a different training budget in imitation and PPO;
+  the panels are separate rather than one continuous time axis.
+
+The [13 raw metrics logs](curves/metrics/) are copied byte-for-byte from the
+original runs, including unsuccessful refinements. Before copying, each run's
+model hash, configuration, selection and summary were checked against
+[results.json](results.json). The [manifest](curves/manifest.json) records each
+log's SHA-256, row count and corresponding selected-model hash. No models were
+retrained or reselected to make these figures.
+
+Check the logs and their agreement with the frozen selections using only Python's
+standard library:
+
+```sh
+python3 experiments/quill-training/plot-training-curves.py --check
+```
+
+To regenerate both figures, install the plotting dependency in a separate
+environment; this does not need the training dependencies:
+
+```sh
+python3.12 -m venv /tmp/pongarena-plots
+/tmp/pongarena-plots/bin/pip install matplotlib==3.11.2
+/tmp/pongarena-plots/bin/python experiments/quill-training/plot-training-curves.py
+```
+
 ## Evidence and replay
 
 [results.json](results.json) records every run's configuration, selected stage,
@@ -107,9 +159,9 @@ Use the Node version in `.nvmrc`. The verifier checks the strict model contract,
 
 The training recipes are [quill-distill.json](../../training/configs/quill-distill.json)
 and [quill-ppo.json](../../training/configs/quill-ppo.json). Each run requires a
-fresh output directory. Raw checkpoints and trajectories stay in ignored
-`training/runs/`; the roster holds the frozen student and this directory holds
-the experiment evidence.
+fresh output directory. Raw checkpoints stay in ignored `training/runs/`;
+the original metrics are preserved above, the roster holds the frozen student,
+and this directory holds the experiment evidence.
 
 Reconstruct the selected model, from the repository root:
 
